@@ -38,8 +38,8 @@ I recommend the following order to get a general grasp of how this example works
 
 1. `DllMain.cpp` - Dll entrypoint and some setup stuff
 2. `Script.cpp/hpp` - Script initialization
-3. `KCMenuScript.cpp/hpp` - The 'core' logic of the 'script' part which interacts with the game world.
-4. `KCMenuMenu.cpp` - The menu implementation.
+3. `Scripts/KCMenuScript.cpp/hpp` - The 'core' logic of the 'script' part which interacts with the game world.
+4. `Scripts/KCMainMenu.cpp` - The menu implementation.
 
 Plenty of comments have been left in the source code files to figure out what the heck everything actually does.
 
