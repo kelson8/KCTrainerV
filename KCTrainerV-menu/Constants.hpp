@@ -6,7 +6,15 @@
 #define VERSION_MINOR 0
 #define VERSION_PATCH 0
 
-namespace Constants {
+// This can enable/disable the tests in Memory.cpp, this is untested and may crash.
+// If this crashes, just disable it here.
+#define MEMORY_TESTING
+
+// Enable debug logging and other debug features.
+#define KCTRAINERDEBUG
+
+namespace Constants 
+{
     static const char* const ScriptName = "KCTrainerV";
     static const char* const NotificationPrefix = "~b~KCTrainerV~w~";
     static const char* const DisplayVersion = "v" STR(VERSION_MAJOR) "."  STR(VERSION_MINOR) "." STR(VERSION_PATCH);

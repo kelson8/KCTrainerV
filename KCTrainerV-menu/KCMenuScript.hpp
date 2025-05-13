@@ -6,7 +6,8 @@
  * This may serve as the core logic of the script.
  * For example, doing something with the player or world every tick.
  */
-class KCMainScript {
+class KCMainScript 
+{
 public:
     KCMainScript() = default;
     ~KCMainScript() = default;

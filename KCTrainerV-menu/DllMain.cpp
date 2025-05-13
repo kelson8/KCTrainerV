@@ -27,7 +27,8 @@ namespace fs = std::filesystem;
  * Use Paths::GetModPath() to ensure the relocated path is used, instead of the
  * GTA V directory.
  */
-void initializePaths(HMODULE hInstance) {
+void initializePaths(HMODULE hInstance) 
+{
     Paths::SetOurModuleHandle(hInstance);
 
     auto localAppDataPath = Paths::GetLocalAppDataPath();
@@ -37,7 +38,8 @@ void initializePaths(HMODULE hInstance) {
     Paths::SetModPath(originalModPath);
 
     bool useAltModPath = false;
-    if (fs::exists(localAppDataModPath)) {
+    if (fs::exists(localAppDataModPath)) 
+    {
         useAltModPath = true;
     }
 
@@ -45,7 +47,8 @@ void initializePaths(HMODULE hInstance) {
     fs::path logFile;
 
     // Use LocalAppData if it already exists.
-    if (useAltModPath) {
+    if (useAltModPath) 
+    {
         modPath = localAppDataModPath;
         logFile = localAppDataModPath / (Paths::GetModuleNameWithoutExtension(hInstance) + ".log");
     }
@@ -56,14 +59,16 @@ void initializePaths(HMODULE hInstance) {
 
     Paths::SetModPath(modPath);
 
-    if (!fs::is_directory(modPath) || !fs::exists(modPath)) {
+    if (!fs::is_directory(modPath) || !fs::exists(modPath)) 
+    {
         fs::create_directories(modPath);
     }
 
     g_Logger.SetFile(logFile.string());
     g_Logger.Clear();
 
-    if (g_Logger.Error()) {
+    if (g_Logger.Error()) 
+    {
         modPath = localAppDataModPath;
         logFile = localAppDataModPath / (Paths::GetModuleNameWithoutExtension(hInstance) + ".log");
         fs::create_directories(modPath);
@@ -77,7 +82,8 @@ void initializePaths(HMODULE hInstance) {
         std::vector<std::string> messages;
 
         // Fix perms
-        for (auto& path : fs::recursive_directory_iterator(localAppDataModPath)) {
+        for (auto& path : fs::recursive_directory_iterator(localAppDataModPath)) 
+        {
             try {
                 fs::permissions(path, fs::perms::all);
             }
@@ -103,9 +109,11 @@ void initializePaths(HMODULE hInstance) {
     }
 }
 
-BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved) {
+BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved) 
+{
     switch (reason) {
-        case DLL_PROCESS_ATTACH: {
+        case DLL_PROCESS_ATTACH: 
+        {
             g_Logger.SetMinLevel(DEBUG);
             initializePaths(hInstance);
             LOG(INFO, "{} {} (built {} {})", Constants::ScriptName, Constants::DisplayVersion, __DATE__, __TIME__);
@@ -115,11 +123,13 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved) {
             LOG(INFO, "Script registered");
             break;
         }
-        case DLL_PROCESS_DETACH: {
+        case DLL_PROCESS_DETACH: 
+        {
             scriptUnregister(hInstance);
             break;
         }
-        default: {
+        default: 
+        {
             break;
         }
     }

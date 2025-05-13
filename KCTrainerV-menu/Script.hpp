@@ -5,7 +5,8 @@
 /*
  * Script.hpp exposes functions to initialize and manage the script.
  */
-namespace KCMenu {
+namespace KCMenu 
+{
     // ScriptHookV calls this when starting the script.
     void ScriptMain();
 

@@ -1,11 +1,22 @@
 #include "KCMenuScript.hpp"
 
+#include "Scripts/PlayerScripts.h"
+
 #include <inc/natives.h>
 #include <format>
 
 void KCMainScript::Tick() {
+    //PlayerScripts playerScripts;
+    auto& playerScripts = PlayerScripts::GetInstance();
     // Core script logic
     mDistance += ENTITY::GET_ENTITY_SPEED(PLAYER::PLAYER_PED_ID()) * MISC::GET_FRAME_TIME();
+
+    // TODO Possibly add check for invincibility in here.
+    // Add other items that need to run constantly.
+    //if (playerScripts.IsNeverWantedEnabled())
+    //{
+    //    PLAYER::SET_MAX_WANTED_LEVEL(0);
+    //}
 }
 
 std::string KCMainScript::GetPlayerHealth() {

@@ -20,14 +20,16 @@ public:
      * Using the scriptContext, public methods of the script can be called - to retrieve the
      * player ped, or whatever else is needed for the menu to interact with it.
      */
-    class CSubmenu {
+    class CSubmenu 
+    {
     public:
         // Submenu added by name, useful for most purposes (as submenu).
         CSubmenu(std::string name,
             std::function<void(NativeMenu::Menu&, T&)> menuBody)
             : mName(std::move(name))
             , mBody(std::move(menuBody))
-            , mPred(nullptr) {
+            , mPred(nullptr) 
+        {
         }
 
         // Submenu added by predicate, useful for interaction-ish activation,
@@ -36,12 +38,15 @@ public:
             std::function<void(NativeMenu::Menu&, T&)> menuBody)
             : mName() // unused
             , mBody(std::move(menuBody))
-            , mPred(std::move(predicate)) {
+            , mPred(std::move(predicate)) 
+        {
         }
 
         // Called by CSubmenu for all submenus
-        void Update(NativeMenu::Menu& mbCtx, T& scriptContext) {
-            if (mPred && mPred(mbCtx)) {
+        void Update(NativeMenu::Menu& mbCtx, T& scriptContext) 
+        {
+            if (mPred && mPred(mbCtx)) 
+            {
                 mBody(mbCtx, scriptContext);
                 return;
             }
@@ -63,7 +68,8 @@ public:
         std::vector<CSubmenu> submenus)
         : mSettingsFile(std::move(settingsFile))
         , mSubmenus(std::move(submenus)) {
-        mMenuBase.RegisterOnMain([this, onInit]() {
+        mMenuBase.RegisterOnMain([this, onInit]() 
+        {
             mMenuBase.ReadSettings();
             onInit();
         });
@@ -74,10 +80,12 @@ public:
     }
 
     // Call Tick() for the menu instance every game tick.
-    void Tick(T& scriptContext) {
+    void Tick(T& scriptContext) 
+    {
         mMenuBase.CheckKeys();
 
-        for (auto& submenu : mSubmenus) {
+        for (auto& submenu : mSubmenus) 
+        {
             submenu.Update(mMenuBase, scriptContext);
         }
 

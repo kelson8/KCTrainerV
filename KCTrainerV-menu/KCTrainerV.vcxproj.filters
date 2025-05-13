@@ -44,6 +44,27 @@
     <ClCompile Include="Menus\KCMainMenu.cpp">
       <Filter>Menus</Filter>
     </ClCompile>
+    <ClCompile Include="Memory\Memory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\thirdparty\Patterns\Patterns.cpp">
+      <Filter>ThirdParty\Patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\thirdparty\minhook\src\buffer.c">
+      <Filter>ThirdParty\MinHook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\thirdparty\minhook\src\hook.c">
+      <Filter>ThirdParty\MinHook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\thirdparty\minhook\src\trampoline.c">
+      <Filter>ThirdParty\MinHook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\thirdparty\minhook\src\hde\hde64.c">
+      <Filter>ThirdParty\MinHook\hde</Filter>
+    </ClCompile>
+    <ClCompile Include="..\thirdparty\minhook\src\hde\hde32.c">
+      <Filter>ThirdParty\MinHook\hde</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -111,6 +132,49 @@
     <ClInclude Include="Scripts\PlayerScripts.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\Memory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Hooks\Hook.h">
+      <Filter>Memory\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Handle.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\Patterns\Patterns.h">
+      <Filter>ThirdParty\Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\minhook\src\buffer.h">
+      <Filter>ThirdParty\MinHook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\minhook\src\trampoline.h">
+      <Filter>ThirdParty\MinHook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\minhook\src\hde\hde64.h">
+      <Filter>ThirdParty\MinHook\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\minhook\src\hde\pstdint.h">
+      <Filter>ThirdParty\MinHook\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\minhook\src\hde\table32.h">
+      <Filter>ThirdParty\MinHook\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\minhook\src\hde\table64.h">
+      <Filter>ThirdParty\MinHook\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\minhook\src\hde\hde32.h">
+      <Filter>ThirdParty\MinHook\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\minhook\include\MinHook.h">
+      <Filter>ThirdParty\MinHook</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Util\EntityIterator.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Hash.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -142,6 +206,21 @@
     </Filter>
     <Filter Include="Menus">
       <UniqueIdentifier>{13fc97c3-2114-4e78-974f-f0d85301829b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{cf362074-7ec9-4e9b-b0f7-1c398ee1e2ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Hooks">
+      <UniqueIdentifier>{53116e90-fc0e-4031-a36f-a0ef76e341c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Patterns">
+      <UniqueIdentifier>{6fec0dd4-61fc-40b7-b8b7-502890996bcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\MinHook">
+      <UniqueIdentifier>{0a469d00-90b6-40ac-8255-6270b5010eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\MinHook\hde">
+      <UniqueIdentifier>{8350350a-9364-44de-8788-7c34701de901}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

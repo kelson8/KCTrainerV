@@ -55,3 +55,6 @@ Credit to ikt32 on GitHub for the Menu Base and the example menu.
 
 Credit to itsjustcurtis on GitHub for some functions and items I will be using for this menu
 * Menyoo: https://github.com/itsjustcurtis/MenyooSP
+
+Credit to gta-chaos-mod on GitHub for some of the Memory management and chaos features I may use:
+* https://github.com/gta-chaos-mod/ChaosModV

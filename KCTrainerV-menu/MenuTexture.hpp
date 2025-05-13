@@ -9,7 +9,8 @@
  * The menu requires the texture handle ScriptHookV generates for the image itself,
  * and the width and height to properly set the aspect ratio.
  */
-struct SMenuTexture {
+struct SMenuTexture 
+{
     SMenuTexture(const std::string& filename, int handle, int width, int height)
         : Filename(filename)
         , Handle(handle)
@@ -23,7 +24,8 @@ struct SMenuTexture {
     int Height = 270;
 };
 
-namespace MenuTexture {
+namespace MenuTexture 
+{
     const std::map<std::string, SMenuTexture>& GetTextures();
     void UpdateTextures();
 }

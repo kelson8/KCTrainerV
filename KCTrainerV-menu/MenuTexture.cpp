@@ -8,25 +8,30 @@
 
 namespace fs = std::filesystem;
 
-namespace {
+namespace 
+{
     std::map<std::string, SMenuTexture> textures;
 }
 
-const std::map<std::string, SMenuTexture>& MenuTexture::GetTextures() {
+const std::map<std::string, SMenuTexture>& MenuTexture::GetTextures() 
+{
     return textures;
 }
 
-void MenuTexture::UpdateTextures() {
+void MenuTexture::UpdateTextures() 
+{
     auto imgPath = Paths::GetModPath() / "img";
     LOG(INFO, "Loading images in {}", imgPath.string());
 
-    for (auto& file : fs::directory_iterator(imgPath)) {
+    for (auto& file : fs::directory_iterator(imgPath)) 
+    {
         std::string fileName = file.path().string();
         auto stem = file.path().stem().string();
         LOG(INFO, "Loading {}", fileName);
         LOG(INFO, "  Stem: {}", stem);
 
-        if (textures.find(stem) != textures.end()) {
+        if (textures.find(stem) != textures.end()) 
+        {
             LOG(INFO, "  Skip: Image already registered");
             continue;
         }
@@ -43,7 +48,8 @@ void MenuTexture::UpdateTextures() {
             stem,
             SMenuTexture(fileName, handle, dims->Width, dims->Height));
 
-        if (result.second) {
+        if (result.second) 
+        {
             LOG(INFO, "  Emplaced {} with id [{}]", stem, result.first->second.Handle);
         }
         else {
@@ -51,13 +57,16 @@ void MenuTexture::UpdateTextures() {
         }
     }
     std::vector<std::string> filesToErase;
-    for (const auto& [stem, texture] : textures) {
-        if (!fs::exists(texture.Filename)) {
+    for (const auto& [stem, texture] : textures) 
+    {
+        if (!fs::exists(texture.Filename)) 
+        {
             filesToErase.push_back(stem);
             LOG(INFO, "Removing stale file handle {} / {}", stem, texture.Filename);
         }
     }
-    for (const auto& file : filesToErase) {
+    for (const auto& file : filesToErase) 
+    {
         textures.erase(file);
     }
 }
