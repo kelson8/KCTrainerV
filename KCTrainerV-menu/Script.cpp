@@ -7,22 +7,24 @@
 
 #include <inc/main.h>
 
+// This seems to have the main script init and tick for the menu.
+
 namespace {
-    std::shared_ptr<CMenuExampleScript> coreScript;
-    std::unique_ptr<CScriptMenu<CMenuExampleScript>> scriptMenu;
+    std::shared_ptr<KCMainScript> coreScript;
+    std::unique_ptr<CScriptMenu<KCMainScript>> scriptMenu;
 
     bool initialized = false;
 }
 
 // These functions are only called in Script.cpp so don't need to be exposed.
-namespace MenuExample {
+namespace KCMenu {
     void scriptInit();
     void scriptTick();
 }
 
 // ScriptHookV calls ScriptMain when loading a save,
 // so it can happen multiple times in a game session.
-void MenuExample::ScriptMain() {
+void KCMenu::ScriptMain() {
     // This check exists to prevent global objects from being
     // initialized multiple times.
     if (!initialized) {
@@ -37,14 +39,14 @@ void MenuExample::ScriptMain() {
     scriptTick();
 }
 
-void MenuExample::scriptInit() {
+void KCMenu::scriptInit() {
     const auto settingsMenuPath = Paths::GetModPath() / "settings_menu.ini";
 
-    coreScript = std::make_shared<CMenuExampleScript>();
+    coreScript = std::make_shared<KCMainScript>();
 
     // The menu being initialized. Note the passed settings,
     // the onInit and onExit lambdas and finally BuildMenu being called.
-    scriptMenu = std::make_unique<CScriptMenu<CMenuExampleScript>>(settingsMenuPath.string(),
+    scriptMenu = std::make_unique<CScriptMenu<KCMainScript>>(settingsMenuPath.string(),
         []() {
             LOG(INFO, "Menu opened");
             // When the menu is opened, functions can be called.
@@ -58,14 +60,14 @@ void MenuExample::scriptInit() {
             UI::Notify("Menu was closed");
         },
         // The menu is built and submenus are passed into the CScriptMenu object.
-        // See MenuExampleMenu.cpp for the actual implementation.
+        // See KCMenuMenu.cpp for the actual implementation.
         BuildMenu()
     );
 }
 
 // This function starts the infinite loop that updates the script instance and menu, every game tick.
 // It keeps running forever, until ScriptHookV restarts or stops the script.
-void MenuExample::scriptTick() {
+void KCMenu::scriptTick() {
     while (true) {
         coreScript->Tick();
         scriptMenu->Tick(*coreScript);

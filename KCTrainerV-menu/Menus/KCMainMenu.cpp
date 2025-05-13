@@ -1,6 +1,6 @@
 #include "ScriptMenu.hpp"
 #include "Constants.hpp"
-#include "MenuExampleScript.hpp"
+#include "KCMenuScript.hpp"
 #include "MenuTexture.hpp"
 #include "Script.hpp"
 
@@ -9,6 +9,8 @@
 #include "Util/UI.hpp"
 
 #include <inc/main.h>
+
+#include "Scripts/PlayerScripts.h"
 
 namespace {
     // A few state variables for demoing the menu
@@ -43,10 +45,10 @@ namespace {
  * While this provides a cleaner way to define the menu, dynamically created submenu are not possible.
  * CScriptMenu would need to be changed to allow adding and removing submenus on-the-fly.
  */
-std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> MenuExample::BuildMenu() {
-    std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> submenus;
+std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu() {
+    std::vector<CScriptMenu<KCMainScript>::CSubmenu> submenus;
     submenus.emplace_back("mainmenu",
-        [](NativeMenu::Menu& mbCtx, CMenuExampleScript& context) {
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
             // Title and Subtitle are required on each submenu.
             mbCtx.Title(Constants::ScriptName);
             mbCtx.Subtitle(std::string("~b~") + Constants::DisplayVersion);
@@ -58,8 +60,15 @@ std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> MenuExample::BuildMenu() 
             }
 
             // This will open a submenu with the name "submenu"
+            // Oh, I forgot to add the sub menu up here
+
+            mbCtx.MenuOption("Test Menu", "testmenu", { " This submenu contains testing for the new trainer. " });
+
+#ifdef OLD_MENUS
             mbCtx.MenuOption("Option demos", "submenu", { "This submenu demonstrates usage of some options." });
             mbCtx.MenuOption("Variable size demo", "varmenu", { "This submenu demonstrates how items can be added or removed dynamically." });
+#endif
+
             mbCtx.MenuOption("Title demo", "titlemenu", { "Showcase different title drawing options." });
             mbCtx.MenuOption("Image demo", "imagemenu", { "Showcase OptionPlus image arguments." });
             mbCtx.MenuOption("Script context demo", "scriptcontextmenu", { "Showcase interaction with separate \"game script\" from the menu implementation." });
@@ -70,8 +79,45 @@ std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> MenuExample::BuildMenu() 
                 { "Thanks for checking out this menu!", "Author: ikt" });
         });
 
+
+    // This should enable my test features.
+#define _TEST
+#ifdef _TEST
+    submenus.emplace_back("testmenu",
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
+            mbCtx.Title("Test Menu");
+
+            if (mbCtx.Option("Set coords", { "This will set your coords to a value I have set." })) {
+                //KCMainScript::SetPlayerCoords;
+                PlayerScripts::SetPlayerCoords();
+            }
+
+            // This works as a submenu nested within a sub menu, can be useful for later.
+            // TODO Use this and create a teleport list.
+            mbCtx.MenuOption("Test Sub Menu", "submenutest", { "Show a test submenu within this menu." });
+
+            //if (mbCtx.Option("Toggle bomb bay", { "This will open/close the bomb bay doors in a plane." })) {
+            //    //KCMainScript::ToggleBombBayDoors();
+            //    VehicleScripts::ToggleBombBayDoors();
+            //}
+        }
+    );
+
+    submenus.emplace_back("submenutest",
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
+            mbCtx.Title("Test Sub menu");
+
+            if (mbCtx.Option("Notify", { "Test notification" })) {
+                UI::Notify("Test notification");
+            }
+        });
+#endif //_TEST
+
+
+    // TODO Remove these later, I will use them as a reference for now.
+#ifdef OLD_MENUS
     submenus.emplace_back("submenu",
-        [](NativeMenu::Menu& mbCtx, CMenuExampleScript& context) {
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
             mbCtx.Title("Option demos");
             mbCtx.Subtitle("");
 
@@ -106,7 +152,7 @@ std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> MenuExample::BuildMenu() 
         });
 
     submenus.emplace_back("varmenu",
-        [](NativeMenu::Menu& mbCtx, CMenuExampleScript& context) {
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
             mbCtx.Title("Variable size");
             mbCtx.Subtitle("");
 
@@ -118,8 +164,10 @@ std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> MenuExample::BuildMenu() 
             }
         });
 
+#endif //OLD_MENUS
+
     submenus.emplace_back("titlemenu",
-        [](NativeMenu::Menu& mbCtx, CMenuExampleScript& context) {
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
             mbCtx.Title("Title demo");
             mbCtx.Subtitle("");
 
@@ -133,14 +181,14 @@ std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> MenuExample::BuildMenu() 
 
 
     submenus.emplace_back("title_lscmenu",
-        [](NativeMenu::Menu& mbCtx, CMenuExampleScript& context) {
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
             mbCtx.Title("", "shopui_title_carmod", "shopui_title_carmod");
             mbCtx.Subtitle("Sprite background");
             mbCtx.Option("Option");
         });
 
     submenus.emplace_back("title_pngmenu",
-        [](NativeMenu::Menu& mbCtx, CMenuExampleScript& context) {
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
             const auto& textures = MenuTexture::GetTextures();
             auto foundTexture = textures.find("custom_background");
             if (foundTexture != textures.end()) {
@@ -154,7 +202,7 @@ std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> MenuExample::BuildMenu() 
         });
 
     submenus.emplace_back("title_pngmenu2",
-        [](NativeMenu::Menu& mbCtx, CMenuExampleScript& context) {
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
             const auto& textures = MenuTexture::GetTextures();
             auto foundTexture = textures.find("custom_background2");
             if (foundTexture != textures.end()) {
@@ -169,7 +217,7 @@ std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> MenuExample::BuildMenu() 
         });
 
     submenus.emplace_back("longtitlemenu",
-        [](NativeMenu::Menu& mbCtx, CMenuExampleScript& context) {
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
             mbCtx.Title("Further Adventures in Finance and Felony");
             mbCtx.Subtitle("Long title text");
             mbCtx.Option("Option");
@@ -177,7 +225,7 @@ std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> MenuExample::BuildMenu() 
 
 
     submenus.emplace_back("imagemenu",
-        [](NativeMenu::Menu& mbCtx, CMenuExampleScript& context) {
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
             mbCtx.Title("Images");
             mbCtx.Subtitle("Image demo");
 
@@ -210,7 +258,7 @@ std::vector<CScriptMenu<CMenuExampleScript>::CSubmenu> MenuExample::BuildMenu() 
         });
 
     submenus.emplace_back("scriptcontextmenu",
-        [](NativeMenu::Menu& mbCtx, CMenuExampleScript& context) {
+        [](NativeMenu::Menu& mbCtx, KCMainScript& context) {
             mbCtx.Title("Script Context");
             mbCtx.Subtitle("ScriptContext demo");
 

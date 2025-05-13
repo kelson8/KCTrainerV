@@ -15,6 +15,8 @@
 
 namespace fs = std::filesystem;
 
+// TODO Rename ExampleMenu to KCTrainerV
+
 /*
  * As the game is often installed in a default directory, like
  * C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V
@@ -29,7 +31,8 @@ void initializePaths(HMODULE hInstance) {
     Paths::SetOurModuleHandle(hInstance);
 
     auto localAppDataPath = Paths::GetLocalAppDataPath();
-    auto localAppDataModPath = localAppDataPath / Constants::iktFolder / Constants::ScriptFolder;
+    //auto localAppDataModPath = localAppDataPath / Constants::iktFolder / Constants::ScriptFolder;
+    auto localAppDataModPath = localAppDataPath / Constants::authorFolder / Constants::ScriptFolder;
     auto originalModPath = Paths::GetModuleFolder(hInstance) / Constants::ScriptFolder;
     Paths::SetModPath(originalModPath);
 
@@ -108,7 +111,7 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved) {
             LOG(INFO, "{} {} (built {} {})", Constants::ScriptName, Constants::DisplayVersion, __DATE__, __TIME__);
             LOG(INFO, "Data path: {}", Paths::GetModPath().string());
 
-            scriptRegister(hInstance, MenuExample::ScriptMain);
+            scriptRegister(hInstance, KCMenu::ScriptMain);
             LOG(INFO, "Script registered");
             break;
         }

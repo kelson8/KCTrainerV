@@ -12,8 +12,7 @@
     <ClCompile Include="Util\Logger.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="MenuExampleMenu.cpp" />
-    <ClCompile Include="MenuExampleScript.cpp" />
+    <ClCompile Include="KCMenuScript.cpp" />
     <ClCompile Include="MenuTexture.cpp" />
     <ClCompile Include="ImageDimensions.cpp">
       <Filter>Util</Filter>
@@ -36,6 +35,15 @@
     <ClCompile Include="..\thirdparty\GTAVMenuBase\menuutils.cpp">
       <Filter>ThirdParty\GTAVMenuBase</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\VehicleScripts.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\PlayerScripts.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\KCMainMenu.cpp">
+      <Filter>Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -50,7 +58,7 @@
     </ClInclude>
     <ClInclude Include="ScriptMenu.hpp" />
     <ClInclude Include="Constants.hpp" />
-    <ClInclude Include="MenuExampleScript.hpp" />
+    <ClInclude Include="KCMenuScript.hpp" />
     <ClInclude Include="MenuTexture.hpp" />
     <ClInclude Include="ImageDimensions.hpp">
       <Filter>Util</Filter>
@@ -97,6 +105,12 @@
     <ClInclude Include="..\thirdparty\simpleini\SimpleIni.h">
       <Filter>ThirdParty\simpleini</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\VehicleScripts.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\PlayerScripts.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -122,6 +136,12 @@
     </Filter>
     <Filter Include="Info">
       <UniqueIdentifier>{b456ee42-7020-4fb5-8bea-49dbdfee208a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{fe276729-b511-42b7-894c-1dfc98914d97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus">
+      <UniqueIdentifier>{13fc97c3-2114-4e78-974f-f0d85301829b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

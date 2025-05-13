@@ -1,20 +1,20 @@
-#include "MenuExampleScript.hpp"
+#include "KCMenuScript.hpp"
 
 #include <inc/natives.h>
 #include <format>
 
-void CMenuExampleScript::Tick() {
+void KCMainScript::Tick() {
     // Core script logic
     mDistance += ENTITY::GET_ENTITY_SPEED(PLAYER::PLAYER_PED_ID()) * MISC::GET_FRAME_TIME();
 }
 
-std::string CMenuExampleScript::GetPlayerHealth() {
+std::string KCMainScript::GetPlayerHealth() {
     int health = ENTITY::GET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID());
 
     return std::format("{}", health);
 }
 
-std::string CMenuExampleScript::GetPlayerVehicleName() {
+std::string KCMainScript::GetPlayerVehicleName() {
     Vehicle playerVehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
     if (ENTITY::DOES_ENTITY_EXIST(playerVehicle)) {
         Hash model = ENTITY::GET_ENTITY_MODEL(playerVehicle);
@@ -27,16 +27,16 @@ std::string CMenuExampleScript::GetPlayerVehicleName() {
     }
 }
 
-std::string CMenuExampleScript::GetDistanceTraveled() {
+std::string KCMainScript::GetDistanceTraveled() {
     return std::format("{:.0f} meters", mDistance);
 }
 
-bool CMenuExampleScript::IsPlayerInVehicle() {
+bool KCMainScript::IsPlayerInVehicle() {
     Vehicle playerVehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
     return ENTITY::DOES_ENTITY_EXIST(playerVehicle);
 }
 
-void CMenuExampleScript::ChangePlayerVehicleColor() {
+void KCMainScript::ChangePlayerVehicleColor() {
     Vehicle playerVehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
     if (ENTITY::DOES_ENTITY_EXIST(playerVehicle)) {
         VEHICLE::SET_VEHICLE_COLOUR_COMBINATION(playerVehicle,
