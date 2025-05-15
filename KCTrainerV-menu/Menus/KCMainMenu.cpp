@@ -106,8 +106,11 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             // This will open a submenu with the name "submenu"
             // Oh, I forgot to add the sub menu up here
 
+            // Sub menus
             mbCtx.MenuOption("Player", "playermenu", { "Show the player menu." });
             mbCtx.MenuOption("Vehicle", "vehiclemenu", { "Show the vehicle menu." });
+            mbCtx.MenuOption("Teleport", "teleportmenu", { "Show the teleport menu." });
+
             mbCtx.MenuOption("Ped", "pedmenu", { "Show the ped menu." });
             mbCtx.MenuOption("World", "worldmenu", { "This submenu contains items for the world menu." });
 
@@ -136,26 +139,23 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         {
             mbCtx.Title("Player Menu");
 
-            if (mbCtx.Option("Set coords", { "This will set your coords to a value I have set." }))
-            {
-                //KCMainScript::SetPlayerCoords;
-                //PlayerScripts::SetPlayerCoords(PlayerScripts::AIRPORT_RUNWAY);
-                playerScripts.SetPlayerCoords(PlayerScripts::AIRPORT_RUNWAY);
-            }
 
-            // TODO Figure out how to set this one up, this won't toggle it just yet.
-            //mbCtx.BoolOption("Invincibility", PlayerScripts::invincibilityEnabled, { " Turn on/off invincibility" });
+
+            // This seems to work fine for an invincibility toggle in here like this.
+            mbCtx.BoolOption("Invincibility", playerScripts.invincibilityEnabled, { " Turn on/off invincibility" });
+            
+            
             // For now, I'll just make this a button
 
-            if (mbCtx.Option("Toggle invincibility", { " Turn on/off invincibility" }))
-            {
-                playerScripts.ToggleInvincibility();
-            }
+            //if (mbCtx.Option("Toggle invincibility", { " Turn on/off invincibility" }))
+            //{
+            //    playerScripts.ToggleInvincibility();
+            //}
 
-            if (mbCtx.Option("Toggle Never Wanted", { "Turn on/off never wanted" }))
-            {
-                playerScripts.ToggleNeverWanted();
-            }
+            //if (mbCtx.Option("Toggle Never Wanted", { "Turn on/off never wanted" }))
+            //{
+            //    playerScripts.ToggleNeverWanted();
+            //}
 
 
             mbCtx.IntOption("Wanted level", playerScripts.wantedLevel, 0, 5, 1, {"Wanted level to set"});
@@ -167,10 +167,12 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             //mbCtx.BoolOption("BoolOption", checkBoxStatus, { std::string("Boolean is ") + (checkBoxStatus ? "checked" : "not checked") + "." });
             //mbCtx.BoolOption("Heat vision");
 
+            mbCtx.BoolOption("Never wanted", playerScripts.neverWantedEnabled, { "Test for toggling never wanted" });
+
             // TODO Test this, might work as like a separator.
             // This works kind of like one, I would like to replicate the separators in Menyoo if possible.
             int nothing = 0;
-            mbCtx.StringArray("Visions", { "" }, nothing);
+            mbCtx.StringArray("--Visions--", { "" }, nothing);
 
             if (mbCtx.Option("Toggle Heat vision", { "Turn on/off heat vision" }))
             {
@@ -199,61 +201,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 #pragma endregion
 
 
-#pragma region SubMenuTest
-    submenus.emplace_back("submenutest",
-        [&](NativeMenu::Menu& mbCtx, KCMainScript& context) 
-        {
-            mbCtx.Title("Test Sub menu");
 
-            // TODO Move some of these into MiscScripts.cpp once I create it.
-
-            if (mbCtx.Option("Notify", { "Test notification" })) 
-            {
-                UI::Notify("Test notification");
-            }
-
-            
-            if (mbCtx.Option("AW Lobby music", { "Play the arena war lobby music" })) 
-            {
-                miscScripts.PlayArenaWarLobbyMusic();
-            }
-
-            if (mbCtx.Option("Stop music", { "Stops the music currently playing" }))
-            {
-                miscScripts.StopArenaWarLobbyMusic();
-            }
-
-            // This didn't seem to play the end credits music.
-            // Taken from MiscRollCredits.cpp in Chaos Mod
-            if (mbCtx.Option("Start credits music", { "Start the end credits music" }))
-            {
-                miscScripts.StartCreditsMusic();
-            }
-
-            if (mbCtx.Option("Stop credits music", { "Stop the end credits music" }))
-            {
-                miscScripts.StopCreditsMusic();
-            }
-
-            mbCtx.BoolOption("Toggle airstrike test", miscScripts.airStrikeRunning, {"Toggle the airstrikes on/off"});
-
-            //if (mbCtx.Option("Start airstrike test", { "Start a test for an airstrike" }))
-            //{
-            //    //miscScripts.StartAirstrikeTest();
-            //    miscScripts.airStrikeRunning = true;
-            //}
-
-            //if (mbCtx.Option("Stop airstrike test", { "Stop the test for an airstrike" }))
-            //{
-            //    miscScripts.StopAirstrikeTest();
-            //    miscScripts.airStrikeRunning = false;
-            //}
-
-            mbCtx.BoolOption("Draw text on screen", textScripts.drawText, { "Toggle test text to draw on screen." });
-
-
-        });
-#pragma endregion
 
 #pragma region VehicleMenu
     submenus.emplace_back("vehiclemenu",
@@ -282,6 +230,80 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 #pragma endregion
+
+#pragma region TeleportMenu
+    submenus.emplace_back("teleportmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // Hmm, I guess all sub menus need a title, it broke without one.
+            mbCtx.Title("Teleport");
+
+            // TODO Make teleport sub menu.
+            //mbCtx.StringArray("--Teleports--", { "" }, nothing);
+            if (mbCtx.Option("Airport"))
+            {
+                //KCMainScript::SetPlayerCoords;
+                //PlayerScripts::SetPlayerCoords(PlayerScripts::AIRPORT_RUNWAY);
+                playerScripts.SetPlayerCoords(PlayerScripts::AIRPORT_RUNWAY);
+            }
+
+            mbCtx.BoolOption("Display coords", textScripts.drawCoords, {"Toggle drawing coordinates and heading on screen."});
+
+            // Debug functions for the teleport menu, disabled in release builds.
+#ifdef DEBUG_MODE
+                 mbCtx.MenuOption("Teleport Debug", "debugteleportmenu", { "Debug menu for teleport functions." });
+#endif //DEBUG_MODE
+            
+
+
+            // TODO will this work?
+            //switch (mbCtx.Option(""))
+            //{
+
+            //}
+        }
+    );
+    //
+
+#pragma endregion
+
+#pragma region DebugTeleportSubMenu
+#ifdef DEBUG_MODE
+    submenus.emplace_back("debugteleportmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // This works for moving the menu Y coords!!! It'll be very useful for debugging this.
+
+            mbCtx.Title("Teleport Debug");
+            // BottomX for headingMenuPosX = 0.205
+            // BottomY for headingMenuPosY = 0.965
+
+            int nothing = 0;
+            //float stepValue = 0.015f;
+            float stepValue = 0.001f;
+            mbCtx.StringArray("--Coords display debug--", { "" }, nothing, { "These below items will only show up in debug builds." });
+            // Player X position on menu
+            mbCtx.FloatOption("Player X position menu X", textScripts.playerXMenuPosX, 0.f, 1.0f, stepValue);
+            mbCtx.FloatOption("Player X position menu Y", textScripts.playerXMenuPosY, 0.f, 1.0f, stepValue);
+
+            // Player Y position on menu
+            mbCtx.FloatOption("Player Y position menu X", textScripts.playerYMenuPosX, 0.f, 1.0f, stepValue);
+            mbCtx.FloatOption("Player Y position menu Y", textScripts.playerYMenuPosY, 0.f, 1.0f, stepValue);
+
+            // Player Z position on menu
+            mbCtx.FloatOption("Player Z position menu X", textScripts.playerZMenuPosX, 0.f, 1.0f, stepValue);
+            mbCtx.FloatOption("Player Z position menu Y", textScripts.playerZMenuPosY, 0.f, 1.0f, stepValue);
+
+            mbCtx.FloatOption("Heading X position", textScripts.headingMenuPosX, 0.f, 1.0f, stepValue);
+            mbCtx.FloatOption("Heading Y position", textScripts.headingMenuPosY, 0.f, 1.0f, stepValue);
+
+        }
+    );
+#endif //DEBUG_MODE
+
+    //
+#pragma endregion
+
 
 
 #pragma region PedMenu
@@ -362,6 +384,63 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
+#pragma endregion
+
+    // Moved down here to reflect position in menu.
+#pragma region SubMenuTest
+    submenus.emplace_back("submenutest",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("Test Sub menu");
+
+            // TODO Move some of these into MiscScripts.cpp once I create it.
+
+            if (mbCtx.Option("Notify", { "Test notification" }))
+            {
+                UI::Notify("Test notification");
+            }
+
+
+            if (mbCtx.Option("AW Lobby music", { "Play the arena war lobby music" }))
+            {
+                miscScripts.PlayArenaWarLobbyMusic();
+            }
+
+            if (mbCtx.Option("Stop music", { "Stops the music currently playing" }))
+            {
+                miscScripts.StopArenaWarLobbyMusic();
+            }
+
+            // This didn't seem to play the end credits music.
+            // Taken from MiscRollCredits.cpp in Chaos Mod
+            if (mbCtx.Option("Start credits music", { "Start the end credits music" }))
+            {
+                miscScripts.StartCreditsMusic();
+            }
+
+            if (mbCtx.Option("Stop credits music", { "Stop the end credits music" }))
+            {
+                miscScripts.StopCreditsMusic();
+            }
+
+            mbCtx.BoolOption("Toggle airstrike test", miscScripts.airStrikeRunning, { "Toggle the airstrikes on/off" });
+
+            //if (mbCtx.Option("Start airstrike test", { "Start a test for an airstrike" }))
+            //{
+            //    //miscScripts.StartAirstrikeTest();
+            //    miscScripts.airStrikeRunning = true;
+            //}
+
+            //if (mbCtx.Option("Stop airstrike test", { "Stop the test for an airstrike" }))
+            //{
+            //    miscScripts.StopAirstrikeTest();
+            //    miscScripts.airStrikeRunning = false;
+            //}
+
+            mbCtx.BoolOption("Draw text on screen", textScripts.drawText, { "Toggle test text to draw on screen." });
+
+
+        });
 #pragma endregion
 #endif //_TEST
 

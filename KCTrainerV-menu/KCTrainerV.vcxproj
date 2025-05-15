@@ -93,7 +93,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FloatingPointModel>Fast</FloatingPointModel>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(ProjectDir)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

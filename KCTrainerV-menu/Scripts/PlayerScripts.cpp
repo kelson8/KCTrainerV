@@ -10,8 +10,6 @@
 #include "Natives/natives2.h"
 
 // Booleans
-bool PlayerScripts::invincibilityEnabled = false;
-bool PlayerScripts::neverWantedEnabled = false;
 
 // Ints
 int wantedLevel = 0;
@@ -51,6 +49,7 @@ std::string PlayerScripts::GetDistanceTraveled() {
     return std::format("{:.0f} meters", mDistance);
 }
 
+
 /// <summary>
 /// Check if the player is in a vehicle
 /// </summary>
@@ -88,13 +87,33 @@ int PlayerScripts::GetPlayerID()
 }
 
 /// <summary>
+/// Get the players current coords
+/// </summary>
+/// <returns>Players current coords as a vector3</returns>
+Vector3 PlayerScripts::GetPlayerCoords()
+{
+    Vector3 playerCoords = GET_ENTITY_COORDS(GetPlayerPed(), false);
+    return playerCoords;
+}
+
+/// <summary>
+/// Get the players heading
+/// </summary>
+/// <returns>The players heading as a float</returns>
+float PlayerScripts::GetPlayerHeading()
+{
+    float playerHeading = GET_ENTITY_HEADING(GetPlayerPed());
+    return playerHeading;
+}
+
+/// <summary>
 /// Toggle the player invincibility
 /// TODO Setup this to work by toggling the boolean instead of running this function.
 /// </summary>
 void PlayerScripts::ToggleInvincibility()
 {
-    PlayerScripts::invincibilityEnabled = !PlayerScripts::invincibilityEnabled;
-    if (PlayerScripts::invincibilityEnabled)
+    this->invincibilityEnabled = !this->invincibilityEnabled;
+    if (this->invincibilityEnabled)
     {
         ENTITY::SET_ENTITY_PROOFS(GetPlayerPed(), true, true, true, true, true, true, true, true);
         UI::Notify("Invincibility enabled");
@@ -127,6 +146,24 @@ void PlayerScripts::ToggleNeverWanted()
         PLAYER::SET_MAX_WANTED_LEVEL(5);
         UI::Notify("Never wanted disabled");
     }
+}
+
+// Alternative functions for never wanted, runs in the game tick if the flag is enabled.
+void PlayerScripts::EnableNeverWanted()
+{
+    // TODO Possibly remove these two below from the loop that'll run
+    PLAYER::SET_PLAYER_WANTED_LEVEL(GetPlayerID(), 0, false);
+    PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(GetPlayerID(), false);
+
+    SET_MAX_WANTED_LEVEL(0);
+    SET_WANTED_LEVEL_MULTIPLIER(0.0f);
+}
+
+
+void PlayerScripts::DisableNeverWanted()
+{
+    SET_MAX_WANTED_LEVEL(6);
+    SET_WANTED_LEVEL_MULTIPLIER(1.0f);
 }
 
 /// <summary>
@@ -208,6 +245,12 @@ void PlayerScripts::SetPlayerCoords(TeleportLocations locationToTeleport)
         teleportCoords = Vector3(-1336.0f, -3044.0f, 13.9f);
         WarpPlayerToCoords(teleportCoords, 0.0f);
         break;
+    
+    // TODO Setup.
+    case HOSPITAL_LS1_ROOFTOP:
+        
+        break;
+
     }
 
     //Vector3 airportRunway = Vector3(-1336.0f, -3044.0f, 13.9f);

@@ -10,6 +10,14 @@ public:
     enum TeleportLocations
     {
         AIRPORT_RUNWAY = 1,
+        HOSPITAL_LS1_ROOFTOP = 2,
+        MOUNT_CHILLIAD = 3,
+        
+        // Police stations
+        POLICE_STATION1 = 4,
+        POLICE_STATION2 = 5,
+        POLICE_STATION3 = 6,
+
     };
 
     // Instance of the PlayerScripts for use with changing wanted levels and other values.
@@ -38,12 +46,22 @@ public:
     void ToggleInvincibility();
     void ToggleNeverWanted();
 
+    // Never wanted switches
+    void EnableNeverWanted();
+    void DisableNeverWanted();
+    //
+
     //void SetWantedLevel(int wantedLevel);
     void SetWantedLevel();
 
     // Geting the player char and id
     int GetPlayerPed();
     int GetPlayerID();
+
+    // Get player coords and heading
+    Vector3 GetPlayerCoords();
+    float GetPlayerHeading();
+    //
 
     bool IsPlayerInVehicle();
 
@@ -95,7 +113,13 @@ public:
 
     int wantedLevel;
 
-    
+    // TODO Make getters and setters for this
+    // These flags are used for making some of these not run constantly or stop running.
+    bool invincibilityEnabled = false;
+    bool invincibilityFlag = false;
+
+    bool neverWantedEnabled = false;
+    bool neverWantedFlag = false;
 
 private:
     PlayerScripts() {} // Private constructor to prevent external instantiation
@@ -104,9 +128,7 @@ private:
 
     float mDistance{ 0.0f };
 
-    // TODO Make getters and setters for this
-    static bool invincibilityEnabled;
-    static bool neverWantedEnabled;
+
 
     // Toggles
     bool heatVisionToggled;

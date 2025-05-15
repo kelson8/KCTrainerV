@@ -5,6 +5,8 @@
 
 #include "Scripts/TextScripts.h"
 
+#include "Util/UI.hpp"
+
 #include <inc/natives.h>
 #include <format>
 
@@ -25,22 +27,57 @@ void KCMainScript::Tick() {
     // Core script logic
     mDistance += ENTITY::GET_ENTITY_SPEED(PLAYER::PLAYER_PED_ID()) * MISC::GET_FRAME_TIME();
 
-    // TODO Possibly add check for invincibility in here.
     // Add other items that need to run constantly.
     //if (playerScripts.IsNeverWantedEnabled())
     //{
     //    PLAYER::SET_MAX_WANTED_LEVEL(0);
     //}
 
-    // TODO Figure out how to draw text on the screen without breaking the menu.
-    // TODO Add a toggle for this, for now I'll just test it without one.
-    // Display text on screen
+    // Well this flag seems to make this work just fine, if it is disabled it'll enable it, if disabled it'll enable it.
+    // I did this to prevent this from constantly running in a loop, 
+    // at least the notification doesn't constantly show up so I think this works!
+    if (playerScripts.invincibilityEnabled && !playerScripts.invincibilityFlag)
+    {
+        ENTITY::SET_ENTITY_PROOFS(playerScripts.GetPlayerPed(), true, true, true, true, true, true, true, true);
+        UI::Notify("Invincibility enabled");
+        playerScripts.invincibilityFlag = true;
+    }
+    else if (!playerScripts.invincibilityEnabled && playerScripts.invincibilityFlag) {
+        ENTITY::SET_ENTITY_PROOFS(playerScripts.GetPlayerPed(), false, false, false, false, false, false, false, false);
+        UI::Notify("Invincibility disabled");
+        playerScripts.invincibilityFlag = false;
+    }
 
-    // Oops, this just breaks the menu fully.
-    // This breaks the menu if i turn the checkbox on? I probably am not using this right or something..
+    // TODO Add never wanted toggle, should run in a loop?
+    if (playerScripts.neverWantedEnabled)
+    {
+        playerScripts.EnableNeverWanted();
+        playerScripts.neverWantedFlag = true;
+    }
+    // This should only run once, the above needs to be in a loop
+    else if (!playerScripts.neverWantedEnabled && playerScripts.neverWantedFlag)
+    {
+        playerScripts.DisableNeverWanted();
+        // This should stop this from constantly running
+        // I added a debug notify line here to test that.
+        UI::Notify("Never wanted off.");
+        playerScripts.neverWantedFlag = false;
+    }
+
+    // Display text on screen
+    // I got this to work
     if (textScripts.drawText)
     {
         textScripts.SetupText();
+    }
+
+    if (textScripts.drawCoords)
+    {
+        // Will this slow down the whole menu?
+        // Oops, this wait breaks the menu..
+        // TODO, figure out how to slow down the coordinates display, I guess it's fine for now.
+        //WAIT(100);
+        textScripts.DisplayCoordinates();
     }
     
     //textScripts.SetTextEntry();
