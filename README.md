@@ -58,3 +58,8 @@ Credit to itsjustcurtis on GitHub for some functions and items I will be using f
 
 Credit to gta-chaos-mod on GitHub for some of the Memory management and chaos features I may use:
 * https://github.com/gta-chaos-mod/ChaosModV
+
+# License
+This project is Licensed under the GPLV3 license.
+
+The original menu base was licensed under MIT, I am mostly using code from GPLV3 projects.

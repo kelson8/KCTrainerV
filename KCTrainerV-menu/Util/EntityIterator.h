@@ -1,5 +1,15 @@
 #pragma once
 
+
+// TODO Figure out how to suppress these.. It will get annoying.
+// Warning C4018: '<': signed/unsigned mismatch
+// Spams this with warnings.
+#pragma warning(disable 4018)
+// Warning C4083: expected '('; found identifier 'disable'
+#pragma warning(disable: 4083)
+// Warning C4081: expected ':'; found 'constant'
+#pragma warning(disable: 4081)
+
 // https://github.com/gta-chaos-mod/ChaosModV/blob/master/ChaosMod/Util/EntityIterator.h
 
 #include "Memory/Memory.h"

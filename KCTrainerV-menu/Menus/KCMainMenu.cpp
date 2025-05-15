@@ -11,10 +11,22 @@
 #include <inc/main.h>
 #include <inc/natives.h>
 
+// Menyoo
+#include "Natives/natives2.h"
+
+// My scripts
 #include "Scripts/PlayerScripts.h"
+#include "Scripts/VehicleScripts.h"
+#include "Scripts/PedScripts.h"
+#include "Scripts/MiscScripts.h"
+#include "Scripts/TextScripts.h"
+
 
 // Chaos mod
 #include "Util/EntityIterator.h"
+#include "Util/Hash.h"
+#include "Util/Random.h"
+
 
 namespace 
 {
@@ -68,7 +80,13 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
     //PlayerScripts playerScripts;
 
+    // Instances of these objects, this is a great way to use booleans and stuff between files.
     auto& playerScripts = PlayerScripts::GetInstance();
+    auto& vehicleScripts = VehicleScripts::GetInstance();
+    auto& pedScripts = PedScripts::GetInstance();
+    auto& miscScripts = MiscScripts::GetInstance();
+
+    auto& textScripts = TextScripts::GetInstance();
 
     std::vector<CScriptMenu<KCMainScript>::CSubmenu> submenus;
     submenus.emplace_back("mainmenu",
@@ -79,30 +97,29 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             mbCtx.Subtitle(std::string("~b~") + Constants::DisplayVersion);
 
             // This is a normal option. It'll return true when "select" is presed.
-            if (mbCtx.Option("Click me!", { "This will log something to " + Paths::GetModuleNameWithoutExtension(Paths::GetOurModuleHandle()) + ".log" })) 
-            {
-                UI::Notify("Check the log file!");
-                LOG(INFO, "\"Click me!\" was selected!");
-            }
+            //if (mbCtx.Option("Click me!", { "This will log something to " + Paths::GetModuleNameWithoutExtension(Paths::GetOurModuleHandle()) + ".log" })) 
+            //{
+            //    UI::Notify("Check the log file!");
+            //    LOG(INFO, "\"Click me!\" was selected!");
+            //}
 
             // This will open a submenu with the name "submenu"
             // Oh, I forgot to add the sub menu up here
 
-            mbCtx.MenuOption("Test Menu", "testmenu", { " This submenu contains testing for the new trainer. " });
+            mbCtx.MenuOption("Player", "playermenu", { "Show the player menu." });
+            mbCtx.MenuOption("Vehicle", "vehiclemenu", { "Show the vehicle menu." });
+            mbCtx.MenuOption("Ped", "pedmenu", { "Show the ped menu." });
+            mbCtx.MenuOption("World", "worldmenu", { "This submenu contains items for the world menu." });
 
-#ifdef OLD_MENUS
-            mbCtx.MenuOption("Option demos", "submenu", { "This submenu demonstrates usage of some options." });
-            mbCtx.MenuOption("Variable size demo", "varmenu", { "This submenu demonstrates how items can be added or removed dynamically." });
-#endif
-
-            mbCtx.MenuOption("Title demo", "titlemenu", { "Showcase different title drawing options." });
-            mbCtx.MenuOption("Image demo", "imagemenu", { "Showcase OptionPlus image arguments." });
-            mbCtx.MenuOption("Script context demo", "scriptcontextmenu", { "Showcase interaction with separate \"game script\" from the menu implementation." });
+            mbCtx.MenuOption("Test Sub Menu", "submenutest", { "Testing menu." });
 
             // Showing a non-scrolling aligned item is also possible, if the vector only contains one element.
             int nothing = 0;
             mbCtx.StringArray("Version", { Constants::DisplayVersion }, nothing,
-                { "Thanks for checking out this menu!", "Author: ikt" });
+                { "Thanks for checking out this menu!", 
+                "Author: kelson8", 
+                "Menu base by: ikt", 
+                "Some features from Menyoo and Chaos Mod."});
         });
 
 
@@ -113,10 +130,11 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     // I added the & symbol where this is:  [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
     // https://stackoverflow.com/questions/26903602/an-enclosing-function-local-variable-cannot-be-referenced-in-a-lambda-body-unles
 
-    submenus.emplace_back("testmenu",
+#pragma region PlayerMenu
+    submenus.emplace_back("playermenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            mbCtx.Title("Test Menu");
+            mbCtx.Title("Player Menu");
 
             if (mbCtx.Option("Set coords", { "This will set your coords to a value I have set." }))
             {
@@ -146,34 +164,29 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
                 playerScripts.SetWantedLevel();
             }
 
-            if (mbCtx.Option("Kill all peds", { "Kill all peds in the area" }))
+            //mbCtx.BoolOption("BoolOption", checkBoxStatus, { std::string("Boolean is ") + (checkBoxStatus ? "checked" : "not checked") + "." });
+            //mbCtx.BoolOption("Heat vision");
+
+            // TODO Test this, might work as like a separator.
+            // This works kind of like one, I would like to replicate the separators in Menyoo if possible.
+            int nothing = 0;
+            mbCtx.StringArray("Visions", { "" }, nothing);
+
+            if (mbCtx.Option("Toggle Heat vision", { "Turn on/off heat vision" }))
             {
-                Ped playerPed = playerScripts.GetPlayerPed();
-                
-                //std::list<Entity> entities;
-                // Can be used like this in the for loop:
-                // entities.push_back(ped);
-                for (auto ped : GetAllPeds()) 
-                {
-                    // Check if they are the player and not dead, if so do nothing
-                    if (!PED::IS_PED_A_PLAYER(ped) && !ENTITY::IS_ENTITY_DEAD(ped, false))
-                    {
-                        ENTITY::SET_ENTITY_HEALTH(ped, 0, 0);
-                    }
-                    
-                }
-                    
-                //entities.push_back(ped);
-                //for (auto veh : GetAllVehs())
-                //    entities.push_back(veh);
-                //for (auto prop : GetAllProps())
-                //    entities.push_back(prop);
+                playerScripts.ToggleHeatVision();
             }
 
 
+            if (mbCtx.Option("Toggle Night vision", { "Turn on/off night vision" }))
+            {
+                playerScripts.ToggleNightVision();
+            }
+
+            // Moved this out of the player menu, I can use this as a future reference.
             // This works as a submenu nested within a sub menu, can be useful for later.
             // TODO Use this and create a teleport list.
-            mbCtx.MenuOption("Test Sub Menu", "submenutest", { "Show a test submenu within this menu." });
+            //mbCtx.MenuOption("Test Sub Menu", "submenutest", { "Show a test submenu within this menu." });
 
             //if (mbCtx.Option("Toggle bomb bay", { "This will open/close the bomb bay doors in a plane." })) 
             // {
@@ -183,199 +196,177 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
+#pragma endregion
+
+
+#pragma region SubMenuTest
     submenus.emplace_back("submenutest",
-        [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context) 
         {
             mbCtx.Title("Test Sub menu");
+
+            // TODO Move some of these into MiscScripts.cpp once I create it.
 
             if (mbCtx.Option("Notify", { "Test notification" })) 
             {
                 UI::Notify("Test notification");
             }
+
+            
+            if (mbCtx.Option("AW Lobby music", { "Play the arena war lobby music" })) 
+            {
+                miscScripts.PlayArenaWarLobbyMusic();
+            }
+
+            if (mbCtx.Option("Stop music", { "Stops the music currently playing" }))
+            {
+                miscScripts.StopArenaWarLobbyMusic();
+            }
+
+            // This didn't seem to play the end credits music.
+            // Taken from MiscRollCredits.cpp in Chaos Mod
+            if (mbCtx.Option("Start credits music", { "Start the end credits music" }))
+            {
+                miscScripts.StartCreditsMusic();
+            }
+
+            if (mbCtx.Option("Stop credits music", { "Stop the end credits music" }))
+            {
+                miscScripts.StopCreditsMusic();
+            }
+
+            mbCtx.BoolOption("Toggle airstrike test", miscScripts.airStrikeRunning, {"Toggle the airstrikes on/off"});
+
+            //if (mbCtx.Option("Start airstrike test", { "Start a test for an airstrike" }))
+            //{
+            //    //miscScripts.StartAirstrikeTest();
+            //    miscScripts.airStrikeRunning = true;
+            //}
+
+            //if (mbCtx.Option("Stop airstrike test", { "Stop the test for an airstrike" }))
+            //{
+            //    miscScripts.StopAirstrikeTest();
+            //    miscScripts.airStrikeRunning = false;
+            //}
+
+            mbCtx.BoolOption("Draw text on screen", textScripts.drawText, { "Toggle test text to draw on screen." });
+
+
         });
+#pragma endregion
+
+#pragma region VehicleMenu
+    submenus.emplace_back("vehiclemenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("Vehicle");
+
+            // This didn't seem to do anything
+            mbCtx.drawInstructionalButtons();
+
+            if (mbCtx.Option("Repair vehicle", { "Fully fix your vehicle and tires." }))
+            {
+                vehicleScripts.RepairVehicle();
+            }
+
+            // This seems to work
+            // TODO Make a vehicle selector menu later.
+            if (mbCtx.Option("Spawn Cheetah", { "Spawn a Cheetah near you" }))
+            {
+                Ped playerPed = playerScripts.GetPlayerPed();
+                //vehicleScripts.SpawnVehicle(GAMEPLAY::GET_HASH_KEY(""));
+                // Hmm, this Chaos mod function will be very useful.
+                static const Hash cheetahHash = "Cheetah"_hash;
+                vehicleScripts.SpawnVehicle(cheetahHash);
+            }
+        }
+    );
+#pragma endregion
+
+
+#pragma region PedMenu
+    submenus.emplace_back("pedmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("Peds");
+
+            if (mbCtx.Option("Set all as cops", { "Set all peds in the area to cops" }))
+            {
+                pedScripts.SetAllPedsAsCops();
+            }
+        }
+    );
+#pragma endregion
+
+
+#pragma region WorldMenu
+    submenus.emplace_back("worldmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("World");
+
+            if (mbCtx.Option("Kill all peds", { "Kill all peds in the area" }))
+            {
+                Ped playerPed = playerScripts.GetPlayerPed();
+
+                //std::list<Entity> entities;
+                // Can be used like this in the for loop:
+                // entities.push_back(ped);
+                for (auto ped : GetAllPeds())
+                {
+                    // Check if they are the player and not dead, if so do nothing
+                    if (!PED::IS_PED_A_PLAYER(ped) && !ENTITY::IS_ENTITY_DEAD(ped, false))
+                    {
+                        ENTITY::SET_ENTITY_HEALTH(ped, 0, 0);
+                    }
+
+                }
+
+                //entities.push_back(ped);
+                //for (auto veh : GetAllVehs())
+                //    entities.push_back(veh);
+                //for (auto prop : GetAllProps())
+                //    entities.push_back(prop);
+            }
+
+            if (mbCtx.Option("Blow up vehicles", { "Blow up all vehicles in the area" }))
+            {
+                Ped playerPed = playerScripts.GetPlayerPed();
+                Vehicle playerVeh = PED::GET_VEHICLE_PED_IS_IN(playerScripts.GetPlayerID(), false);
+
+                for (Vehicle veh : GetAllVehs())
+                {
+                    // Check if they are the player and not dead, if so do nothing
+  /*                  if (!PED::IS_PED_A_PLAYER(ped) && !ENTITY::IS_ENTITY_DEAD(ped, false))
+                    {
+                        ENTITY::SET_ENTITY_HEALTH(ped, 0, 0);
+                    }*/
+
+                    // TODO Add check for if player is in vehicle
+                    // This doesn't work, should detect if it is the player vehicle and not blow it up.
+                    if (veh != playerVeh)
+                    {
+                        VEHICLE::EXPLODE_VEHICLE(veh, true, false);
+                    }
+                    
+                }
+
+                //entities.push_back(ped);
+                //for (auto veh : GetAllVehs())
+                //    entities.push_back(veh);
+                //for (auto prop : GetAllProps())
+                //    entities.push_back(prop);
+            }
+
+
+        }
+    );
+
+#pragma endregion
 #endif //_TEST
 
 
-    // TODO Remove these later, I will use them as a reference for now.
-#ifdef OLD_MENUS
-    submenus.emplace_back("submenu",
-        [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
-        {
-            mbCtx.Title("Option demos");
-            mbCtx.Subtitle("");
-
-            mbCtx.BoolOption("BoolOption", checkBoxStatus, { std::string("Boolean is ") + (checkBoxStatus ? "checked" : "not checked") + "." });
-            mbCtx.IntOption("IntOption step size", intStep, 1, 100, 1, { "Change the step size for IntOption below" });
-            mbCtx.IntOption("IntOption", someInt, -100, 100, intStep, { "Stepsize: " + std::to_string(intStep) });
-            mbCtx.FloatArray("FloatOption step size", floatSteps, stepChoice, { "Change the step size for FloatOption below.",
-                "Note: this option uses FloatArray." });
-            mbCtx.FloatOption("FloatOption", someFloat, -100.0f, 100.0f, floatSteps[stepChoice], { "Try holding left/right, things should speed up." });
-            mbCtx.StringArray("StringArray", strings, stringsPos, { "You can also show different strings" });
-
-            mbCtx.Option("Option/Details",
-                { "You can put arbitarily long texts in the details. Word wrapping happens automatically.",
-                    "Vector elements are newlines." });
-
-            // Some extra information can be shown on the right of the the menu.
-            std::vector<std::string> extraInfo = 
-            {
-                "OptionPlus",
-                "This box supports images, in-game sprites and texts. ",
-                "Longer texts can be used without problems, this box splits the lines "
-                "by itself. As with the details, a new vector element inserts a newline."
-            };
-            mbCtx.OptionPlus("OptionPlus", extraInfo, nullptr,
-                []() 
-                {
-                    UI::Notify("You pressed RIGHT on an OptionPlus"); 
-                },
-                []() 
-                {
-                    UI::Notify("You pressed LEFT on an OptionPlus");
-                },
-                "OptionPlus extras",
-                { "This box also manages string splitting for width." });
-        });
-
-    submenus.emplace_back("varmenu",
-        [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
-        {
-            mbCtx.Title("Variable size");
-            mbCtx.Subtitle("");
-
-            mbCtx.IntOption("Options #", numberOfOptions, 1, 999, 1, { "Increase or decrease the amount of items." });
-
-            for (int i = 0; i < numberOfOptions; i++) {
-                int display = i + 1;
-                mbCtx.IntOption("Option number", display, display, display, 0, { "This option was automatically generated." });
-            }
-        });
-
-#endif //OLD_MENUS
-
-    submenus.emplace_back("titlemenu",
-        [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
-        {
-            mbCtx.Title("Title demo");
-            mbCtx.Subtitle("");
-
-            mbCtx.MenuOption("Los Santos Customs background", "title_lscmenu", { "Internal sprites as background." });
-            mbCtx.MenuOption("Custom background", "title_pngmenu", { "External textures as background." });
-            mbCtx.MenuOption("Custom background 2", "title_pngmenu2", { "External textures as background. Colored footer." });
-
-            mbCtx.MenuOption("Long title text", "longtitlemenu",
-                { "Automatically fit and resize long titles. Works for up to 2 lines of text after processing." });
-        });
-
-
-    submenus.emplace_back("title_lscmenu",
-        [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
-        {
-            mbCtx.Title("", "shopui_title_carmod", "shopui_title_carmod");
-            mbCtx.Subtitle("Sprite background");
-            mbCtx.Option("Option");
-        });
-
-    submenus.emplace_back("title_pngmenu",
-        [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
-        {
-            const auto& textures = MenuTexture::GetTextures();
-            auto foundTexture = textures.find("custom_background");
-            if (foundTexture != textures.end()) {
-                mbCtx.Title("", foundTexture->second.Handle);
-            }
-            else {
-                mbCtx.Title("custom_background not found");
-            }
-            mbCtx.Subtitle("Custom background");
-            mbCtx.Option("Option");
-        });
-
-    submenus.emplace_back("title_pngmenu2",
-        [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
-        {
-            const auto& textures = MenuTexture::GetTextures();
-            auto foundTexture = textures.find("custom_background2");
-            if (foundTexture != textures.end()) {
-                mbCtx.Title("", foundTexture->second.Handle);
-            }
-            else {
-                mbCtx.Title("custom_background2 not found");
-            }
-            mbCtx.Subtitle("Custom background");
-            mbCtx.Option("Option");
-            mbCtx.Footer({ 173, 236, 173, 255 });
-        });
-
-    submenus.emplace_back("longtitlemenu",
-        [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
-        {
-            mbCtx.Title("Further Adventures in Finance and Felony");
-            mbCtx.Subtitle("Long title text");
-            mbCtx.Option("Option");
-        });
-
-
-    submenus.emplace_back("imagemenu",
-        [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
-        {
-            mbCtx.Title("Images");
-            mbCtx.Subtitle("Image demo");
-
-            {
-                std::vector<std::string> extras;
-                // The OptionPlus interprets a specifically formatted string to display game textures/sprites.
-                // !SPR:{dictionary} {name} W{width}H{height}
-                // Or, filled in:
-                // !SPR:dock_default seashark W512H256
-                // for the seashark in the dock_default txd, with hardcoded size 512x1080.
-                extras.push_back(std::format("{}{} {} W{}H{}",
-                    mbCtx.SpritePrefix, "dock_default", "seashark",
-                    512, 256));
-                mbCtx.OptionPlus("Game texture", extras, nullptr, nullptr, nullptr, "Sprite", { "OptionPlus box with sprite." });
-            }
-
-            for (const auto& [fileName, texture] : MenuTexture::GetTextures()) 
-            {
-                std::vector<std::string> extras;
-                // The OptionPlus interprets a specifically formatted string to display images.
-                // !IMG:{texture_handle}W{width}H{height}
-                // Or, filled in:
-                // !IMG:20W1920H1080
-                // for an image with texture handle 20, size 1920x1080.
-                extras.push_back(std::format("{}{}W{}H{}",
-                    mbCtx.ImagePrefix, texture.Handle,
-                    texture.Width, texture.Height));
-                extras.push_back(texture.Filename);
-                mbCtx.OptionPlus(texture.Filename, extras, nullptr, nullptr, nullptr, "Image", { "OptionPlus box with custom texture." });
-            }
-        });
-
-    submenus.emplace_back("scriptcontextmenu",
-        [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
-        {
-            mbCtx.Title("Script Context");
-            mbCtx.Subtitle("ScriptContext demo");
-
-            // Here we can show stuff that the "core script" updates,
-            // independently of the menu.
-            // Notice how the menu doesn't need to include any natives.
-
-            int nothing = 0;
-            mbCtx.StringArray("Player health", { context.GetPlayerHealth() }, nothing);
-
-            mbCtx.StringArray("Player vehicle", { context.GetPlayerVehicleName() }, nothing);
-
-            mbCtx.StringArray("Distance traveled", { context.GetDistanceTraveled() }, nothing);
-
-            // This option only appears if the player is in a vehicle.
-            if (context.IsPlayerInVehicle()) {
-                // This is triggered when pressing "Enter"
-                if (mbCtx.Option("Randomize player vehicle color")) {
-                    context.ChangePlayerVehicleColor();
-                }
-            }
-        });
+  
 
     return submenus;
 }

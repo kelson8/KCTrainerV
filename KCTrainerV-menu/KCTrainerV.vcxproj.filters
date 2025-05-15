@@ -65,6 +65,27 @@
     <ClCompile Include="..\thirdparty\minhook\src\hde\hde32.c">
       <Filter>ThirdParty\MinHook\hde</Filter>
     </ClCompile>
+    <ClCompile Include="Menus\OldMenus.cpp">
+      <Filter>Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\TextScripts.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\PedScripts.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Natives\natives2.cpp">
+      <Filter>Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Util.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\LuaScripts.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\MiscScripts.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -175,6 +196,30 @@
     <ClInclude Include="Util\Hash.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="Teleports\TeleLocation.h">
+      <Filter>Teleports</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\TextScripts.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\PedScripts.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Natives\natives2.h">
+      <Filter>Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Util.hpp">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Random.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\LuaScripts.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\MiscScripts.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -221,6 +266,15 @@
     </Filter>
     <Filter Include="ThirdParty\MinHook\hde">
       <UniqueIdentifier>{8350350a-9364-44de-8788-7c34701de901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Teleports">
+      <UniqueIdentifier>{b4c19328-8c32-43a2-912b-d5a72bc85c9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Natives">
+      <UniqueIdentifier>{359181af-c7ea-4699-892a-2c0b078225d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{fc4dafdb-c260-42fb-a951-2ab687a0c234}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

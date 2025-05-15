@@ -123,6 +123,8 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
             LOG(INFO, "Script registered");
             break;
         }
+
+        // TODO Why does this give an error when exiting the game? I think it's this.
         case DLL_PROCESS_DETACH: 
         {
             scriptUnregister(hInstance);

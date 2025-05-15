@@ -47,6 +47,11 @@ public:
 
     bool IsPlayerInVehicle();
 
+    // Vision toggles
+    void ToggleHeatVision();
+    void ToggleNightVision();
+    //
+
     
     //static bool IsInvincibilityEnabled()
     //{
@@ -64,7 +69,33 @@ public:
         neverWantedEnabled = toggle;
     }
 
+    // TODO Make a bool toggle for these in the menu, for now they aren't in use.
+    
+    // Heat vision
+    bool IsHeatVisionEnabled() const
+    {
+        return heatVisionToggled;
+    }
+
+    void SetHeatVision(bool toggle)
+    {
+        heatVisionToggled = toggle;
+    }
+
+    // Night vision
+    bool IsNightVisionEnabled() const
+    {
+        return nightVisionToggled;
+    }
+
+    void SetNightVision(bool toggle)
+    {
+        nightVisionToggled = toggle;
+    }
+
     int wantedLevel;
+
+    
 
 private:
     PlayerScripts() {} // Private constructor to prevent external instantiation
@@ -76,6 +107,10 @@ private:
     // TODO Make getters and setters for this
     static bool invincibilityEnabled;
     static bool neverWantedEnabled;
+
+    // Toggles
+    bool heatVisionToggled;
+    bool nightVisionToggled;
 
 };
 

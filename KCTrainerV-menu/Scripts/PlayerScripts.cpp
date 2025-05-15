@@ -5,6 +5,10 @@
 #include <inc/natives.h>
 #include <format>
 
+// TODO Test this, seems to build with this enabled.
+// From Menyoo, should make it to where I don't have to type the namespaces for the natives.
+#include "Natives/natives2.h"
+
 // Booleans
 bool PlayerScripts::invincibilityEnabled = false;
 bool PlayerScripts::neverWantedEnabled = false;
@@ -146,6 +150,29 @@ void PlayerScripts::SetWantedLevel()
 }
 
 /// <summary>
+/// Turn on/off heat vision.
+/// </summary>
+/// <param name="toggle"></param>
+//void SetHeatVision(bool toggle)
+void PlayerScripts::ToggleHeatVision()
+{
+    //GRAPHICS::SET_SEETHROUGH(toggle);
+    heatVisionToggled = !heatVisionToggled;
+    GRAPHICS::SET_SEETHROUGH(heatVisionToggled);
+}
+
+/// <summary>
+/// Turn on/off night vision.
+/// </summary>
+/// <param name="toggle"></param>
+//void SetHeatVision(bool toggle)
+void PlayerScripts::ToggleNightVision()
+{
+    nightVisionToggled = !nightVisionToggled;
+    GRAPHICS::SET_NIGHTVISION(nightVisionToggled);
+}
+
+/// <summary>
 /// Warp player to the specified coords, and a heading
 /// </summary>
 /// <param name="position"></param>
@@ -185,4 +212,65 @@ void PlayerScripts::SetPlayerCoords(TeleportLocations locationToTeleport)
 
     //Vector3 airportRunway = Vector3(-1336.0f, -3044.0f, 13.9f);
     /*WarpPlayerToCoords(airportRunway, 0.0f);*/
+}
+
+/// <summary>
+/// TODO Set this up
+/// Also, compact these, possibly make a for loop?
+/// Credit to this link for the stats: https://gtaforums.com/topic/802525-changing-stats/
+/// Full stat list: https://vespura.com/fivem/gta-stats/
+/// </summary>
+void SetStats()
+{
+    // Useful stats:
+    /*
+        CARS_COPS_EXPLODED
+        CARS_EXPLODED
+        COPS_KILLS_ON_SPREE
+
+        KILLS
+        KILLS_ARMED
+        KILLS_BY_OTHERS
+        KILLS_COP
+        KILLS_ENEMY_GANG_MEMBERS
+        KILLS_FRIENDLY_GANG_MEMBERS
+        KILLS_IN_FREE_AIM
+        KILLS_INNOCENTS - Number of peds killed
+        KILLS_STEALTH
+        KILLS_SWAT
+
+    */
+    // SP0 = Franklin
+    // SP1 = Micheal
+    // SP2 = Trevor
+    /*
+    //MISC::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME(GAMEPLAY::GET_HASH_KEY("stats_controller"));
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_SPECIAL_ABILITY_UNLOCKED"), 100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_STAMINA"),                  100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_STEALTH_ABILITY"),          100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_LUNG_CAPACITY"),            100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_FLYING_ABILITY"),           100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_SHOOTING_ABILITY"),         100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_STRENGTH"),                 100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_WHEELIE_ABILITY"),          100, true);
+
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_SPECIAL_ABILITY_UNLOCKED"), 100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_STAMINA"),                  100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_STEALTH_ABILITY"),          100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_LUNG_CAPACITY"),            100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_FLYING_ABILITY"),           100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_SHOOTING_ABILITY"),         100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_STRENGTH"),                 100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_WHEELIE_ABILITY"),          100, true);
+
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_SPECIAL_ABILITY_UNLOCKED"), 100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_STAMINA"),                  100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_STEALTH_ABILITY"),          100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_LUNG_CAPACITY"),            100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_FLYING_ABILITY"),           100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_SHOOTING_ABILITY"),         100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_STRENGTH"),                 100, true);
+    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_WHEELIE_ABILITY"),          100, true);
+
+    */
 }

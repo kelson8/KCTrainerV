@@ -49,6 +49,13 @@ struct Vector3 {
     alignas(8) float x;
     alignas(8) float y;
     alignas(8) float z;
+
+
+    // Extras from Chaos Mod, might have existed before.
+    static Vector3 Init(float x, float y, float z)
+    {
+        return Vector3(x, y, z);
+    }
 };
 
 struct Vector4 {

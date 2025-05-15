@@ -54,17 +54,21 @@ void KCMenu::scriptInit()
     scriptMenu = std::make_unique<CScriptMenu<KCMainScript>>(settingsMenuPath.string(),
         []() 
         {
-            LOG(INFO, "Menu opened");
+            // I don't want log messages for opening/closing the menu so I'll disable them.
+            //LOG(INFO, "Menu opened");
             // When the menu is opened, functions can be called.
             // In this case, the images in the example folder are refreshed.
-            MenuTexture::UpdateTextures();
+            
+            // I'm not using these so I just turned it off.
+            //MenuTexture::UpdateTextures();
+
         },
         []() 
         {
-            LOG(INFO, "Menu closed");
+            //LOG(INFO, "Menu closed");
             // When the menu is closed, functions can be called.
             // In this case, a notification is shown.
-            UI::Notify("Menu was closed");
+            //UI::Notify("Menu was closed");
         },
         // The menu is built and submenus are passed into the CScriptMenu object.
         // See KCMenuMenu.cpp for the actual implementation.

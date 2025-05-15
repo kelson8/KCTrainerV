@@ -7,7 +7,9 @@
 using Hash   = unsigned long;
 using size_t = unsigned long long;
 
-constexpr Hash operator""_hash(const char *str, size_t n)
+// Well, I removed constexpr and this seems to have fixed this for now.
+//constexpr Hash operator""_hash(const char *str, size_t n)
+Hash operator""_hash(const char *str, size_t n)
 {
 	return MISC::GET_HASH_KEY(str);
 }

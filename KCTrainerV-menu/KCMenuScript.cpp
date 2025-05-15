@@ -1,13 +1,27 @@
 #include "KCMenuScript.hpp"
 
 #include "Scripts/PlayerScripts.h"
+#include "Scripts/MiscScripts.h"
+
+#include "Scripts/TextScripts.h"
 
 #include <inc/natives.h>
 #include <format>
 
 void KCMainScript::Tick() {
     //PlayerScripts playerScripts;
+    auto& textScripts = TextScripts::GetInstance();
+
     auto& playerScripts = PlayerScripts::GetInstance();
+
+    auto& miscScripts = MiscScripts::GetInstance();
+
+    // Hmm, this seems to work if I toggle it in my menu.
+    if (miscScripts.airStrikeRunning)
+    {
+        miscScripts.StartAirstrikeTest();
+    }
+
     // Core script logic
     mDistance += ENTITY::GET_ENTITY_SPEED(PLAYER::PLAYER_PED_ID()) * MISC::GET_FRAME_TIME();
 
@@ -17,6 +31,25 @@ void KCMainScript::Tick() {
     //{
     //    PLAYER::SET_MAX_WANTED_LEVEL(0);
     //}
+
+    // TODO Figure out how to draw text on the screen without breaking the menu.
+    // TODO Add a toggle for this, for now I'll just test it without one.
+    // Display text on screen
+
+    // Oops, this just breaks the menu fully.
+    // This breaks the menu if i turn the checkbox on? I probably am not using this right or something..
+    if (textScripts.drawText)
+    {
+        textScripts.SetupText();
+    }
+    
+    //textScripts.SetTextEntry();
+
+    //HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Test");
+    //textScripts.SetTextPosition();
+    
+
+
 }
 
 std::string KCMainScript::GetPlayerHealth() {
