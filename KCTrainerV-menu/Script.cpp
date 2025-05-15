@@ -5,6 +5,8 @@
 #include "Util/Paths.hpp"
 #include "Util/UI.hpp"
 
+#include "Teleports/TeleportLocations.h"
+
 #include <inc/main.h>
 
 // This seems to have the main script init and tick for the menu.
@@ -28,6 +30,7 @@ namespace KCMenu
 // so it can happen multiple times in a game session.
 void KCMenu::ScriptMain() 
 {
+    auto& teleportLocations = TeleportLocations::GetInstance();
     // This check exists to prevent global objects from being
     // initialized multiple times.
     if (!initialized) 
@@ -35,6 +38,10 @@ void KCMenu::ScriptMain()
         LOG(INFO, "Script started");
         scriptInit();
         initialized = true;
+
+        // Get the teleport locations list for use in the teleports, required to be loaded in at script startup.
+        teleportLocations.GetTeleportLocations();
+
     }
     else {
         LOG(INFO, "Script restarted");

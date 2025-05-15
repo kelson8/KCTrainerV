@@ -23,6 +23,9 @@
 
 #include "Util/FileFunctions.h"
 
+// Teleports
+#include "Teleports/TeleportLocations.h"
+
 
 // Chaos mod
 #include "Util/EntityIterator.h"
@@ -244,12 +247,8 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
             // TODO Make teleport sub menu.
             //mbCtx.StringArray("--Teleports--", { "" }, nothing);
-            if (mbCtx.Option("Airport"))
-            {
-                //KCMainScript::WarpToLocation;
-                //PlayerScripts::WarpToLocation(PlayerScripts::AIRPORT_RUNWAY);
-                playerScripts.WarpToLocation(PlayerScripts::AIRPORT_RUNWAY);
-            }
+
+            mbCtx.MenuOption("Locations", "teleportlocations", {"Show a list of teleport locations"});
 
             if (mbCtx.Option("Save coords to file", {"Save current coordinates and heading to CurrentCoords.txt."}))
             {
@@ -295,6 +294,26 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
     //
+
+#pragma endregion
+
+    // Moved teleport locations down here, so it doesn't clutter up the teleport menu.
+#pragma region TeleportLocationsSubMenu
+
+    submenus.emplace_back("teleportlocations",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("Teleport Locations");
+            if (mbCtx.Option("Airport"))
+            {
+                playerScripts.WarpToLocation(TeleportLocation::AIRPORT_RUNWAY);
+            }
+            if (mbCtx.Option("Hospital LS1 Rooftop"))
+            {
+                playerScripts.WarpToLocation(TeleportLocation::HOSPITAL_LS1_ROOFTOP);
+            }
+        }
+    );
 
 #pragma endregion
 

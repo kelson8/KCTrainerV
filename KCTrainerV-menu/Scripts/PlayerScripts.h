@@ -1,24 +1,27 @@
 #pragma once
 #include <string>
 
+#include "Teleports/TeleportLocations.h"
+
 #include <inc/natives.h>
 
 class PlayerScripts
 {
 public:
 
-    enum TeleportLocations
-    {
-        AIRPORT_RUNWAY = 1,
-        HOSPITAL_LS1_ROOFTOP = 2,
-        MOUNT_CHILLIAD = 3,
-        
-        // Police stations
-        POLICE_STATION1 = 4,
-        POLICE_STATION2 = 5,
-        POLICE_STATION3 = 6,
+    // Moved into TeleportLocations.h
+    //enum TeleportLocations
+    //{
+    //    AIRPORT_RUNWAY = 1,
+    //    HOSPITAL_LS1_ROOFTOP = 2,
+    //    MOUNT_CHILLIAD = 3,
+    //    
+    //    // Police stations
+    //    POLICE_STATION1 = 4,
+    //    POLICE_STATION2 = 5,
+    //    POLICE_STATION3 = 6,
 
-    };
+    //};
 
     // Instance of the PlayerScripts for use with changing wanted levels and other values.
     static PlayerScripts& GetInstance()
@@ -38,11 +41,12 @@ public:
     void SetPlayerCoords(Vector3 position);
     void SetPlayerHeading(float heading);
     // Teleport player to location specified in the enum
-    void WarpToLocation(TeleportLocations locationToTeleport);
+    void WarpToLocation(TeleportLocation locationToTeleport);
+
+    void TeleportToLocation(TeleportLocation locationToTeleport);
+    //
 
     // Toggles
-    //static void ToggleInvincibility();
-    //static void ToggleNeverWanted();
     void ToggleInvincibility();
     void ToggleNeverWanted();
 
@@ -127,8 +131,6 @@ private:
     PlayerScripts& operator=(const PlayerScripts&) = delete;
 
     float mDistance{ 0.0f };
-
-
 
     // Toggles
     bool heatVisionToggled;

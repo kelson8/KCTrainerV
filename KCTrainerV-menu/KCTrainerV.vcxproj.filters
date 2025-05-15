@@ -89,6 +89,9 @@
     <ClCompile Include="Util\FileFunctions.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="Teleports\TeleportLocations.cpp">
+      <Filter>Teleports</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -225,6 +228,9 @@
     </ClInclude>
     <ClInclude Include="Util\FileFunctions.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Teleports\TeleportLocations.h">
+      <Filter>Teleports</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

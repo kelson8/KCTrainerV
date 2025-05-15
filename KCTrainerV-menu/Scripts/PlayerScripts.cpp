@@ -1,6 +1,7 @@
 #include "PlayerScripts.h"
 
 #include "Util/UI.hpp"
+#include "Util/Logger.hpp"
 
 #include <inc/natives.h>
 #include <format>
@@ -232,41 +233,36 @@ void PlayerScripts::ToggleNightVision()
     GRAPHICS::SET_NIGHTVISION(nightVisionToggled);
 }
 
-
+/// <summary>
+/// Teleport to the location in the TeleportLocation enum within TeleportLocations.h
+/// </summary>
+/// <param name="locationToTeleport"></param>
+void PlayerScripts::TeleportToLocation(TeleportLocation locationToTeleport) {
+    auto& teleportLocations = TeleportLocations::GetInstance();
+    //const Vector3& teleportCoords = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
+    const TeleportInfo teleportInfo = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
+    //SetPlayerCoords(teleportCoords);
+    SetPlayerCoords(teleportInfo.coordinates);
+    SetPlayerHeading(teleportInfo.heading);
+}
 
 
 /// <summary>
-/// Set the player coords, TODO Make a teleport menu.
+/// Set the player coords
 /// </summary>
-void PlayerScripts::WarpToLocation(TeleportLocations locationToTeleport)
+void PlayerScripts::WarpToLocation(TeleportLocation locationToTeleport)
 {
-    //if (PLAYER::IS_PLAYER_DEAD)
-    //if (!PLAYER::IS_PLAYER_PLAYING(GetPlayerPed()))
     if (!PLAYER::IS_PLAYER_PLAYING(GetPlayerID()))
     {
         return;
     }
 
-    Vector3 teleportCoords = Vector3(0, 0, 0);
+    // Initalize the teleport locations vector, required for my new teleport method.
+    //InitializeTeleportLocations(); // Make sure to call this somewhere before the switch
 
-    switch (locationToTeleport)
-    {
-    case AIRPORT_RUNWAY:
-        teleportCoords = Vector3(-1336.0f, -3044.0f, 13.9f);
-        //SetPlayerCoords(teleportCoords, 0.0f);
-        SetPlayerCoords(teleportCoords);
-        SetPlayerHeading(0.0f);
-        break;
-    
-    // TODO Setup.
-    case HOSPITAL_LS1_ROOFTOP:
-        
-        break;
+    // Locations are now defined in the TeleportLocations.cpp file.
+    TeleportToLocation(locationToTeleport);
 
-    }
-
-    //Vector3 airportRunway = Vector3(-1336.0f, -3044.0f, 13.9f);
-    /*SetPlayerCoords(airportRunway, 0.0f);*/
 }
 
 /// <summary>
