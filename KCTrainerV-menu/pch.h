@@ -1,17 +1,20 @@
 #pragma once
 
+// Strings and other stuff
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
 // Windows headers
-#include <windows.h>
+#include <Windows.h>
 #include <psapi.h>
 
 #include <array>
 #include <filesystem>
-#include <fstream>
 #include <future>
 #include <list>
 #include <map>
 #include <memory>
-#include <sstream>
 #include <string>
 
 #include <set>

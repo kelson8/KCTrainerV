@@ -86,6 +86,9 @@
     <ClCompile Include="Scripts\MiscScripts.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="Util\FileFunctions.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -219,6 +222,9 @@
     </ClInclude>
     <ClInclude Include="Scripts\MiscScripts.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\FileFunctions.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

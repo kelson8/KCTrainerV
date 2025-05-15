@@ -86,6 +86,7 @@ int PlayerScripts::GetPlayerID()
     return playerID;
 }
 
+#pragma region PlayerPositions
 /// <summary>
 /// Get the players current coords
 /// </summary>
@@ -105,6 +106,28 @@ float PlayerScripts::GetPlayerHeading()
     float playerHeading = GET_ENTITY_HEADING(GetPlayerPed());
     return playerHeading;
 }
+
+/// <summary>
+/// Teleport player to the specified coords, and a heading
+/// </summary>
+/// <param name="position"></param>
+void PlayerScripts::SetPlayerCoords(Vector3 position)
+{
+    STREAMING::LOAD_SCENE(position);
+
+    ENTITY::SET_ENTITY_COORDS(GetPlayerPed(), position, false, false, false, false);
+}
+
+/// <summary>
+/// Set the players heading.
+/// </summary>
+/// <param name="heading"></param>
+void PlayerScripts::SetPlayerHeading(float heading)
+{
+    ENTITY::SET_ENTITY_HEADING(GetPlayerPed(), heading);
+}
+
+#pragma endregion
 
 /// <summary>
 /// Toggle the player invincibility
@@ -209,26 +232,13 @@ void PlayerScripts::ToggleNightVision()
     GRAPHICS::SET_NIGHTVISION(nightVisionToggled);
 }
 
-/// <summary>
-/// Warp player to the specified coords, and a heading
-/// </summary>
-/// <param name="position"></param>
-/// <param name="heading"></param>
-void PlayerScripts::WarpPlayerToCoords(Vector3 position, float heading)
-{
-    STREAMING::LOAD_SCENE(position);
-
-    //ENTITY::SET_ENTITY_COORDS(GetPlayerPed(), position.x, position.y, position.z, false, false, false, false);
-    ENTITY::SET_ENTITY_COORDS(GetPlayerPed(), position, false, false, false, false);
-    ENTITY::SET_ENTITY_HEADING(GetPlayerPed(), heading);
-}
 
 
 
 /// <summary>
 /// Set the player coords, TODO Make a teleport menu.
 /// </summary>
-void PlayerScripts::SetPlayerCoords(TeleportLocations locationToTeleport)
+void PlayerScripts::WarpToLocation(TeleportLocations locationToTeleport)
 {
     //if (PLAYER::IS_PLAYER_DEAD)
     //if (!PLAYER::IS_PLAYER_PLAYING(GetPlayerPed()))
@@ -243,7 +253,9 @@ void PlayerScripts::SetPlayerCoords(TeleportLocations locationToTeleport)
     {
     case AIRPORT_RUNWAY:
         teleportCoords = Vector3(-1336.0f, -3044.0f, 13.9f);
-        WarpPlayerToCoords(teleportCoords, 0.0f);
+        //SetPlayerCoords(teleportCoords, 0.0f);
+        SetPlayerCoords(teleportCoords);
+        SetPlayerHeading(0.0f);
         break;
     
     // TODO Setup.
@@ -254,7 +266,7 @@ void PlayerScripts::SetPlayerCoords(TeleportLocations locationToTeleport)
     }
 
     //Vector3 airportRunway = Vector3(-1336.0f, -3044.0f, 13.9f);
-    /*WarpPlayerToCoords(airportRunway, 0.0f);*/
+    /*SetPlayerCoords(airportRunway, 0.0f);*/
 }
 
 /// <summary>

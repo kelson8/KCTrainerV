@@ -31,4 +31,6 @@ namespace Constants
     // the GTA V folder is not read/writeable for the script.
     static const char* const authorFolder = "kelson8";
     static const char* const ScriptFolder = "KCTrainerV";
+
+    static const char* const coordsFileName = "CurrentCoords.txt";
 }

@@ -21,6 +21,8 @@
 #include "Scripts/MiscScripts.h"
 #include "Scripts/TextScripts.h"
 
+#include "Util/FileFunctions.h"
+
 
 // Chaos mod
 #include "Util/EntityIterator.h"
@@ -87,6 +89,8 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     auto& miscScripts = MiscScripts::GetInstance();
 
     auto& textScripts = TextScripts::GetInstance();
+
+    auto& fileFunctions = FileFunctions::GetInstance();
 
     std::vector<CScriptMenu<KCMainScript>::CSubmenu> submenus;
     submenus.emplace_back("mainmenu",
@@ -242,9 +246,36 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             //mbCtx.StringArray("--Teleports--", { "" }, nothing);
             if (mbCtx.Option("Airport"))
             {
-                //KCMainScript::SetPlayerCoords;
-                //PlayerScripts::SetPlayerCoords(PlayerScripts::AIRPORT_RUNWAY);
-                playerScripts.SetPlayerCoords(PlayerScripts::AIRPORT_RUNWAY);
+                //KCMainScript::WarpToLocation;
+                //PlayerScripts::WarpToLocation(PlayerScripts::AIRPORT_RUNWAY);
+                playerScripts.WarpToLocation(PlayerScripts::AIRPORT_RUNWAY);
+            }
+
+            if (mbCtx.Option("Save coords to file", {"Save current coordinates and heading to CurrentCoords.txt."}))
+            {
+                // This function appends the mod path, doing it twice will break it.
+                fileFunctions.SaveCoordinatesToFile(Constants::coordsFileName);
+            }
+
+            if (mbCtx.Option("Teleport to saved coords", { "Teleport to current coordinates and heading in CurrentCoords.txt." }))
+            {
+                // Get the mod path and file name, to check if it exists.
+                std::filesystem::path modPath = Paths::GetModPath();
+                std::string pathString = (modPath / Constants::coordsFileName).string();
+
+                std::string fileErrorString = std::format("{} doesn't exist!", Constants::coordsFileName);
+
+                // I want this to give the user an error if the file doesn't exist.
+                // Might crash if it tries to read a null file.
+                if (fileFunctions.DoesFileExist(pathString))
+                {
+                    // This function appends the mod path, doing it twice will break it.
+                    fileFunctions.TeleportToSavedCoords(Constants::coordsFileName);
+                }
+                // If the file doesn't exist
+                else {
+                    UI::Notify(fileErrorString);
+                }
             }
 
             mbCtx.BoolOption("Display coords", textScripts.drawCoords, {"Toggle drawing coordinates and heading on screen."});

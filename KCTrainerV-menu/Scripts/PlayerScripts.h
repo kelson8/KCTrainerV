@@ -31,14 +31,14 @@ public:
     std::string GetPlayerHealth();
     std::string GetPlayerVehicleName();
     std::string GetDistanceTraveled();
-    //static void SetPlayerCoords(TeleportLocations locationToTeleport);
 
     // Teleports
-    // TODO Come up with better names for these.
     // This is in use for the teleport function
-    void WarpPlayerToCoords(Vector3 position, float heading);
-    // Teleport player to location
-    void SetPlayerCoords(TeleportLocations locationToTeleport);
+    //void SetPlayerCoords(Vector3 position, float heading);
+    void SetPlayerCoords(Vector3 position);
+    void SetPlayerHeading(float heading);
+    // Teleport player to location specified in the enum
+    void WarpToLocation(TeleportLocations locationToTeleport);
 
     // Toggles
     //static void ToggleInvincibility();

@@ -1,4 +1,7 @@
+#include "pch.h"
+
 #include "MiscScripts.h"
+#include "Scripts/PlayerScripts.h"
 
 #include "inc/types.h"
 
