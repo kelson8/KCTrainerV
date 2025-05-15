@@ -66,7 +66,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;NOMINMAX;NOGDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;NOMINMAX;NOGDI;DEBUG_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(ProjectDir)</AdditionalIncludeDirectories>
@@ -106,6 +106,9 @@
     <PreBuildEvent>
       <Command>copy /b $(ProjectDir)DllMain.cpp +,,</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(TargetPath)" "D:\SteamLibrary\steamapps\common\Grand Theft Auto V\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\thirdparty\GTAVMenuBase\menu.cpp" />

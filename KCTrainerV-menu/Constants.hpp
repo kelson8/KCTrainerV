@@ -15,7 +15,10 @@
 
 // Enable extra debugging features for my menu, such as moving around the Y coords for drawing to the screen.
 // Disable in release builds.
-#define DEBUG_MODE
+// I have moved this preprocessor into the project solution.
+// So now it'll automatically switch on if this project is built with debug, it'll disable if built in release.
+// Keeping here for future reference and so I don't forget how I've done this.
+//#define DEBUG_MODE
 
 // Enable lua test using SOL from the Chaos Mod, this is a very early work in progress
 // and copied straight from the chaos mod, it will need quite a bit of work but I should be able to make it work on here.
