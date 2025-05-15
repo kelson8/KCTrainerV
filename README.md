@@ -1,9 +1,43 @@
 # KCTrainerV
-I will be working on a new trainer for GTA V using some functions in the Menyoo mod menu to play around with.
+I will be working on a new trainer for GTA V using some functions in the Menyoo mod menu, and the Chaos mod to play around with.
 
-Here are some examples of what this will look like later on:
+Here are some screenshots of this menu currently, I have quite a few options I am working on in it.
 
-![Comparison](MenuCompare.png)
+# Screenshots
+<details>
+<summary> Main Menu </summary>
+<img src=screenshots/Main_Menu.jpg?raw=true>
+</details>
+
+<details>
+<summary> Main Menu Version </summary>
+<img src=screenshots/Main_Menu_Version.jpg?raw=true>
+</details>
+
+<details>
+<summary> Peds Menu </summary>
+<img src=screenshots/Peds_Menu.jpg?raw=true>
+</details>
+
+<details>
+<summary> Player Menu </summary>
+<img src=screenshots/Player_Menu.jpg?raw=true>
+</details>
+
+<details>
+<summary> Test Sub Menu </summary>
+<img src=screenshots/Test_Sub_Menu.jpg?raw=true>
+</details>
+
+<details>
+<summary> Vehicle Menu </summary>
+<img src=screenshots/Vehicle_Menu.jpg?raw=true>
+</details>
+
+<details>
+<summary> World Menu </summary>
+<img src=screenshots/World_Menu.jpg?raw=true>
+</details>
 
 Original readme contents below, I will keep this here so anyone who wants to know how to build this can do so.
 
@@ -49,9 +83,10 @@ extended for multiple instances (for NPCs, etc.).
 \- ikt
 
 # Credits
-Credit to ikt32 on GitHub for the Menu Base and the example menu.
+Credit to ikt32 on GitHub for the Menu Base, the example menu, and for some vehicle spawning code.
 * Menu Base: https://github.com/ikt32/GTAVMenuBase
 * Example Menu: https://github.com/ikt32/GTAVKCMenu
+* Vehicle spawning code: https://github.com/ikt32/GTAVAddonLoader
 
 Credit to itsjustcurtis on GitHub for some functions and items I will be using for this menu
 * Menyoo: https://github.com/itsjustcurtis/MenyooSP
