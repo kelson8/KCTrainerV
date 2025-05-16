@@ -23,6 +23,7 @@
 
 // Enable lua test using SOL from the Chaos Mod, this is a very early work in progress
 // and copied straight from the chaos mod, it will need quite a bit of work but I should be able to make it work on here.
+// Don't enable this anymore, I have switched to using the LUA_TEST preprocessor below.
 //#define CHAOSMOD_LUA_TEST
 
 // This will enable teleports that will use IPLs such as multiplayer locations and other singleplayer locations.
@@ -38,6 +39,14 @@
 // Enable my new teleport format with categories, this might be very broken.
 // Sometimes this crashes it, I might deal with it later.
 //#define NEW_TELEPORTS
+
+// Enable some extra chaos features, I will toggle these off if it breaks something.
+#define EXTRA_FEATURES
+
+// Enable new lua test
+// I will try to add the full list of natives for this like the Chaos mod is doing.
+// Instead of trying to replicate the full file.
+#define LUA_TEST
 
 namespace Constants 
 {

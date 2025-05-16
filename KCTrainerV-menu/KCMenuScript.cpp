@@ -64,6 +64,21 @@ void KCMainScript::Tick() {
         playerScripts.neverWantedFlag = false;
     }
 
+    
+#ifdef EXTRA_FEATURES
+    // Player force field
+    if (miscScripts.isForceFieldEnabled)
+    {
+        miscScripts.EnableForceField();
+    }
+
+    // Run the tick event for the TV if enabled.
+    if (miscScripts.isTVRunning)
+    {
+        miscScripts.TvTick();
+    }
+#endif //EXTRA_FEATURES
+
     // Display text on screen
     // I got this to work
     if (textScripts.drawText)

@@ -5,6 +5,13 @@
 
 #include "inc/types.h"
 
+#include "Util/UI.hpp"
+
+// Test for lua
+#ifdef LUA_TEST
+#include "Components/LuaManager.h"
+#endif //LUA_TEST
+
 // Chaos Mod
 // Breaks this in here? I'll just manually use GET_HASH_KEY then..
 //#include "Util/Hash.h"
@@ -13,8 +20,90 @@
 #include "Util/Random.h"
 
 
+
+#ifdef EXTRA_FEATURES
+#include "Memory/Physics.h"
+#include "Memory/Snow.h"
+#include "Memory/Entity.h"
+#include "Memory/Handle.h"
+#endif //EXTRA_FEATURES
+
+
 // Menyoo
 #include "Natives/natives2.h"
+
+#include "Memory/Misc.h"
+
+// Lua tests
+#ifdef LUA_TEST
+extern LuaManager g_lua_manager; // Access the global instance
+
+void MiscScripts::InitializeLuaMusic() {
+	g_lua_manager.load_script("scripts/music_config.lua");
+}
+
+void MiscScripts::PlayLuaMusic(const std::string& track_id) {
+	sol::optional<sol::function> play_func = g_lua_manager.get_function("play_music");
+	if (play_func) {
+		(*play_func)(track_id);
+	}
+	else {
+		// Handle error: play_music function not found
+	}
+}
+
+
+#endif //LUA_TEST
+
+
+//
+
+
+/// <summary>
+/// TODO Test this later, I haven't tested it yet.
+/// These can be found in the decompiled scripts by searching for 'TRIGGER_MUSIC_EVENT'
+/// </summary>
+/// <param name="track"></param>
+void MiscScripts::PlayTestMusic(int track)
+{
+
+	// This method should work
+	//switch (track) {
+	//case 1:
+	//	TRIGGER_MUSIC_EVENT("GTA_ONLINE_STOP_SCORE");
+	//	break;
+	//case 2:
+	//	TRIGGER_MUSIC_EVENT("HEIST_CELEB_STRIP_CLUB");
+	//	break;
+	//}
+
+	// Better to use std::map for a lot of these:
+	static const std::map<int, std::string> musicTracks = 
+	{
+		{1, "GTA_ONLINE_STOP_SCORE"},
+		{2, "HEIST_CELEB_STRIP_CLUB"},
+		{3, "HEIST_CELEB_APARTMENT"},
+		{4, "HEIST_STATS_SCREEN_STOP_PREP"},
+		{5, "SHOP_TILL_YOU_DROP"},
+		{6, "MP_LOBBY_AMBIENCE"}
+	};
+
+	auto it = musicTracks.find(track);
+	if (it != musicTracks.end()) {
+		TRIGGER_MUSIC_EVENT(it->second.c_str());
+	}
+	else {
+		// Handle invalid track number
+		UI::Notify("Track number invalid.");
+	}
+
+}
+
+void MiscScripts::StopTestMusic()
+{
+	AUDIO::TRIGGER_MUSIC_EVENT("MP_MC_CMH_IAA_FINALE_START");
+}
+
 
 // Some of these below were taken from the Chaos Mod.
 
@@ -70,7 +159,6 @@ int lastAirStrike = 0;
 Hash airstrikeHash;
 void MiscScripts::StartAirstrikeTest()
 {
-
 	airstrikeHash = MISC::GET_HASH_KEY("WEAPON_AIRSTRIKE_ROCKET");
     //airstrikeHash = "WEAPON_AIRSTRIKE_ROCKET"_hash;
 	// Don't want this loading multiple times.
@@ -82,10 +170,6 @@ void MiscScripts::StartAirstrikeTest()
 
 		hasAirstrikeLoaded = true;
 	}
-    
-    
-
-
 
 	int current_time = GET_GAME_TIMER();
 	if (current_time - lastAirStrike > 1000)
@@ -118,4 +202,174 @@ void MiscScripts::StopAirstrikeTest()
 	hasAirstrikeLoaded = false;
 }
 
+#ifdef EXTRA_FEATURES
 
+void MiscScripts::EnableSky()
+{
+	Memory::SetSkyDisabled(false);
+	isSkyDisabled = false;
+}
+
+void MiscScripts::DisableSky()
+{
+	Memory::SetSkyDisabled(true);
+	isSkyDisabled = true;
+}
+
+void MiscScripts::EnableSnow()
+{
+	// TODO Implement extra shader from Chaos Mod.
+	// Will require some more memory stuff and modifications.
+	Memory::SetSnow(true);
+	isSnowEnabled = true;
+}
+
+void MiscScripts::DisableSnow()
+{
+	Memory::SetSnow(false);
+	isSnowEnabled = false;
+}
+#endif //EXTRA_FEATURES
+
+// Taken from PlayerForceField.cpp in Chaos Mod.
+#ifdef EXTRA_FEATURES
+
+#pragma region ForceFieldFunctions
+
+void MiscScripts::EnableForceField()
+{
+	Ped player = PLAYER_PED_ID();
+	std::vector<Entity> entities;
+
+	for (Ped ped : GetAllPeds())
+		if (ped != player)
+			entities.push_back(ped);
+
+	for (Vehicle veh : GetAllVehs())
+		if (!IS_PED_IN_VEHICLE(player, veh, false))
+			entities.push_back(veh);
+
+	for (Entity prop : GetAllProps())
+		entities.push_back(prop);
+
+	Vector3 playerCoord = GET_ENTITY_COORDS(player, false);
+	for (Entity entity : entities)
+	{
+		static const float startDistance = 15;
+		static const float maxForceDistance = 10;
+		static const float maxForce = 100;
+		Vector3 entityCoord = GET_ENTITY_COORDS(entity, false);
+		float distance = GET_DISTANCE_BETWEEN_COORDS(playerCoord, entityCoord, true);
+		if (distance < startDistance)
+		{
+			if (IS_ENTITY_A_PED(entity) && !IS_PED_RAGDOLL(entity))
+				SET_PED_TO_RAGDOLL(entity, 5000, 5000, 0, true, true, false);
+			float forceDistance = std::min(std::max(0.f, (startDistance - distance)), maxForceDistance);
+			float force = (forceDistance / maxForceDistance) * maxForce;
+			Memory::ApplyForceToEntity(entity, 3, entityCoord.x - playerCoord.x, entityCoord.y - playerCoord.y,
+				entityCoord.z - playerCoord.z, 0, 0, 0, false, false, true, true, false, true);
+		}
+	}
+	//isForceFieldEnabled = true;
+
+}
+
+void MiscScripts::DisableForceField()
+{
+	isForceFieldEnabled = false;
+}
+
+#pragma endregion
+
+#pragma region TVFunctions
+
+// Tv channels
+const char* TV_PLAYLISTS[] = {
+	"PL_WEB_KFLF",    // Kung Fu Rainbow Lazerforce
+	"PL_WEB_RANGERS", // Republican Space Rangers
+	"PL_WEB_PRB2",    // Princess Robot Bubblegum
+	"PL_WEB_FOS",     // Fame or Shame
+	"PL_WEB_CAS",     // Diamond Casino DLC intro
+	"PL_WEB_FOS",
+	"PL_WEB_HOWITZER", // Howitzer Documentary
+	"PL_WEB_KFLF",
+	"PL_WEB_PRB2",
+	"PL_WEB_RS",
+	"PL_STD_CNT",
+	"PL_STD_WZL",
+	"PL_LO_CNT",
+	"PL_LO_WZL",
+	"PL_SP_WORKOUT",
+	"PL_SP_INV",
+	"PL_SP_INV_EXP",
+	"PL_LO_RS",
+	"PL_LO_RS_CUTSCENE",
+	"PL_SP_PLSH1_INTRO",
+	"PL_LES1_FAME_OR_SHAME",
+	"PL_STD_WZL_FOS_EP2",
+	"PL_MP_WEAZEL",
+	"PL_MP_CCTV",
+	"PL_CINEMA_CARTOON",
+	"PL_CINEMA_ARTHOUSE",
+	"PL_CINEMA_ACTION",
+	"PL_CINEMA_MULTIPLAYER",
+	"PL_CINEMA_MULTIPLAYER_NO_MELTDOWN",
+};
+//
+
+// Tv options
+float ms_PosX = 0.f;
+float ms_PosY = 0.f;
+
+/// <summary>
+/// Enable the in game TV with a random position and enable the isTVRunning boolean.
+/// </summary>
+void MiscScripts::EnableTv()
+{
+	// First check if the tv is not running
+	if (!isTVRunning)
+	{
+		auto playlist = TV_PLAYLISTS[g_Random.GetRandomInt(0, sizeof(TV_PLAYLISTS) / sizeof(TV_PLAYLISTS[0]) - 1)];
+
+		GRAPHICS::SET_TV_CHANNEL_PLAYLIST_AT_HOUR(0, playlist, g_Random.GetRandomInt(0, 23));
+		GRAPHICS::SET_TV_AUDIO_FRONTEND(true);
+		GRAPHICS::SET_TV_VOLUME(1.0f); // 0.0 is actually the highest the player can normally tune to.
+		GRAPHICS::ATTACH_TV_AUDIO_TO_ENTITY(PLAYER_PED_ID());
+		GRAPHICS::SET_TV_CHANNEL(0);
+		GRAPHICS::ENABLE_MOVIE_SUBTITLES(true);
+
+		ms_PosX = g_Random.GetRandomFloat(0.3f, 0.7f);
+		ms_PosY = g_Random.GetRandomFloat(0.3f, 0.7f);
+		isTVRunning = true;
+	}
+}
+
+/// <summary>
+/// This gets run in the KCMenuScript main tick.
+/// </summary>
+void MiscScripts::TvTick()
+{
+	GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(4);
+	GRAPHICS::SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU(1);
+	//GRAPHICS::DRAW_TV_CHANNEL(ms_PosX, ms_PosY, 0.3f, 0.3f, 0.0f, 255, 255, 255, 255);
+	GRAPHICS::DRAW_TV_CHANNEL(Vector2(ms_PosX, ms_PosY), Vector2(0.3f, 0.3f), 0.0f, 255, 255, 255, 255);
+}
+
+/// <summary>
+/// Turn off the TV and disable the isTVRunning boolean.
+/// </summary>
+void MiscScripts::DisableTv()
+{
+	// First check if the tv is running
+	if (isTVRunning)
+	{
+		GRAPHICS::SET_TV_CHANNEL(-1);
+		GRAPHICS::SET_TV_CHANNEL_PLAYLIST(0, nullptr, false);
+		GRAPHICS::ENABLE_MOVIE_SUBTITLES(false);
+		isTVRunning = false;
+	}
+}
+
+#pragma endregion
+
+#endif //EXTRA_FEATURES

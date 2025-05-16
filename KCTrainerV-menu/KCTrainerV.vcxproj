@@ -69,7 +69,7 @@
       <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;NOMINMAX;NOGDI;DEBUG_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(SolutionDir)thirdparty\sol\include;$(ProjectDir)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -123,7 +123,9 @@
     <ClCompile Include="..\thirdparty\minhook\src\hook.c" />
     <ClCompile Include="..\thirdparty\minhook\src\trampoline.c" />
     <ClCompile Include="..\thirdparty\Patterns\Patterns.cpp" />
-    <ClCompile Include="Components\LuaScripts.cpp" />
+    <ClCompile Include="Components\KeyStates.cpp" />
+    <ClCompile Include="Components\LuaManager.cpp" />
+    <ClCompile Include="Components\LuaScripts_old.cpp" />
     <ClCompile Include="DllMain.cpp" />
     <ClCompile Include="ImageDimensions.cpp" />
     <ClCompile Include="KCMenuScript.cpp" />
@@ -132,6 +134,7 @@
     <ClCompile Include="Menus\OldMenus.cpp" />
     <ClCompile Include="MenuTexture.cpp" />
     <ClCompile Include="Natives\natives2.cpp" />
+    <ClCompile Include="pch.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Scripts\MiscScripts.cpp" />
     <ClCompile Include="Scripts\PedScripts.cpp" />
@@ -169,13 +172,19 @@
     <ClInclude Include="..\thirdparty\ScriptHookV_SDK\inc\natives.h" />
     <ClInclude Include="..\thirdparty\ScriptHookV_SDK\inc\types.h" />
     <ClInclude Include="..\thirdparty\simpleini\SimpleIni.h" />
-    <ClInclude Include="Components\LuaScripts.h" />
+    <ClInclude Include="Components\KeyStates.h" />
+    <ClInclude Include="Components\LuaManager.h" />
+    <ClInclude Include="Components\LuaScripts_old.h" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="ImageDimensions.hpp" />
     <ClInclude Include="KCMenuScript.hpp" />
+    <ClInclude Include="Memory\Entity.h" />
     <ClInclude Include="Memory\Handle.h" />
     <ClInclude Include="Memory\Hooks\Hook.h" />
     <ClInclude Include="Memory\Memory.h" />
+    <ClInclude Include="Memory\Misc.h" />
+    <ClInclude Include="Memory\Physics.h" />
+    <ClInclude Include="Memory\Snow.h" />
     <ClInclude Include="MenuTexture.hpp" />
     <ClInclude Include="Natives\natives2.h" />
     <ClInclude Include="pch.h" />
@@ -189,6 +198,7 @@
     <ClInclude Include="Teleports\TeleLocation.h" />
     <ClInclude Include="Teleports\TeleportLocations.h" />
     <ClInclude Include="Util\EntityIterator.h" />
+    <ClInclude Include="Util\Enums.h" />
     <ClInclude Include="Util\FileFunctions.h" />
     <ClInclude Include="Util\Hash.h" />
     <ClInclude Include="Util\Logger.hpp" />

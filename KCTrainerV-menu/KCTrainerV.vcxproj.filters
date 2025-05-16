@@ -80,9 +80,6 @@
     <ClCompile Include="Util\Util.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Components\LuaScripts.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Scripts\MiscScripts.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
@@ -91,6 +88,16 @@
     </ClCompile>
     <ClCompile Include="Teleports\TeleportLocations.cpp">
       <Filter>Teleports</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Components\KeyStates.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\LuaScripts_old.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\LuaManager.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,9 +227,6 @@
     <ClInclude Include="Util\Random.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="Components\LuaScripts.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Scripts\MiscScripts.h">
       <Filter>Scripts</Filter>
     </ClInclude>
@@ -231,6 +235,30 @@
     </ClInclude>
     <ClInclude Include="Teleports\TeleportLocations.h">
       <Filter>Teleports</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Misc.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Enums.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Snow.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Physics.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Entity.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\KeyStates.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\LuaScripts_old.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\LuaManager.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

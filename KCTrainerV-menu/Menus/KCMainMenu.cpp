@@ -80,6 +80,7 @@ namespace
  * While this provides a cleaner way to define the menu, dynamically created submenu are not possible.
  * CScriptMenu would need to be changed to allow adding and removing submenus on-the-fly.
  */
+// TODO Make this a bit neater like in GTAVAddonLoader, not sure how they are doing their menus.
 std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu() 
 {
 
@@ -529,6 +530,8 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 #pragma endregion
 
     // Moved down here to reflect position in menu.
+    // TODO Move chaos mode features into their own sub menu, possibly name it Chaos Mod or Chaos Features?
+    // TODO Also add credits to the Chaos mod features menu, such as an about button or something at the bottom.
 #pragma region SubMenuTest
     submenus.emplace_back("submenutest",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
@@ -540,6 +543,12 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             if (mbCtx.Option("Notify", { "Test notification" }))
             {
                 UI::Notify("Test notification");
+            }
+
+            // TODO Test this, figure out a good way to do this.
+            if (mbCtx.Option("Play Test sound"))
+            {
+                miscScripts.PlayTestMusic(5);
             }
 
 
@@ -580,6 +589,59 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             //}
 
             mbCtx.BoolOption("Draw text on screen", textScripts.drawText, { "Toggle test text to draw on screen." });
+
+
+#ifdef EXTRA_FEATURES
+            // TODO Add this boolean option
+            //mbCtx.BoolOption("Toggle sky", &miscScripts.toggleSky);
+            
+            // Toggle sky
+            if (mbCtx.Option("Enable Sky"))
+            {
+                miscScripts.EnableSky();
+            }
+
+            if (mbCtx.Option("Disable Sky"))
+            {
+                miscScripts.DisableSky();
+            }
+
+            // Toggle snow
+            if (mbCtx.Option("Enable Snow"))
+            {
+                miscScripts.EnableSnow();
+            }
+
+            if (mbCtx.Option("Disable Snow"))
+            {
+                miscScripts.DisableSnow();
+            }
+
+            // Toggle force field
+            mbCtx.BoolOption("Toggle forcefield", miscScripts.isForceFieldEnabled, { "Turn on/off the forcefield for the player." });
+
+            // I would set a boolean for this but it requires items that I don't think they can be run in a tick all the time.
+            // Toggle tv on/off
+            if (mbCtx.Option("Enable TV"))
+            {
+                miscScripts.EnableTv();
+            }
+
+            if (mbCtx.Option("Disable TV"))
+            {
+                miscScripts.DisableTv();
+            }
+
+            //if (mbCtx.Option("Enable Forcefield"))
+            //{
+            //    miscScripts.EnableSky();
+            //}
+
+            //if (mbCtx.Option("Disable Forcefield"))
+            //{
+            //    miscScripts.EnableSky();
+            //}
+#endif //EXTRA_FEATURES
 
             if (mbCtx.Option("Test Fade out/in", { "Test for fading the screen out and back in" }))
             {
