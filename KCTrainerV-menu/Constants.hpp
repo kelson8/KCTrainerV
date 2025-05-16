@@ -46,7 +46,11 @@
 // Enable new lua test
 // I will try to add the full list of natives for this like the Chaos mod is doing.
 // Instead of trying to replicate the full file.
-#define LUA_TEST
+//#define LUA_TEST
+
+// Enables new features I am testing from the Chaos mod
+// Well some of the vehicle features seem to crash this.
+//#define CHAOSMOD_FEATURES
 
 namespace Constants 
 {

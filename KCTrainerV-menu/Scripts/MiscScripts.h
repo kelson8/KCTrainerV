@@ -1,6 +1,8 @@
 #pragma once
 #include "Constants.hpp"
 
+#include "Util/Enums.h"
+
 #include <inc/natives.h>
 
 class MiscScripts
@@ -21,7 +23,8 @@ public:
 #endif //LUA_TEST
 
 	// Play test music
-	void PlayTestMusic(int track);
+	//void PlayTestMusic(int track);
+	void PlayTestMusic(MusicTracks track);
 	void StopTestMusic();
 
 	void PlayArenaWarLobbyMusic();
@@ -47,6 +50,17 @@ public:
 	// Toggle forcefield
 	void EnableForceField();
 	void DisableForceField();
+
+	// Peds
+	// Attacking player and other stuff
+	void PedsAttackPlayer();
+	bool isPedsAttackEnabled = false;
+	
+#ifdef CHAOSMOD_FEATURES
+	void SetAllPedsInMowers();
+#endif //CHAOSMOD_FEATURES
+	//
+
 
 	// Toggle TV
 	void EnableTv();

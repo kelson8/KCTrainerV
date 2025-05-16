@@ -48,7 +48,6 @@ void KCMainScript::Tick() {
         playerScripts.invincibilityFlag = false;
     }
 
-    // TODO Add never wanted toggle, should run in a loop?
     if (playerScripts.neverWantedEnabled)
     {
         playerScripts.EnableNeverWanted();
@@ -64,6 +63,8 @@ void KCMainScript::Tick() {
         playerScripts.neverWantedFlag = false;
     }
 
+   
+
     
 #ifdef EXTRA_FEATURES
     // Player force field
@@ -77,6 +78,13 @@ void KCMainScript::Tick() {
     {
         miscScripts.TvTick();
     }
+
+    // Make peds attack player
+    if (miscScripts.isPedsAttackEnabled)
+    {
+        miscScripts.PedsAttackPlayer();
+    }
+
 #endif //EXTRA_FEATURES
 
     // Display text on screen

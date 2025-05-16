@@ -8,8 +8,20 @@
 class LuaManager {
 public:
 #ifdef LUA_TEST
+
+    // Instance of the LuaManager
+    static LuaManager& GetInstance()
+    {
+        static LuaManager instance;
+        return instance;
+    }
+
     LuaManager();
     ~LuaManager();
+
+    // New
+    void BindNativesToLua();
+    void InitializeLuaEnvironment();
 
     sol::state& get_state();
     bool load_script(const std::string& filepath);
@@ -18,9 +30,13 @@ public:
 
 private:
     sol::state lua;
+
+    //LuaManager() {} // Private constructor to prevent external instantiation
+    //LuaManager(const LuaManager&) = delete;
+    //LuaManager& operator=(const LuaManager&) = delete;
 #endif //LUA_TEST
 };
 
 #ifdef LUA_TEST
-extern LuaManager g_lua_manager; // Global instance of the manager
+extern LuaManager m_GlobalState; // Global instance of the manager
 #endif //LUA_TEST

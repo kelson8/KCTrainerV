@@ -7,6 +7,10 @@
 
 #include "Teleports/TeleportLocations.h"
 
+#ifdef LUA_TEST
+#include "Components/LuaManager.h"
+#endif //LUA_TEST
+
 #include <inc/main.h>
 
 // This seems to have the main script init and tick for the menu.
@@ -31,6 +35,10 @@ namespace KCMenu
 void KCMenu::ScriptMain() 
 {
     auto& teleportLocations = TeleportLocations::GetInstance();
+#ifdef LUA_TEST
+    auto& luaManager = LuaManager::GetInstance();
+#endif //LUA_TEST
+
     // This check exists to prevent global objects from being
     // initialized multiple times.
     if (!initialized) 
@@ -44,6 +52,11 @@ void KCMenu::ScriptMain()
         // Get the teleport locations list for use in the teleports, required to be loaded in at script startup.
         teleportLocations.GetTeleportLocations();
 #endif //!NEW_TELEPORTS
+
+#ifdef LUA_TEST
+        // Run lua init, TODO Test this.
+        luaManager.InitializeLuaEnvironment();
+#endif
 
     }
     else {

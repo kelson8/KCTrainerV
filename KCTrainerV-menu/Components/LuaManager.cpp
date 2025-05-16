@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "LuaManager.h"
 
 #ifdef LUA_TEST
@@ -8,10 +10,11 @@
 
 #include "Util/Logger.hpp"
 
+
 // TODO Test this later.
 // I have a lot of Chaos Mod functions adapted at the bottom of this file that should work.
 
-LuaManager g_lua_manager; // Define the global instance
+LuaManager m_GlobalState; // Define the global instance
 
 LuaManager::LuaManager() {
     lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug, sol::lib::bit32);
@@ -19,6 +22,32 @@ LuaManager::LuaManager() {
     lua.set_function("TRIGGER_MUSIC_EVENT", AUDIO::TRIGGER_MUSIC_EVENT);
     // ... other bindings ...
 }
+
+/// <summary>
+/// Bind the lua natives I want to use for testing.
+/// </summary>
+void LuaManager::BindNativesToLua() {
+	lua.set_function("GetPlayerPedId", PLAYER_PED_ID);
+	lua.set_function("SetEntityCoords", SET_ENTITY_COORDS);
+	lua.set_function("TRIGGER_MUSIC_EVENT", TRIGGER_MUSIC_EVENT);
+	lua.set_function("GetVehiclePedIsIn", GET_VEHICLE_PED_IS_IN);
+	lua.set_function("SetEntityAsMissionEntity", SET_ENTITY_AS_MISSION_ENTITY);
+	lua.set_function("DeleteEntity", DELETE_ENTITY);
+	lua.set_function("GetHashKey", MISC::GET_HASH_KEY);
+	lua.set_function("IsPlayerDead", IS_PLAYER_DEAD);
+	// Bind more natives as needed
+}
+
+/// <summary>
+/// Run in the KCMenuScript.cpp init for when the script loads up.
+/// </summary>
+void LuaManager::InitializeLuaEnvironment() {
+	lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug, sol::lib::bit32);
+	// Load your Lua scripts
+	lua.script_file("KCTrainerV/scripts/kctrainer-v.lua");
+	BindNativesToLua();
+}
+
 
 LuaManager::~LuaManager() {
     // Clean up Lua state if needed (though Sol2 handles it well)
@@ -86,6 +115,8 @@ sol::optional<sol::function> LuaManager::get_function(const std::string& name) {
 //		GetComponent<DebugSocket>()->ScriptLog(name, text);
 //#endif
 //}
+
+/*
 
 static char* _TryParseString(void* str)
 {
@@ -195,92 +226,227 @@ enum class LuaNativeReturnType
 	Vector3
 };
 
+*/
+
 // TODO Adapt to possibly make all natives work
 // TODO Attempt to replicate this part in KCTrainerV, this might allow me to run all natives in lua
 // TODO Test this, I got this to build like this.
-static sol::object LuaInvoke(const sol::environment& env, uint64_t nativeHash, LuaNativeReturnType returnType,
-	const sol::variadic_args& args)
-{
-	if (nativeHash == 0x213AEB2B90CBA7AC || nativeHash == 0x5A5F40FE637EB584 || nativeHash == 0x933D6A9EEC1BACD0
-		|| nativeHash == 0xE80492A9AC099A93 || nativeHash == 0x8EF07E15701D61ED)
-	{
-		return sol::make_object(env.lua_state(), sol::lua_nil);
-	}
-
-	nativeInit(nativeHash);
-
-	for (const sol::stack_proxy& arg : args)
-	{
-		if (arg.is<bool>())
-		{
-			nativePush(arg.get<bool>());
-		}
-		else if (arg.is<int>())
-		{
-			nativePush(arg.get<int>());
-		}
-		else if (arg.is<float>())
-		{
-			nativePush(arg.get<float>());
-		}
-		else if (arg.is<const char*>())
-		{
-			nativePush(arg.get<const char*>());
-		}
-		else if (arg.is<LuaHolder>())
-		{
-			LuaHolder& holder = arg.get<LuaHolder>();
-
-			if (holder.m_Obj.valid())
-			{
-				DWORD64 data = holder.m_Obj.as<DWORD64>();
-
-				nativePush(&data);
-			}
-			else
-			{
-				nativePush(&holder.m_Data);
-			}
-		}
-	}
-
-	void** returned;
-	if (!_CallNative(&returned))
-	{
-		LOG(ERROR, "Error invoking native 0x", nativeHash);
-		//LuaPrint(env.get<sol::table>("EnvInfo")["ScriptName"],
-		//	(std::ostringstream() << "Error while invoking native 0x" << std::uppercase << std::hex << nativeHash)
-		//	.str());
-	}
-	else if (returned)
-	{
-		switch (returnType)
-		{
-		case LuaNativeReturnType::Bool:
-			return sol::make_object(env.lua_state(), *reinterpret_cast<bool*>(returned));
-		case LuaNativeReturnType::Int:
-			return sol::make_object(env.lua_state(), *reinterpret_cast<int*>(returned));
-		case LuaNativeReturnType::UInt:
-			return sol::make_object(env.lua_state(), *reinterpret_cast<int*>(returned));
-		case LuaNativeReturnType::Float:
-			return sol::make_object(env.lua_state(), *reinterpret_cast<float*>(returned));
-		case LuaNativeReturnType::String:
-			return sol::make_object(env.lua_state(), _TryParseString(*returned));
-		case LuaNativeReturnType::Vector3:
-		{
-			LuaVector3 vector3;
-			if (_TryParseVector3(returned, vector3.X, vector3.Y, vector3.Z))
-				return sol::make_object(env.lua_state(), vector3);
-		}
-		break;
-		default:
-			break;
-		}
-	}
-
-	return sol::make_object(env.lua_state(), sol::lua_nil);
-}
-
+//static sol::object LuaInvoke(const sol::environment& env, uint64_t nativeHash, LuaNativeReturnType returnType,
+//	const sol::variadic_args& args)
+//{
+//	if (nativeHash == 0x213AEB2B90CBA7AC || nativeHash == 0x5A5F40FE637EB584 || nativeHash == 0x933D6A9EEC1BACD0
+//		|| nativeHash == 0xE80492A9AC099A93 || nativeHash == 0x8EF07E15701D61ED)
+//	{
+//		return sol::make_object(env.lua_state(), sol::lua_nil);
+//	}
 //
+//	nativeInit(nativeHash);
+//
+//	for (const sol::stack_proxy& arg : args)
+//	{
+//		if (arg.is<bool>())
+//		{
+//			nativePush(arg.get<bool>());
+//		}
+//		else if (arg.is<int>())
+//		{
+//			nativePush(arg.get<int>());
+//		}
+//		else if (arg.is<float>())
+//		{
+//			nativePush(arg.get<float>());
+//		}
+//		else if (arg.is<const char*>())
+//		{
+//			nativePush(arg.get<const char*>());
+//		}
+//		else if (arg.is<LuaHolder>())
+//		{
+//			LuaHolder& holder = arg.get<LuaHolder>();
+//
+//			if (holder.m_Obj.valid())
+//			{
+//				DWORD64 data = holder.m_Obj.as<DWORD64>();
+//
+//				nativePush(&data);
+//			}
+//			else
+//			{
+//				nativePush(&holder.m_Data);
+//			}
+//		}
+//	}
+//
+//	void** returned;
+//	if (!_CallNative(&returned))
+//	{
+//		LOG(ERROR, "Error invoking native 0x", nativeHash);
+//		//LuaPrint(env.get<sol::table>("EnvInfo")["ScriptName"],
+//		//	(std::ostringstream() << "Error while invoking native 0x" << std::uppercase << std::hex << nativeHash)
+//		//	.str());
+//	}
+//	else if (returned)
+//	{
+//		switch (returnType)
+//		{
+//		case LuaNativeReturnType::Bool:
+//			return sol::make_object(env.lua_state(), *reinterpret_cast<bool*>(returned));
+//		case LuaNativeReturnType::Int:
+//			return sol::make_object(env.lua_state(), *reinterpret_cast<int*>(returned));
+//		case LuaNativeReturnType::UInt:
+//			return sol::make_object(env.lua_state(), *reinterpret_cast<int*>(returned));
+//		case LuaNativeReturnType::Float:
+//			return sol::make_object(env.lua_state(), *reinterpret_cast<float*>(returned));
+//		case LuaNativeReturnType::String:
+//			return sol::make_object(env.lua_state(), _TryParseString(*returned));
+//		case LuaNativeReturnType::Vector3:
+//		{
+//			LuaVector3 vector3;
+//			if (_TryParseVector3(returned, vector3.X, vector3.Y, vector3.Z))
+//				return sol::make_object(env.lua_state(), vector3);
+//		}
+//		break;
+//		default:
+//			break;
+//		}
+//	}
+//
+//	return sol::make_object(env.lua_state(), sol::lua_nil);
+//}
+
+// TODO Adapt this too, might make this actually work
+//LuaManager::LuaManager()
+//{
+	//SetupGlobalState();
+
+	// TODO Replicate this part
+	/*
+	auto parseScript = [&](const std::filesystem::directory_entry& entry)
+		{
+			const auto& path = entry.path();
+			const auto& fileName = path.filename().string();
+			const auto& pathStr = path.string();
+			auto scriptName = pathStr.substr(pathStr.find("\\") + 1);
+
+			//LOG(INFO, std::format("Running script {}", scriptName));
+
+			std::unordered_map<std::string, nlohmann::json> userEffectSettings;
+			if (pathStr.starts_with("chaosmod\\workshop") && ComponentExists<Workshop>())
+			{
+				// Read user script settings
+				auto tmp = pathStr.substr(strlen("chaosmod\\workshop\\"));
+				userEffectSettings = GetComponent<Workshop>()->GetSubmissionScriptSettings(
+					pathStr.substr(0, pathStr.find('\\', pathStr.find_first_not_of("chaosmod\\workshop\\"))),
+					tmp.substr(tmp.find("\\") + 1));
+			}
+
+			ParseScript(fileName, path.string(), ParseScriptFlag_ScriptIsFilePath, userEffectSettings);
+		};
+		*/
+
+	//bool allowEvalNativeInvocations = DoesFeatureFlagExist("allowscriptevalnativeinvocations");
+
+	//if (allowEvalNativeInvocations)
+	//{
+
+	/*
+	// TODO Replicate this part
+		m_GlobalState["_invoke"] = [](const sol::this_environment& curEnv, uint64_t hash,
+			LuaNativeReturnType returnType, const sol::variadic_args& args)
+			{
+				return LuaInvoke(curEnv, hash, returnType, args);
+			};
+
+
+		*/
+
+		//for (const auto& exposable : ms_UnsafeExposables)
+		//	exposable(m_GlobalState);
+	//}
+	//else
+	//{
+	//	m_GlobalState["_invoke"] = [](const sol::this_environment& curEnv, uint64_t hash,
+	//		LuaNativeReturnType returnType, const sol::variadic_args& args)
+	//		{
+	//			LOG("WARNING: Blocked invocation of native 0x" << std::uppercase << std::hex << hash << std::setfill(' ')
+	//				<< " during script evaluation!");
+	//		};
+
+	//	for (const auto& exposable : ms_UnsafeExposables)
+	//		m_GlobalState[exposable.Name] = [&]()
+	//		{
+	//			LOG("WARNING: Blocked invocation of mod function " << exposable.Name << " during script evaluation!");
+	//		};
+	//}
+
+//	for (auto dir : ms_ScriptDirs)
+//	{
+//		if (!DoesFileExist(dir))
+//			continue;
+//
+//		if (!strcmp(dir, "chaosmod\\workshop"))
+//		{
+//			for (const auto& entry : std::filesystem::directory_iterator(dir))
+//			{
+//				if (entry.is_directory() && ComponentExists<Workshop>())
+//					for (const auto& entry : GetComponent<Workshop>()->GetSubmissionFiles(entry.path().string(),
+//						Workshop::FileType::Script))
+//						parseScript(entry);
+//			}
+//		}
+//		else
+//		{
+//			for (const auto& entry : GetFiles(dir, ".lua", true))
+//				parseScript(entry);
+//		}
+//	}
+//
+//	if (!allowEvalNativeInvocations)
+//	{
+//		m_GlobalState["_invoke"] = [](const sol::this_environment& curEnv, uint64_t hash,
+//			LuaNativeReturnType returnType, const sol::variadic_args& args)
+//			{
+//				return LuaInvoke(curEnv, hash, returnType, args);
+//			};
+//
+//		for (const auto& exposable : ms_UnsafeExposables)
+//			exposable(m_GlobalState);
+//	}
+//
+//	if (ComponentExists<MetaModifiers>())
+//	{
+//		auto getMetaModFactory = []<typename T>(T & modifier)
+//		{
+//			return [&]()
+//				{
+//					return modifier;
+//				};
+//		};
+//
+//		auto setMetaModFactory = []<typename T>(T & modifier)
+//		{
+//			return [&](T value)
+//				{
+//					modifier = value;
+//				};
+//		};
+//
+//		auto metaModifiersTable = m_GlobalState.create_named_table("MetaModifiers");
+//#define P(x)                                                           \
+//	sol::property(getMetaModFactory(GetComponent<MetaModifiers>()->x), \
+//	              setMetaModFactory(GetComponent<MetaModifiers>()->x))
+//		auto metaModifiersMetaTable = m_GlobalState.create_table_with(
+//			"EffectDurationModifier", P(EffectDurationModifier), "TimerSpeedModifier", P(TimerSpeedModifier),
+//			"AdditionalEffectsToDispatch", P(AdditionalEffectsToDispatch), "HideChaosUI", P(HideChaosUI),
+//			"DisableChaos", P(DisableChaos), "FlipChaosUI", P(FlipChaosUI));
+//#undef P
+//		metaModifiersMetaTable[sol::meta_function::new_index] = [] {};
+//		metaModifiersMetaTable[sol::meta_function::index] = metaModifiersMetaTable;
+//		metaModifiersTable[sol::metatable_key] = metaModifiersMetaTable;
+//	}
+//}
+
+
+//---------- End Chaos Mod -------------/
 
 #endif //LUA_TEST

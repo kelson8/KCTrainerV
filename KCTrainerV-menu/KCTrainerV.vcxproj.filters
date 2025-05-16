@@ -99,6 +99,15 @@
     <ClCompile Include="Components\LuaManager.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Memory\Hooks\HandleToEntityStructHook.cpp">
+      <Filter>Memory\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Hooks\ScriptThreadRunHook.cpp">
+      <Filter>Memory\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\PoolSpawner.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -260,6 +269,33 @@
     <ClInclude Include="Components\LuaManager.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\Hooks\HandleToEntityStructHook.h">
+      <Filter>Memory\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Hooks\ScriptThreadRunHook.h">
+      <Filter>Memory\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Vehicle.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Script.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib\scrThread.h">
+      <Filter>Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Vehicle.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\PedModels.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\PoolSpawner.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Model.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -315,6 +351,9 @@
     </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{fc4dafdb-c260-42fb-a951-2ab687a0c234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib">
+      <UniqueIdentifier>{3ce3ffd9-3dfd-4a0d-9d5b-129874629591}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

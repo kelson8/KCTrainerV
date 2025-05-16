@@ -1,5 +1,8 @@
 #pragma once
 
+#include <inc/natives.h>
+#include <Natives/natives2.h>
+
 // Strings and other stuff
 #include <iostream>
 #include <fstream>

@@ -27,6 +27,11 @@
 #include "Teleports/TeleportLocations.h"
 
 
+#ifdef LUA_TEST
+#include "Components/LuaManager.h"
+extern LuaManager m_GlobalState; // Declare the global LuaManager instance
+#endif //LUA_TEST
+
 // Chaos mod
 #include "Util/EntityIterator.h"
 #include "Util/Hash.h"
@@ -64,6 +69,9 @@ namespace
     };
 }
 
+// Set for playing the music tracks
+int currentMusicTrack;
+
 
 // Booleans for this file
 
@@ -96,6 +104,10 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
     auto& fileFunctions = FileFunctions::GetInstance();
 
+#ifdef LUA_TEST
+    auto& luaManager = LuaManager::GetInstance();
+#endif //LUA_TEST
+
     std::vector<CScriptMenu<KCMainScript>::CSubmenu> submenus;
     submenus.emplace_back("mainmenu",
         [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
@@ -118,6 +130,10 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             mbCtx.MenuOption("Player", "playermenu", { "Show the player menu." });
             mbCtx.MenuOption("Vehicle", "vehiclemenu", { "Show the vehicle menu." });
             mbCtx.MenuOption("Teleport", "teleportmenu", { "Show the teleport menu." });
+
+#ifdef LUA_TEST
+            mbCtx.MenuOption("Teleports (Lua)", "luateleportmenu", { "Show the lua teleports" });
+#endif //LUA_TEST
 
             mbCtx.MenuOption("Ped", "pedmenu", { "Show the ped menu." });
             mbCtx.MenuOption("World", "worldmenu", { "This submenu contains items for the world menu." });
@@ -436,6 +452,34 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     //
 #pragma endregion
 
+#pragma region LuaTeleportMenu
+#ifdef LUA_TEST
+    submenus.emplace_back("luateleportmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("Teleports (Lua)");
+            if (mbCtx.Option("Teleport to Airport (Lua)"))
+            {
+                sol::function teleport_func = m_GlobalState.get_state()["teleport_player"];
+                if (teleport_func.valid()) {
+                    sol::protected_function_result result = teleport_func(-1336.0f, -3044.0f, 13.9f);
+                    if (!result.valid()) {
+                        sol::error err = result;
+                        // Handle Lua error
+                        LOG(ERROR, std::format("Lua Error: {}", err.what()));
+                    }
+                }
+                else {
+                    LOG(ERROR, "Lua function 'teleport_player' not found.");
+                }
+            }
+        }
+    );
+#endif //LUA_TEST
+
+#pragma endregion
+
+
 
 
 #pragma region PedMenu
@@ -538,17 +582,30 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         {
             mbCtx.Title("Test Sub menu");
 
-            // TODO Move some of these into MiscScripts.cpp once I create it.
-
             if (mbCtx.Option("Notify", { "Test notification" }))
             {
                 UI::Notify("Test notification");
             }
 
+            int nothing = 0;
+            mbCtx.StringArray("--Music--", { "" }, nothing);
+
+            // Incremement the max number for this as I add more into the Enums.h and MiscScripts.cpp
+            // To add more to this:
+            // 1. Add a value with a number into Enums.h
+            // 2. Add a value into the std::map in MiscScript.cpp in the PlayTestMusic function.
+            //mbCtx.IntOption("Music track", currentMusicTrack, 1, 26, 1, {"List of music tracks within Enums.h in the code."});
+            mbCtx.IntOption("Music track", currentMusicTrack, 1, musicTracksCount, 1, {"List of music tracks within Enums.h in the code."});
+
             // TODO Test this, figure out a good way to do this.
             if (mbCtx.Option("Play Test sound"))
             {
-                miscScripts.PlayTestMusic(5);
+                
+                //miscScripts.PlayTestMusic(21);
+                // Seems to be the music that sometimes happens when flying.
+                //miscScripts.PlayTestMusic(CHASE_PARACHUTE_START);
+                //miscScripts.PlayTestMusic(SHOOTING_RANGE_START);
+                miscScripts.PlayTestMusic(static_cast<MusicTracks>(currentMusicTrack));
             }
 
 
@@ -573,6 +630,16 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             {
                 miscScripts.StopCreditsMusic();
             }
+
+            mbCtx.BoolOption("Peds attack player", miscScripts.isPedsAttackEnabled, { "Make all peds in the area attack you" });
+
+#ifdef CHAOSMOD_FEATURES
+            if (mbCtx.Option("Set peds in mowers", { "Place all peds in the area into lawn mowers" }))
+            {
+                miscScripts.SetAllPedsInMowers();
+            }
+#endif // CHAOSMOD_FEATURES
+            
 
             mbCtx.BoolOption("Toggle airstrike test", miscScripts.airStrikeRunning, { "Toggle the airstrikes on/off" });
 

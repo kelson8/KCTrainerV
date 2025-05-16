@@ -19,15 +19,14 @@
 #include "Util/EntityIterator.h"
 #include "Util/Random.h"
 
-
-
 #ifdef EXTRA_FEATURES
 #include "Memory/Physics.h"
 #include "Memory/Snow.h"
 #include "Memory/Entity.h"
 #include "Memory/Handle.h"
-#endif //EXTRA_FEATURES
 
+#include "Util/Vehicle.h"
+#endif //EXTRA_FEATURES
 
 // Menyoo
 #include "Natives/natives2.h"
@@ -36,14 +35,14 @@
 
 // Lua tests
 #ifdef LUA_TEST
-extern LuaManager g_lua_manager; // Access the global instance
+extern LuaManager m_GlobalState; // Access the global instance
 
 void MiscScripts::InitializeLuaMusic() {
-	g_lua_manager.load_script("scripts/music_config.lua");
+	m_GlobalState.load_script("scripts/music_config.lua");
 }
 
 void MiscScripts::PlayLuaMusic(const std::string& track_id) {
-	sol::optional<sol::function> play_func = g_lua_manager.get_function("play_music");
+	sol::optional<sol::function> play_func = m_GlobalState.get_function("play_music");
 	if (play_func) {
 		(*play_func)(track_id);
 	}
@@ -59,12 +58,15 @@ void MiscScripts::PlayLuaMusic(const std::string& track_id) {
 //
 
 
+
+
 /// <summary>
 /// TODO Test this later, I haven't tested it yet.
 /// These can be found in the decompiled scripts by searching for 'TRIGGER_MUSIC_EVENT'
 /// </summary>
 /// <param name="track"></param>
-void MiscScripts::PlayTestMusic(int track)
+//void MiscScripts::PlayTestMusic(int track)
+void MiscScripts::PlayTestMusic(MusicTracks track)
 {
 
 	// This method should work
@@ -85,7 +87,42 @@ void MiscScripts::PlayTestMusic(int track)
 		{3, "HEIST_CELEB_APARTMENT"},
 		{4, "HEIST_STATS_SCREEN_STOP_PREP"},
 		{5, "SHOP_TILL_YOU_DROP"},
-		{6, "MP_LOBBY_AMBIENCE"}
+		{6, "MP_LOBBY_AMBIENCE"},
+		{7, "MICHAELS_HOUSE"},
+		{8, "AC_START"}, //Altruist Cult
+		{9, "AC_END"}, //Altruist Cult
+		{10, "AC_DELIVERED"}, //Altruist Cult
+		{11, "AC_DONE"}, //Altruist Cult
+		{12, "RE51A_SHOP"}, //Shop robbery
+		{13, "PEYOTE_TRIPS_START"}, //Something to do with Peyote plants
+		{14, "PEYOTE_TRIPS_STOP"}, //Something to do with Peyote plants
+
+		// Flight school, there are probably a few I missed, the fail ones probably don't do anything.
+		{15, "FS_FORMATION_START"},
+		{16, "FS_FORMATION_FAIL"},
+		{17, "FS_LOOP_START"},
+		{18, "FS_LOOP_FAIL"},
+		{19, "FS_MOVING_LANDING_START"},
+		{20, "FS_MOVING_LANDING_FAIL"},
+		{21, "CHASE_PARACHUTE_START"},
+		{22, "CHASE_PARACHUTE_DEPLOY"}, // Doesn't play anything
+		{23, "SHOOTING_RANGE_START"},
+		{24, "SHOOTING_RANGE_TIMED"},
+
+		{25, "GROUND_LEVEL_START"}, // Seems to be the sound that plays when you get cops
+
+		{26, "FS_OBSTACLE_START"}, // This one is another one that occurs when flying
+		
+		// Doesn't do anything
+		/*
+		* 	//{25, "CITY_LANDING_ENGINE"},
+			//{26, "CITY_LANDING_FAIL"},
+			//{28, "GROUND_LEVEL_FAIL"},
+			//{30, "FS_OBSTACLE_FAIL"},
+		*/
+		
+		// End flight school
+
 	};
 
 	auto it = musicTracks.find(track);
@@ -278,6 +315,60 @@ void MiscScripts::DisableForceField()
 {
 	isForceFieldEnabled = false;
 }
+
+#pragma endregion
+
+#pragma region PedFunctions
+
+/// <summary>
+/// Make all peds in the area attack the player, PedsAttackPlayer.cpp in Chaos Mod
+/// </summary>
+void MiscScripts::PedsAttackPlayer()
+{
+	static const Hash enemyGroupHash = MISC::GET_HASH_KEY("_ATTACK_PLAYER");
+	static const Hash playerGroupHash = MISC::GET_HASH_KEY("PLAYER");
+
+	// Set everonye to hate the player
+	SET_RELATIONSHIP_BETWEEN_GROUPS(5, enemyGroupHash, playerGroupHash);
+	SET_RELATIONSHIP_BETWEEN_GROUPS(5, playerGroupHash, enemyGroupHash);
+
+	Player player = PLAYER_ID();
+	Ped playerPed = PLAYER_PED_ID();
+	int playerGroup = GET_PLAYER_GROUP(player);
+
+	for (Ped ped : GetAllPeds())
+	{
+		if (!IS_PED_A_PLAYER(ped))
+		{
+			if (IS_PED_IN_GROUP(ped) && GET_PED_GROUP_INDEX(ped) == playerGroup)
+				REMOVE_PED_FROM_GROUP(ped);
+
+			SET_PED_RELATIONSHIP_GROUP_HASH(ped, enemyGroupHash);
+
+			// https://nativedb.dotindustries.dev/gta5/natives/0x9F7794730795E019?search=SET_PED_COMBAT_ATTRIBUTES
+			// 5 = BF_AlwaysFight
+			// 46 = BF_CanFightArmedPedsWhenNotArmed
+			SET_PED_COMBAT_ATTRIBUTES(ped, 5, true);
+			SET_PED_COMBAT_ATTRIBUTES(ped, 46, true);
+
+			// 2 = Unknown, not listed on the native website
+			SET_PED_FLEE_ATTRIBUTES(ped, 2, true);
+
+			// https://nativedb.dotindustries.dev/gta5/natives/0xF166E48407BAC484?search=TASK_COMBAT_PED
+			// combatFlags seems to always be 0
+			// threatResponseFlags seems to always be 16
+			TASK_COMBAT_PED(ped, playerPed, 0, 16);
+		}
+	}
+}
+
+#ifdef CHAOSMOD_FEATURES
+void MiscScripts::SetAllPedsInMowers()
+{
+	static const Hash mowerHash = MISC::GET_HASH_KEY("MOWER");
+	SetSurroundingPedsInVehicles(mowerHash, 120);
+}
+#endif
 
 #pragma endregion
 

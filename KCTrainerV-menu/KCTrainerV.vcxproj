@@ -129,6 +129,8 @@
     <ClCompile Include="DllMain.cpp" />
     <ClCompile Include="ImageDimensions.cpp" />
     <ClCompile Include="KCMenuScript.cpp" />
+    <ClCompile Include="Memory\Hooks\HandleToEntityStructHook.cpp" />
+    <ClCompile Include="Memory\Hooks\ScriptThreadRunHook.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Menus\KCMainMenu.cpp" />
     <ClCompile Include="Menus\OldMenus.cpp" />
@@ -145,6 +147,7 @@
     <ClCompile Include="Util\FileFunctions.cpp" />
     <ClCompile Include="Util\Logger.cpp" />
     <ClCompile Include="Util\Paths.cpp" />
+    <ClCompile Include="Util\PoolSpawner.cpp" />
     <ClCompile Include="Util\UI.cpp" />
     <ClCompile Include="Util\Util.cpp" />
   </ItemGroup>
@@ -178,13 +181,19 @@
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="ImageDimensions.hpp" />
     <ClInclude Include="KCMenuScript.hpp" />
+    <ClInclude Include="Lib\scrThread.h" />
     <ClInclude Include="Memory\Entity.h" />
     <ClInclude Include="Memory\Handle.h" />
+    <ClInclude Include="Memory\Hooks\HandleToEntityStructHook.h" />
     <ClInclude Include="Memory\Hooks\Hook.h" />
+    <ClInclude Include="Memory\Hooks\ScriptThreadRunHook.h" />
     <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Memory\Misc.h" />
+    <ClInclude Include="Memory\PedModels.h" />
     <ClInclude Include="Memory\Physics.h" />
+    <ClInclude Include="Memory\Script.h" />
     <ClInclude Include="Memory\Snow.h" />
+    <ClInclude Include="Memory\Vehicle.h" />
     <ClInclude Include="MenuTexture.hpp" />
     <ClInclude Include="Natives\natives2.h" />
     <ClInclude Include="pch.h" />
@@ -202,10 +211,13 @@
     <ClInclude Include="Util\FileFunctions.h" />
     <ClInclude Include="Util\Hash.h" />
     <ClInclude Include="Util\Logger.hpp" />
+    <ClInclude Include="Util\Model.h" />
     <ClInclude Include="Util\Paths.hpp" />
+    <ClInclude Include="Util\PoolSpawner.h" />
     <ClInclude Include="Util\Random.h" />
     <ClInclude Include="Util\UI.hpp" />
     <ClInclude Include="Util\Util.hpp" />
+    <ClInclude Include="Util\Vehicle.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\thirdparty\ScriptHookV_SDK\lib\ScriptHookV.lib" />
