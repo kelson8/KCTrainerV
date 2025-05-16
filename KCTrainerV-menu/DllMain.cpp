@@ -116,7 +116,9 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
         {
             g_Logger.SetMinLevel(DEBUG);
             initializePaths(hInstance);
+            // Log the script name, and when it was built
             LOG(INFO, "{} {} (built {} {})", Constants::ScriptName, Constants::DisplayVersion, __DATE__, __TIME__);
+            // Log the data path
             LOG(INFO, "Data path: {}", Paths::GetModPath().string());
 
             scriptRegister(hInstance, KCMenu::ScriptMain);
@@ -125,6 +127,9 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
         }
 
         // TODO Why does this give an error when exiting the game? I think it's this.
+        // Gives this error:
+        // SCRIPT HOOK V CRITICAL ERROR
+        // FATAL: Trying to unregister unk script using module handle <memoryHandle>
         case DLL_PROCESS_DETACH: 
         {
             scriptUnregister(hInstance);

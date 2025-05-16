@@ -4,11 +4,9 @@
 // TODO Figure out how to suppress these.. It will get annoying.
 // Warning C4018: '<': signed/unsigned mismatch
 // Spams this with warnings.
-#pragma warning(disable 4018)
+#pragma warning(disable: 4018)
 // Warning C4083: expected '('; found identifier 'disable'
-#pragma warning(disable: 4083)
-// Warning C4081: expected ':'; found 'constant'
-#pragma warning(disable: 4081)
+//#pragma warning(disable: 4083)
 
 // https://github.com/gta-chaos-mod/ChaosModV/blob/master/ChaosMod/Util/EntityIterator.h
 
@@ -27,8 +25,12 @@ template <typename T> class PoolIterator
   public:
 	T *Pool            = nullptr;
 	std::int32_t Index = 0;
+	// Possible fix for warning that I have suppressed.
+	//std::size_t Index = 0;
 
 	explicit PoolIterator(T *pool, int32_t index = 0)
+	// Possible fix for warning that I have suppressed.
+	//explicit PoolIterator(T *pool, size_t index = 0)
 	{
 		this->Pool  = pool;
 		this->Index = index;
@@ -54,6 +56,8 @@ template <typename T> class PoolIterator
 
 		auto addr  = Pool->GetAddress(Index);
 		int handle = _addEntityToPoolFunc(addr);
+		// Possible fix for warning I suppressed above.
+		//int handle = _addEntityToPoolFunc(static_cast<__int64>(addr));
 		return handle;
 	}
 

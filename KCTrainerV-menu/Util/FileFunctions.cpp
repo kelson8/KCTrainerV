@@ -11,6 +11,12 @@
 
 //------------- File functions ---------------/
 
+#ifdef LOAD_IPLS
+
+extern std::vector<std::string_view> g_loadedIpls; // Declaration (extern)
+
+#endif
+
 /// <summary>
 /// Save player coordinates to file, adapted from KCTrainerIV
 /// Filepath obtained like this below:
@@ -64,6 +70,7 @@ void FileFunctions::SaveCoordinatesToFile(const std::string& fileName)
 void FileFunctions::TeleportToSavedCoords(const std::string& fileName)
 {
 	auto& playerScripts = PlayerScripts::GetInstance();
+	auto& teleportLocations = TeleportLocations::GetInstance();
 	// Example file read:
 	/*
 		std::string playerCoordsText = "X: " + std::to_string(playerX)
@@ -146,6 +153,9 @@ void FileFunctions::TeleportToSavedCoords(const std::string& fileName)
 
 		// Close the file
 		inputFile.close();
+
+		// Explicitly unload loaded IPLs when teleporting to saved coords
+		teleportLocations.UnloadAllLoadedIpls();
 	}
 	else {
 		//std::cerr << "Error opening file " << fileName << " for reading." << std::endl;

@@ -60,7 +60,7 @@ including any commas separating them.
 */
 
 // New for debug log, from Chaos Mod
-#ifdef KCTRAINERDEBUG
+#ifdef KCTRAINER_DEBUG
 //#define DEBUG_LOG(_text) LOG(_text)
 //#define DEBUG_LOG(_text) LOG(DEBUG, _text)
 #define DEBUG_LOG(fmt, ...) LOG(DEBUG, fmt, __VA_ARGS__)

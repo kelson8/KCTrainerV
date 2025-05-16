@@ -41,9 +41,17 @@ public:
     void SetPlayerCoords(Vector3 position);
     void SetPlayerHeading(float heading);
     // Teleport player to location specified in the enum
+    // TODO Adapt below to new format once I set it up:
+    // 
+#ifdef NEW_TELEPORTS
+    void WarpToLocation(TeleportLocationCategory category, TeleportLocationID id);
+    void TeleportToLocation(TeleportLocationCategory category, TeleportLocationID id);
+#else
     void WarpToLocation(TeleportLocation locationToTeleport);
-
     void TeleportToLocation(TeleportLocation locationToTeleport);
+#endif //NEW_TELEPORTS
+
+    
     //
 
     // Toggles
@@ -74,6 +82,13 @@ public:
     void ToggleNightVision();
     //
 
+    // Fade functions
+    // TODO Move to MiscScripts or something
+    void FadeScreenOut(int ms);
+    void FadeScreenIn(int ms);
+    // Test for fading the screen in/out.
+    void TestFade();
+    //
     
     //static bool IsInvincibilityEnabled()
     //{

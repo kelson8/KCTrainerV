@@ -304,6 +304,14 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
             mbCtx.Title("Teleport Locations");
+
+#ifdef NEW_TELEPORTS
+            mbCtx.MenuOption("Airport", "AirportsTeleportSubmenu", { "Show a list of airport teleport locations." });
+            mbCtx.MenuOption("Safehouses", "SafehousesTeleportSubmenu", { "Show a list of safehouse teleport locations." });
+
+#endif //NEW_TELEPORTS
+
+#ifndef NEW_TELEPORTS
             if (mbCtx.Option("Airport"))
             {
                 playerScripts.WarpToLocation(TeleportLocation::AIRPORT_RUNWAY);
@@ -312,8 +320,81 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             {
                 playerScripts.WarpToLocation(TeleportLocation::HOSPITAL_LS1_ROOFTOP);
             }
+
+            // TODO Test this, it should load the IPL for it
+#ifdef LOAD_IPLS
+            if (mbCtx.Option("Singleplayer Yacht"))
+            {
+                playerScripts.WarpToLocation(TeleportLocation::SP_YACHT1);
+            }
+#endif
+#endif //!NEW_TELEPORTS
+
         }
     );
+
+
+
+            // TODO Migrate to using this format for teleports. 
+            // First I'll need to fix it in TeleportLocations.cpp, TeleportLocations.h, PlayerScripts.cpp, and PlayerScripts.h:
+#ifdef NEW_TELEPORTS
+#pragma region AirportsTeleportSubMenu
+        submenus.emplace_back("AirportsTeleportSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("Airports");
+            if (mbCtx.Option("Airport Runway"))
+            {
+                playerScripts.WarpToLocation(TeleportLocationCategory::AIRPORTS, TeleportLocationID::AIRPORT_RUNWAY);
+            }
+            if (mbCtx.Option("Los Santos Intl Terminal"))
+            {
+                playerScripts.WarpToLocation(TeleportLocationCategory::AIRPORTS, TeleportLocationID::LOS_SANTOS_INTL_TERMINAL);
+            }
+        });
+
+#pragma endregion
+
+
+#pragma region SafehousesTeleportSubmenu
+    submenus.emplace_back("SafehousesTeleportSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("Safehouses");
+            if (mbCtx.Option("Michael's House"))
+            {
+                playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::MICHAELS_HOUSE); // 0
+            }
+            if (mbCtx.Option("Franklin's House (New)"))
+            {
+                playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::FRANKLINS_HOUSE_NEW); // 1
+            }
+            if (mbCtx.Option("Franklin's House (Old)"))
+            {
+                playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::FRANKLINS_HOUSE_OLD); // Value 2
+            }
+
+            if (mbCtx.Option("Trevor's House #1"))
+            {
+                playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::TREVORS_HOUSE); // Value 3
+            }
+
+            if (mbCtx.Option("Trevor's House #2"))
+            {
+                playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::TREVORS_HOUSE2); // Value 4
+            }
+
+            if (mbCtx.Option("Trevor's Office"))
+            {
+                playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::TREVORS_OFFICE); // Value 5
+            }
+
+        });
+
+#pragma endregion
+
+#endif //NEW_TELEPORTS
+        //});
 
 #pragma endregion
 
@@ -430,6 +511,17 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
                 //    entities.push_back(prop);
             }
 
+            // These were in MPMenu, adding to my menu I'll probably just remove MPMenu.
+            //if (mbCtx.Option("Load MP Maps", { "Enable Multiplayer maps" }))
+            //{
+            //    ON_ENTER_MP();
+            //}
+
+            //if (mbCtx.Option("Unload MP Maps", { "Disable Multiplayer maps" }))
+            //{
+            //    ON_ENTER_SP();
+            //}
+
 
         }
     );
@@ -488,6 +580,11 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             //}
 
             mbCtx.BoolOption("Draw text on screen", textScripts.drawText, { "Toggle test text to draw on screen." });
+
+            if (mbCtx.Option("Test Fade out/in", { "Test for fading the screen out and back in" }))
+            {
+                playerScripts.TestFade();
+            }
 
 
         });
