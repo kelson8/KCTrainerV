@@ -121,7 +121,7 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
 
     // TODO Implement fade functions for this.
     // Fade time in miliseconds for fading functions
-    int fadeTime = 500;
+    //int fadeTime = 500;
 
     // Oops, I inverted the fading...
 
@@ -130,7 +130,7 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
 
     ENTITY::SET_ENTITY_COORDS(GetPlayerPed(), position, false, false, false, false);
     
-    FadeScreenIn(fadeTime);
+    //FadeScreenIn(fadeTime);
 }
 
 /// <summary>
