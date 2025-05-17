@@ -23,6 +23,9 @@
 
 #include "Util/FileFunctions.h"
 
+// Menus
+#include "PlayerMenu.h"
+
 // Teleports
 #include "Teleports/TeleportLocations.h"
 
@@ -104,6 +107,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
     auto& fileFunctions = FileFunctions::GetInstance();
 
+    // Menus
+    auto& playerMenu = PlayerMenu::GetInstance();
+
 #ifdef LUA_TEST
     auto& luaManager = LuaManager::GetInstance();
 #endif //LUA_TEST
@@ -158,30 +164,16 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     // https://stackoverflow.com/questions/26903602/an-enclosing-function-local-variable-cannot-be-referenced-in-a-lambda-body-unles
 
 #pragma region PlayerMenu
+
     submenus.emplace_back("playermenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
+#ifndef MOVE_PLAYER_MENU
             mbCtx.Title("Player Menu");
-
-
 
             // This seems to work fine for an invincibility toggle in here like this.
             mbCtx.BoolOption("Invincibility", playerScripts.invincibilityEnabled, { " Turn on/off invincibility" });
             
-            
-            // For now, I'll just make this a button
-
-            //if (mbCtx.Option("Toggle invincibility", { " Turn on/off invincibility" }))
-            //{
-            //    playerScripts.ToggleInvincibility();
-            //}
-
-            //if (mbCtx.Option("Toggle Never Wanted", { "Turn on/off never wanted" }))
-            //{
-            //    playerScripts.ToggleNeverWanted();
-            //}
-
-
             mbCtx.IntOption("Wanted level", playerScripts.wantedLevel, 0, 5, 1, {"Wanted level to set"});
             if (mbCtx.Option("Set Wanted Level", { "Set your wanted level" }))
             {
@@ -219,8 +211,14 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             //    //KCMainScript::ToggleBombBayDoors();
             //    VehicleScripts::ToggleBombBayDoors();
             //}
+#else
+            // Run the menu from PlayerMenu.cpp, seems to work fine.
+            playerMenu.Build(mbCtx, context);
+#endif //!MOVE_PLAYER_MENU
         }
     );
+
+
 
 #pragma endregion
 
@@ -234,26 +232,90 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             mbCtx.Title("Vehicle");
 
             // This didn't seem to do anything
-            mbCtx.drawInstructionalButtons();
+            //mbCtx.drawInstructionalButtons();
 
             if (mbCtx.Option("Repair vehicle", { "Fully fix your vehicle and tires." }))
             {
                 vehicleScripts.RepairVehicle();
             }
 
-            // This seems to work
-            // TODO Make a vehicle selector menu later.
+            // Toggles the boolean to spawn in the vehicle and remove the old one.
+            mbCtx.BoolOption("Spawn into vehicle", vehicleScripts.spawnInsideVehicle, { "Toggle spawning in the spawned vehicle" });
+
+            // Moved vehicle spawning code into the categories.
+            mbCtx.MenuOption("Categories", "VehicleCategorySubmenu", { "Show the list of vehicle categories." });
+        }
+    );
+
+#pragma region VehicleCategorySubMenu
+
+    // Draw the vehicle category menu
+    submenus.emplace_back("VehicleCategorySubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("Categories");
+
+            mbCtx.MenuOption("Sports", "SportsVehicleCategorySubmenu");
+            mbCtx.MenuOption("Super", "SuperVehicleCategorySubmenu");
+        }
+    );
+
+#pragma region SportsVehicleCategorySubMenu
+    submenus.emplace_back("SportsVehicleCategorySubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("Sports");
+
             if (mbCtx.Option("Spawn Cheetah", { "Spawn a Cheetah near you" }))
             {
-                Ped playerPed = playerScripts.GetPlayerPed();
-                //vehicleScripts.SpawnVehicle(GAMEPLAY::GET_HASH_KEY(""));
                 // Hmm, this Chaos mod function will be very useful.
                 static const Hash cheetahHash = "Cheetah"_hash;
                 vehicleScripts.SpawnVehicle(cheetahHash);
             }
+
         }
     );
-#pragma endregion
+#pragma endregion // SportsVehicleCategorySubMenu
+
+#pragma region SuperVehicleCategorySubMenu
+    submenus.emplace_back("SuperVehicleCategorySubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            mbCtx.Title("Super");
+
+            std::map<std::string, std::function<void()>> optionActions =
+            {
+                {"Spawn Scamjet", [&]()
+                {
+                    static const Hash scramJetHash = "Scramjet"_hash;
+                    vehicleScripts.SpawnVehicle(scramJetHash);
+                }},
+
+                // To add more of these:
+                /*
+                {"Spawn Cheetah", [&]() {
+                    static const Hash cheetahHash = "Cheetah"_hash;
+                    vehicleScripts.SpawnVehicle(cheetahHash);
+                }},
+                */
+            };
+
+            // For loop to iterate over the vehicle list above
+            for (const auto& pair : optionActions)
+            {
+                if (mbCtx.Option(pair.first))
+                {
+                    pair.second(); // Execute the associated action.
+                }
+            }
+
+        }
+    );
+#pragma endregion // SuperVehicleCategorySubMenu
+
+#pragma endregion // VehicleCategorySubMenu
+
+#pragma endregion // VehicleMenu
 
 #pragma region TeleportMenu
     submenus.emplace_back("teleportmenu",
@@ -345,6 +407,15 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
                 playerScripts.WarpToLocation(TeleportLocation::SP_YACHT1);
             }
 #endif
+
+            if (mbCtx.Option("Richards Majestic Movie Studio"))
+                playerScripts.WarpToLocation(TeleportLocation::RICHARDS_MAJESTIC_MOVIE_STUDIO);
+
+            if (mbCtx.Option("Waypoint"))
+            {
+                Vector3 waypointCoords = playerScripts.GetWaypointCoords();
+                playerScripts.SetPlayerCoords(waypointCoords);
+            }
 #endif //!NEW_TELEPORTS
 
         }
@@ -717,6 +788,12 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             {
                 playerScripts.TestFade();
             }
+
+            // TODO Figure out implementation for this, shouldn't be too hard.
+            //if (mbCtx.Option("Test reload menu"), { "Test for reloading the menu config, may crash." })
+            //{
+            //    
+            //}
 
 
         });

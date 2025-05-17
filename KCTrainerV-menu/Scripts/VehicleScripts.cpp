@@ -108,8 +108,6 @@ void VehicleScripts::RepairVehicle()
 // Taken from GTAVAddonLoader
 // https://github.com/ikt32/GTAVAddonLoader/blob/master/GTAVAddonLoader/script.cpp
 
-// TODO Set this boolean up, I could add a toggle for it somewhere in the menu, for now it'll be disabled.
-bool spawnInside = false;
 
 // TODO Possibly setup settings for this using mINI
 // settings.Persistent
@@ -142,13 +140,14 @@ void VehicleScripts::SpawnVehicle(Hash hash) {
             }
         }
 
-        //bool spawnInside = settings.SpawnInside;
+        // TODO Possibly setup ini file for loading the SpawnInside value?
+        //spawnInsideVehicle = settings.SpawnInside;
         //if (findStringInNames("trailer", hash) || findStringInNames("train", hash)) {
         //    spawnInside = false;
         //}
 
         float offsetX = 0.0f;
-        if (PED::IS_PED_IN_ANY_VEHICLE(playerPed, false) || !spawnInside) {
+        if (PED::IS_PED_IN_ANY_VEHICLE(playerPed, false) || !spawnInsideVehicle) {
             Vehicle oldVeh = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
             Hash oldHash = ENTITY::GET_ENTITY_MODEL(oldVeh);
             Vector3 newMin, newMax;
@@ -166,7 +165,7 @@ void VehicleScripts::SpawnVehicle(Hash hash) {
         Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(playerPed, { offsetX, 0.0f, 0.0f });
 
         //if (spawnInside && settings.SpawnInplace && PED::IS_PED_IN_ANY_VEHICLE(playerPed, false)) {
-        if (spawnInside && PED::IS_PED_IN_ANY_VEHICLE(playerPed, false)) {
+        if (spawnInsideVehicle && PED::IS_PED_IN_ANY_VEHICLE(playerPed, false)) {
             Vehicle oldVeh = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
             Vector3 oldVehiclePos = ENTITY::GET_ENTITY_COORDS(playerPed, true);
             oldVehiclePos = ENTITY::GET_ENTITY_COORDS(oldVeh, true);
@@ -180,9 +179,12 @@ void VehicleScripts::SpawnVehicle(Hash hash) {
         VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh, 5.0f);
         VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.0f);
 
-        if (spawnInside) {
+        if (spawnInsideVehicle) {
             ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()));
+            // Also turn the engine on
+            VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
             PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+
         }
 
         WAIT(0);

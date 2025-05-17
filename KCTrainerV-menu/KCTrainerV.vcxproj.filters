@@ -147,6 +147,9 @@
     <ClCompile Include="Scripting\Raycast.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="Menus\PlayerMenu.cpp">
+      <Filter>Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -373,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="Scripting\Raycast.h">
       <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\PlayerMenu.h">
+      <Filter>Menus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

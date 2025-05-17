@@ -23,6 +23,10 @@ public:
 	void SpawnVehicle(Hash hash);
 	Vehicle SpawnVehicle(Hash hash, Vector3 coords, float heading, DWORD timeout);
 
+	// Toggle for spawning into vehicle, defaults is off.
+	bool spawnInsideVehicle = false;
+
+
 private:
 	VehicleScripts() {} // Private constructor to prevent external instantiation
 	VehicleScripts(const VehicleScripts&) = delete;

@@ -136,6 +136,7 @@
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Menus\KCMainMenu.cpp" />
     <ClCompile Include="Menus\OldMenus.cpp" />
+    <ClCompile Include="Menus\PlayerMenu.cpp" />
     <ClCompile Include="MenuTexture.cpp" />
     <ClCompile Include="Natives\natives2.cpp" />
     <ClCompile Include="pch.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="Memory\Script.h" />
     <ClInclude Include="Memory\Snow.h" />
     <ClInclude Include="Memory\Vehicle.h" />
+    <ClInclude Include="Menus\PlayerMenu.h" />
     <ClInclude Include="MenuTexture.hpp" />
     <ClInclude Include="Natives\natives2.h" />
     <ClInclude Include="pch.h" />

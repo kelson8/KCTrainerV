@@ -40,6 +40,10 @@ public:
     //void SetPlayerCoords(Vector3 position, float heading);
     void SetPlayerCoords(Vector3 position);
     void SetPlayerHeading(float heading);
+
+    // Get the waypoint coords
+    Vector3 GetWaypointCoords();
+
     // Teleport player to location specified in the enum
     // TODO Adapt below to new format once I set it up:
     // 

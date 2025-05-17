@@ -57,6 +57,12 @@
 // Also Vector3 is overridden in one of the Menyoo files, or I would've continued messing with this.
 //#define MENYOO_SCRIPT_FILES
 
+// Add test for reloading the config, this needs completed
+//#define RELOAD_CONFIG
+
+// TODO Test this, I plan on moving the menus into their own files for better organization.
+#define MOVE_PLAYER_MENU
+
 namespace Constants 
 {
     static const char* const ScriptName = "KCTrainerV";

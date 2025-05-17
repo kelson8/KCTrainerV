@@ -117,6 +117,7 @@ float PlayerScripts::GetPlayerHeading()
 /// Teleport player to the specified coords, and a heading
 /// I added extra code in this from the Chaos Mod in Player.h.
 /// Now this should teleport the players vehicle, and possibly make them not fall through the ground.
+/// TODO Fix this, sometimes crashes and doesn't get the ground coordinate.
 /// </summary>
 /// <param name="position"></param>
 void PlayerScripts::SetPlayerCoords(Vector3 position)
@@ -149,35 +150,36 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
 
     // TODO Add this from TeleportPlayerFindZ
     // This code should allow me to place the player on the ground without falling through the map.
-    /*
-    float groundZ;
-	bool useGroundZ;
-	for (int i = 0; i < 100; i++)
-	{
-		float testZ = (i * 10.f) - 100.f;
+    
+    // Well this didn't seem to work.
+    //   float groundZ;
+	//bool useGroundZ;
+	//for (int i = 0; i < 100; i++)
+	//{
+	//	float testZ = (i * 10.f) - 100.f;
 
-        SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed, Vector3(position.x, position.y, testZ),
-            false, false, false, false);
-		if (i % 5 == 0)
-			WAIT(0);
+ //       SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed, Vector3(position.x, position.y, testZ),
+ //           false, false, false, false);
+	//	if (i % 5 == 0)
+	//		WAIT(0);
 
-		useGroundZ = GET_GROUND_Z_FOR_3D_COORD(Vector3(position.x, position.y, testZ), &groundZ, false, false);
-		if (useGroundZ)
-			break;
-	}
+	//	useGroundZ = GET_GROUND_Z_FOR_3D_COORD(Vector3(position.x, position.y, testZ), &groundZ, false, false);
+	//	if (useGroundZ)
+	//		break;
+	//}
 
-    if (useGroundZ)
-    {
-        SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed, Vector3(position.x, position.y, groundZ),
-            false, false, false, false);
-    }
-    else {
-        // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
-        // And it checks if the player is in a flying vehicle.
-        SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
-            Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
-    }
-    */
+ //   if (useGroundZ)
+ //   {
+ //       SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed, Vector3(position.x, position.y, groundZ),
+ //           false, false, false, false);
+ //   }
+ //   else {
+ //       // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
+ //       // And it checks if the player is in a flying vehicle.
+ //       SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
+ //           Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
+ //   }
+    
     
     // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
     // And it checks if the player is in a flying vehicle.
@@ -205,6 +207,24 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
 void PlayerScripts::SetPlayerHeading(float heading)
 {
     ENTITY::SET_ENTITY_HEADING(GetPlayerPed(), heading);
+}
+
+/// <summary>
+/// Get the current waypoint coordinates if it exists.
+/// Taken from my KCTestScripts implementation in Menyoo.
+/// </summary>
+/// <returns>A Vector3 of the coords, such as this: Vector3(22.5, 15.2, 30.2)</returns>
+Vector3 PlayerScripts::GetWaypointCoords()
+{
+    Vector3 coords;
+    if (IS_WAYPOINT_ACTIVE())
+    {
+        coords = GET_BLIP_COORDS(GET_FIRST_BLIP_INFO_ID(8));
+        return coords;
+    }
+
+    // Return all 0's if no waypoint found, TODO Setup check for this value.
+    return Vector3(0, 0, 0);
 }
 
 #pragma endregion

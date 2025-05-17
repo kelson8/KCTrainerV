@@ -98,6 +98,7 @@ void TeleportLocations::UnloadAllLoadedIpls() {
 
 
 // Static (internal linkage) vector to store teleport locations
+// This is where new teleport locations get added for the menu.
 static const std::vector<TeleportInfo> teleportLocations = {
 
 #ifdef LOAD_IPLS
@@ -107,6 +108,7 @@ static const std::vector<TeleportInfo> teleportLocations = {
     //{ "Dignity Heist (Vespucci Beach)", {-2023.455f, -1038.181f, 8.0629f}, 90.0f, {vYacht_Heist1}}, // SP_YACHT1
     // SP_YACHT1 - IPLs seem to auto load on start, I'll leave them alone.
     { "Dignity Heist (Vespucci Beach)", {-2023.455f, -1038.181f, 8.0629f}, 90.0f, {}},
+    {"Richard's Majestic Movie Studio", {-1038.258423, -494.781830, 36.322914}, 89.88f, {}},
     //{ "Dignity Party (Vespucci Beach)", {-2023.455f, -1038.181f, 8.0629f}, 90.0f, {vYacht_Smboat1} },
     // ... more locations
 

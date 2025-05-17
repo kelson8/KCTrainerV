@@ -8,8 +8,10 @@ using Hash   = unsigned long;
 using size_t = unsigned long long;
 
 // Well, I removed constexpr and this seems to have fixed this for now.
+// Making this inline seems to have solved this, now I can use it in multiple files.
 //constexpr Hash operator""_hash(const char *str, size_t n)
-Hash operator""_hash(const char *str, size_t n)
+inline Hash operator""_hash(const char *str, size_t n)
+//Hash operator""_hash(const char *str, size_t n)
 {
 	return MISC::GET_HASH_KEY(str);
 }

@@ -71,6 +71,7 @@ enum TeleportLocation
 	// I thought this was the MP_YACHT
 	SP_YACHT1 = 2,
 #endif
+	RICHARDS_MAJESTIC_MOVIE_STUDIO = 3, // RICHARDS_MAJESTIC
 
 	// TODO Renumber these
 	//MOUNT_CHILLIAD = 2,
