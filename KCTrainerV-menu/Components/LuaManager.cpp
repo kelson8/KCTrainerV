@@ -85,20 +85,20 @@ sol::optional<sol::function> LuaManager::get_function(const std::string& name) {
 // Below copied from LuaScripts.cpp in Chaos Mod
 
 // MinGW doesn't have SEH :(
-#ifdef _MSC_VER
-#define MAGIC_CATCH_BEGIN \
-	__try                 \
-	{
-#define MAGIC_CATCH_END(x)               \
-	}                                    \
-	__except (EXCEPTION_EXECUTE_HANDLER) \
-	{                                    \
-		x;                               \
-	}
-#else
-#define MAGIC_CATCH_BEGIN {
-#define MAGIC_CATCH_END(x) }
-#endif
+//#ifdef _MSC_VER
+//#define MAGIC_CATCH_BEGIN \
+//	__try                 \
+//	{
+//#define MAGIC_CATCH_END(x)               \
+//	}                                    \
+//	__except (EXCEPTION_EXECUTE_HANDLER) \
+//	{                                    \
+//		x;                               \
+//	}
+//#else
+//#define MAGIC_CATCH_BEGIN {
+//#define MAGIC_CATCH_END(x) }
+//#endif
 
 //void LuaPrint(const std::string& text)
 //{

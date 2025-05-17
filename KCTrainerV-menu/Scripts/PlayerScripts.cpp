@@ -6,12 +6,14 @@
 #include <inc/natives.h>
 #include <format>
 
-// TODO Test this, seems to build with this enabled.
-// From Menyoo, should make it to where I don't have to type the namespaces for the natives.
+// From Menyoo, makes it to where I don't have to type the namespaces for the natives.
 #include "Natives/natives2.h"
 
 //void FadeScreenIn(int ms);
 //void FadeScreenOut(int ms);
+
+// I will be moving some player scripts into the Scripts/Player folder 
+// so I don't make this file super massive and hard to go through
 
 // Booleans
 

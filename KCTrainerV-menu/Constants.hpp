@@ -52,6 +52,11 @@
 // Well some of the vehicle features seem to crash this.
 //#define CHAOSMOD_FEATURES
 
+// Enable extras from Menyoo, mostly the files from the Scripting folder which can be very useful
+// TODO Fix these to work, some of them need quite a bit of work.
+// Also Vector3 is overridden in one of the Menyoo files, or I would've continued messing with this.
+//#define MENYOO_SCRIPT_FILES
+
 namespace Constants 
 {
     static const char* const ScriptName = "KCTrainerV";

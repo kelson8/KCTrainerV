@@ -108,6 +108,45 @@
     <ClCompile Include="Util\PoolSpawner.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Player\PlayerNoClip.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\GTAentity.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\GTAplayer.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\GTAmemory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\GTAmath.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Hooking.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\StringManip.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\GTAblip.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Rope.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Scaleform.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Tasks.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Model.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Raycast.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -296,6 +335,45 @@
     <ClInclude Include="Util\Model.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Player\PlayerNoClip.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\GTAentity.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\GTAplayer.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\GTAmemory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\GTAmath.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Hooking.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\StringManip.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\GTAblip.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Rope.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Scaleform.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Tasks.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Model.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Raycast.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -354,6 +432,12 @@
     </Filter>
     <Filter Include="Lib">
       <UniqueIdentifier>{3ce3ffd9-3dfd-4a0d-9d5b-129874629591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Player">
+      <UniqueIdentifier>{771a9beb-6005-4c0a-b6cf-dcc26a90958d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting">
+      <UniqueIdentifier>{7db6b525-23d0-420e-a4ec-fbeb17db64ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
