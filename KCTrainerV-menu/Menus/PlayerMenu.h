@@ -1,10 +1,12 @@
 #pragma once
-
 #include "../Constants.hpp"
 #include "ScriptMenu.hpp"
 #include "../KCMenuScript.hpp"
 
-class PlayerMenu
+#include "IMenuBuilder.h"
+
+//class PlayerMenu
+class PlayerMenu : public IMenuBuilder
 {
 public:
 	// Instance of the PlayerMenu
@@ -15,7 +17,8 @@ public:
 	}
 
 #ifdef MOVE_PLAYER_MENU
-	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context);
+	//void Build(NativeMenu::Menu& mbCtx, KCMainScript& context);
+	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context) override;
 #endif // MOVE_PLAYER_MENU
 
 private:

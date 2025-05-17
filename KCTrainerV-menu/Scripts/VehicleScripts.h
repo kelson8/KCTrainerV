@@ -26,6 +26,14 @@ public:
 	// Toggle for spawning into vehicle, defaults is off.
 	bool spawnInsideVehicle = false;
 
+	// Invincible vehicle toggles
+	void EnableInvincibility();
+	void DisableInvincibility();
+
+	bool isInvincibleVehicleEnabled = false;
+	// This will make the loop not constantly run
+	bool invincibilityFlag = false;
+
 
 private:
 	VehicleScripts() {} // Private constructor to prevent external instantiation

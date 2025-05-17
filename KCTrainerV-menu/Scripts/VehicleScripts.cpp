@@ -9,6 +9,8 @@
 // Some parts from GTAVAddonLoader
 #include "Util/Util.hpp"
 
+#include "../Natives/natives2.h"
+
 
 /// <summary>
 /// Get the players current vehicle.
@@ -234,4 +236,36 @@ Vehicle VehicleScripts::SpawnVehicle(Hash hash, Vector3 coords, float heading, D
     ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 
     return veh;
+}
+
+/// <summary>
+/// Enable invincibility for the current vehicle
+/// </summary>
+void VehicleScripts::EnableInvincibility()
+{
+    auto& playerScripts = PlayerScripts::GetInstance();
+    Ped playerPed = playerScripts.GetPlayerPed();
+
+    if (playerScripts.IsPlayerInVehicle())
+    {
+        Vehicle currentVeh = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
+        SET_ENTITY_PROOFS(currentVeh, true, true, true, true, true, true, true, true);
+        UI::Notify("Vehicle is now invincible");
+    }
+}
+
+/// <summary>
+/// Disable invincibility for the current vehicle
+/// </summary>
+void VehicleScripts::DisableInvincibility()
+{
+    auto& playerScripts = PlayerScripts::GetInstance();
+    Ped playerPed = playerScripts.GetPlayerPed();
+
+    if (playerScripts.IsPlayerInVehicle())
+    {
+        Vehicle currentVeh = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
+        SET_ENTITY_PROOFS(currentVeh, false, false, false, false, false, false, false, false);
+        UI::Notify("Vehicle is no longer invincible");
+    }
 }
