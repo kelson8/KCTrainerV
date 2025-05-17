@@ -631,7 +631,10 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
                 miscScripts.StopCreditsMusic();
             }
 
+            // Ped tests
             mbCtx.BoolOption("Peds attack player", miscScripts.isPedsAttackEnabled, { "Make all peds in the area attack you" });
+            mbCtx.BoolOption("Peds drive crazy", miscScripts.isCrazyPedDrivingEnabled, {
+                "Make all peds in the area drive with the rushed driving style." });
 
 #ifdef CHAOSMOD_FEATURES
             if (mbCtx.Option("Set peds in mowers", { "Place all peds in the area into lawn mowers" }))

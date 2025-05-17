@@ -115,10 +115,27 @@ float PlayerScripts::GetPlayerHeading()
 
 /// <summary>
 /// Teleport player to the specified coords, and a heading
+/// I added extra code in this from the Chaos Mod in Player.h.
+/// Now this should teleport the players vehicle, and possibly make them not fall through the ground.
 /// </summary>
 /// <param name="position"></param>
 void PlayerScripts::SetPlayerCoords(Vector3 position)
 {
+    // Based on teleport implementation in Chaos Mod (Player.h)
+    auto playerPed = this->GetPlayerPed();
+    bool isInVeh = IS_PED_IN_ANY_VEHICLE(playerPed, false);
+    bool isInFlyingVeh = IS_PED_IN_FLYING_VEHICLE(playerPed);
+    auto playerVeh = GET_VEHICLE_PED_IS_IN(playerPed, false);
+    // TODO Figure out what exactly the velocity is used for 
+    auto vel = GET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed);
+    float groundHeight = GET_ENTITY_HEIGHT_ABOVE_GROUND(playerVeh);
+    float forwardSpeed;
+
+    if (isInVeh)
+    {
+        forwardSpeed = GET_ENTITY_SPEED(playerVeh);
+    }
+
     STREAMING::LOAD_SCENE(position);
 
     // TODO Implement fade functions for this.
@@ -130,7 +147,53 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
     //FadeScreenOut(fadeTime);
     //WAIT(500);
 
-    ENTITY::SET_ENTITY_COORDS(GetPlayerPed(), position, false, false, false, false);
+    // TODO Add this from TeleportPlayerFindZ
+    // This code should allow me to place the player on the ground without falling through the map.
+    /*
+    float groundZ;
+	bool useGroundZ;
+	for (int i = 0; i < 100; i++)
+	{
+		float testZ = (i * 10.f) - 100.f;
+
+        SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed, Vector3(position.x, position.y, testZ),
+            false, false, false, false);
+		if (i % 5 == 0)
+			WAIT(0);
+
+		useGroundZ = GET_GROUND_Z_FOR_3D_COORD(Vector3(position.x, position.y, testZ), &groundZ, false, false);
+		if (useGroundZ)
+			break;
+	}
+
+    if (useGroundZ)
+    {
+        SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed, Vector3(position.x, position.y, groundZ),
+            false, false, false, false);
+    }
+    else {
+        // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
+        // And it checks if the player is in a flying vehicle.
+        SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
+            Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
+    }
+    */
+    
+    // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
+    // And it checks if the player is in a flying vehicle.
+    SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
+        Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
+    // TODO Figure out what this part does
+    SET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed, Vector3(vel.x, vel.y, vel.z));
+
+    // Set the vehicle to the speed it previously was, this doesn't seem to work.
+    if (isInVeh)
+    {
+        SET_VEHICLE_FORWARD_SPEED(playerVeh, forwardSpeed);
+    }
+
+    // Original method:
+    //ENTITY::SET_ENTITY_COORDS(GetPlayerPed(), position, false, false, false, false);
     
     //FadeScreenIn(fadeTime);
 }

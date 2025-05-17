@@ -87,6 +87,12 @@ void KCMainScript::Tick() {
 
 #endif //EXTRA_FEATURES
 
+    // Make all peds drive crazy
+    if (miscScripts.isCrazyPedDrivingEnabled)
+    {
+        miscScripts.MakeAllPedsDriveCrazy();
+    }
+
     // Display text on screen
     // I got this to work
     if (textScripts.drawText)

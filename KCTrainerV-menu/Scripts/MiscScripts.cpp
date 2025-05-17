@@ -141,6 +141,36 @@ void MiscScripts::StopTestMusic()
 	AUDIO::TRIGGER_MUSIC_EVENT("MP_MC_CMH_IAA_FINALE_START");
 }
 
+/// <summary>
+/// This seems to work.
+/// Set all peds in the area to the rushed driving style.
+/// </summary>
+void MiscScripts::MakeAllPedsDriveCrazy()
+{
+	Ped player = PLAYER_PED_ID();
+	std::vector<Entity> entities;
+
+	for (Ped ped : GetAllPeds())
+		if (ped != player)
+			entities.push_back(ped);
+
+	//for (Vehicle veh : GetAllVehs())
+	//	if (!IS_PED_IN_VEHICLE(player, veh, false))
+	//		entities.push_back(veh);
+
+
+	Vector3 playerCoord = GET_ENTITY_COORDS(player, false);
+	for (Entity entity : entities)
+	{
+		// First check if the entity is a Ped
+		if(IS_ENTITY_A_PED(entity))
+		{
+			// If so, set driving styles to rushed
+			SET_DRIVE_TASK_DRIVING_STYLE(entity, DrivingStyle::Rushed);
+		}
+	}
+}
+
 
 // Some of these below were taken from the Chaos Mod.
 

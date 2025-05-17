@@ -27,6 +27,11 @@ public:
 	void PlayTestMusic(MusicTracks track);
 	void StopTestMusic();
 
+	// Ped tests
+	void MakeAllPedsDriveCrazy();
+	bool isCrazyPedDrivingEnabled = false;
+	//
+
 	void PlayArenaWarLobbyMusic();
 	void StopArenaWarLobbyMusic();
 	
