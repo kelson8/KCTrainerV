@@ -67,11 +67,13 @@ bool PlayerScripts::IsPlayerInVehicle() {
 
 
 // These get set in the below functions
+// TODO Change these from int to Ped
 int player = 0;
 int playerID = 0;
 
 /// <summary>
 /// Get the player ped
+/// TODO Change this from int to Ped
 /// </summary>
 /// <returns></returns>
 int PlayerScripts::GetPlayerPed()
@@ -83,6 +85,7 @@ int PlayerScripts::GetPlayerPed()
 
 /// <summary>
 /// Get the player ID
+/// TODO Change this from int to Ped
 /// </summary>
 /// <returns></returns>
 int PlayerScripts::GetPlayerID()

@@ -9,9 +9,14 @@ using size_t = unsigned long long;
 
 // Well, I removed constexpr and this seems to have fixed this for now.
 // Making this inline seems to have solved this, now I can use it in multiple files.
-//constexpr Hash operator""_hash(const char *str, size_t n)
+
+/// <summary>
+/// Convert a string to a hash like this: "weapon_snowball"_hash
+/// </summary>
+/// <param name="str"></param>
+/// <param name="n"></param>
+/// <returns></returns>
 inline Hash operator""_hash(const char *str, size_t n)
-//Hash operator""_hash(const char *str, size_t n)
 {
 	return MISC::GET_HASH_KEY(str);
 }

@@ -1,7 +1,11 @@
 #include "pch.h"
 #include "PlayerMenu.h"
 
+#include "../Util/Hash.h"
+
 #include "../Scripts/PlayerScripts.h"
+#include "../Scripts/PedScripts.h"
+#include "../Scripts/Tasks.h"
 
 #ifdef MOVE_PLAYER_MENU
 
@@ -10,6 +14,13 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     mbCtx.Title("Player Menu");
 
     auto& playerScripts = PlayerScripts::GetInstance();
+    auto& pedScripts = PedScripts::GetInstance();
+    auto& tasks = Tasks::GetInstance();
+
+    Ped playerPed = playerScripts.GetPlayerPed();
+
+    Hash militaryRifleHash = "weapon_militaryrifle"_hash;
+    Hash militaryRifleExtendedClip = "COMPONENT_MILITARYRIFLE_CLIP_02"_hash;
 
     // This seems to work fine for an invincibility toggle in here like this.
     mbCtx.BoolOption("Invincibility", playerScripts.invincibilityEnabled, { " Turn on/off invincibility" });
@@ -39,6 +50,22 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     if (mbCtx.Option("Toggle Night vision", { "Turn on/off night vision" }))
     {
         playerScripts.ToggleNightVision();
+    }
+
+    // Tests
+    // TODO Move these into WeaponMenu.cpp, need to create it first.
+    // This gives me a weapon
+    // TODO Make this get value from lua, should easily be possible if I run my lua tests.
+    if (mbCtx.Option("Give weapon"))
+    {
+        //pedScripts.GivePedWeapon(playerPed, "weapon_flashlight"_hash, -1, false, false);
+        pedScripts.GivePedWeapon(playerPed, militaryRifleHash, -1, false, false);
+    }
+
+    // This works too, I need to make a list of these later but for now I am just testing them.
+    if (mbCtx.Option("Give attachment"))
+    {
+        pedScripts.GiveWeaponComponent(playerPed, militaryRifleHash, militaryRifleExtendedClip);
     }
 
     // Moved this out of the player menu, I can use this as a future reference.

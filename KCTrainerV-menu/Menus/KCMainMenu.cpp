@@ -72,29 +72,15 @@ namespace
 // Set for playing the music tracks
 int currentMusicTrack;
 
-
-// Booleans for this file
-
-//void ToggleInvincibility()
-//{
-//    if (invincibilityEnabled)
-//    {
-//        
-//    }
-//}
-
 /*
  * This function builds the menu's submenus, and the submenus are passed into the CScriptMenu constructor.
  * While this provides a cleaner way to define the menu, dynamically created submenu are not possible.
  * CScriptMenu would need to be changed to allow adding and removing submenus on-the-fly.
  */
-// TODO Make this a bit neater like in GTAVAddonLoader, not sure how they are doing their menus.
 std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu() 
 {
-
-    //PlayerScripts playerScripts;
-
     // Instances of these objects, this is a great way to use booleans and stuff between files.
+    // Scripts
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& vehicleScripts = VehicleScripts::GetInstance();
     auto& pedScripts = PedScripts::GetInstance();
@@ -102,6 +88,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
     auto& textScripts = TextScripts::GetInstance();
 
+    // Functions
     auto& fileFunctions = FileFunctions::GetInstance();
 
     // Menus
@@ -154,10 +141,6 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
                 "Some features from Menyoo and Chaos Mod."});
         });
 
-
-    // This should enable my test features.
-#define _TEST
-#ifdef _TEST
     // This fixes the issue with using some of these variables without static:
     // I added the & symbol where this is:  [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
     // https://stackoverflow.com/questions/26903602/an-enclosing-function-local-variable-cannot-be-referenced-in-a-lambda-body-unles
@@ -464,10 +447,6 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
         });
 #pragma endregion
-#endif //_TEST
-
-
-  
 
     return submenus;
 }

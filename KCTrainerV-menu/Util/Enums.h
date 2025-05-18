@@ -3,6 +3,12 @@
 // Menyoo seems to have a lot of these in their enums.h file, I might just use that instead of making my own.
 // There are a lot of these
 
+// I don't know why this worked before without these... 
+// Oh well whatever includes Enums.h will include these I guess.
+#include <string>
+#include <inc/types.h>
+#include <vector>
+
 enum MusicTracks
 {
 	GTA_ONLINE_STOP_SCORE = 1,

@@ -138,7 +138,7 @@
     <ClCompile Include="Scripting\Scaleform.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="Scripting\Tasks.cpp">
+    <ClCompile Include="Scripting\Tasks_old.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
     <ClCompile Include="Scripting\Model.cpp">
@@ -161,6 +161,9 @@
     </ClCompile>
     <ClCompile Include="Menus\PedMenu.cpp">
       <Filter>Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Tasks.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -380,7 +383,7 @@
     <ClInclude Include="Scripting\Scaleform.h">
       <Filter>Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\Tasks.h">
+    <ClInclude Include="Scripting\Tasks_old.h">
       <Filter>Scripting</Filter>
     </ClInclude>
     <ClInclude Include="Scripting\Model.h">
@@ -406,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="Menus\PedMenu.h">
       <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Tasks.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

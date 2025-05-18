@@ -12,7 +12,7 @@ Adding refresh menu key:
 There doesn't seem to be a way to easily reload the config.
 
 Adding better organazation: 
-* I Started by moving the player menu into the PlayerMenu.cpp and PlayerMenu.h
+* I have moved most code into their own menu files to make this project easier to navigate.
 
 Adding more vehicles to the vehicle spawner:
 * I have fixed this to now have categories, so far it just has sports, and super.
