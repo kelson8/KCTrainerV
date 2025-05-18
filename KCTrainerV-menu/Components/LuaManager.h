@@ -10,20 +10,28 @@ public:
 #ifdef LUA_TEST
 
     // Instance of the LuaManager
-    static LuaManager& GetInstance()
-    {
-        static LuaManager instance;
-        return instance;
-    }
+    //static LuaManager& GetInstance()
+    //{
+    //    static LuaManager instance;
+    //    return instance;
+    //}
+
+    static LuaManager& GetInstance();
 
     LuaManager();
     ~LuaManager();
 
     // New
     void BindNativesToLua();
+    // TODO Fix this
+    //void BindCustomFunctionsToLua(KCMainScript& scriptContext);
+    void BindGameTypesToLua();
     void InitializeLuaEnvironment();
 
     sol::state& get_state();
+
+    sol::state& GetLuaState(); // Add a way to access the Lua state if needed
+
     bool load_script(const std::string& filepath);
     sol::optional<sol::function> get_function(const std::string& name);
     // Add other helpful methods as needed (e.g., get_table)
@@ -31,12 +39,9 @@ public:
 private:
     sol::state lua;
 
-    //LuaManager() {} // Private constructor to prevent external instantiation
-    //LuaManager(const LuaManager&) = delete;
-    //LuaManager& operator=(const LuaManager&) = delete;
+    // Singleton pattern
+    LuaManager(const LuaManager&) = delete;
+    LuaManager& operator=(const LuaManager&) = delete;
+
 #endif //LUA_TEST
 };
-
-#ifdef LUA_TEST
-extern LuaManager m_GlobalState; // Global instance of the manager
-#endif //LUA_TEST

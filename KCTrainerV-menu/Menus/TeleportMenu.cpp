@@ -13,6 +13,10 @@
 // Teleports
 #include "Teleports/TeleportLocations.h"
 
+#ifdef LUA_TEST
+#include "Components/LuaManager.h"
+#endif //LUA_TEST
+
 void TeleportMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& fileFunctions = FileFunctions::GetInstance();
@@ -189,15 +193,20 @@ void TeleportMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& cont
 #ifdef LUA_TEST
 void TeleportMenu::BuildLuaTeleportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
+#ifdef LUA_TEST
+    auto& luaManager = LuaManager::GetInstance();
+#endif //LUA_TEST
+
         mbCtx.Title("Teleports (Lua)");
+
         if (mbCtx.Option("Teleport to Airport (Lua)"))
         {
-            sol::function teleport_func = m_GlobalState.get_state()["teleport_player"];
+            sol::function teleport_func = luaManager.get_state()["teleport_player"];
             if (teleport_func.valid()) {
-                sol::protected_function_result result = teleport_func(-1336.0f, -3044.0f, 13.9f);
+                Vector3 targetPosition(-1336.0f, -3044.0f, 13.9f);
+                sol::protected_function_result result = teleport_func(targetPosition);
                 if (!result.valid()) {
                     sol::error err = result;
-                    // Handle Lua error
                     LOG(ERROR, std::format("Lua Error: {}", err.what()));
                 }
             }
@@ -205,5 +214,20 @@ void TeleportMenu::BuildLuaTeleportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript
                 LOG(ERROR, "Lua function 'teleport_player' not found.");
             }
         }
+
+        //if (mbCtx.Option("Teleport to House (Lua - Table)"))
+        //{
+        //    sol::function teleport_func = luaManager.get_state()["teleport_to_location"];
+        //    if (teleport_func.valid()) {
+        //        sol::protected_function_result result = teleport_func("house");
+        //        if (!result.valid()) {
+        //            sol::error err = result;
+        //            LOG(ERROR, std::format("Lua Error (teleport_to_location): {}", err.what()));
+        //        }
+        //    }
+        //    else {
+        //        LOG(ERROR, "Lua function 'teleport_to_location' not found.");
+        //    }
+        //}
 }
 #endif

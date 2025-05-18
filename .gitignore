@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Built asis from my tests
+builds/
+
 # Old readme, can be found here: https://github.com/ikt32/GTAVMenuExample/blob/master/README.md
 README-old.md
 

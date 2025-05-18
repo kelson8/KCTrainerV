@@ -46,6 +46,8 @@
 // Enable new lua test
 // I will try to add the full list of natives for this like the Chaos mod is doing.
 // Instead of trying to replicate the full file.
+// I moved this into a separate Visual Studio profile named Debug_Lua, so I can also keep the library disabled
+// Keeping here for a reference.
 //#define LUA_TEST
 
 // Enables new features I am testing from the Chaos mod

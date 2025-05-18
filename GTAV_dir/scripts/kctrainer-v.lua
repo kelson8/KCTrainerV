@@ -15,9 +15,15 @@
 -- local playerPed = _invoke(GetHashKey("PLAYER_PED_ID"), 1) -- Assuming 1 is your Int return type
 -- print("Player Ped:", playerPed)
 
-function teleport_player(x, y, z)
+
+
+-- function teleport_player(x, y, z)
+function teleport_player(pos)
   local playerPed = GetPlayerPedId()
-  SetEntityCoords(playerPed, x, y, z, false, false, false, true)
+  -- local targetPosition = Vector3.new(x, y, z)
+  
+  -- SetEntityCoords(playerPed, x, y, z, false, false, false, true)
+  SetEntityCoords(playerPed, pos, false, false, false, false)
 end
 
 -- You can define teleport locations in Lua as well
@@ -28,11 +34,21 @@ teleport_locations = {
 }
 
 function teleport_to_location(location_name)
-  local location = teleport_locations[location_name]
-  if location then
-    teleport_player(location[1], location[2], location[3])
+  local location_data = teleport_locations[location_name]
+  if location_data then
+	local target_position = Vector3.new(location_data[1], location_data[2], location_data[3])
+    teleport_player(target_position)
     print("Teleported to " .. location_name)
   else
     print("Teleport location '" .. location_name .. "' not found.")
   end
+end
+
+-- This will get the teleport location names.
+function get_teleport_location_names()
+  local names = {}
+  for name, _ in pairs(teleport_locations) do
+    table.insert(names, name)
+  end
+  return names
 end

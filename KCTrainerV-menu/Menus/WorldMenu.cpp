@@ -44,21 +44,23 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     if (mbCtx.Option("Blow up vehicles", { "Blow up all vehicles in the area" }))
     {
         Ped playerPed = playerScripts.GetPlayerPed();
-        Vehicle playerVeh = PED::GET_VEHICLE_PED_IS_IN(playerScripts.GetPlayerID(), false);
+        //Vehicle playerVeh = PED::GET_VEHICLE_PED_IS_IN(playerScripts.GetPlayerID(), false);
+        Vehicle playerVeh = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
+
+        // Possible fix for this being buggy and crashing, taken from Chaos Mod.
+        int count = 3;
 
         for (Vehicle veh : GetAllVehs())
         {
-            // Check if they are the player and not dead, if so do nothing
-/*                  if (!PED::IS_PED_A_PLAYER(ped) && !ENTITY::IS_ENTITY_DEAD(ped, false))
-                  {
-                      ENTITY::SET_ENTITY_HEALTH(ped, 0, 0);
-                  }*/
-
-                  // TODO Add check for if player is in vehicle
-                  // This doesn't work, should detect if it is the player vehicle and not blow it up.
             if (veh != playerVeh)
             {
                 VEHICLE::EXPLODE_VEHICLE(veh, true, false);
+
+                if (--count = 0)
+                {
+                    count = 3;
+                    WAIT(0);
+                }
             }
 
         }

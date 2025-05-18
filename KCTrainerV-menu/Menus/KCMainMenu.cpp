@@ -33,17 +33,10 @@
 // Teleports
 #include "Teleports/TeleportLocations.h"
 
-
-#ifdef LUA_TEST
-#include "Components/LuaManager.h"
-extern LuaManager m_GlobalState; // Declare the global LuaManager instance
-#endif //LUA_TEST
-
 // Chaos mod
 #include "Util/EntityIterator.h"
 #include "Util/Hash.h"
 #include "Util/Random.h"
-
 
 namespace 
 {
@@ -117,10 +110,6 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     auto& teleportMenu = TeleportMenu::GetInstance();
     auto& vehicleMenu = VehicleMenu::GetInstance();
     auto& worldMenu = WorldMenu::GetInstance();
-
-#ifdef LUA_TEST
-    auto& luaManager = LuaManager::GetInstance();
-#endif //LUA_TEST
 
     std::vector<CScriptMenu<KCMainScript>::CSubmenu> submenus;
     submenus.emplace_back("mainmenu",

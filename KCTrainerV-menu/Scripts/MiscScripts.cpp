@@ -35,14 +35,18 @@
 
 // Lua tests
 #ifdef LUA_TEST
-extern LuaManager m_GlobalState; // Access the global instance
+#include "../Components/LuaManager.h"
 
-void MiscScripts::InitializeLuaMusic() {
-	m_GlobalState.load_script("scripts/music_config.lua");
+void MiscScripts::InitializeLuaMusic() 
+{
+	auto& luaManager = LuaManager::GetInstance();
+	luaManager.load_script("scripts/music_config.lua");
 }
 
-void MiscScripts::PlayLuaMusic(const std::string& track_id) {
-	sol::optional<sol::function> play_func = m_GlobalState.get_function("play_music");
+void MiscScripts::PlayLuaMusic(const std::string& track_id) 
+{
+	auto& luaManager = LuaManager::GetInstance();
+	sol::optional<sol::function> play_func = luaManager.get_function("play_music");
 	if (play_func) {
 		(*play_func)(track_id);
 	}
@@ -61,7 +65,8 @@ void MiscScripts::PlayLuaMusic(const std::string& track_id) {
 
 
 /// <summary>
-/// TODO Test this later, I haven't tested it yet.
+/// This works for playing sound tracks with the TRIGGER_MUSIC_EVENT native
+/// Here is a list of these: https://github.com/DurtyFree/gta-v-data-dumps/blob/master/musicEventNames.json
 /// These can be found in the decompiled scripts by searching for 'TRIGGER_MUSIC_EVENT'
 /// </summary>
 /// <param name="track"></param>

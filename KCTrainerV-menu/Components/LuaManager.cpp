@@ -8,20 +8,30 @@
 #include <inc/natives.h>
 #include "Natives/natives2.h"
 
-#include "Util/Logger.hpp"
+#include "KCMenuScript.hpp"
 
+#include "Util/UI.hpp"
+#include "Util/Logger.hpp"
 
 // TODO Test this later.
 // I have a lot of Chaos Mod functions adapted at the bottom of this file that should work.
 
-LuaManager m_GlobalState; // Define the global instance
-
 LuaManager::LuaManager() {
     lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug, sol::lib::bit32);
     // Bind C++ functions or natives here if they need to be available immediately
-    lua.set_function("TRIGGER_MUSIC_EVENT", AUDIO::TRIGGER_MUSIC_EVENT);
+    //lua.set_function("TRIGGER_MUSIC_EVENT", AUDIO::TRIGGER_MUSIC_EVENT);
     // ... other bindings ...
 }
+
+LuaManager& LuaManager::GetInstance() {
+	static LuaManager instance;
+	return instance;
+}
+
+sol::state& LuaManager::GetLuaState() {
+	return lua;
+}
+
 
 /// <summary>
 /// Bind the lua natives I want to use for testing.
@@ -38,14 +48,47 @@ void LuaManager::BindNativesToLua() {
 	// Bind more natives as needed
 }
 
+// Bind custom menu functions to lua
+// TODO Fix this
+//void LuaManager::BindCustomFunctionsToLua(KCMainScript& scriptContext) 
+//{
+//	lua.set_function("SetTeleportLocation", sol::resolve(&KCMainScript::SetLuaTeleportLocation, scriptContext));
+//	lua.set_function("GetTeleportLocation", sol::resolve(&KCMainScript::GetLuaTeleportLocation, scriptContext));
+//	lua.set_function("get_teleport_location_names", lua.globals()["get_teleport_location_names"]);
+//}
+
+/// <summary>
+/// Add vector3 and other items into lua.
+/// </summary>
+void LuaManager::BindGameTypesToLua() {
+	lua.new_usertype<Vector3>(
+		"Vector3",
+		sol::constructors<sol::types<>, sol::types<float, float, float>>(),
+		"x", &Vector3::x,
+		"y", &Vector3::y,
+		"z", &Vector3::z
+		// You might not need meta_function::index and new_index if direct member access works
+	);
+}
 /// <summary>
 /// Run in the KCMenuScript.cpp init for when the script loads up.
 /// </summary>
 void LuaManager::InitializeLuaEnvironment() {
-	lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug, sol::lib::bit32);
+	//lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug, sol::lib::bit32);
 	// Load your Lua scripts
-	lua.script_file("KCTrainerV/scripts/kctrainer-v.lua");
+	try 
+	{
+		lua.script_file("KCTrainerV/scripts/kctrainer-v.lua");
+	}
+	catch (const sol::error& e)
+	{
+		// Handle Lua script loading errors properly
+		LOG(ERROR, "Error loading Lua script: %s", e.what());
+		UI::Notify("Error loading Lua script. Check the log file.");
+	}
+	
 	BindNativesToLua();
+	BindGameTypesToLua();
 }
 
 
@@ -61,14 +104,14 @@ bool LuaManager::load_script(const std::string& filepath) {
     sol::load_result lr = lua.load_file(filepath);
     if (!lr.valid()) {
         sol::error err = lr;
-        // LOG(ERROR, std::format("Error loading Lua script {}: {}", filepath, err.what()));
+         LOG(ERROR, std::format("Error loading Lua script {}: {}", filepath, err.what()));
         return false;
     }
     sol::protected_function pf = lr;
     sol::protected_function_result pfr = pf();
     if (!pfr.valid()) {
         sol::error err = pfr;
-        // LOG(ERROR, std::format("Error executing Lua script {}: {}", filepath, err.what()));
+         LOG(ERROR, std::format("Error executing Lua script {}: {}", filepath, err.what()));
         return false;
     }
     return true;

@@ -2,13 +2,23 @@
 
 #include "Scripts/PlayerScripts.h"
 #include "Scripts/MiscScripts.h"
+#include "Scripts/VehicleScripts.h"
 
 #include "Scripts/TextScripts.h"
 
 #include "Util/UI.hpp"
 
+// New
+//#include "Util/Paths.hpp"
+//#include "Util/Logger.hpp"
+
+//#include "ScriptMenu.hpp"
+
 #include <inc/natives.h>
 #include <format>
+
+// This tick event below uses flags for certain actions so it doesn't constantly run.
+// Such as when the vehicle invincibility is turned on, it won't constantly run the functions.
 
 void KCMainScript::Tick() {
     //PlayerScripts playerScripts;
@@ -17,6 +27,7 @@ void KCMainScript::Tick() {
     auto& playerScripts = PlayerScripts::GetInstance();
 
     auto& miscScripts = MiscScripts::GetInstance();
+    auto& vehicleScripts = VehicleScripts::GetInstance();
 
     // Hmm, this seems to work if I toggle it in my menu.
     if (miscScripts.airStrikeRunning)
@@ -62,9 +73,6 @@ void KCMainScript::Tick() {
         UI::Notify("Never wanted off.");
         playerScripts.neverWantedFlag = false;
     }
-
-   
-
     
 #ifdef EXTRA_FEATURES
     // Player force field
@@ -93,6 +101,20 @@ void KCMainScript::Tick() {
         miscScripts.MakeAllPedsDriveCrazy();
     }
 
+    
+    // Invincibility toggle
+    if(vehicleScripts.isInvincibleVehicleEnabled && !vehicleScripts.invincibilityFlag)
+    {
+        vehicleScripts.EnableInvincibility();
+        vehicleScripts.invincibilityFlag = true;
+    } else if(!vehicleScripts.isInvincibleVehicleEnabled && vehicleScripts.invincibilityFlag)
+    {
+        vehicleScripts.DisableInvincibility();
+        vehicleScripts.invincibilityFlag = false;
+    }
+    
+    
+
     // Display text on screen
     // I got this to work
     if (textScripts.drawText)
@@ -117,6 +139,46 @@ void KCMainScript::Tick() {
 
 
 }
+
+// TODO Complete this, when I do I'll possibly add a new sub menu named 'Script settings'
+#ifdef RELOAD_CONFIG
+void KCMainScript::SetScriptMenu(CScriptMenu<KCMainScript>* menu)
+{
+    if (scriptMenuPtr)
+    {
+        scriptMenuPtr->LoadSettings(); // Call the menu's LoadSettings
+        UI::Notify("Configuration reloaded successfully.");
+    }
+    else
+    {
+        UI::Notify("Error: Script menu instance not available for reload.");
+    }
+}
+
+
+//void KCMainScript::LoadConfig()
+//{
+//    const auto settingsMenuPath = Paths::GetModPath() / "settings_menu.ini";
+//    LOG(INFO, "Reloading configuration file from %s", settingsMenuPath.string().c_str());
+//
+//    MenuSettings::ReadSettings();
+//
+//    LOG(INFO, "Configuration reloaded successfully.");
+//}
+#endif
+
+// TODO Fix this
+//#ifdef LUA_TEST
+//void KCMainScript::SetLuaTeleportLocation(Vector3 location)
+//{
+//    m_luaTeleportLocation = location;
+//}
+//
+//Vector3 KCMainScript::GetLuaTeleportLocation() const
+//{
+//    return m_luaTeleportLocation;
+//}
+//#endif
 
 std::string KCMainScript::GetPlayerHealth() {
     int health = ENTITY::GET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID());
