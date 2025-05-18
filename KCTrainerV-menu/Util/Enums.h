@@ -9,6 +9,20 @@
 #include <inc/types.h>
 #include <vector>
 
+enum class TrainModels : Hash
+{
+	FREIGHT = 1030400667,
+	FREIGHTCAR = 184361638,
+	FREIGHTGRAIN = 642617954,
+	FREIGHTCONT1 = 920453016,
+	FREIGHTCONT2 = 240201337,
+	//FREIGHTTRAILER = -777275802,
+	TANKERCAR = 586013744,
+	METROTRAIN = 868868440,
+	// Unknown
+	//S_M_M_LSMETRO_01 = 8
+};
+
 enum MusicTracks
 {
 	GTA_ONLINE_STOP_SCORE = 1,

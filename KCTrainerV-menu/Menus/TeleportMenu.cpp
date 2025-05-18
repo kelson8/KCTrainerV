@@ -95,7 +95,20 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
 #endif
 
     if (mbCtx.Option("Richards Majestic Movie Studio"))
+    {
         playerScripts.WarpToLocation(TeleportLocation::RICHARDS_MAJESTIC_MOVIE_STUDIO);
+    }
+        
+
+    if (mbCtx.Option("Train station #1"))
+    {
+        playerScripts.WarpToLocation(TeleportLocation::TRAIN_STATION1);
+    }
+
+    if (mbCtx.Option("Train station #2"))
+    {
+        playerScripts.WarpToLocation(TeleportLocation::TRAIN_STATION2);
+    }
 
     if (mbCtx.Option("Waypoint"))
     {

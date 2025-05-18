@@ -10,15 +10,22 @@
 #include <string_view>
 #include <vector>
 
+#include "Paths.hpp"
+
 inline bool DoesFileExist(std::string_view fileName)
 {
 	struct stat temp;
 	return stat(fileName.data(), &temp) == 0;
 }
 
+
 inline bool DoesFeatureFlagExist(const std::string &featureFlagName)
 {
-	return DoesFileExist("chaosmod\\." + featureFlagName);
+	// Cannot convert this.
+	//std::string filePath = Paths::GetModPath();
+	//return DoesFileExist("chaosmod\\." + featureFlagName);
+	// TODO Make this not hard-coded
+	return DoesFileExist("KCTrainerV\\." + featureFlagName);
 }
 
 inline std::vector<std::filesystem::directory_entry> GetFiles(std::string path, std::string extension, bool recursive,

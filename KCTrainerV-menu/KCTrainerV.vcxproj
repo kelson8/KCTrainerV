@@ -188,6 +188,7 @@
     <ClCompile Include="Memory\Hooks\ScriptThreadRunHook.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Menus\KCMainMenu.cpp" />
+    <ClCompile Include="Menus\MiscMenu.cpp" />
     <ClCompile Include="Menus\OldMenus.cpp" />
     <ClCompile Include="Menus\PedMenu.cpp" />
     <ClCompile Include="Menus\PlayerMenu.cpp" />
@@ -247,6 +248,7 @@
     <ClInclude Include="..\thirdparty\ScriptHookV_SDK\inc\natives.h" />
     <ClInclude Include="..\thirdparty\ScriptHookV_SDK\inc\types.h" />
     <ClInclude Include="..\thirdparty\simpleini\SimpleIni.h" />
+    <ClInclude Include="common.h" />
     <ClInclude Include="Components\KeyStates.h" />
     <ClInclude Include="Components\LuaManager.h" />
     <ClInclude Include="Components\LuaScripts_old.h" />
@@ -269,6 +271,7 @@
     <ClInclude Include="Memory\Snow.h" />
     <ClInclude Include="Memory\Vehicle.h" />
     <ClInclude Include="Menus\IMenuBuilder.h" />
+    <ClInclude Include="Menus\MiscMenu.h" />
     <ClInclude Include="Menus\PedMenu.h" />
     <ClInclude Include="Menus\PlayerMenu.h" />
     <ClInclude Include="Menus\TeleportMenu.h" />

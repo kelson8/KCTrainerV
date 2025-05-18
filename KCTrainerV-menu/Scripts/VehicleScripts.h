@@ -34,6 +34,11 @@ public:
 	// This will make the loop not constantly run
 	bool invincibilityFlag = false;
 
+	//
+	void CreateMissionTrain(Hash model, Vector3 pos, bool direction);
+	Vehicle missionTrain = 0;
+	//
+
 
 private:
 	VehicleScripts() {} // Private constructor to prevent external instantiation

@@ -22,6 +22,29 @@ public:
 	void PlayLuaMusic(const std::string& track_id);
 #endif //LUA_TEST
 
+	// ID Gun tests from FiveM
+	void IdGun();
+	Entity GetEntityIsAimingAt(Ped ped);
+	bool isIdGunEnabled = false;
+
+	float entityIdMenuPosX = 0.190f;
+	//float entityIdMenuPosY = 0.6f;
+	float entityIdMenuPosY = 0.75f;
+
+	float entityCoordsMenuPosX = 0.190f;
+	//float entityCoordsMenuPosY = 0.7f;
+	float entityCoordsMenuPosY = 0.80f;
+
+	float entityHeadingMenuPosX = 0.190f;
+	//float entityHeadingMenuPosY = 0.8f;
+	float entityHeadingMenuPosY = 0.85f;
+
+	float entityModelMenuPosX = 0.190f;
+	//float entityModelMenuPosY = 0.973f;
+	float entityModelMenuPosY = 0.9f;
+
+	//
+
 	// Play test music
 	//void PlayTestMusic(int track);
 	void PlayTestMusic(MusicTracks track);

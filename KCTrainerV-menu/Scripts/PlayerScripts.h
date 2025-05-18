@@ -93,6 +93,11 @@ public:
     // Test for fading the screen in/out.
     void TestFade();
     //
+
+    // Mobile radio toggling
+    void EnableMobileRadio();
+    void DisableMobileRadio();
+    //
     
     //static bool IsInvincibilityEnabled()
     //{
@@ -143,6 +148,10 @@ public:
 
     bool neverWantedEnabled = false;
     bool neverWantedFlag = false;
+    
+    // Mobile radio
+    bool isMobileRadioEnabled = false;
+    bool mobileRadioFlag = false;
 
 private:
     PlayerScripts() {} // Private constructor to prevent external instantiation

@@ -2,6 +2,9 @@
 
 #include "MiscScripts.h"
 #include "Scripts/PlayerScripts.h"
+#include "Scripts/TextScripts.h"
+
+#include <format>
 
 #include "inc/types.h"
 
@@ -59,7 +62,141 @@ void MiscScripts::PlayLuaMusic(const std::string& track_id)
 #endif //LUA_TEST
 
 
+// Begin adapted from pun_idgun FiveM
+
+Entity MiscScripts::GetEntityIsAimingAt(Ped ped)
+{
+	// Blank value for function
+	Entity entity;
+	Entity isAimingAt = GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(ped, &entity);
+	//return isAimingAt;
+	return entity;
+}
+
+/// <summary>
+/// TODO Finalize some changes with this, from pun_idgun in FiveM
+/// This seems to mostly work other then getting the ped names and vehicle names.
+/// Shows these values:
+/// Entity ID
+/// Entity X, Y, Z
+/// Entity Heading
+/// Entity Hash (Model name hash)
+/// Adapted from here: https://forum.cfx.re/t/id-gun-find-out-object-coords-headings-and-hashes/984257
+/// </summary>
+void MiscScripts::IdGun()
+{
+	auto& textScripts = TextScripts::GetInstance();
+	
+	auto& playerScripts = PlayerScripts::GetInstance();
+	//Ped playerPed = playerScripts.GetPlayerPed();
+	// I think this fixed it, I think I needed the playerID
+	Player playerPed = PLAYER_ID();
+
+	if (IS_PLAYER_FREE_AIMING(playerPed))
+	{
+		// Aimed at entity
+		Entity entity = this->GetEntityIsAimingAt(playerPed);
+		Vector3 entityCoords = GET_ENTITY_COORDS(entity, false);
+		float entityHeading = GET_ENTITY_HEADING(entity);
+		Hash entityHash = GET_ENTITY_MODEL(entity);
+
+		// Entity ID
+		std::string entityIdString = std::format("Entity ID: {}", std::to_string(entity));
+		textScripts.SetTextEntry(entityIdString.c_str());
+
+		// TODO Remove, debug lines
+		//std::cout << entityString << std::endl;
+		//
+
+		textScripts.TextPosition(entityIdMenuPosX, entityIdMenuPosY);
+
+		// Entity coords
+		//std::string entityCoordsString = std::format("Entity Coords: X: {} Y: {} Z: {}",
+		//	std::to_string(entityCoords.x), std::to_string(entityCoords.y), std::to_string(entityCoords.z));
+		//textScripts.SetTextEntry(entityCoordsString.c_str());
+
+		std::string entityCoordsString = std::format("Entity Coords: X: {:.2f} Y: {:.2f} Z: {:.2f}",
+			entityCoords.x, entityCoords.y, entityCoords.z);
+		textScripts.SetTextEntry(entityCoordsString.c_str());
+
+		textScripts.TextPosition(entityCoordsMenuPosX, entityCoordsMenuPosY);
+
+		// Entity heading
+		std::string entityHeadingString = std::format("Entity Heading: {}" ,std::to_string(entityHeading));
+		textScripts.SetTextEntry(entityHeadingString.c_str());
+
+		textScripts.TextPosition(entityHeadingMenuPosX, entityHeadingMenuPosY);
+
+		// If the entity is a vehicle, show the name of the vehicle instead of the entity model hash.
+		// Well this doesn't seem to work.
+		//if (IS_ENTITY_A_VEHICLE(entity))
+		//{
+			// Hmm, just says 'CARNOTFOUND'?
+			//Vehicle vehicle = GET_VEHICLE_PED_IS_IN(entity, false);
+			//std::string vehicleName = GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicle);
+
+			//std::string vehicleNameString = std::format("Vehicle Name: {}", vehicleName);
+			//textScripts.SetTextEntry(vehicleNameString.c_str());
+			//textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+		//}
+		 //Show the entity model hash
+		//else {
+		//	 //Entity Model
+			std::string entityModelString = std::format("Entity Model Hash: {}", std::to_string(entityHash));
+			textScripts.SetTextEntry(entityModelString.c_str(), 255, 255, 255, 255);
+			textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+		//}
+
+		/*if (IS_ENTITY_A_PED(entity))
+		{*/
+
+
+			//Vehicle vehicle = GET_VEHICLE_PED_IS_IN(entity, false);
+			//Hash vehicleModel = GET_ENTITY_MODEL(vehicle); // Get the hash of the vehicle
+
+			//if (DOES_ENTITY_EXIST(vehicle))
+			//{
+				// TODO Replicate this
+				/*
+					if hashes[tostring(model_veh)] then
+						modelVehText = hashes[tostring(model_veh)]         -- Set the modelText local with the actual name.
+                   else
+						modelVehText = model_veh                           -- Set the modelText local.
+					end
+
+				*/
+			//}
+
+		//}
+
+	}
+}
+
+//void DrawInfos()
+//{
+//	/*
+//	    local args = {...}
+//    for k,v in pairs(args) do
+//	*/
+//	float ypos = 0.70;
 //
+//	SET_TEXT_COLOUR(255, 255, 255, 255);
+//	SET_TEXT_FONT(0);
+//	SET_TEXT_SCALE(0.4, 0.4);
+//	SET_TEXT_WRAP(0.0, 1.0);
+//	SET_TEXT_CENTRE(false);
+//	SET_TEXT_DROPSHADOW(0, 0, 0, 0, 255);
+//	SET_TEXT_EDGE(50, 0, 0, 0, 255);
+//	SET_TEXT_OUTLINE();
+//	//SetTextEntry("STRING");
+//	//AddTextComponentString(v);
+//	//DRAW_TEXT(0.015, ypos);
+//	ypos = ypos + 0.028;
+//}
+
+// End adapted from pun_idgun FiveM
+
+
 
 
 

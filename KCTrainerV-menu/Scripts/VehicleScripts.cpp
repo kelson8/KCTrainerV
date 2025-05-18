@@ -1,6 +1,7 @@
 #include "VehicleScripts.h"
 
 #include "PlayerScripts.h"
+#include "../Util/Enums.h"
 
 #include "Util/UI.hpp"
 
@@ -268,4 +269,45 @@ void VehicleScripts::DisableInvincibility()
         SET_ENTITY_PROOFS(currentVeh, false, false, false, false, false, false, false, false);
         UI::Notify("Vehicle is no longer invincible");
     }
+}
+
+// TODO Fix this to work, I might experiment with this in FiveM
+// TODO Figure out which direction the bool makes you face.
+    // Models can be one of these:
+    // I made an enum to possibly use later: TrainModels
+    /*
+        freight
+        freightcar
+        freightgrain
+        freightcont1
+        freightcont2
+        freighttrailer
+        tankercar"
+        metrotrain
+        "s_m_m_lsmetro_01
+    */
+
+// I have a list of hashses in Enums.h for the train models.
+void VehicleScripts::CreateMissionTrain(Hash model, Vector3 pos, bool direction)
+{
+    // First, delete all trains
+    DELETE_ALL_TRAINS();
+    // This can also be toggled if needed
+    //SET_RANDOM_TRAINS(false);
+
+    // Might be a good idea to check if the model exists
+    if (!IS_MODEL_IN_CDIMAGE(model))
+    {
+        return;
+    }
+
+    // Then, request the model
+    REQUEST_MODEL(model);
+    while (!HAS_MODEL_LOADED(model))
+    {
+        WAIT(0);
+    }
+
+    missionTrain = CREATE_MISSION_TRAIN(model, pos, direction, 0, 1);
+
 }

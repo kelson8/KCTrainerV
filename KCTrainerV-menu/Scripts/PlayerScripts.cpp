@@ -655,3 +655,22 @@ void SetStats()
 
     */
 }
+
+// Mobile radio toggling
+
+void PlayerScripts::EnableMobileRadio()
+{
+    SET_MOBILE_PHONE_RADIO_STATE(true);
+    SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(true);
+    UI::Notify("Mobile radio enabled");
+    this->mobileRadioFlag = true;
+
+}
+
+void PlayerScripts::DisableMobileRadio()
+{
+    SET_MOBILE_PHONE_RADIO_STATE(false);
+    SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
+    UI::Notify("Mobile radio disabled");
+    this->mobileRadioFlag = false;
+}

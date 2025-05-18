@@ -52,6 +52,10 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
         playerScripts.ToggleNightVision();
     }
 
+
+    mbCtx.StringArray("--Extras--", { "" }, nothing);
+    mbCtx.BoolOption("Toggle Mobile radio", playerScripts.isMobileRadioEnabled, { "Turn on/off radio outside vehicles" });
+
     // Tests
     // TODO Move these into WeaponMenu.cpp, need to create it first.
     // This gives me a weapon

@@ -25,6 +25,21 @@ void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // Toggles the boolean to spawn in the vehicle and remove the old one.
     mbCtx.BoolOption("Spawn into vehicle", vehicleScripts.spawnInsideVehicle, { "Toggle spawning in the spawned vehicle" });
 
+    // This crashes it, I'll try to fix it later.
+#ifdef _TEST
+    if (mbCtx.Option("Create Test Train", {"Create a train as a test at Train Station #1 warp."}))
+    {
+        Hash trainHash = "freight"_hash;
+        float trainX = 247.9364f;
+        float trainY = -1198.597f;
+        float trainZ = 37.4482f;
+        Vector3 trainPos = Vector3(trainX, trainY, trainZ);
+
+        //vehicleScripts.CreateMissionTrain(0, trainPos, true);
+        vehicleScripts.CreateMissionTrain(trainHash, trainPos, true);
+    }
+#endif //_TEST
+
     // Moved vehicle spawning code into the categories.
     mbCtx.MenuOption("Categories", "VehicleCategorySubmenu", { "Show the list of vehicle categories." });
 }

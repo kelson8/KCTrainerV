@@ -13,6 +13,12 @@
 
 // When I get this working, I should be able to draw stuff to the screen.
 
+// To use this (This needs to be run in a loop):
+// 1. Set the text: std::string textToDisplay = "Test Text";
+// 2. Set the text entry: SetTextEntry(textToDisplay.c_str());
+// 3. Set the text position (This is in the bottom left by the map): TextPosition(0.193f, 0.951f - .0525f);
+
+
 // Lua example from FiveM for usage:
 // TODO Add this to the main loop if I turn on a debug text such as how many cops I killed to show on screen.
 /*
@@ -43,6 +49,7 @@ CreateThread(function()
 /// This should setup the text entry for drawing to the screen.
 /// This will need to be ran before drawing anything to the screen.
 /// Adapted from my FiveM scripts originally in lua.
+/// This function sets the colors mostly to red.
 /// </summary>
 void TextScripts::SetTextEntry(const char* text)
 {
@@ -52,11 +59,38 @@ void TextScripts::SetTextEntry(const char* text)
 	int colorA = 255;
 
 	// This works like this, I think the previous way I was doing it was incorrect.
-	// It was making the menu dissappear but now this works
+	// It was making the menu disappear but now this works
 	
 	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
 	
+	// Extras
+	HUD::SET_TEXT_PROPORTIONAL(true);
+	HUD::SET_TEXT_JUSTIFICATION(0);
+	//
+
+	HUD::SET_TEXT_FONT(0); // 0 - 4
+	HUD::SET_TEXT_SCALE(0.3, 0.3);
+	HUD::SET_TEXT_COLOUR(colorR, colorG, colorB, colorA);
+	//HUD::BEGIN_TEXT_COMMAND_PRINT("STRING");
+
+	//HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+}
+
+/// <summary>
+/// This should setup the text entry for drawing to the screen.
+/// This will need to be ran before drawing anything to the screen.
+/// Adapted from my FiveM scripts originally in lua.
+/// This version of the function takes a colorR, colorG, colorB, and colorA for the colors.
+/// </summary>
+void TextScripts::SetTextEntry(const char* text, int colorR, int colorG, int colorB, int colorA)
+{
+	// This works like this, I think the previous way I was doing it was incorrect.
+	// It was making the menu disappear but now this works
+
+	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+
 	// Extras
 	HUD::SET_TEXT_PROPORTIONAL(true);
 	HUD::SET_TEXT_JUSTIFICATION(0);

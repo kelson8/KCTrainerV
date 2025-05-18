@@ -21,11 +21,10 @@
 // Such as when the vehicle invincibility is turned on, it won't constantly run the functions.
 
 void KCMainScript::Tick() {
-    //PlayerScripts playerScripts;
+    // Scripts
     auto& textScripts = TextScripts::GetInstance();
 
     auto& playerScripts = PlayerScripts::GetInstance();
-
     auto& miscScripts = MiscScripts::GetInstance();
     auto& vehicleScripts = VehicleScripts::GetInstance();
 
@@ -113,6 +112,17 @@ void KCMainScript::Tick() {
         vehicleScripts.invincibilityFlag = false;
     }
     
+    // Mobile radio toggle
+    if(playerScripts.isMobileRadioEnabled && !playerScripts.mobileRadioFlag)
+    {
+        playerScripts.EnableMobileRadio();
+        playerScripts.mobileRadioFlag = true;
+    } else if(!playerScripts.isMobileRadioEnabled && playerScripts.mobileRadioFlag)
+    {
+        playerScripts.DisableMobileRadio();
+        playerScripts.mobileRadioFlag = false;
+    }
+    
     
 
     // Display text on screen
@@ -129,6 +139,12 @@ void KCMainScript::Tick() {
         // TODO, figure out how to slow down the coordinates display, I guess it's fine for now.
         //WAIT(100);
         textScripts.DisplayCoordinates();
+    }
+
+    // This mostly works, draw entity id, entity x,y,z, entity heading, and entity model hash to the screen.
+    if (miscScripts.isIdGunEnabled)
+    {
+        miscScripts.IdGun();
     }
     
     //textScripts.SetTextEntry();

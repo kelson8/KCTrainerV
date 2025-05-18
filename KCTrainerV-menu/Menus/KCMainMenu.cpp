@@ -29,6 +29,7 @@
 #include "TeleportMenu.h"
 #include "VehicleMenu.h"
 #include "WorldMenu.h"
+#include "MiscMenu.h"
 
 // Teleports
 #include "Teleports/TeleportLocations.h"
@@ -70,7 +71,9 @@ namespace
 }
 
 // Set for playing the music tracks
+#ifndef MOVE_MENUS
 int currentMusicTrack;
+#endif
 
 /*
  * This function builds the menu's submenus, and the submenus are passed into the CScriptMenu constructor.
@@ -97,6 +100,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     auto& teleportMenu = TeleportMenu::GetInstance();
     auto& vehicleMenu = VehicleMenu::GetInstance();
     auto& worldMenu = WorldMenu::GetInstance();
+    auto& miscMenu = MiscMenu::GetInstance();
 
     std::vector<CScriptMenu<KCMainScript>::CSubmenu> submenus;
     submenus.emplace_back("mainmenu",
@@ -130,7 +134,11 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             mbCtx.MenuOption("Ped", "pedmenu", { "Show the ped menu." });
             mbCtx.MenuOption("World", "worldmenu", { "This submenu contains items for the world menu." });
 
+#ifdef MOVE_MENUS
+            mbCtx.MenuOption("Misc", "miscMenu", { "Misc menu." });
+#else
             mbCtx.MenuOption("Test Sub Menu", "submenutest", { "Testing menu." });
+#endif //MOVE_MENUS
 
             // Showing a non-scrolling aligned item is also possible, if the vector only contains one element.
             int nothing = 0;
@@ -297,15 +305,23 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     // TODO Also add credits to the Chaos mod features menu, such as an about button or something at the bottom.
     
 #pragma region SubMenuTest
+#ifdef MOVE_MENUS
+    submenus.emplace_back("miscMenu",
+#else
     submenus.emplace_back("submenutest",
+#endif
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            mbCtx.Title("Test Sub menu");
+
+#ifndef MOVE_MENUS
+            mbCtx.Title("Misc Menu");
 
             if (mbCtx.Option("Notify", { "Test notification" }))
             {
                 UI::Notify("Test notification");
             }
+
+            mbCtx.BoolOption("ID Gun test", miscScripts.isIdGunEnabled, { "Toggle the ID Gun test from FiveM" });
 
             int nothing = 0;
             mbCtx.StringArray("--Music--", { "" }, nothing);
@@ -380,6 +396,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
             mbCtx.BoolOption("Draw text on screen", textScripts.drawText, { "Toggle test text to draw on screen." });
 
+            
 
 #ifdef EXTRA_FEATURES
             // TODO Add this boolean option
@@ -445,7 +462,22 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             //}
 
 
+#else
+            miscMenu.Build(mbCtx, context);
+#endif
+
         });
+
+        // Why doesn't this work in here?
+#ifdef MOVE_MENUS
+        submenus.emplace_back("submenutest", 
+            [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+                miscMenu.BuildTestSubMenu(mbCtx, context);
+        }
+            );
+#endif //MOVE_MENUS
+
 #pragma endregion
 
     return submenus;

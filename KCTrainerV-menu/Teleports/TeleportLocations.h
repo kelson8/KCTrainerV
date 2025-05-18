@@ -72,6 +72,8 @@ enum TeleportLocation
 	SP_YACHT1 = 2,
 #endif
 	RICHARDS_MAJESTIC_MOVIE_STUDIO = 3, // RICHARDS_MAJESTIC
+	TRAIN_STATION1 = 4,
+	TRAIN_STATION2 = 5,
 
 	// TODO Renumber these
 	//MOUNT_CHILLIAD = 2,

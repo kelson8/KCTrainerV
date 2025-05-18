@@ -67,6 +67,7 @@
 
 // Move the rest of the menus, I will remove this once I have tested it more.
 // This is no longer in use for now, I may use it in the future if I move more menus around
+// TODO Test moving sub menu from KCMainMenu into MiscMenu.cpp under a new Misc menu.
 //#define MOVE_MENUS
 
 namespace Constants 
