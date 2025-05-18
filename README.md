@@ -94,6 +94,12 @@ Credit to itsjustcurtis on GitHub for some functions and items I will be using f
 Credit to gta-chaos-mod on GitHub for some of the Memory management and chaos features I may use:
 * https://github.com/gta-chaos-mod/ChaosModV
 
+Credit to ThePhD on GitHub for the sol2 library I am using for lua: 
+* https://github.com/ThePhD/sol2
+
+Credit to Lua for the lua library I am using:
+* https://www.lua.org/download.html
+
 # License
 This project is Licensed under the GPLV3 license.
 

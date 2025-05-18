@@ -13,9 +13,42 @@
 #include <inc/main.h>
 #include <filesystem>
 
+#include <iostream>
+
 namespace fs = std::filesystem;
 
-// TODO Rename ExampleMenu to KCTrainerV
+/// <summary>
+/// Runs a console window for cout and other errors to be displayed
+/// Also print from lua into the console if enabled.
+/// This is now enabled in Script.cpp, keeping here in case I figure out how to use it in the DllMain
+/// </summary>
+//void AttachConsole()
+//{
+//#ifdef _WIN32
+//    if (AllocConsole())
+//    {
+//        // Redirect standard output, error, and input streams to the console
+//        FILE* dummy;
+//        freopen_s(&dummy, "CONOUT$", "w", stdout);
+//        freopen_s(&dummy, "CONOUT$", "w", stderr);
+//        freopen_s(&dummy, "CONIN$", "r", stdin);
+//
+//        // Optional: Set the console title
+//        SetConsoleTitle("KCTrainerV");
+//
+//        std::cout << "Console attached successfully!" << std::endl;
+//        //std::cerr << "Error output will also appear here." << std::endl;
+//    }
+//    else
+//    {
+//        // Handle the case where console allocation fails (unlikely in most scenarios)
+//        // You might want to log an error message using your in-game system.
+//        std::cerr << "Failed to allocate console." << std::endl;
+//    }
+//#else
+//    std::cerr << "AllocConsole() is only available on Windows." << std::endl;
+//#endif
+//}
 
 /*
  * As the game is often installed in a default directory, like
@@ -121,6 +154,10 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
             // Log the data path
             LOG(INFO, "Data path: {}", Paths::GetModPath().string());
 
+
+            // Attach the console to the game before scriptRegister, may crash it here.
+            // This is being run in Script.cpp, I may try to run it in here if I can get it working.
+            //AttachConsole();
             scriptRegister(hInstance, KCMenu::ScriptMain);
             LOG(INFO, "Script registered");
             break;
