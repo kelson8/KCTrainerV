@@ -10,6 +10,7 @@
 #include <string>
 
 #include <inc/natives.h>
+#include "../Natives/natives2.h"
 
 // When I get this working, I should be able to draw stuff to the screen.
 
@@ -247,3 +248,63 @@ void TextScripts::DisplayCoordinates()
 
 
 }
+
+
+//----------- Notifications ------------/
+
+// TODO Move these, play sounds
+// Adapted from Menyoo
+void PlayFrontend(const std::string& sound_dict, const std::string& sound_name)
+{
+	AUDIO::PLAY_SOUND_FRONTEND(-1, sound_name.c_str(), sound_dict.c_str(), FALSE);
+}
+void PlayFrontend_default(const std::string& sound_name)
+{
+	AUDIO::PLAY_SOUND_FRONTEND(-1, sound_name.c_str(), "HUD_FRONTEND_DEFAULT_SOUNDSET", FALSE);
+}
+//
+
+// TODO Fix this
+// Adapted from Menyoo, for the long string function
+//void add_text_component_long_string(const std::string& text)
+//{
+//	const UINT8 maxStrComponentLength = 99;
+//	for (int i = 0; i < text.length(); i += maxStrComponentLength)
+//	{
+//		const std::string& strComp = text.substr(i, std::min(text.length() - i, maxStrComponentLength));
+//		ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(strComp.c_str());
+//	}
+//}
+
+// Adapted from Menyoo, Print to bottom left and play phone sound
+void TextScripts::NotificationBottomLeft(std::string notificationString, bool gxt)
+{
+	const char* text = notificationString.c_str();
+
+	if (gxt && DOES_TEXT_LABEL_EXIST(text))
+		BEGIN_TEXT_COMMAND_THEFEED_POST(text);
+	else
+	{
+		if (notificationString.length() < 100)
+		{
+			BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
+			ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+		}
+		// TODO Fix this
+		//else
+		//{
+		//	BEGIN_TEXT_COMMAND_THEFEED_POST("jamyfafi");
+		//	add_text_component_long_string(s);
+		//}
+	}
+
+	//Game::Sound::PlayFrontend("Phone_SoundSet_Default", "Text_Arrive_Tone");
+	PlayFrontend("Phone_SoundSet_Default", "Text_Arrive_Tone");
+
+	//END_TEXT_COMMAND_THEFEED_POST_TICKER_FORCED(0, 1);
+	//return END_TEXT_COMMAND_THEFEED_POST_TICKER(0, 0);
+	END_TEXT_COMMAND_THEFEED_POST_TICKER(0, 0);
+}
+
+
+//

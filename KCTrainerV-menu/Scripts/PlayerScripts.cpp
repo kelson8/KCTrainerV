@@ -10,6 +10,7 @@
 #include <format>
 
 #include "../Util/Hash.h"
+#include "../Util/Util.hpp"
 
 
 
@@ -319,6 +320,121 @@ Vector3 PlayerScripts::GetWaypointCoords()
 }
 
 #pragma endregion
+
+
+#pragma region HealthArmorAndKilling
+
+// TODO Test these functions under the pragma region HealthArmorAndKilling, they are all untested.
+
+/// <summary>
+/// Get the players current health
+/// </summary>
+/// <param name="player"></param>
+/// <returns>The current health as an int</returns>
+int PlayerScripts::GetPlayerHealth(Ped player)
+{
+    int currentPlayerHealth = GET_ENTITY_HEALTH(player);
+    return currentPlayerHealth;
+}
+
+/// <summary>
+/// Get the players current armor
+/// </summary>
+/// <param name="player"></param>
+/// <returns>The current armor as an int</returns>
+int PlayerScripts::GetPlayerArmor(Ped player)
+{
+    int currentPlayerArmor = GET_PED_ARMOUR(player);
+    return currentPlayerArmor;
+}
+
+/// <summary>
+/// Set the players health to a specific value
+/// </summary>
+/// <param name="player"></param>
+/// <param name="health"></param>
+void PlayerScripts::SetPlayerHealth(Ped player, int health)
+{
+    SET_ENTITY_HEALTH(player, health, 0);
+}
+
+void PlayerScripts::SetPlayerArmor(Ped player, int armor)
+{
+    SET_PED_ARMOUR(player, armor);
+}
+
+/// <summary>
+/// Set the player health and armor to max.
+/// </summary>
+/// <param name="player"></param>
+void PlayerScripts::HealPlayer(Ped player)
+{
+    int playerMaxHealth = GET_ENTITY_MAX_HEALTH(player);
+    int playerMaxArmor = GET_PLAYER_MAX_ARMOUR(player);
+    
+    SET_ENTITY_HEALTH(player, playerMaxHealth, 0);
+    // This doesn't seem to run.
+    SET_PED_ARMOUR(player, playerMaxArmor);
+}
+
+/// <summary>
+/// TODO Test this
+/// Taken from PlayerSuicide.cpp in Chaos Mod, I didn't know this was an animation
+/// Oops, this crashes it.
+/// </summary>
+void PlayerScripts::KillPlayerMP()
+{
+    Util util;
+
+    DWORD startTime = GetTickCount();
+    DWORD timeout = 3000; // in millis
+
+    Ped playerPed = PLAYER_PED_ID();
+    if (!IS_PED_IN_ANY_VEHICLE(playerPed, false) && IS_PED_ON_FOOT(playerPed)
+        && GET_PED_PARACHUTE_STATE(playerPed) == -1)
+    {
+        REQUEST_ANIM_DICT("mp_suicide");
+        // Added this check like in the vehicle spawner, if it doens't load this shouldn't crash the game
+        // This at least makes it not crash, but it doesn't work like my vehicle spawner doesn't.
+        // TODO Make a function to wait on animations and play them
+        // Possibly make a AnimScripts.cpp?
+        while (!HAS_ANIM_DICT_LOADED("mp_suicide")) {
+            WAIT(0);
+
+            if (GetTickCount() > startTime + timeout) 
+            {
+                UI::Notify("Couldn't load animation");
+
+                util.ShowSubtitle("Couldn't load animation");
+                WAIT(0);
+
+                REMOVE_ANIM_DICT("mp_suicide");
+
+                // Make this break out of the function, it shouldn't continue.
+                return;
+            }
+        }
+
+        // Give the player a pistol
+        Hash pistolHash = "WEAPON_PISTOL"_hash;
+
+        GIVE_WEAPON_TO_PED(playerPed, pistolHash, 9999, true, true);
+        
+        // Play the MP Suicide animation
+        TASK_PLAY_ANIM(playerPed, "mp_suicide", "pistol", 8.0f, -1.0f, 800, 1, 0.f, false, false, false);
+        
+        WAIT(750);
+        //SET_PED_SHOOTS_AT_COORD(playerPed, 0, 0, 0, true);
+        // Make the player shoot
+        SET_PED_SHOOTS_AT_COORD(playerPed, Vector3(0.0f, 0.0f, 0.0f), true);
+        REMOVE_ANIM_DICT("mp_suicide");
+    }
+
+    // Set the players health to 0.
+    SET_ENTITY_HEALTH(playerPed, 0, 0);
+}
+
+#pragma endregion // HealthArmorAndKilling
 
 
 #pragma region FadeFunctions
@@ -835,7 +951,36 @@ int PlayerScripts::GetCopsVehiclesBlownUpStat()
 
 #pragma region StatLoops
 
+
 // Stat loops
+
+//------------ Cops cars blown up Logic --------------/
+// Set default value for this to 0
+int PlayerScripts::copvehiclesBlownUpBeforeDying = 0;
+
+/// <summary>
+/// Add one to the cop copvehiclesBlownUpBeforeDying stat
+/// </summary>
+void PlayerScripts::IncrementCopVehiclesBlownUp() {
+    copvehiclesBlownUpBeforeDying++;
+}
+
+/// <summary>
+/// Reset the cop vehicles blown up stat back to 0
+/// </summary>
+void PlayerScripts::ResetCopVehiclesBlownUpBeforeDying() {
+    copvehiclesBlownUpBeforeDying = 0;
+}
+
+/// <summary>
+/// Get the current copvehiclesBlownUpBeforeDying value.
+/// </summary>
+int PlayerScripts::GetCopVehiclesBlownUpBeforeDying() {
+    return copvehiclesBlownUpBeforeDying;
+}
+
+
+//------------ Cops killed logic --------------/
 
 // Set default value for this to 0
 int PlayerScripts::copsKilledBeforeDying = 0;
@@ -861,6 +1006,11 @@ int PlayerScripts::GetCopsKilledBeforeDying() {
     return copsKilledBeforeDying;
 }
 
+//------------ End Cops killed logic --------------/
+
+//------------ Cops killed stat display -------------/ 
+//------------ And Cop vehicles blown up stat display --------------/
+
 /// <summary>
 /// This works as a system that increments 
 /// depending on how many cops/swat you kill, for now this only prints to the console with std::cout.
@@ -877,45 +1027,41 @@ void PlayerScripts::ProcessCopsKilled()
 
     PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
 
+    // TODO Make these into functions in this class.
+    bool isPlayerDead = IS_ENTITY_DEAD(PlayerScripts::GetPlayerPed(), false);
+    bool isPlayerBeingArrested = IS_PLAYER_BEING_ARRESTED(PlayerScripts::GetPlayerID(), true);
+
+    //---
     // Get the "KILLS_COP" and "KILLS_SWAT" stats.
+    //---
     //int copsKilled = 0;
     //int swatKilled = 0;
 
     int copsKilled = PlayerScripts::GetPlayerStat(currentPlayer, "KILLS_COP");
     int swatKilled = PlayerScripts::GetPlayerStat(currentPlayer, "KILLS_SWAT");
 
-    // Old method for this, switched to GetPlayerStat helper method
-    //switch (currentPlayer)
-    //{
-    //case PlayerModels::MICHEAL: // SP0
-    //    STAT_GET_INT("SP0_KILLS_COP"_hash, &copsKilled, -1);
-    //    STAT_GET_INT("SP0_KILLS_SWAT"_hash, &swatKilled, -1);
-    //    break;
+    int copCarsBlownUp = PlayerScripts::GetPlayerStat(currentPlayer, "CARS_COPS_EXPLODED");
 
-    //case PlayerModels::FRANKLIN: // SP1
-    //    STAT_GET_INT("SP1_KILLS_COP"_hash, &copsKilled, -1);
-    //    STAT_GET_INT("SP1_KILLS_SWAT"_hash, &swatKilled, -1);
-    //    break;
-
-    //case PlayerModels::TREVOR: // SP2
-    //    STAT_GET_INT("SP2_KILLS_COP"_hash, &copsKilled, -1);
-    //    STAT_GET_INT("SP2_KILLS_SWAT"_hash, &swatKilled, -1);
-    //    break;
-
-    //default:
-    //    copsKilled = 0;
-    //    swatKilled = 0;
-    //    break;
-    //}
+    // This might be the stat to get the total helicopters exploded:
+    // HELIS_EXPLODED
 
     // Combine the copsKilled and swatKilled stats
     int totalCopsKilled = copsKilled + swatKilled;
 
+    //---
     // Keep track of previous value
+    //---
     //static int previousKills = copsKilled;
     static int previousKills = totalCopsKilled;
 
-    // Check if the stat has been increased.
+    int totalCopCarsBlownUp = copCarsBlownUp;
+    static int previousCopCarsBlownUp = totalCopCarsBlownUp;
+    
+    
+
+    //---
+    // Check if the cops/swat killed stat has been increased.
+    //---
     //if (copsKilled > previousKills)
     if (totalCopsKilled > previousKills)
     {
@@ -925,34 +1071,82 @@ void PlayerScripts::ProcessCopsKilled()
         previousKills = totalCopsKilled;
     }
 
+    //---
+    // Check if the cops blown up stat has been increased
+    //---
+    if (totalCopCarsBlownUp > previousCopCarsBlownUp)
+    {
+        PlayerScripts::IncrementCopVehiclesBlownUp();
+        // Update the previousCopCarsBlownUp value
+        previousCopCarsBlownUp = totalCopCarsBlownUp;
+    }
+
+    //---
     // Check if the player has died or been busted.
+    //---
     if (IS_ENTITY_DEAD(PlayerScripts::GetPlayerPed(), false) || IS_PLAYER_BEING_ARRESTED(PlayerScripts::GetPlayerID(), true))
     {
         // Reset the previous kills back to 0.
         this->ResetCopsKilledBeforeDying();
         previousKills = totalCopsKilled;
+
+        // Reset the previous cop cars blown up to 0
+        this->ResetCopVehiclesBlownUpBeforeDying();
+        previousCopCarsBlownUp = totalCopCarsBlownUp;
     }
 
+    //---
     // Display the current kills count
+    //---
     int copsKilledThisLife = PlayerScripts::GetCopsKilledBeforeDying();
     // Store it in a string stream
     std::stringstream ss;
     ss << "Cops killed this life: " << copsKilledThisLife;
-    std::string displayString = ss.str();
+    std::string copsKilledString = ss.str();
 
     // Print to console
-    std::cout << displayString << std::endl;
+    std::cout << copsKilledString << std::endl;
 
     // Display to screen
     // This displays the value to the screen
-    textScripts.SetTextEntry(displayString.c_str(), 255, 255, 255, 255);
 
-    textScripts.TextPosition(copsKilledMenuPosX, copsKilledMenuPosY);
+    // This shouldn't draw if the player is dead or being arrested.
+    if (!isPlayerDead || !isPlayerBeingArrested)
+    {
+        textScripts.SetTextEntry(copsKilledString.c_str(), 255, 255, 255, 255);
+
+        textScripts.TextPosition(copsKilledMenuPosX, copsKilledMenuPosY);
+    }
+
+    //---
+    // Display the current cop vehicles blown up
+    //---
+    // Well this part isn't working yet, this displays but the value doesn't update.
+    int copCarsBlownUpThisLife = PlayerScripts::GetCopVehiclesBlownUpBeforeDying();
+    std::stringstream ss1;
+    ss1 << "Cop cars blown up this life: " << copCarsBlownUpThisLife;
+    // TODO Test
+    //ss1 << "Total cop cars blown up: " << copCarsBlownUp;
+    std::string copCarsBlownUpString = ss1.str();
+
+    // Disabled, print to console
+    //std::cout << copCarsBlownUpString << std::endl;
+
+    // This shouldn't draw if the player is dead or being arrested.
+    if (!isPlayerDead || !isPlayerBeingArrested)
+    {
+        // Display to screen
+        textScripts.SetTextEntry(copCarsBlownUpString.c_str(), 255, 255, 255, 255);
+
+        textScripts.TextPosition(copsCarsBlownUpMenuPosX, copsCarsBlownUpMenuPosY);
+
+    }
+    
 }
 
 #pragma endregion // StatLoops
 
-//
+//------------ End Cops killed stat display --------------/
 
 //----------- End Stats --------------//
 

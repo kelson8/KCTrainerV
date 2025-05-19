@@ -5,13 +5,53 @@
 
 #include "Util/UI.hpp"
 
-#include <format>
-
 // Some parts from GTAVAddonLoader
 #include "Util/Util.hpp"
 
 #include "../Natives/natives2.h"
 
+#include <iostream>
+#include <format>
+
+/// <summary>
+/// Requesting a vehicle model for use in the game spawning functions.
+/// This function will timeout after 3 seconds to prevent crashing.
+/// 
+/// Usage: Make a vehicle spawner do nothing if this is false.
+/// if(!VehicleScripts::RequestModel(model) return;
+/// </summary>
+/// <param name="model"></param>
+//void VehicleScripts::RequestModel(Hash model)
+bool VehicleScripts::RequestModel(Hash model)
+{
+    Util util;
+
+    DWORD startTime = GetTickCount();
+    DWORD timeout = 3000; // in millis
+
+    REQUEST_MODEL(model);
+    while (!HAS_MODEL_LOADED(model))
+    {
+        WAIT(0);
+
+        // Add crash protection to this, seems to work for the vehicle and other items.
+        if (GetTickCount() > startTime + timeout) {
+            // Couldn't load model
+            WAIT(0);
+            UI::Notify("Couldn't load model");
+
+            util.ShowSubtitle("Couldn't load model");
+
+            std::cout << std::format("Couldn't load model: {}", model) << std::endl;
+
+            STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
+            return false;
+        }
+    }
+
+    // Should only ever return true if this was a success
+    return true;
+}
 
 /// <summary>
 /// Get the players current vehicle.
@@ -124,23 +164,18 @@ void VehicleScripts::RepairVehicle()
  */
 void VehicleScripts::SpawnVehicle(Hash hash) {
     Util util;
+    auto& playerScripts = PlayerScripts::GetInstance();
+
     if (STREAMING::IS_MODEL_IN_CDIMAGE(hash) && STREAMING::IS_MODEL_A_VEHICLE(hash)) {
-        Ped playerPed = PLAYER::PLAYER_PED_ID();
-        STREAMING::REQUEST_MODEL(hash);
-        DWORD startTime = GetTickCount();
-        DWORD timeout = 3000; // in millis
-
-        while (!STREAMING::HAS_MODEL_LOADED(hash)) {
-            WAIT(0);
-            if (GetTickCount() > startTime + timeout) {
-                UI::Notify("Couldn't load model");
-
-                util.ShowSubtitle("Couldn't load model");
-                //Util::ShowSubtitle("Couldn't load model");
-                WAIT(0);
-                STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-                return;
-            }
+        //Ped playerPed = PLAYER::PLAYER_PED_ID();
+        //Ped playerPed = playerScripts.GetPlayerPed();
+        Ped playerPed = playerScripts.GetPlayerID();
+        
+        // This function seems to work for this.
+        // Make this do nothing if the model isn't loaded
+        if (!VehicleScripts::RequestModel(hash))
+        {
+            return;
         }
 
         // TODO Possibly setup ini file for loading the SpawnInside value?
@@ -164,6 +199,7 @@ void VehicleScripts::SpawnVehicle(Hash hash) {
             // width + margin + width again 
             offsetX = ((newMax.x - newMin.x) / 2.0f) + 1.0f + ((oldMax.x - oldMin.x) / 2.0f);
         }
+        
 
         Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(playerPed, { offsetX, 0.0f, 0.0f });
 
@@ -176,6 +212,7 @@ void VehicleScripts::SpawnVehicle(Hash hash) {
             VEHICLE::DELETE_VEHICLE(&oldVeh);
             pos = oldVehiclePos;
         }
+        
 
 
         Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, pos, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()), 0, 1, 0);
@@ -189,6 +226,7 @@ void VehicleScripts::SpawnVehicle(Hash hash) {
             PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
 
         }
+        
 
         WAIT(0);
         STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
@@ -210,23 +248,35 @@ void VehicleScripts::SpawnVehicle(Hash hash) {
     }
 }
 
-Vehicle VehicleScripts::SpawnVehicle(Hash hash, Vector3 coords, float heading, DWORD timeout) {
+//Vehicle VehicleScripts::SpawnVehicle(Hash hash, Vector3 coords, float heading, DWORD timeout) {
+Vehicle VehicleScripts::SpawnVehicle(Hash hash, Vector3 coords, float heading) {
+    // Vehicle doesn't exist
     if (!(STREAMING::IS_MODEL_IN_CDIMAGE(hash) && STREAMING::IS_MODEL_A_VEHICLE(hash))) {
-        // Vehicle doesn't exist
         return 0;
     }
-    STREAMING::REQUEST_MODEL(hash);
-    DWORD startTime = GetTickCount();
+    
+    // This function seems to work for this.
+    // Make this do nothing if the model isn't loaded
 
-    while (!STREAMING::HAS_MODEL_LOADED(hash)) {
-        WAIT(0);
-        if (GetTickCount() > startTime + timeout) {
-            // Couldn't load model
-            WAIT(0);
-            STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-            return 0;
-        }
+    // TODO Test in this function, I mostly use the other one but this one might work.
+    if (!VehicleScripts::RequestModel(hash))
+    {
+        return 0;
     }
+
+    //STREAMING::REQUEST_MODEL(hash);
+    
+    //DWORD startTime = GetTickCount();
+
+    //while (!STREAMING::HAS_MODEL_LOADED(hash)) {
+    //    WAIT(0);
+    //    if (GetTickCount() > startTime + timeout) {
+    //        // Couldn't load model
+    //        WAIT(0);
+    //        STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+    //        return 0;
+    //    }
+    //}
 
     Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, coords, heading, 0, 1, 0);
     VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh, 5.0f);
@@ -290,23 +340,34 @@ void VehicleScripts::DisableInvincibility()
 // I have a list of hashses in Enums.h for the train models.
 void VehicleScripts::CreateMissionTrain(Hash model, Vector3 pos, bool direction)
 {
+    //Util util;
+
+    DWORD startTime = GetTickCount();
+    DWORD timeout = 3000; // in millis
+
     // First, delete all trains
     DELETE_ALL_TRAINS();
     // This can also be toggled if needed
     //SET_RANDOM_TRAINS(false);
 
-    // Might be a good idea to check if the model exists
-    if (!IS_MODEL_IN_CDIMAGE(model))
+    // Request the model, if it doesn't load do nothing.
+    if (!VehicleScripts::RequestModel(model))
     {
         return;
     }
 
-    // Then, request the model
-    REQUEST_MODEL(model);
-    while (!HAS_MODEL_LOADED(model))
-    {
+
+    /*
+        while (!STREAMING::HAS_MODEL_LOADED(hash)) {
         WAIT(0);
+        if (GetTickCount() > startTime + timeout) {
+            // Couldn't load model
+            WAIT(0);
+            STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+            return 0;
+        }
     }
+    */
 
     missionTrain = CREATE_MISSION_TRAIN(model, pos, direction, 0, 1);
 

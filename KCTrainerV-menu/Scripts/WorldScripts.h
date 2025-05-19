@@ -17,6 +17,9 @@ public:
 	void KillAllPedsInArea();
 	void BlowUpAllVehiclesInArea();
 
+	// Respawn points
+	void DisableHospitalSpawns();
+	void SetRespawnLocation(Vector3 coords, float heading);
 
 	// From Menyoo
 	void DisableRestrictedAreas();

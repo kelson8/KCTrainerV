@@ -89,7 +89,12 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     // Instances of these objects, this is a great way to use booleans and stuff between files.
     // Scripts
     auto& playerScripts = PlayerScripts::GetInstance();
+#ifdef VEHICLE_SCRIPTS_SINGLETON
     auto& vehicleScripts = VehicleScripts::GetInstance();
+#else
+    VehicleScripts vehicleScripts = VehicleScripts();
+#endif
+
     auto& pedScripts = PedScripts::GetInstance();
     auto& miscScripts = MiscScripts::GetInstance();
 
@@ -334,6 +339,11 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
                 UI::Notify("Test notification");
             }
 
+            if (mbCtx.Option("Notify phone sound", { "Test notification with phone sound" }))
+            {
+                textScripts.NotificationBottomLeft("Test notification");
+            }
+
             mbCtx.BoolOption("ID Gun test", miscScripts.isIdGunEnabled, { "Toggle the ID Gun test from FiveM" });
 
             int nothing = 0;
@@ -412,30 +422,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             
 
 #ifdef EXTRA_FEATURES
-            // TODO Add this boolean option
-            //mbCtx.BoolOption("Toggle sky", &miscScripts.toggleSky);
-            
-            // Toggle sky
-            if (mbCtx.Option("Enable Sky"))
-            {
-                miscScripts.EnableSky();
-            }
-
-            if (mbCtx.Option("Disable Sky"))
-            {
-                miscScripts.DisableSky();
-            }
-
-            // Toggle snow
-            if (mbCtx.Option("Enable Snow"))
-            {
-                miscScripts.EnableSnow();
-            }
-
-            if (mbCtx.Option("Disable Snow"))
-            {
-                miscScripts.DisableSnow();
-            }
+ 
 
             // Toggle force field
             mbCtx.BoolOption("Toggle forcefield", miscScripts.isForceFieldEnabled, { "Turn on/off the forcefield for the player." });
@@ -463,6 +450,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             //}
 #endif //EXTRA_FEATURES
 
+            // TODO Figure out why this function doesn't work.
             if (mbCtx.Option("Test Fade out/in", { "Test for fading the screen out and back in" }))
             {
                 playerScripts.TestFade();

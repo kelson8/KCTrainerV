@@ -46,6 +46,18 @@ public:
     // Get the waypoint coords
     Vector3 GetWaypointCoords();
 
+
+    // Health armor and killing
+    int GetPlayerHealth(Ped player);
+    int GetPlayerArmor(Ped player);
+
+    void SetPlayerHealth(Ped player, int health);
+    void SetPlayerArmor(Ped player, int armor);
+    void HealPlayer(Ped player);
+
+    // Kill the player with the multiplayer suicide animation.
+    void KillPlayerMP();
+
     // Teleport player to location specified in the enum
     // TODO Adapt below to new format once I set it up:
     // 
@@ -177,6 +189,13 @@ public:
     float copsKilledMenuPosX = 0.204f;
     // Menu Position Y
     float copsKilledMenuPosY = 0.963f;
+
+    // Cop cars blown up
+    //float copsCarsBlownUpMenuPosX = 0.150f;
+    float copsCarsBlownUpMenuPosX = 0.220f;
+    //float copsCarsBlownUpMenuPosY = 0.870f;
+    float copsCarsBlownUpMenuPosY = 0.935f;
+
     // Is the display active
     bool isCopsKilledDisplayActive = false;
 
@@ -194,6 +213,14 @@ private:
     //static inline Hash GetStatHash(PlayerModels character, const std::string& statName);
 
     // New methods for tracking cops killed before dying
+
+    // Cop cars blown up
+    static int copvehiclesBlownUpBeforeDying;
+    void IncrementCopVehiclesBlownUp();
+    void ResetCopVehiclesBlownUpBeforeDying();
+    int GetCopVehiclesBlownUpBeforeDying();
+
+    // Cop kills
     static void IncrementCopsKilled();
     static void ResetCopsKilledBeforeDying();
     static int GetCopsKilledBeforeDying();

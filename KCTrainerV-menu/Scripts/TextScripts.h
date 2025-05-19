@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 class TextScripts
 {
 public:
@@ -25,6 +27,10 @@ public:
 
 	// Coords and heading
 	void DisplayCoordinates();
+	//
+
+	// Notifications
+	void NotificationBottomLeft(std::string notificationString, bool gxt = false);
 	//
 
 	// Booleans

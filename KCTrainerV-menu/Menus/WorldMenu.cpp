@@ -5,6 +5,7 @@
 #include "Scripts/VehicleScripts.h"
 #include "Scripts/PedScripts.h"
 #include "Scripts/WorldScripts.h"
+#include "Scripts/MiscScripts.h"
 
 #include "Util/FileFunctions.h"
 
@@ -17,6 +18,11 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& worldScripts = WorldScripts::GetInstance();
+    auto& miscScripts = MiscScripts::GetInstance();
+
+    // Respawn locations, TODO add these to a different file.
+    Vector3 michealsHouseCoords = Vector3(-813.603f, 179.474f, 72.1548f);
+    float  michealsHouseHeading = 0.0f;
 
     mbCtx.Title("World");
 
@@ -33,6 +39,50 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     {
         worldScripts.BlowUpAllVehiclesInArea();
     }
+
+    // TODO Move toggle sky and toggle snow into here from submenu in KCMainMenu.
+
+#ifdef EXTRA_FEATURES
+
+    // TODO Add this boolean option
+    //mbCtx.BoolOption("Toggle sky", &miscScripts.toggleSky);
+
+    // Toggle sky
+    if (mbCtx.Option("Enable Sky"))
+    {
+        miscScripts.EnableSky();
+    }
+
+    if (mbCtx.Option("Disable Sky"))
+    {
+        miscScripts.DisableSky();
+    }
+
+    // Toggle snow
+    if (mbCtx.Option("Enable Snow"))
+    {
+        miscScripts.EnableSnow();
+    }
+
+    if (mbCtx.Option("Disable Snow"))
+    {
+        miscScripts.DisableSnow();
+    }
+
+#endif // EXTRA_FEATURES
+
+    // TODO Fix these to work, I would like to change the respawns.
+    //if (mbCtx.Option("Delete hospital respawns.", { "Disable all hospitals on the map." }))
+    //{
+    //    worldScripts.DisableHospitalSpawns();
+    //}
+
+    //// Well this didn't work.
+    //if (mbCtx.Option("Set respawn to micheals house.", {"Set respawn coords with heading."}))
+    //{
+    //    // Micheals house
+    //    worldScripts.SetRespawnLocation(michealsHouseCoords, michealsHouseHeading);
+    //}
 
 
 

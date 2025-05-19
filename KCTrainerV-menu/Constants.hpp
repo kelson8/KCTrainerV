@@ -70,6 +70,12 @@
 // TODO Test moving sub menu from KCMainMenu into MiscMenu.cpp under a new Misc menu.
 //#define MOVE_MENUS
 
+// If this is on it enables the singleton in VehicleScripts.h
+#define VEHICLE_SCRIPTS_SINGLETON
+
+// This toggles my tick events running such as god mode and never wanted, can be turned off for testing.
+#define RUN_TICKS
+
 namespace Constants 
 {
     static const char* const ScriptName = "KCTrainerV";

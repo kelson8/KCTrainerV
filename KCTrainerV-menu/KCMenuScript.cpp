@@ -14,6 +14,8 @@
 
 #include "Util/UI.hpp"
 
+#include <iostream>
+
 // New
 //#include "Util/Paths.hpp"
 //#include "Util/Logger.hpp"
@@ -32,8 +34,38 @@ void KCMainScript::Tick() {
 
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& miscScripts = MiscScripts::GetInstance();
+
+#ifdef VEHICLE_SCRIPTS_SINGLETON
     auto& vehicleScripts = VehicleScripts::GetInstance();
+#else
+    VehicleScripts vehicleScripts = VehicleScripts();
+#endif
+
     auto& worldScripts = WorldScripts::GetInstance();
+
+    //TODO Re-enable these, testing with my tick items disabled.
+#ifdef RUN_TICKS
+
+    // If the player has died, run this
+    // TODO Set this up.
+    //if (!playerScripts.IsPlayerAlive() && playerScripts.playerAliveFlag)
+    //{
+        // playerAliveFlag = false;
+    //} else {
+        // playerAliveFlag = true;
+    //
+
+    // Respawn locations, TODO add these to a different file.
+    //Vector3 michealsHouseCoords = Vector3(-813.603f, 179.474f, 72.1548f);
+    //float  michealsHouseHeading = 0.0f;
+
+    //if (PLAYER::IS_PLAYER_DEAD(playerScripts.GetPlayerID()))
+    //{
+    //    // Well this works.. Just spams the console lol.
+    //    // At least I know this is firing off, now how do I change the respawn locations?
+    //    //std::cout << "Player is dead";
+    //    worldScripts.SetRespawnLocation(michealsHouseCoords, michealsHouseHeading);
+    //}
 
     // Hmm, this seems to work if I toggle it in my menu.
     if (miscScripts.airStrikeRunning)
@@ -189,6 +221,7 @@ void KCMainScript::Tick() {
     //textScripts.SetTextPosition();
     
 
+#endif // RUN_TICKS
 
 }
 

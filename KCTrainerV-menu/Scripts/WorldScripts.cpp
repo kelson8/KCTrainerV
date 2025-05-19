@@ -69,6 +69,50 @@ void WorldScripts::BlowUpAllVehiclesInArea()
 	}
 }
 
+#pragma region Respawns
+
+/// <summary>
+/// Disable all hospital respawns.
+/// </summary>
+void WorldScripts::DisableHospitalSpawns()
+{
+	// This should possibly disable all hospital respawns
+	// TODO Test this
+	for (int i = 0; i < 10; i++)
+	{
+		DISABLE_HOSPITAL_RESTART(i, true);
+		std::cout << "Hospital " << i << " disabled." << std::endl;
+	}
+
+	UI::Notify("All hospitals disabled");
+}
+
+/// <summary>
+/// TODO Fix this
+/// Set a new hospital respawn.
+/// https://gtaforums.com/topic/839812-creating-a-respawn-point-hospital/
+/// Well this didn't work.
+/// </summary>
+/// <param name="coords"></param>
+/// <param name="heading"></param>
+void WorldScripts::SetRespawnLocation(Vector3 coords, float heading)
+{
+
+	// I wonder what this will do?
+	// Well these did nothing, does one of these need to be in a loop?
+	// _DISABLE_AUTOMATIC_RESPAWN
+	//PAUSE_DEATH_ARREST_RESTART(true);
+	//IGNORE_NEXT_RESTART(true);
+
+	// DisableHospitalSpawns();
+
+
+	ADD_HOSPITAL_RESTART(coords, heading, false);
+
+	UI::Notify("Set new spawnpoint");
+}
+
+#pragma endregion // Respawns
 
 // Adapted from Menyoo, Routine.cpp
 
@@ -216,18 +260,6 @@ void set_blackout_mode()
 {
 	SET_ARTIFICIAL_LIGHTS_STATE(TRUE);
 	SET_ARTIFICIAL_VEHICLE_LIGHTS_STATE(FALSE);
-}
-
-// Playerped - ability
-void set_self_nearby_peds_calm()
-{
-	for (auto& ped : _nearbyPeds)
-	{
-		NETWORK_REQUEST_CONTROL_OF_ENTITY(ped);
-		SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, 1);
-		SET_PED_FLEE_ATTRIBUTES(ped, 0, 0);
-		SET_PED_COMBAT_ATTRIBUTES(ped, 17, 1);
-	}
 }
 
 */

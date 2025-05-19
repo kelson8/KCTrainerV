@@ -51,6 +51,8 @@ void KCMenu::AttachConsole()
     {
         // TODO Possibly add log messages in here for logging when this attaches and errors to the KCTrainerV.log?
 
+        std::string programBuildString = std::format("Program build time and date: {} @ {}", __DATE__, __TIME__);
+
         // Redirect standard output, error, and input streams to the console
         FILE* dummy;
         freopen_s(&dummy, "CONOUT$", "w", stdout);
@@ -61,6 +63,11 @@ void KCMenu::AttachConsole()
         SetConsoleTitle("KCTrainerV");
 
         std::cout << "Console attached successfully!" << std::endl;
+
+        // Show the time and date when this was built
+        //std::cout << std::format("Program build time and date: {} @ ", __DATE__, __TIME__) << std::endl;
+        std::cout << programBuildString << std::endl;
+
         //std::cerr << "Error output will also appear here." << std::endl;
     }
     else

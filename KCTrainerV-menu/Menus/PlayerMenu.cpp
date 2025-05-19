@@ -28,6 +28,27 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // This seems to work fine for an invincibility toggle in here like this.
     mbCtx.BoolOption("Invincibility", playerScripts.invincibilityEnabled, { " Turn on/off invincibility" });
 
+    // This sets the health but not the armor
+    if (mbCtx.Option("Heal yourself", { "Set your health and armor to max" }))
+    {
+        playerScripts.HealPlayer(playerScripts.GetPlayerPed());
+    }
+
+    if (mbCtx.Option("Suicide", { "Kill the player, explosions will also be added." }))
+    {
+        //playerScripts.HealPlayer(playerScripts.GetPlayerPed());
+        playerScripts.SetPlayerHealth(playerScripts.GetPlayerPed(), 0);
+        playerScripts.SetPlayerArmor(playerScripts.GetPlayerPed(), 0);
+    }
+
+
+    // TODO Fix this to work.
+    if (mbCtx.Option("MP Suicide", { "Kill yourself with the multiplayer animation." }))
+    {
+        playerScripts.KillPlayerMP();
+    }
+
+
     mbCtx.IntOption("Wanted level", playerScripts.wantedLevel, 0, 5, 1, { "Wanted level to set" });
     if (mbCtx.Option("Set Wanted Level", { "Set your wanted level" }))
     {
@@ -160,9 +181,16 @@ void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
     //float stepValue = 0.015f;
     float stepValue = 0.001f;
     mbCtx.StringArray("--Cops killed debug--", { "" }, nothing, { "These below items will only show up in debug builds." });
+    
+    // Cops killed on menu
     // Player X position on menu
-    mbCtx.FloatOption("Cops killed menu X", playerScripts.copsKilledMenuPosX, 0.f, 1.0f, stepValue);
+    mbCtx.FloatOption("Cops killed menu X", playerScripts.copsKilledMenuPosX, 0.f, 1.0f, stepValue);    
     mbCtx.FloatOption("Cops killed menu Y", playerScripts.copsKilledMenuPosY, 0.f, 1.0f, stepValue);
+    
+
+    //Cop cars blown up on menu
+    mbCtx.FloatOption("Cops cars blown up menu X", playerScripts.copsCarsBlownUpMenuPosX, 0.f, 1.0f, stepValue);
+    mbCtx.FloatOption("Cops cars blown up menu Y", playerScripts.copsCarsBlownUpMenuPosY, 0.f, 1.0f, stepValue);
 
 #else
     // Do nothing in release.
