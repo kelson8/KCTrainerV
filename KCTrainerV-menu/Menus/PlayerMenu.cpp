@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include "../common.h"
+
 #include "PlayerMenu.h"
 
 #include "../Util/Hash.h"
@@ -83,5 +86,81 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     //    VehicleScripts::ToggleBombBayDoors();
     //}
 
+#ifdef DEBUG_MODE
+    mbCtx.MenuOption("Player Debug", "PlayerDebugSubmenu", { "Debug menu for player functions." });
+    //if (mbCtx.Option("Log cops killed stat", { "Log the cops killed stat to the console." }))
+    //{
+    //    std::cout << playerScripts.GetCopsKilledStat() << std::endl;
+    //}
+
+    //if (mbCtx.Option("Log cops killed stat", { "Log the cops killed stat to the console." }))
+    //{
+    //    std::cout << playerScripts.GetCopsKilledStat() << std::endl;
+    //}
+#endif
+
 }
+
+void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+{
+#ifdef DEBUG_MODE
+    mbCtx.Title("Player Debug");
+
+    auto& playerScripts = PlayerScripts::GetInstance();
+    auto& pedScripts = PedScripts::GetInstance();
+    auto& tasks = Tasks::GetInstance();
+
+    Ped playerPed = playerScripts.GetPlayerPed();
+
+    //int copsKilledStat = playerScripts.GetCopsKilledStat(PlayerModels::FRANKLIN);
+    int copsKilledStat = playerScripts.GetCopsKilledStat();
+    //int copVehiclesBlownUpStat = playerScripts.GetCopsVehiclesBlownUpStat(PlayerModels::FRANKLIN);
+    int copVehiclesBlownUpStat = playerScripts.GetCopsVehiclesBlownUpStat();
+
+    PlayerModels currentPlayerModel = playerScripts.GetCurrentPlayerModel();
+
+    int nothing = 0;
+    mbCtx.StringArray("--Logging--", { "" }, nothing);
+    // TODO Setup player selector for these
+    if (mbCtx.Option("Cops killed stat", { "Log the cops killed stat to the console." }))
+    {
+        // My code defaults to 0 if the value is invalid, possibly change this?
+        if (copsKilledStat != 0)
+        {
+            std::cout << "Cops killed: " << copsKilledStat << std::endl;
+        }
+        
+    }
+
+    if (mbCtx.Option("Cop vehicles exploded", { "Log the cops blown up stat to the console." }))
+    {
+        std::cout << "Cops cars blown up: " << copVehiclesBlownUpStat << std::endl;
+    }
+
+    if (mbCtx.Option("Current player model", {"Log the currently selected player, Micheal, Franklin, or Trevor."}))
+    {
+        switch (currentPlayerModel)
+        {
+        case PlayerModels::MICHEAL:
+            std::cout << "Current player model: Micheal" << std::endl;
+            break;
+
+        case PlayerModels::FRANKLIN:
+            std::cout << "Current player model: Franklin" << std::endl;
+            break;
+
+        case PlayerModels::TREVOR:
+            std::cout << "Current player model: Trevor" << std::endl;
+            break;
+        }
+    }
+
+    mbCtx.BoolOption("Log cops killed this life", playerScripts.isCopsKilledDisplayActive, { "Log the amount of cops killed before death to the console" });
+#else
+    // Do nothing in release.
+    return;
+#endif //DEBUG_MODE
+}
+
+
 #endif

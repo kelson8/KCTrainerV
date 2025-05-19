@@ -164,6 +164,15 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     );
 
 
+    submenus.emplace_back("PlayerDebugSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            playerMenu.BuildDebugSubMenu(mbCtx, context);
+        }
+    );
+
+
+
 #pragma endregion
 
 #pragma region VehicleMenu

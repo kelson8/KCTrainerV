@@ -17,7 +17,6 @@ public:
 
 	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context) override;
 
-
 private:
 	WorldMenu() {} // Private constructor to prevent external instantiation
 	WorldMenu(const WorldMenu&) = delete;

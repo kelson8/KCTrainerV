@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+#include "Util/Enums.h"
+
 #include "Teleports/TeleportLocations.h"
 
 #include <inc/natives.h>
@@ -71,8 +73,15 @@ public:
     void SetWantedLevel();
 
     // Geting the player char and id
-    int GetPlayerPed();
+    Ped GetPlayerPed();
     int GetPlayerID();
+
+    // Get the players stat
+    int GetPlayerStat(PlayerModels character, const char* statName);
+
+    // Get the current player model
+    static PlayerModels GetCurrentPlayerModel();
+    //
 
     // Get player coords and heading
     Vector3 GetPlayerCoords();
@@ -92,6 +101,13 @@ public:
     void FadeScreenIn(int ms);
     // Test for fading the screen in/out.
     void TestFade();
+    //
+
+    // Stat tests
+    //int GetCopsKilledStat(PlayerModels character);
+    int GetCopsKilledStat();
+    //int GetCopsVehiclesBlownUpStat(PlayerModels character);
+    int GetCopsVehiclesBlownUpStat();
     //
 
     // Mobile radio toggling
@@ -153,16 +169,42 @@ public:
     bool isMobileRadioEnabled = false;
     bool mobileRadioFlag = false;
 
+    // For new cops killed stat system, I will make it display on the screen later.
+    void ProcessCopsKilled();
+    bool isCopsKilledDisplayActive = false;
+
 private:
+
+
     PlayerScripts() {} // Private constructor to prevent external instantiation
     PlayerScripts(const PlayerScripts&) = delete;
     PlayerScripts& operator=(const PlayerScripts&) = delete;
+
+    // Stat misc
+    // TODO Fix these, should make it to where I don't have to manually specify the player for the stats.
+    // Direct mapping from the PlayerModel enum to the PlayerData struct.
+    //static const std::array<PlayerData, static_cast<size_t>(PlayerModels::COUNT)> playerData;
+
+    // Get the stat hash
+    //static inline Hash GetStatHash(PlayerModels character, const std::string& statName);
+
+    // New methods for tracking cops killed before dying
+    static void IncrementCopsKilled();
+    static void ResetCopsKilledBeforeDying();
+    static int GetCopsKilledBeforeDying();
+
+
+    static int copsKilledBeforeDying; // Static variable to track the count
 
     float mDistance{ 0.0f };
 
     // Toggles
     bool heatVisionToggled;
     bool nightVisionToggled;
+
+
+
+
 
 };
 

@@ -214,6 +214,7 @@
     <ClCompile Include="Scripts\Tasks.cpp" />
     <ClCompile Include="Scripts\TextScripts.cpp" />
     <ClCompile Include="Scripts\VehicleScripts.cpp" />
+    <ClCompile Include="Scripts\WorldScripts.cpp" />
     <ClCompile Include="Teleports\TeleportLocations.cpp" />
     <ClCompile Include="Util\FileFunctions.cpp" />
     <ClCompile Include="Util\GTAmath.cpp" />
@@ -297,6 +298,7 @@
     <ClInclude Include="Scripts\Tasks.h" />
     <ClInclude Include="Scripts\TextScripts.h" />
     <ClInclude Include="Scripts\VehicleScripts.h" />
+    <ClInclude Include="Scripts\WorldScripts.h" />
     <ClInclude Include="Teleports\TeleLocation.h" />
     <ClInclude Include="Teleports\TeleportLocations.h" />
     <ClInclude Include="Util\EntityIterator.h" />

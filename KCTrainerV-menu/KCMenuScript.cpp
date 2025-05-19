@@ -1,10 +1,16 @@
 #include "KCMenuScript.hpp"
 
+// I think this slows down compiling time in here.
+//#include "common.h"
+
 #include "Scripts/PlayerScripts.h"
 #include "Scripts/MiscScripts.h"
 #include "Scripts/VehicleScripts.h"
+#include "Scripts/WorldScripts.h"
 
 #include "Scripts/TextScripts.h"
+
+#include "Util/Enums.h"
 
 #include "Util/UI.hpp"
 
@@ -27,6 +33,7 @@ void KCMainScript::Tick() {
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& miscScripts = MiscScripts::GetInstance();
     auto& vehicleScripts = VehicleScripts::GetInstance();
+    auto& worldScripts = WorldScripts::GetInstance();
 
     // Hmm, this seems to work if I toggle it in my menu.
     if (miscScripts.airStrikeRunning)
@@ -71,6 +78,12 @@ void KCMainScript::Tick() {
         // I added a debug notify line here to test that.
         UI::Notify("Never wanted off.");
         playerScripts.neverWantedFlag = false;
+    }
+
+    // New stat features
+    if (playerScripts.isCopsKilledDisplayActive)
+    {
+        playerScripts.ProcessCopsKilled();
     }
     
 #ifdef EXTRA_FEATURES
@@ -146,7 +159,30 @@ void KCMainScript::Tick() {
     {
         miscScripts.IdGun();
     }
+
+    // Turn on/off restricted areas
+    // This works but doesn't turn back off, disabled for now.
+    //if (worldScripts.isRestrictedAreasDisabled)
+    //{
+    //    worldScripts.DisableRestrictedAreas();
+    //}
+    //
     
+    // Adapted from Menyoo
+    // Set fireworks in a loop near the player
+    if (worldScripts.isFireworksStarted)
+    {
+        worldScripts.FireworksLoop();
+    }
+
+
+    // Make all the peds in the area calm, meaning they shouldn't run from anything.
+    if (worldScripts.isPedsCalmActive)
+    {
+        worldScripts.SetPedsCalm();
+    }
+    // End adapted from Menyoo
+   
     //textScripts.SetTextEntry();
 
     //HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Test");

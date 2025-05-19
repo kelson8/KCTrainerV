@@ -19,9 +19,12 @@ public:
 #ifdef MOVE_PLAYER_MENU
 	//void Build(NativeMenu::Menu& mbCtx, KCMainScript& context);
 	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context) override;
+	void BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
+
 #endif // MOVE_PLAYER_MENU
 
 private:
+
 	PlayerMenu() {} // Private constructor to prevent external instantiation
 	PlayerMenu(const PlayerMenu&) = delete;
 	PlayerMenu& operator=(const PlayerMenu&) = delete;

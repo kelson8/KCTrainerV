@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "PlayerScripts.h"
 
 #include "Util/UI.hpp"
@@ -5,6 +7,10 @@
 
 #include <inc/natives.h>
 #include <format>
+
+#include "../Util/Hash.h"
+
+
 
 // From Menyoo, makes it to where I don't have to type the namespaces for the natives.
 #include "Natives/natives2.h"
@@ -19,6 +25,22 @@
 
 // Ints
 int wantedLevel = 0;
+
+// Getting the current player
+// TODO Fix these, should make it to where I don't have to manually specify the player for the stats.
+//const std::array<PlayerData, static_cast<size_t>(PlayerModels::COUNT)> PlayerScripts::playerData = {
+//    { PlayerModels::MICHEAL, "SP0_", "Michael" },
+//    { PlayerModels::FRANKLIN, "SP1_", "Franklin" },
+//    { PlayerModels::TREVOR, "SP2_", "Trevor" }
+//};
+
+// Get the stat hash
+//static inline Hash GetStatHash(PlayerModels character, const std::string& statName)
+//{
+//    return (playerData[static_cast<size_t>(character)].prefix + statName).c_str()_hash;
+//}
+
+//
 
 /// <summary>
 /// Get the players current health as a string.
@@ -66,20 +88,16 @@ bool PlayerScripts::IsPlayerInVehicle() {
 }
 
 
-// These get set in the below functions
-// TODO Change these from int to Ped
-int player = 0;
-int playerID = 0;
+#pragma region PlayerPedAndChar
 
 /// <summary>
 /// Get the player ped
-/// TODO Change this from int to Ped
 /// </summary>
 /// <returns></returns>
-int PlayerScripts::GetPlayerPed()
+Ped PlayerScripts::GetPlayerPed()
 {
     int myPlayer = PLAYER::PLAYER_ID();
-    player = PLAYER::GET_PLAYER_PED(myPlayer);
+    Ped player = PLAYER::GET_PLAYER_PED(myPlayer);
     return player;
 }
 
@@ -91,9 +109,78 @@ int PlayerScripts::GetPlayerPed()
 int PlayerScripts::GetPlayerID()
 {
     int myPlayer = PLAYER::PLAYER_ID();
-    playerID = myPlayer;
+    int playerID = myPlayer;
     return playerID;
 }
+
+/// <summary>
+/// This should get the stat string for the statName, this converts it into a hash.
+/// </summary>
+/// <param name="character">The character from the PlayerModels enum.</param>
+/// <param name="statName">The name of the stat, such as 'KILLS_COP'</param>
+/// <returns></returns>
+int PlayerScripts::GetPlayerStat(PlayerModels character, const char* statName) {
+    int statValue = 0;
+
+    std::string statString;
+
+    switch (character) {
+    case PlayerModels::MICHEAL:
+        statString = "SP0_" + std::string(statName);
+        break;
+    case PlayerModels::FRANKLIN:
+        statString = "SP1_" + std::string(statName);
+        break;
+    case PlayerModels::TREVOR:
+        statString = "SP2_" + std::string(statName);
+        break;
+    default:
+        statValue = 0;
+        return statValue;
+    }
+
+    STAT_GET_INT(MISC::GET_HASH_KEY(statString.c_str()), &statValue, -1);
+    return statValue;
+}
+
+
+/// <summary>
+/// This works!
+/// </summary>
+/// <returns>The current player model that is playing, checks between Micheal, Franklin, and Trevor.</returns>
+PlayerModels PlayerScripts::GetCurrentPlayerModel()
+{
+    // Get the game's player ID for the current player
+    Player playerId = PLAYER::PLAYER_ID();
+
+    // Get the ped index (handle) of the player's character
+    Ped playerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(playerId);
+
+    // Compare the ped index with known models
+    Hash michaelModel = "player_zero"_hash;
+    Hash franklinModel = "player_one"_hash;
+    Hash trevorModel = "player_two"_hash;
+
+    if (ENTITY::GET_ENTITY_MODEL(playerPed) == michaelModel)
+    {
+        return PlayerModels::MICHEAL;
+    }
+    else if (ENTITY::GET_ENTITY_MODEL(playerPed) == franklinModel)
+    {
+        return PlayerModels::FRANKLIN;
+    }
+    else if (ENTITY::GET_ENTITY_MODEL(playerPed) == trevorModel)
+    {
+        return PlayerModels::TREVOR;
+    }
+    else
+    {
+        // Set to micheal by default.
+        return PlayerModels::MICHEAL;
+    }
+}
+
+#pragma endregion
 
 #pragma region PlayerPositions
 /// <summary>
@@ -595,6 +682,13 @@ void PlayerScripts::WarpToLocation(TeleportLocation locationToTeleport)
 
 //----------- End WarpToLocation --------------//
 
+//----------- Begin Stats --------------//
+// TODO Possibly move these into StatScripts.cpp?
+
+// TODO Setup option to get police killed and cop cars blown up stats
+// When getting the stats, try to subtract the difference, 
+// so if there is 1000 cops killed in total, and 100 cops killed without dying, set the value to 100.
+
 /// <summary>
 /// TODO Set this up
 /// Also, compact these, possibly make a for loop?
@@ -621,8 +715,11 @@ void SetStats()
         KILLS_SWAT
 
     */
-    // SP0 = Franklin
-    // SP1 = Micheal
+    // From Menyoo:
+    // std::pair<std::string, std::string> vCharNames[3] = { { "SP0_", "Michael" },{ "SP1_", "Franklin" },{ "SP2_", "Trevor" } };
+
+    // SP0 = Michael
+    // SP1 = Franklin
     // SP2 = Trevor
     /*
     //MISC::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME(GAMEPLAY::GET_HASH_KEY("stats_controller"));
@@ -656,7 +753,207 @@ void SetStats()
     */
 }
 
-// Mobile radio toggling
+//     //CARS_COPS_EXPLODED
+    //    CARS_EXPLODED
+    //    COPS_KILLS_ON_SPREE
+
+    //    KILLS
+    //    KILLS_ARMED
+    //    KILLS_BY_OTHERS
+    //    KILLS_COP
+
+// So, SP0 is actually Micheal? I had these swapped..
+// TODO Set these below to get which player is playing, Michael = SP0, Franklin = SP1, Trevor = SP2
+// TODO Compact these, I'm sure there is a better way to do this then what I am doing.
+
+// From Menyoo:
+// std::pair<std::string, std::string> vCharNames[3] = { { "SP0_", "Michael" },{ "SP1_", "Franklin" },{ "SP2_", "Trevor" } };
+
+/// <summary>
+/// Get the cops kiled stat
+/// <param name="character">The player to select the stat for, using the PlayerModels enum class.</param>
+/// </summary>
+/// <returns>The amount of cops killed</returns>
+//int PlayerScripts::GetCopsKilledStat()
+//int PlayerScripts::GetCopsKilledStat(PlayerModels character)
+int PlayerScripts::GetCopsKilledStat()
+{
+    int copsKilledStat;
+
+    // TODO Test this, this should get the current player instead of me manually specifying it.
+    PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
+
+    //switch (character)
+    switch (currentPlayer)
+    {
+    case PlayerModels::MICHEAL: // SP0
+        STAT_GET_INT("SP0_KILLS_COP"_hash, &copsKilledStat, -1);
+        break;
+
+    case PlayerModels::FRANKLIN: // SP1
+        STAT_GET_INT("SP1_KILLS_COP"_hash, &copsKilledStat, -1);
+        break;
+
+    case PlayerModels::TREVOR: // SP2
+        STAT_GET_INT("SP2_KILLS_COP"_hash, &copsKilledStat, -1);
+        break;
+
+    default:
+        copsKilledStat = 0;
+        break;
+    }
+
+    return copsKilledStat;
+    
+
+}
+
+/// <summary>
+/// Get the cops cars blown up.
+/// </summary>
+/// <returns>The amount of cop cars blown up</returns>
+/// <param name="character">The player to select the stat for, using the PlayerModels enum class.</param>
+//int PlayerScripts::GetCopsVehiclesBlownUpStat()
+/// <returns></returns>
+//int PlayerScripts::GetCopsVehiclesBlownUpStat(PlayerModels character)
+int PlayerScripts::GetCopsVehiclesBlownUpStat()
+{
+    int copsVehiclesBlownUpStat;
+
+    PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
+
+    //switch (character)
+    switch (currentPlayer)
+    {
+    case PlayerModels::MICHEAL: // SP0
+        STAT_GET_INT("SP0_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
+        break;
+
+    case PlayerModels::FRANKLIN: // SP1
+        STAT_GET_INT("SP1_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
+        break;
+
+    case PlayerModels::TREVOR: // SP2
+        STAT_GET_INT("SP2_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
+        break;
+
+    default:
+        copsVehiclesBlownUpStat = 0;
+        break;
+    }
+
+    //STAT_GET_INT("SP0_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
+
+    return copsVehiclesBlownUpStat;
+
+}
+
+// Stat loops
+
+// Set default value for this to 0
+int PlayerScripts::copsKilledBeforeDying = 0;
+
+/// <summary>
+/// Add one to the cops killed stat
+/// </summary>
+void PlayerScripts::IncrementCopsKilled() {
+    copsKilledBeforeDying++;
+}
+
+/// <summary>
+/// Reset the cops killed stat back to 0
+/// </summary>
+void PlayerScripts::ResetCopsKilledBeforeDying() {
+    copsKilledBeforeDying = 0;
+}
+
+/// <summary>
+/// Get the current copsKilledBeforeDying value.
+/// </summary>
+int PlayerScripts::GetCopsKilledBeforeDying() {
+    return copsKilledBeforeDying;
+}
+
+
+
+/// <summary>
+/// This works as a system that increments 
+/// depending on how many cops/swat you kill, for now this only prints to the console with std::cout.
+/// Eventually, I'll make a function that tracks how many cop vehicles you blow up.
+/// This will draw to the screen and print to the console with std::cout also.
+/// </summary>
+void PlayerScripts::ProcessCopsKilled()
+{
+    PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
+
+    // Get the "KILLS_COP" and "KILLS_SWAT" stats.
+    //int copsKilled = 0;
+    //int swatKilled = 0;
+
+    int copsKilled = PlayerScripts::GetPlayerStat(currentPlayer, "KILLS_COP");
+    int swatKilled = PlayerScripts::GetPlayerStat(currentPlayer, "KILLS_SWAT");
+
+    // Old method for this, switched to GetPlayerStat helper method
+    //switch (currentPlayer)
+    //{
+    //case PlayerModels::MICHEAL: // SP0
+    //    STAT_GET_INT("SP0_KILLS_COP"_hash, &copsKilled, -1);
+    //    STAT_GET_INT("SP0_KILLS_SWAT"_hash, &swatKilled, -1);
+    //    break;
+
+    //case PlayerModels::FRANKLIN: // SP1
+    //    STAT_GET_INT("SP1_KILLS_COP"_hash, &copsKilled, -1);
+    //    STAT_GET_INT("SP1_KILLS_SWAT"_hash, &swatKilled, -1);
+    //    break;
+
+    //case PlayerModels::TREVOR: // SP2
+    //    STAT_GET_INT("SP2_KILLS_COP"_hash, &copsKilled, -1);
+    //    STAT_GET_INT("SP2_KILLS_SWAT"_hash, &swatKilled, -1);
+    //    break;
+
+    //default:
+    //    copsKilled = 0;
+    //    swatKilled = 0;
+    //    break;
+    //}
+
+    // Combine the copsKilled and swatKilled stats
+    int totalCopsKilled = copsKilled + swatKilled;
+
+    // Keep track of previous value
+    //static int previousKills = copsKilled;
+    static int previousKills = totalCopsKilled;
+
+    // Check if the stat has been increased.
+    //if (copsKilled > previousKills)
+    if (totalCopsKilled > previousKills)
+    {
+        this->IncrementCopsKilled();
+        // Update the previousKills value
+        //previousKills = copsKilled;
+        previousKills = totalCopsKilled;
+    }
+
+    // Check if the player has died or been busted.
+    if (IS_ENTITY_DEAD(this->GetPlayerPed(), false) || IS_PLAYER_BEING_ARRESTED(this->GetPlayerID(), true))
+    {
+        // Reset the previous kills back to 0.
+        this->ResetCopsKilledBeforeDying();
+        previousKills = totalCopsKilled;
+    }
+
+    // Display the current kills count
+    int copsKilledThisLife = this->GetCopsKilledBeforeDying();
+    std::stringstream ss;
+    ss << "Cops killed this life: " << copsKilledThisLife;
+    std::string displayString = ss.str();
+    std::cout << displayString << std::endl;
+}
+//
+
+//----------- End Stats --------------//
+
+//----------- Begin Mobile radio toggling --------------//
 
 void PlayerScripts::EnableMobileRadio()
 {
@@ -674,3 +971,5 @@ void PlayerScripts::DisableMobileRadio()
     UI::Notify("Mobile radio disabled");
     this->mobileRadioFlag = false;
 }
+
+//----------- End Mobile radio toggling --------------//

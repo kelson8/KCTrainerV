@@ -1,0 +1,42 @@
+#pragma once
+
+#include <inc/natives.h>
+
+
+class WorldScripts
+{
+public:
+	// Instance of the WorldScripts
+	static WorldScripts& GetInstance()
+	{
+		static WorldScripts instance;
+		return instance;
+	}
+
+
+	void KillAllPedsInArea();
+	void BlowUpAllVehiclesInArea();
+
+
+	// From Menyoo
+	void DisableRestrictedAreas();
+
+	void FireworksLoop();
+	void StartFireworksAtCoord(const Vector3& pos, const Vector3& rot, float scale);
+	void SetExplosionAtCoords(Vector3 pos, UINT8 type, float radius, float camshake, bool sound, bool invis);
+
+	void SetPedsCalm();
+	//
+
+	bool isRestrictedAreasDisabled = false;
+	bool areasDisabledFlag = false;
+
+	bool isFireworksStarted = false;
+
+	bool isPedsCalmActive = false;
+
+private:
+	WorldScripts() {} // Private constructor to prevent external instantiation
+	WorldScripts(const WorldScripts&) = delete;
+	WorldScripts& operator=(const WorldScripts&) = delete;
+};
