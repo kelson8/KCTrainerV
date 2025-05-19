@@ -48,7 +48,20 @@ namespace Memory
 		ms_BaseAddr = reinterpret_cast<DWORD64>(moduleInfo.lpBaseOfDll);
 		ms_EndAddr  = ms_BaseAddr + moduleInfo.SizeOfImage;
 
-		MH_Initialize();
+		//MH_Initialize();
+
+		// TODO Test this
+		if (MH_Initialize() != MH_OK) {
+			// Output an error message (if possible at this stage)
+			if (AllocConsole()) {
+				std::cerr << "MinHook initialization failed!" << std::endl;
+			}
+			else {
+				OutputDebugStringA("MinHook initialization failed! (No console)");
+			}
+		}
+		// ... your script registration code ...
+
 
 		// TODO Figure out how to use these feature flags, could be useful.
 		if (DoesFeatureFlagExist("skipintro"))

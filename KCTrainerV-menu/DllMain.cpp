@@ -15,6 +15,9 @@
 
 #include <iostream>
 
+// For MinHook and Memory functions for my menu.
+#include "Memory/Memory.h"
+
 namespace fs = std::filesystem;
 
 /// <summary>
@@ -154,6 +157,8 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
             // Log the data path
             LOG(INFO, "Data path: {}", Paths::GetModPath().string());
 
+            // This seems to work now without crashing.
+            Memory::Init();
 
             // Attach the console to the game before scriptRegister, may crash it here.
             // This is being run in Script.cpp, I may try to run it in here if I can get it working.
@@ -169,6 +174,11 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
         // FATAL: Trying to unregister unk script using module handle <memoryHandle>
         case DLL_PROCESS_DETACH: 
         {
+            // TODO Set this to disable never wanted and everything when the menu is reloaded.
+
+            // Disable MinHook and Memory features on script exit.
+            Memory::Uninit();
+
             scriptUnregister(hInstance);
             break;
         }

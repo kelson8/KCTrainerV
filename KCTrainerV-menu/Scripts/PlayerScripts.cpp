@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "PlayerScripts.h"
+#include "TextScripts.h"
 
 #include "Util/UI.hpp"
 #include "Util/Logger.hpp"
@@ -682,6 +683,8 @@ void PlayerScripts::WarpToLocation(TeleportLocation locationToTeleport)
 
 //----------- End WarpToLocation --------------//
 
+#pragma region Stats
+
 //----------- Begin Stats --------------//
 // TODO Possibly move these into StatScripts.cpp?
 
@@ -692,7 +695,7 @@ void PlayerScripts::WarpToLocation(TeleportLocation locationToTeleport)
 /// <summary>
 /// TODO Set this up
 /// Also, compact these, possibly make a for loop?
-/// Credit to this link for the stats: https://gtaforums.com/topic/802525-changing-stats/
+/// Credit to this gtaforums thread for some of these stats: https://gtaforums.com/topic/802525-changing-stats/
 /// Full stat list: https://vespura.com/fivem/gta-stats/
 /// </summary>
 void SetStats()
@@ -721,6 +724,7 @@ void SetStats()
     // SP0 = Michael
     // SP1 = Franklin
     // SP2 = Trevor
+    // I removed the extra values out of here, there was a bunch of duplicates.
     /*
     //MISC::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME(GAMEPLAY::GET_HASH_KEY("stats_controller"));
     STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_SPECIAL_ABILITY_UNLOCKED"), 100, true);
@@ -731,25 +735,6 @@ void SetStats()
     STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_SHOOTING_ABILITY"),         100, true);
     STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_STRENGTH"),                 100, true);
     STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP0_WHEELIE_ABILITY"),          100, true);
-
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_SPECIAL_ABILITY_UNLOCKED"), 100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_STAMINA"),                  100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_STEALTH_ABILITY"),          100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_LUNG_CAPACITY"),            100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_FLYING_ABILITY"),           100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_SHOOTING_ABILITY"),         100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_STRENGTH"),                 100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP1_WHEELIE_ABILITY"),          100, true);
-
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_SPECIAL_ABILITY_UNLOCKED"), 100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_STAMINA"),                  100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_STEALTH_ABILITY"),          100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_LUNG_CAPACITY"),            100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_FLYING_ABILITY"),           100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_SHOOTING_ABILITY"),         100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_STRENGTH"),                 100, true);
-    STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("SP2_WHEELIE_ABILITY"),          100, true);
-
     */
 }
 
@@ -848,6 +833,8 @@ int PlayerScripts::GetCopsVehiclesBlownUpStat()
 
 }
 
+#pragma region StatLoops
+
 // Stat loops
 
 // Set default value for this to 0
@@ -874,8 +861,6 @@ int PlayerScripts::GetCopsKilledBeforeDying() {
     return copsKilledBeforeDying;
 }
 
-
-
 /// <summary>
 /// This works as a system that increments 
 /// depending on how many cops/swat you kill, for now this only prints to the console with std::cout.
@@ -884,6 +869,12 @@ int PlayerScripts::GetCopsKilledBeforeDying() {
 /// </summary>
 void PlayerScripts::ProcessCopsKilled()
 {
+    auto& textScripts = TextScripts::GetInstance();
+
+    // Cops killed position on menu, this value is now in the header
+    //float copsKilledMenuPosX = 0.190f;
+    //float copsKilledMenuPosY = 0.949f;
+
     PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
 
     // Get the "KILLS_COP" and "KILLS_SWAT" stats.
@@ -928,14 +919,14 @@ void PlayerScripts::ProcessCopsKilled()
     //if (copsKilled > previousKills)
     if (totalCopsKilled > previousKills)
     {
-        this->IncrementCopsKilled();
+        PlayerScripts::IncrementCopsKilled();
         // Update the previousKills value
         //previousKills = copsKilled;
         previousKills = totalCopsKilled;
     }
 
     // Check if the player has died or been busted.
-    if (IS_ENTITY_DEAD(this->GetPlayerPed(), false) || IS_PLAYER_BEING_ARRESTED(this->GetPlayerID(), true))
+    if (IS_ENTITY_DEAD(PlayerScripts::GetPlayerPed(), false) || IS_PLAYER_BEING_ARRESTED(PlayerScripts::GetPlayerID(), true))
     {
         // Reset the previous kills back to 0.
         this->ResetCopsKilledBeforeDying();
@@ -943,15 +934,31 @@ void PlayerScripts::ProcessCopsKilled()
     }
 
     // Display the current kills count
-    int copsKilledThisLife = this->GetCopsKilledBeforeDying();
+    int copsKilledThisLife = PlayerScripts::GetCopsKilledBeforeDying();
+    // Store it in a string stream
     std::stringstream ss;
     ss << "Cops killed this life: " << copsKilledThisLife;
     std::string displayString = ss.str();
+
+    // Print to console
     std::cout << displayString << std::endl;
+
+    // Display to screen
+    // This displays the value to the screen
+    textScripts.SetTextEntry(displayString.c_str(), 255, 255, 255, 255);
+
+    textScripts.TextPosition(copsKilledMenuPosX, copsKilledMenuPosY);
 }
+
+#pragma endregion // StatLoops
+
 //
 
 //----------- End Stats --------------//
+
+#pragma endregion //Stats
+
+#pragma region MobileRadio
 
 //----------- Begin Mobile radio toggling --------------//
 
@@ -973,3 +980,5 @@ void PlayerScripts::DisableMobileRadio()
 }
 
 //----------- End Mobile radio toggling --------------//
+
+#pragma endregion // MobileRadio

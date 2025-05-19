@@ -155,7 +155,15 @@ void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
         }
     }
 
-    mbCtx.BoolOption("Log cops killed this life", playerScripts.isCopsKilledDisplayActive, { "Log the amount of cops killed before death to the console" });
+    mbCtx.BoolOption("Display cops killed", playerScripts.isCopsKilledDisplayActive, { "Log the amount of cops killed before death to the console and the screen." });
+    
+    //float stepValue = 0.015f;
+    float stepValue = 0.001f;
+    mbCtx.StringArray("--Cops killed debug--", { "" }, nothing, { "These below items will only show up in debug builds." });
+    // Player X position on menu
+    mbCtx.FloatOption("Cops killed menu X", playerScripts.copsKilledMenuPosX, 0.f, 1.0f, stepValue);
+    mbCtx.FloatOption("Cops killed menu Y", playerScripts.copsKilledMenuPosY, 0.f, 1.0f, stepValue);
+
 #else
     // Do nothing in release.
     return;

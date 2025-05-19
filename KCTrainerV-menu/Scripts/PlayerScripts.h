@@ -169,13 +169,18 @@ public:
     bool isMobileRadioEnabled = false;
     bool mobileRadioFlag = false;
 
-    // For new cops killed stat system, I will make it display on the screen later.
+    // For new cops killed stat system, this now displays on the screen.
     void ProcessCopsKilled();
+
+    // Position on menu
+    // Menu position X
+    float copsKilledMenuPosX = 0.204f;
+    // Menu Position Y
+    float copsKilledMenuPosY = 0.963f;
+    // Is the display active
     bool isCopsKilledDisplayActive = false;
 
 private:
-
-
     PlayerScripts() {} // Private constructor to prevent external instantiation
     PlayerScripts(const PlayerScripts&) = delete;
     PlayerScripts& operator=(const PlayerScripts&) = delete;

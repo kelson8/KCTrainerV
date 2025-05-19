@@ -31,6 +31,8 @@ public:
 	bool drawText = false;
 	bool drawCoords = false;
 
+
+	// TODO Make getters and setters for these values.
 	// Floats for coords drawing position
 	// The names of these might be a bit confusing, 
 	// playerXMenuPosX means (playerX)+MenuPosX, and playerXMenuPosY means (playerY)+MenuPosY

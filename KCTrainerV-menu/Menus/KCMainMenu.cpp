@@ -39,6 +39,10 @@
 #include "Util/Hash.h"
 #include "Util/Random.h"
 
+// GTA V Reclass classes
+// TODO Test this
+//#include "GTAV-Classes/vehicle/CVehicle.hpp"
+
 namespace 
 {
     // A few state variables for demoing the menu
@@ -463,6 +467,21 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             {
                 playerScripts.TestFade();
             }
+
+#ifdef DEBUG_MODE
+            // Not sure how to use this yet.
+            //if (mbCtx.Option("Reclass CVehicle test", { "Test for displaying the current vehicle name in memory" }))
+            //{
+            //    Ped playerPed = PLAYER::PLAYER_PED_ID();
+            //    Vehicle currentVehicle = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
+
+            //    if (ENTITY::DOES_ENTITY_EXIST(currentVehicle))
+            //    {
+            //        //CVehicle* vehiclePtr = reinterpret_cast<CVehicle*>(GET_ENTITY_ADDRESS)
+
+            //    }
+            //}
+#endif
 
             // TODO Figure out implementation for this, shouldn't be too hard.
             //if (mbCtx.Option("Test reload menu"), { "Test for reloading the menu config, may crash." })

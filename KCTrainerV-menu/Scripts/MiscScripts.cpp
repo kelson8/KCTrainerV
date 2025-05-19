@@ -10,6 +10,8 @@
 
 #include "Util/UI.hpp"
 
+#include "Util/Util.hpp"
+
 // Test for lua
 #ifdef LUA_TEST
 #include "Components/LuaManager.h"
@@ -88,6 +90,9 @@ void MiscScripts::IdGun()
 	auto& textScripts = TextScripts::GetInstance();
 	
 	auto& playerScripts = PlayerScripts::GetInstance();
+
+	Util util = Util();
+
 	//Ped playerPed = playerScripts.GetPlayerPed();
 	// I think this fixed it, I think I needed the playerID
 	Player playerPed = PLAYER_ID();
@@ -129,23 +134,36 @@ void MiscScripts::IdGun()
 
 		// If the entity is a vehicle, show the name of the vehicle instead of the entity model hash.
 		// Well this doesn't seem to work.
-		//if (IS_ENTITY_A_VEHICLE(entity))
-		//{
-			// Hmm, just says 'CARNOTFOUND'?
+//#define DISPLAY_VEHICLE_NAME
+#ifdef DISPLAY_VEHICLE_NAME
+		if (IS_ENTITY_A_VEHICLE(entity))
+		{
 			//Vehicle vehicle = GET_VEHICLE_PED_IS_IN(entity, false);
+			// This didn't work either.
+			//std::string vehicleName = util.GetGxtName(vehicle);
+			std::string vehicleName = util.GetGxtName(entity);
+			//Hmm, just says 'CARNOTFOUND'?
 			//std::string vehicleName = GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicle);
 
-			//std::string vehicleNameString = std::format("Vehicle Name: {}", vehicleName);
-			//textScripts.SetTextEntry(vehicleNameString.c_str());
-			//textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
-		//}
+			std::string vehicleNameString = std::format("Vehicle Name: {}", vehicleName);
+			textScripts.SetTextEntry(vehicleNameString.c_str());
+			textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+		}
 		 //Show the entity model hash
-		//else {
-		//	 //Entity Model
+		else 
+
+		{
+#endif
+			 //Entity Model
 			std::string entityModelString = std::format("Entity Model Hash: {}", std::to_string(entityHash));
 			textScripts.SetTextEntry(entityModelString.c_str(), 255, 255, 255, 255);
 			textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
-		//}
+
+			// TODO Add door status if this is a door, I would probably have to check if this is a door model from a list.
+
+#ifdef DISPLAY_VEHICLE_NAME
+		}
+#endif
 
 		/*if (IS_ENTITY_A_PED(entity))
 		{*/

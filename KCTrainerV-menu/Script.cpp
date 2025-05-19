@@ -11,6 +11,8 @@
 #include "Components/LuaManager.h"
 #endif //LUA_TEST
 
+#include "Memory/Memory.h"
+
 #include <iostream>
 
 #include <inc/main.h>
@@ -141,6 +143,22 @@ void KCMenu::scriptInit()
     // Attach the console to the game in scriptInit
     AttachConsole();
 #endif
+
+    // From Chaos Mod init, I had to move this below AttachConsole otherwise it seems to break the debug console.
+    // Attempt to print game build number
+    // We're doing it here as the build number isn't available when the mod is attached to the game process
+    static auto printedGameBuild = []()
+    {
+        auto gameBuild = Memory::GetGameBuild();
+        if (gameBuild.empty())
+            gameBuild = "Unknown";
+
+        //LOG("Game Build: " << gameBuild);
+        LOG(INFO, std::format("Game Build: {}", gameBuild));
+        std::cout << "Game Build: " << gameBuild << std::endl;
+
+        return true;
+    }();
 
     // The menu being initialized. Note the passed settings,
     // the onInit and onExit lambdas and finally BuildMenu being called.

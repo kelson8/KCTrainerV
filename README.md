@@ -100,6 +100,9 @@ Credit to ThePhD on GitHub for the sol2 library I am using for lua:
 Credit to Lua for the lua library I am using:
 * https://www.lua.org/download.html
 
+Credit to Mr-X-GTA on GitHub for the GTAV-Classes reverse engineered classes:
+* https://github.com/Mr-X-GTA/GTAV-Classes-1
+
 # License
 This project is Licensed under the GPLV3 license.
 

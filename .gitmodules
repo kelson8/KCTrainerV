@@ -7,3 +7,6 @@
 [submodule "thirdparty/sol"]
 	path = thirdparty/sol
 	url = https://github.com/ThePhD/sol2.git
+[submodule "thirdparty/GTAV-Classes"]
+	path = thirdparty/GTAV-Classes
+	url = https://github.com/Mr-X-GTA/GTAV-Classes-1.git
