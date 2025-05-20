@@ -8,7 +8,7 @@
 
 // This can enable/disable the tests in Memory.cpp, this is untested and may crash.
 // If this crashes, just disable it here.
-#define MEMORY_TESTING
+//#define MEMORY_TESTING
 
 // Enable debug logging and other debug features.
 // TODO Move into preprocessors in solution.
@@ -75,6 +75,9 @@
 
 // This toggles my tick events running such as god mode and never wanted, can be turned off for testing.
 #define RUN_TICKS
+
+// Enable the Meteor test weather effect from Menyoo, this needs worked on and refactored.
+//#define METEOR_SHOWER_TEST
 
 namespace Constants 
 {

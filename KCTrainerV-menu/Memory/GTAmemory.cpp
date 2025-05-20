@@ -21,7 +21,10 @@
 
 #include "GTAmemory.h"
 
-#ifdef MENYOO_SCRIPT_FILES
+#include "Constants.hpp"
+
+//#ifdef MENYOO_SCRIPT_FILES
+#ifdef MEMORY_TESTING
 
 //#include "pch.h"
 
@@ -1974,4 +1977,4 @@ std::string GTAmemory::GetVehicleMakeName(Hash modelHash) {
 	return ((CVehicleModelInfo1290*)modelInfo)->m_manufacturerName;
 }
 
-#endif // MENYOO_SCRIPT_FILES
+#endif // MEMORY_TESTING

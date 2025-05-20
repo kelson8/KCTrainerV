@@ -2,6 +2,10 @@
 
 // Taken from Chaos Mod
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include "Handle.h"
 #include "Memory.h"
 #include "Util/Logger.hpp"
@@ -31,3 +35,5 @@ namespace Memory
 		return _getScriptHandleBaseAddress(entity);
 	}
 }
+
+#endif

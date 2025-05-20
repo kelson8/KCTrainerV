@@ -305,8 +305,10 @@ void MiscScripts::StopTestMusic()
 /// This seems to work.
 /// Set all peds in the area to the rushed driving style.
 /// </summary>
+#ifdef MEMORY_TESTING
 void MiscScripts::MakeAllPedsDriveCrazy()
 {
+
 	Ped player = PLAYER_PED_ID();
 	std::vector<Entity> entities;
 
@@ -329,7 +331,9 @@ void MiscScripts::MakeAllPedsDriveCrazy()
 			SET_DRIVE_TASK_DRIVING_STYLE(entity, DrivingStyle::Rushed);
 		}
 	}
+
 }
+#endif // MEMORY_TESTING
 
 
 // Some of these below were taken from the Chaos Mod.
@@ -431,18 +435,23 @@ void MiscScripts::StopAirstrikeTest()
 
 #ifdef EXTRA_FEATURES
 
+#ifdef MEMORY_TESTING
 void MiscScripts::EnableSky()
 {
 	Memory::SetSkyDisabled(false);
 	isSkyDisabled = false;
 }
+#endif
 
+#ifdef MEMORY_TESTING
 void MiscScripts::DisableSky()
 {
 	Memory::SetSkyDisabled(true);
 	isSkyDisabled = true;
 }
+#endif
 
+#ifdef MEMORY_TESTING
 void MiscScripts::EnableSnow()
 {
 	// TODO Implement extra shader from Chaos Mod.
@@ -450,18 +459,26 @@ void MiscScripts::EnableSnow()
 	Memory::SetSnow(true);
 	isSnowEnabled = true;
 }
+#endif
 
+#ifdef MEMORY_TESTING
 void MiscScripts::DisableSnow()
 {
+
 	Memory::SetSnow(false);
 	isSnowEnabled = false;
+
 }
+#endif // MEMORY_TESTING
+
 #endif //EXTRA_FEATURES
 
 // Taken from PlayerForceField.cpp in Chaos Mod.
 #ifdef EXTRA_FEATURES
 
 #pragma region ForceFieldFunctions
+
+#ifdef MEMORY_TESTING
 
 void MiscScripts::EnableForceField()
 {
@@ -505,6 +522,8 @@ void MiscScripts::DisableForceField()
 {
 	isForceFieldEnabled = false;
 }
+
+
 
 #pragma endregion
 
@@ -551,6 +570,8 @@ void MiscScripts::PedsAttackPlayer()
 		}
 	}
 }
+
+#endif // MEMORY_TESTING
 
 #ifdef CHAOSMOD_FEATURES
 void MiscScripts::SetAllPedsInMowers()

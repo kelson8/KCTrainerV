@@ -19,6 +19,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include "Hooking.h"
 
 // Size of each memory block. (= page size of VirtualAlloc)
@@ -109,3 +114,5 @@ LPVOID HookManager::FindPrevFreeRegion(LPVOID pAddress,
 
     return NULL;
 }
+
+#endif

@@ -171,6 +171,15 @@
     <ClCompile Include="Scripts\WorldScripts.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Extras\MeteorShower.cpp">
+      <Filter>Scripts\Extras</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\GenericLoopedMode.cpp">
+      <Filter>Scripts\Extras</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Game.cpp">
+      <Filter>Scripts\Extras</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -426,6 +435,15 @@
     <ClInclude Include="Scripts\WorldScripts.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Extras\MeteorShower.h">
+      <Filter>Scripts\Extras</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\GenericLoopedMode.h">
+      <Filter>Scripts\Extras</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Game.h">
+      <Filter>Scripts\Extras</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -490,6 +508,9 @@
     </Filter>
     <Filter Include="Scripting">
       <UniqueIdentifier>{7db6b525-23d0-420e-a4ec-fbeb17db64ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Extras">
+      <UniqueIdentifier>{c86250aa-87f7-4291-b531-3904bff0c051}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

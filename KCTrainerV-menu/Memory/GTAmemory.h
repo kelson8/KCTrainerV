@@ -21,7 +21,12 @@
 #pragma once
 
 #define MENYOO_SCRIPT_FILES
-#ifdef MENYOO_SCRIPT_FILES
+
+#include "Constants.hpp"
+
+//#ifdef MENYOO_SCRIPT_FILES
+#ifdef MEMORY_TESTING
+
 #include <inc/main.h> //getGameVersion getGlobalPtr
 
 //#include <cstddef>
@@ -679,4 +684,4 @@ void removeHooks();
 
 
 
-#endif // MENYOO_SCRIPT_FILES
+#endif // MEMORY_TESTING

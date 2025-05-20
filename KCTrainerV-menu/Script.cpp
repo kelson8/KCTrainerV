@@ -154,6 +154,7 @@ void KCMenu::scriptInit()
     // From Chaos Mod init, I had to move this below AttachConsole otherwise it seems to break the debug console.
     // Attempt to print game build number
     // We're doing it here as the build number isn't available when the mod is attached to the game process
+#ifdef MEMORY_TESTING
     static auto printedGameBuild = []()
     {
         auto gameBuild = Memory::GetGameBuild();
@@ -166,6 +167,7 @@ void KCMenu::scriptInit()
 
         return true;
     }();
+#endif // MEMORY_TESTING
 
     // The menu being initialized. Note the passed settings,
     // the onInit and onExit lambdas and finally BuildMenu being called.

@@ -2,6 +2,10 @@
 
 // Taken from Chaos Mod
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include "ScriptThreadRunHook.h"
 
 #include "Memory/Hooks/Hook.h"
@@ -118,3 +122,5 @@ namespace Hooks
 		ms_EnabledHook = false;
 	}
 }
+
+#endif // MEMORY_TESTING

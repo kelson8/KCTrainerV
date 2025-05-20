@@ -15,6 +15,7 @@
 /// </summary>
 void WorldScripts::KillAllPedsInArea()
 {
+#ifdef MEMORY_TESTING
 	auto& playerScripts = PlayerScripts::GetInstance();
 	auto& worldScripts = WorldScripts::GetInstance();
 	Ped playerPed = playerScripts.GetPlayerPed();
@@ -38,6 +39,8 @@ void WorldScripts::KillAllPedsInArea()
 	//    entities.push_back(veh);
 	//for (auto prop : GetAllProps())
 	//    entities.push_back(prop);
+
+#endif
 }
 
 /// <summary>
@@ -45,6 +48,7 @@ void WorldScripts::KillAllPedsInArea()
 /// </summary>
 void WorldScripts::BlowUpAllVehiclesInArea()
 {
+#ifdef MEMORY_TESTING
 	auto& playerScripts = PlayerScripts::GetInstance();
 
 	Ped playerPed = playerScripts.GetPlayerPed();
@@ -67,6 +71,7 @@ void WorldScripts::BlowUpAllVehiclesInArea()
 			}
 		}
 	}
+#endif // MEMORY_TESTING
 }
 
 #pragma region Respawns
@@ -190,6 +195,7 @@ void WorldScripts::SetExplosionAtCoords(Vector3 pos, UINT8 type, float radius, f
 
 void WorldScripts::SetPedsCalm()
 {
+#ifdef MEMORY_TESTING
 	for (auto ped : GetAllPeds())
 	{
 		// Check if they are the player and not dead, if so do nothing
@@ -201,6 +207,7 @@ void WorldScripts::SetPedsCalm()
 		}
 
 	}
+#endif // MEMORY_TESTING
 }
 
 // End adapted from Menyoo.

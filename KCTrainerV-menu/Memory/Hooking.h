@@ -1,5 +1,10 @@
 ﻿#pragma once
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
+
 #include <windows.h>
 #include <inttypes.h>
 
@@ -63,3 +68,5 @@ public:
 
     static LPVOID FindPrevFreeRegion(LPVOID pAddress, LPVOID pMinAddr, DWORD dwAllocationGranularity);
 };
+
+#endif

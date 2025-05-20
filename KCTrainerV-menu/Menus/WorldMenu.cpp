@@ -47,6 +47,7 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // TODO Add this boolean option
     //mbCtx.BoolOption("Toggle sky", &miscScripts.toggleSky);
 
+#ifdef MEMORY_TESTING
     // Toggle sky
     if (mbCtx.Option("Enable Sky"))
     {
@@ -68,6 +69,7 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     {
         miscScripts.DisableSnow();
     }
+#endif // MEMORY_TESTING
 
 #endif // EXTRA_FEATURES
 

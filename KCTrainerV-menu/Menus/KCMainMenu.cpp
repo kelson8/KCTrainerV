@@ -11,8 +11,12 @@
 #include <inc/main.h>
 #include <inc/natives.h>
 
+#include <iostream>
+
 // Menyoo
 #include "Natives/natives2.h"
+// New for game functions from Menyoo
+#include "../Scripts/Extras/Game.h"
 
 // My scripts
 #include "Scripts/PlayerScripts.h"
@@ -391,9 +395,13 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             }
 
             // Ped tests
+
+#ifdef MEMORY_TESTING
             mbCtx.BoolOption("Peds attack player", miscScripts.isPedsAttackEnabled, { "Make all peds in the area attack you" });
             mbCtx.BoolOption("Peds drive crazy", miscScripts.isCrazyPedDrivingEnabled, {
                 "Make all peds in the area drive with the rushed driving style." });
+
+#endif // MEMORY_TESTING
 
 #ifdef CHAOSMOD_FEATURES
             if (mbCtx.Option("Set peds in mowers", { "Place all peds in the area into lawn mowers" }))
@@ -456,7 +464,26 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
                 playerScripts.TestFade();
             }
 
+
+
 #ifdef DEBUG_MODE
+
+            // Test for on screen keyboard
+            // So far this shows up but takes a bit to show up, and the text doesn't get logged anywhere.
+            // It isn't working like in Menyoo.
+            if (mbCtx.Option("On screen keyboard", { "Show a on screen keyboard" }))
+            {
+                std::string inputString = Game::InputBox("DEFAULT", 64);
+                if (inputString.length() > 0)
+                {
+                    std::cout << inputString << std::endl;
+                }
+                else {
+                    std::cout << "Input string doesn't exist!" << std::endl;
+                }
+                
+            }
+
             // Not sure how to use this yet.
             //if (mbCtx.Option("Reclass CVehicle test", { "Test for displaying the current vehicle name in memory" }))
             //{

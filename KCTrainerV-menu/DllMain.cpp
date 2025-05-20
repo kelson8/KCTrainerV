@@ -16,7 +16,9 @@
 #include <iostream>
 
 // For MinHook and Memory functions for my menu.
+#ifdef MEMORY_TESTING
 #include "Memory/Memory.h"
+#endif
 
 namespace fs = std::filesystem;
 
@@ -157,8 +159,10 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
             // Log the data path
             LOG(INFO, "Data path: {}", Paths::GetModPath().string());
 
+#ifdef MEMORY_TESTING
             // This seems to work now without crashing.
             Memory::Init();
+#endif
 
             // Attach the console to the game before scriptRegister, may crash it here.
             // This is being run in Script.cpp, I may try to run it in here if I can get it working.
@@ -176,8 +180,10 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
         {
             // TODO Set this to disable never wanted and everything when the menu is reloaded.
 
+#ifdef MEMORY_TESTING
             // Disable MinHook and Memory features on script exit.
             Memory::Uninit();
+#endif
 
             scriptUnregister(hInstance);
             break;

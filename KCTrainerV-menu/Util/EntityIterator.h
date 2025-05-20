@@ -10,6 +10,8 @@
 
 // https://github.com/gta-chaos-mod/ChaosModV/blob/master/ChaosMod/Util/EntityIterator.h
 
+#ifdef MEMORY_TESTING
+
 #include "Memory/Memory.h"
 
 #include <inc/types.h>
@@ -185,3 +187,5 @@ inline auto GetAllPropsArray()
 {
 	return GetAllProps().ToArray();
 }
+
+#endif // MEMORY_TESTING

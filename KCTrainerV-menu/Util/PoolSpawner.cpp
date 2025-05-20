@@ -2,6 +2,10 @@
 
 // From Chaos Mod
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include "PoolSpawner.h"
 
 #include <inc/natives.h>
@@ -241,3 +245,5 @@ Object CreatePoolPropAttachedToPed(Hash modelHash, Ped ped, int boneIndex, float
 	                        collision, true, 0, fixedRot, 1);
 	return prop;
 }
+
+#endif // MEMORY_TESTING

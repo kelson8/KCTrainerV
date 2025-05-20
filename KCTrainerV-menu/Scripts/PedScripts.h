@@ -43,7 +43,9 @@ public:
 	//
 
 
+#ifdef MEMORY_TESTING
 	void SetAllPedsAsCops();
+#endif
 
 private:
 	PedScripts() {} // Private constructor to prevent external instantiation

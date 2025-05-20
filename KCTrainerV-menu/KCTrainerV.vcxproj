@@ -207,6 +207,9 @@
     <ClCompile Include="Scripting\Rope.cpp" />
     <ClCompile Include="Scripting\Scaleform.cpp" />
     <ClCompile Include="Scripting\Tasks_old.cpp" />
+    <ClCompile Include="Scripts\Extras\Game.cpp" />
+    <ClCompile Include="Scripts\Extras\GenericLoopedMode.cpp" />
+    <ClCompile Include="Scripts\Extras\MeteorShower.cpp" />
     <ClCompile Include="Scripts\MiscScripts.cpp" />
     <ClCompile Include="Scripts\PedScripts.cpp" />
     <ClCompile Include="Scripts\PlayerScripts.cpp" />
@@ -291,6 +294,9 @@
     <ClInclude Include="Scripting\Scaleform.h" />
     <ClInclude Include="Scripting\Tasks_old.h" />
     <ClInclude Include="ScriptMenu.hpp" />
+    <ClInclude Include="Scripts\Extras\Game.h" />
+    <ClInclude Include="Scripts\Extras\GenericLoopedMode.h" />
+    <ClInclude Include="Scripts\Extras\MeteorShower.h" />
     <ClInclude Include="Scripts\MiscScripts.h" />
     <ClInclude Include="Scripts\PedScripts.h" />
     <ClInclude Include="Scripts\PlayerScripts.h" />

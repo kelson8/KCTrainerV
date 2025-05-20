@@ -51,8 +51,10 @@ public:
 	void StopTestMusic();
 
 	// Ped tests
+#ifdef MEMORY_TESTING
 	void MakeAllPedsDriveCrazy();
 	bool isCrazyPedDrivingEnabled = false;
+#endif
 	//
 
 	void PlayArenaWarLobbyMusic();
@@ -67,6 +69,7 @@ public:
 
 	// Toggle sky
 #ifdef EXTRA_FEATURES
+#ifdef MEMORY_TESTING
 	void EnableSky();
 	void DisableSky();
 
@@ -83,6 +86,8 @@ public:
 	// Attacking player and other stuff
 	void PedsAttackPlayer();
 	bool isPedsAttackEnabled = false;
+
+#endif // MEMORY_TESTING
 	
 #ifdef CHAOSMOD_FEATURES
 	void SetAllPedsInMowers();

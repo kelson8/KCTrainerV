@@ -2,6 +2,10 @@
 
 // Taken from Chaos Mod
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include "Memory/Entity.h"
 #include "Memory/Handle.h"
 #include "Memory/Memory.h"
@@ -95,3 +99,5 @@ namespace Memory
 			invoke<Void>(0x18FF00FC7EFF559E, entity, forceType, x, y, z, p5, isDirectionRel, isForceRel, p8);
 	}
 }
+
+#endif // MEMORY_TESTING

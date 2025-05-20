@@ -2,6 +2,10 @@
 
 // From Chaos Mod
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include "Handle.h"
 #include "Memory.h"
 
@@ -31,3 +35,5 @@ namespace Memory
 		Write<BYTE>(patchByte, state ? 0xC3 : 0x48);
 	}
 }
+
+#endif // MEMORY_TESTING

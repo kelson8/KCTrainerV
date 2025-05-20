@@ -27,6 +27,8 @@
 
 #ifdef MENYOO_SCRIPT_FILES
 
+#ifdef MEMORY_TESTING
+
 #include <string>
 
 typedef unsigned char UINT8;
@@ -279,5 +281,7 @@ protected:
 	int mHandle;
 	
 };
+
+#endif // MEMORY_TESTING
 
 #endif // MENYOO_SCRIPT_FILES

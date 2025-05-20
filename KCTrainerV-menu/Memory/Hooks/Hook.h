@@ -2,6 +2,10 @@
 
 // https://github.com/gta-chaos-mod/ChaosModV/blob/master/ChaosMod/Memory/Hooks/Hook.h
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include <minhook/include/MinHook.h>
 
 #include <string>
@@ -83,3 +87,5 @@ class RegisterHook
 
 	RegisterHook &operator=(RegisterHook &&) noexcept = delete;
 };
+
+#endif

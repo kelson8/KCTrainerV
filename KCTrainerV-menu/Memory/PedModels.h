@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include "Handle.h"
 #include "Memory.h"
 
@@ -77,3 +81,5 @@ namespace Memory
 		return pedModels;
 	}
 }
+
+#endif // MEMORY_TESTING

@@ -2,6 +2,10 @@
 
 // https://github.com/gta-chaos-mod/ChaosModV/blob/master/ChaosMod/Memory/Handle.h
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include <cstdint>
 
 class Handle
@@ -51,3 +55,5 @@ class Handle
 		return 0;
 	}
 };
+
+#endif

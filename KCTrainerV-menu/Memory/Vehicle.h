@@ -2,6 +2,11 @@
 
 #include "pch.h"
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
+
 // Taken from Chaos Mod
 
 #include "Memory/Entity.h"
@@ -195,3 +200,5 @@ namespace Memory
 	//	Memory::SetVector3(vehicleMatrixAddress + 0x20, vehicleUpVec * scaleMultiplier);
 	//}
 }
+
+#endif

@@ -120,10 +120,13 @@ void KCMainScript::Tick() {
     
 #ifdef EXTRA_FEATURES
     // Player force field
+
+#ifdef MEMORY_TESTING
     if (miscScripts.isForceFieldEnabled)
     {
         miscScripts.EnableForceField();
     }
+#endif // MEMORY_TESTING
 
     // Run the tick event for the TV if enabled.
     if (miscScripts.isTVRunning)
@@ -132,18 +135,22 @@ void KCMainScript::Tick() {
     }
 
     // Make peds attack player
+#ifdef MEMORY_TESTING
     if (miscScripts.isPedsAttackEnabled)
     {
         miscScripts.PedsAttackPlayer();
     }
+#endif // MEMORY_TESTING
 
 #endif //EXTRA_FEATURES
 
     // Make all peds drive crazy
+#ifdef MEMORY_TESTING
     if (miscScripts.isCrazyPedDrivingEnabled)
     {
         miscScripts.MakeAllPedsDriveCrazy();
     }
+#endif //
 
     
     // Invincibility toggle
@@ -208,11 +215,13 @@ void KCMainScript::Tick() {
     }
 
 
+#ifdef MEMORY_TESTING
     // Make all the peds in the area calm, meaning they shouldn't run from anything.
     if (worldScripts.isPedsCalmActive)
     {
         worldScripts.SetPedsCalm();
     }
+#endif // MEMORY_TESTING
     // End adapted from Menyoo
    
     //textScripts.SetTextEntry();

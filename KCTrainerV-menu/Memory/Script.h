@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include "Lib/scrThread.h"
 
 #include "Memory/Handle.h"
@@ -67,3 +71,5 @@ namespace Memory
 		return Handle();
 	}
 }
+
+#endif

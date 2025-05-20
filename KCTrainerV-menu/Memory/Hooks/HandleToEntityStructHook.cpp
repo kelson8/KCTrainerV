@@ -4,6 +4,10 @@
 
 #include "Constants.hpp"
 
+#ifdef MEMORY_TESTING
+
+#include "Constants.hpp"
+
 #include "HandleToEntityStructHook.h"
 
 #include "Memory/Hooks/Hook.h"
@@ -68,3 +72,5 @@ namespace Hooks
 		} while (found);
 	}
 }
+
+#endif // MEMORY_TESTING

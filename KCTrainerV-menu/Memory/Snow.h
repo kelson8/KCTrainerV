@@ -2,6 +2,10 @@
 
 // Taken from Chaos Mod in the Memory folder
 
+#include "Constants.hpp"
+
+#ifdef MEMORY_TESTING
+
 #include "Handle.h"
 #include "Memory.h"
 
@@ -77,3 +81,5 @@ namespace Memory
 		}
 	}
 }
+
+#endif // MEMORY_TESTING
