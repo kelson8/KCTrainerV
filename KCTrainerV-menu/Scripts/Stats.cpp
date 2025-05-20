@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#include "Constants.hpp"
 #include "Stats.h"
 
 #include "PlayerScripts.h"
@@ -92,285 +94,309 @@ void SetStats()
 // From Menyoo:
 // std::pair<std::string, std::string> vCharNames[3] = { { "SP0_", "Michael" },{ "SP1_", "Franklin" },{ "SP2_", "Trevor" } };
 
-/// <summary>
-/// Get the cops kiled stat
-/// <param name="character">The player to select the stat for, using the PlayerModels enum class.</param>
-/// </summary>
-/// <returns>The amount of cops killed</returns>
-//int PlayerScripts::GetCopsKilledStat()
-//int PlayerScripts::GetCopsKilledStat(PlayerModels character)
-int Stats::GetCopsKilledStat()
+namespace Stats 
 {
-    int copsKilledStat;
-
-    // TODO Test this, this should get the current player instead of me manually specifying it.
-    PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
-
-    //switch (character)
-    switch (currentPlayer)
+    namespace Cop
     {
-    case PlayerModels::MICHEAL: // SP0
-        STAT_GET_INT("SP0_KILLS_COP"_hash, &copsKilledStat, -1);
-        break;
+        // Position on menu
+        // Menu position X
+        float copsKilledMenuPosX = 0.204f;
+        // Menu Position Y
+        float copsKilledMenuPosY = 0.963f;
 
-    case PlayerModels::FRANKLIN: // SP1
-        STAT_GET_INT("SP1_KILLS_COP"_hash, &copsKilledStat, -1);
-        break;
+        // Cop cars blown up
+        //float copsCarsBlownUpMenuPosX = 0.150f;
+        float copsCarsBlownUpMenuPosX = 0.220f;
+        //float copsCarsBlownUpMenuPosY = 0.870f;
+        float copsCarsBlownUpMenuPosY = 0.935f;
 
-    case PlayerModels::TREVOR: // SP2
-        STAT_GET_INT("SP2_KILLS_COP"_hash, &copsKilledStat, -1);
-        break;
+        bool isCopsKilledDisplayActive = false;
 
-    default:
-        copsKilledStat = 0;
-        break;
-    }
+        /// <summary>
+        /// Get the cops kiled stat
+        /// <param name="character">The player to select the stat for, using the PlayerModels enum class.</param>
+        /// </summary>
+        /// <returns>The amount of cops killed</returns>
+        //int PlayerScripts::GetCopsKilledStat()
+        //int PlayerScripts::GetCopsKilledStat(PlayerModels character)
+        int GetCopsKilledStat()
+        {
+            int copsKilledStat;
 
-    return copsKilledStat;
+            // TODO Test this, this should get the current player instead of me manually specifying it.
+            PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
 
+            //switch (character)
+            switch (currentPlayer)
+            {
+            case PlayerModels::MICHEAL: // SP0
+                STAT_GET_INT("SP0_KILLS_COP"_hash, &copsKilledStat, -1);
+                break;
 
-}
+            case PlayerModels::FRANKLIN: // SP1
+                STAT_GET_INT("SP1_KILLS_COP"_hash, &copsKilledStat, -1);
+                break;
 
-/// <summary>
-/// Get the cops cars blown up.
-/// </summary>
-/// <returns>The amount of cop cars blown up</returns>
-/// <param name="character">The player to select the stat for, using the PlayerModels enum class.</param>
-//int PlayerScripts::GetCopsVehiclesBlownUpStat()
-/// <returns></returns>
-//int PlayerScripts::GetCopsVehiclesBlownUpStat(PlayerModels character)
-int Stats::GetCopsVehiclesBlownUpStat()
-{
-    int copsVehiclesBlownUpStat;
+            case PlayerModels::TREVOR: // SP2
+                STAT_GET_INT("SP2_KILLS_COP"_hash, &copsKilledStat, -1);
+                break;
 
-    PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
+            default:
+                copsKilledStat = 0;
+                break;
+            }
 
-    //switch (character)
-    switch (currentPlayer)
-    {
-    case PlayerModels::MICHEAL: // SP0
-        STAT_GET_INT("SP0_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
-        break;
+            return copsKilledStat;
+        }
 
-    case PlayerModels::FRANKLIN: // SP1
-        STAT_GET_INT("SP1_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
-        break;
+        /// <summary>
+        /// Get the cops cars blown up.
+        /// </summary>
+        /// <returns>The amount of cop cars blown up</returns>
+        /// <param name="character">The player to select the stat for, using the PlayerModels enum class.</param>
+        //int PlayerScripts::GetCopsVehiclesBlownUpStat()
+        /// <returns></returns>
+        //int PlayerScripts::GetCopsVehiclesBlownUpStat(PlayerModels character)
+        int GetCopsVehiclesBlownUpStat()
 
-    case PlayerModels::TREVOR: // SP2
-        STAT_GET_INT("SP2_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
-        break;
+        {
+            int copsVehiclesBlownUpStat;
 
-    default:
-        copsVehiclesBlownUpStat = 0;
-        break;
-    }
+            PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
 
-    //STAT_GET_INT("SP0_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
+            //switch (character)
+            switch (currentPlayer)
+            {
+            case PlayerModels::MICHEAL: // SP0
+                STAT_GET_INT("SP0_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
+                break;
 
-    return copsVehiclesBlownUpStat;
+            case PlayerModels::FRANKLIN: // SP1
+                STAT_GET_INT("SP1_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
+                break;
 
-}
+            case PlayerModels::TREVOR: // SP2
+                STAT_GET_INT("SP2_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
+                break;
+
+            default:
+                copsVehiclesBlownUpStat = 0;
+                break;
+            }
+
+            //STAT_GET_INT("SP0_CARS_COPS_EXPLODED"_hash, &copsVehiclesBlownUpStat, -1);
+
+            return copsVehiclesBlownUpStat;
+
+        }
 
 #pragma region StatLoops
 
 
-// Stat loops
+        // Stat loops
 
-//------------ Cops cars blown up Logic --------------/
-// Set default value for this to 0
-int Stats::copvehiclesBlownUpBeforeDying = 0;
-
-/// <summary>
-/// Add one to the cop copvehiclesBlownUpBeforeDying stat
-/// </summary>
-void Stats::IncrementCopVehiclesBlownUp() {
-    copvehiclesBlownUpBeforeDying++;
-}
-
-/// <summary>
-/// Reset the cop vehicles blown up stat back to 0
-/// </summary>
-void Stats::ResetCopVehiclesBlownUpBeforeDying() {
-    copvehiclesBlownUpBeforeDying = 0;
-}
-
-/// <summary>
-/// Get the current copvehiclesBlownUpBeforeDying value.
-/// </summary>
-int Stats::GetCopVehiclesBlownUpBeforeDying() {
-    return copvehiclesBlownUpBeforeDying;
-}
+        //------------ Cops cars blown up Logic --------------/
+        // Set default value for this to 0
+        int copvehiclesBlownUpBeforeDying = 0;
 
 
-//------------ Cops killed logic --------------/
+        /// <summary>
+        /// Add one to the cop copvehiclesBlownUpBeforeDying stat
+        /// </summary>
 
-// Set default value for this to 0
-int Stats::copsKilledBeforeDying = 0;
+        void IncrementCopVehiclesBlownUp()
+        {
+            copvehiclesBlownUpBeforeDying++;
+        }
 
-/// <summary>
-/// Add one to the cops killed stat
-/// </summary>
-void Stats::IncrementCopsKilled() {
-    copsKilledBeforeDying++;
-}
+        /// <summary>
+        /// Reset the cop vehicles blown up stat back to 0
+        /// </summary>
+        void ResetCopVehiclesBlownUpBeforeDying()
+        {
+            copvehiclesBlownUpBeforeDying = 0;
+        }
 
-/// <summary>
-/// Reset the cops killed stat back to 0
-/// </summary>
-void Stats::ResetCopsKilledBeforeDying() {
-    copsKilledBeforeDying = 0;
-}
-
-/// <summary>
-/// Get the current copsKilledBeforeDying value.
-/// </summary>
-int Stats::GetCopsKilledBeforeDying() {
-    return copsKilledBeforeDying;
-}
-
-//------------ End Cops killed logic --------------/
-
-//------------ Cops killed stat display -------------/ 
-//------------ And Cop vehicles blown up stat display --------------/
-
-/// <summary>
-/// This works as a system that increments 
-/// depending on how many cops/swat you kill, for now this only prints to the console with std::cout.
-/// Eventually, I'll make a function that tracks how many cop vehicles you blow up.
-/// This will draw to the screen and print to the console with std::cout also.
-/// </summary>
-void Stats::ProcessCopsKilled()
-{
-    auto& textScripts = TextScripts::GetInstance();
-
-    // Cops killed position on menu, this value is now in the header
-    //float copsKilledMenuPosX = 0.190f;
-    //float copsKilledMenuPosY = 0.949f;
-    auto& playerScripts = PlayerScripts::GetInstance();
-
-    PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
-
-    Ped playerPed = playerScripts.GetPlayerPed();
-    int playerID = playerScripts.GetPlayerID();
+        /// <summary>
+        /// Get the current copvehiclesBlownUpBeforeDying value.
+        /// </summary>
+        int GetCopVehiclesBlownUpBeforeDying() {
+            return copvehiclesBlownUpBeforeDying;
+        }
 
 
-    // TODO Make these into functions in this class.
-    bool isPlayerDead = IS_ENTITY_DEAD(playerPed, false);
-    bool isPlayerBeingArrested = IS_PLAYER_BEING_ARRESTED(playerID, true);
+        //------------ Cops killed logic --------------/
 
-    //---
-    // Get the "KILLS_COP" and "KILLS_SWAT" stats.
-    //---
-    //int copsKilled = 0;
-    //int swatKilled = 0;
+        // Set default value for this to 0
+        int copsKilledBeforeDying = 0;
 
-    //int copsKilled = PlayerScripts::GetPlayerStat(currentPlayer, "KILLS_COP");
-    int copsKilled = playerScripts.GetPlayerStat(currentPlayer, "KILLS_COP");
-    int swatKilled = playerScripts.GetPlayerStat(currentPlayer, "KILLS_SWAT");
+        /// <summary>
+        /// Add one to the cops killed stat
+        /// </summary>
+        void IncrementCopsKilled() {
+            copsKilledBeforeDying++;
+        }
 
-    int copCarsBlownUp = playerScripts.GetPlayerStat(currentPlayer, "CARS_COPS_EXPLODED");
+        /// <summary>
+        /// Reset the cops killed stat back to 0
+        /// </summary>
+        void ResetCopsKilledBeforeDying() {
+            copsKilledBeforeDying = 0;
+        }
 
-    // This might be the stat to get the total helicopters exploded:
-    // HELIS_EXPLODED
+        /// <summary>
+        /// Get the current copsKilledBeforeDying value.
+        /// </summary>
+        int GetCopsKilledBeforeDying() {
+            return copsKilledBeforeDying;
+        }
 
-    // Combine the copsKilled and swatKilled stats
-    int totalCopsKilled = copsKilled + swatKilled;
+        //------------ End Cops killed logic --------------/
 
-    //---
-    // Keep track of previous value
-    //---
-    //static int previousKills = copsKilled;
-    static int previousKills = totalCopsKilled;
+        //------------ Cops killed stat display -------------/ 
+        //------------ And Cop vehicles blown up stat display --------------/
 
-    int totalCopCarsBlownUp = copCarsBlownUp;
-    static int previousCopCarsBlownUp = totalCopCarsBlownUp;
+        /// <summary>
+        /// This works as a system that increments 
+        /// depending on how many cops/swat you kill, for now this only prints to the console with std::cout.
+        /// Eventually, I'll make a function that tracks how many cop vehicles you blow up.
+        /// This will draw to the screen and print to the console with std::cout also.
+        /// </summary>
+        void ProcessCopsKilledDisplay()
+        {
+            auto& textScripts = TextScripts::GetInstance();
+
+            // Cops killed position on menu, this value is now in the header
+            //float copsKilledMenuPosX = 0.190f;
+            //float copsKilledMenuPosY = 0.949f;
+            auto& playerScripts = PlayerScripts::GetInstance();
+
+            PlayerModels currentPlayer = PlayerScripts::GetCurrentPlayerModel();
+
+            Ped playerPed = playerScripts.GetPlayerPed();
+            int playerID = playerScripts.GetPlayerID();
+
+
+            // TODO Make these into functions in this class.
+            bool isPlayerDead = IS_ENTITY_DEAD(playerPed, false);
+            bool isPlayerBeingArrested = IS_PLAYER_BEING_ARRESTED(playerID, true);
+
+            //---
+            // Get the "KILLS_COP" and "KILLS_SWAT" stats.
+            //---
+            //int copsKilled = 0;
+            //int swatKilled = 0;
+
+            //int copsKilled = PlayerScripts::GetPlayerStat(currentPlayer, "KILLS_COP");
+            int copsKilled = playerScripts.GetPlayerStat(currentPlayer, "KILLS_COP");
+            int swatKilled = playerScripts.GetPlayerStat(currentPlayer, "KILLS_SWAT");
+
+            int copCarsBlownUp = playerScripts.GetPlayerStat(currentPlayer, "CARS_COPS_EXPLODED");
+
+            // This might be the stat to get the total helicopters exploded:
+            // HELIS_EXPLODED
+
+            // Combine the copsKilled and swatKilled stats
+            int totalCopsKilled = copsKilled + swatKilled;
+
+            //---
+            // Keep track of previous value
+            //---
+            //static int previousKills = copsKilled;
+            static int previousKills = totalCopsKilled;
+
+            int totalCopCarsBlownUp = copCarsBlownUp;
+            static int previousCopCarsBlownUp = totalCopCarsBlownUp;
 
 
 
-    //---
-    // Check if the cops/swat killed stat has been increased.
-    //---
-    //if (copsKilled > previousKills)
-    if (totalCopsKilled > previousKills)
-    {
-        Stats::IncrementCopsKilled();
-        // Update the previousKills value
-        //previousKills = copsKilled;
-        previousKills = totalCopsKilled;
-    }
+            //---
+            // Check if the cops/swat killed stat has been increased.
+            //---
+            //if (copsKilled > previousKills)
+            if (totalCopsKilled > previousKills)
+            {
+                IncrementCopsKilled();
+                // Update the previousKills value
+                //previousKills = copsKilled;
+                previousKills = totalCopsKilled;
+            }
 
-    //---
-    // Check if the cops blown up stat has been increased
-    //---
-    if (totalCopCarsBlownUp > previousCopCarsBlownUp)
-    {
-        Stats::IncrementCopVehiclesBlownUp();
-        // Update the previousCopCarsBlownUp value
-        previousCopCarsBlownUp = totalCopCarsBlownUp;
-    }
+            //---
+            // Check if the cops blown up stat has been increased
+            //---
+            if (totalCopCarsBlownUp > previousCopCarsBlownUp)
+            {
+                IncrementCopVehiclesBlownUp();
+                // Update the previousCopCarsBlownUp value
+                previousCopCarsBlownUp = totalCopCarsBlownUp;
+            }
 
-    //---
-    // Check if the player has died or been busted.
-    //---
-    if (IS_ENTITY_DEAD(playerPed, false) || IS_PLAYER_BEING_ARRESTED(playerID, true))
-    {
-        // Reset the previous kills back to 0.
-        this->ResetCopsKilledBeforeDying();
-        previousKills = totalCopsKilled;
+            //---
+            // Check if the player has died or been busted.
+            //---
+            if (IS_ENTITY_DEAD(playerPed, false) || IS_PLAYER_BEING_ARRESTED(playerID, true))
+            {
+                // Reset the previous kills back to 0.
+                ResetCopsKilledBeforeDying();
+                previousKills = totalCopsKilled;
 
-        // Reset the previous cop cars blown up to 0
-        this->ResetCopVehiclesBlownUpBeforeDying();
-        previousCopCarsBlownUp = totalCopCarsBlownUp;
-    }
+                // Reset the previous cop cars blown up to 0
+                ResetCopVehiclesBlownUpBeforeDying();
+                previousCopCarsBlownUp = totalCopCarsBlownUp;
+            }
 
-    //---
-    // Display the current kills count
-    //---
-    int copsKilledThisLife = Stats::GetCopsKilledBeforeDying();
-    // Store it in a string stream
-    std::stringstream ss;
-    ss << "Cops killed this life: " << copsKilledThisLife;
-    std::string copsKilledString = ss.str();
+            //---
+            // Display the current kills count
+            //---
+            int copsKilledThisLife = GetCopsKilledBeforeDying();
+            // Store it in a string stream
+            std::stringstream ss;
+            ss << "Cops killed this life: " << copsKilledThisLife;
+            std::string copsKilledString = ss.str();
 
-    // Print to console
-    std::cout << copsKilledString << std::endl;
+            // Print to console
+            std::cout << copsKilledString << std::endl;
 
-    // Display to screen
-    // This displays the value to the screen
+            // Display to screen
+            // This displays the value to the screen
 
-    // This shouldn't draw if the player is dead or being arrested.
-    if (!isPlayerDead || !isPlayerBeingArrested)
-    {
-        textScripts.SetTextEntry(copsKilledString.c_str(), 255, 255, 255, 255);
+            // This shouldn't draw if the player is dead or being arrested.
+            if (!isPlayerDead || !isPlayerBeingArrested)
+            {
+                textScripts.SetTextEntry(copsKilledString.c_str(), 255, 255, 255, 255);
 
-        textScripts.TextPosition(copsKilledMenuPosX, copsKilledMenuPosY);
-    }
+                textScripts.TextPosition(copsKilledMenuPosX, copsKilledMenuPosY);
+            }
 
-    //---
-    // Display the current cop vehicles blown up
-    //---
-    // Well this part isn't working yet, this displays but the value doesn't update.
-    int copCarsBlownUpThisLife = Stats::GetCopVehiclesBlownUpBeforeDying();
-    std::stringstream ss1;
-    ss1 << "Cop cars blown up this life: " << copCarsBlownUpThisLife;
-    // TODO Test
-    //ss1 << "Total cop cars blown up: " << copCarsBlownUp;
-    std::string copCarsBlownUpString = ss1.str();
+            //---
+            // Display the current cop vehicles blown up
+            //---
+            // Well this part isn't working yet, this displays but the value doesn't update.
+            int copCarsBlownUpThisLife = GetCopVehiclesBlownUpBeforeDying();
+            std::stringstream ss1;
+            ss1 << "Cop cars blown up this life: " << copCarsBlownUpThisLife;
+            // TODO Test
+            //ss1 << "Total cop cars blown up: " << copCarsBlownUp;
+            std::string copCarsBlownUpString = ss1.str();
 
-    // Disabled, print to console
-    //std::cout << copCarsBlownUpString << std::endl;
+            // Disabled, print to console
+            //std::cout << copCarsBlownUpString << std::endl;
 
-    // This shouldn't draw if the player is dead or being arrested.
-    if (!isPlayerDead || !isPlayerBeingArrested)
-    {
-        // Display to screen
-        textScripts.SetTextEntry(copCarsBlownUpString.c_str(), 255, 255, 255, 255);
+            // This shouldn't draw if the player is dead or being arrested.
+            if (!isPlayerDead || !isPlayerBeingArrested)
+            {
+                // Display to screen
+                textScripts.SetTextEntry(copCarsBlownUpString.c_str(), 255, 255, 255, 255);
 
-        textScripts.TextPosition(copsCarsBlownUpMenuPosX, copsCarsBlownUpMenuPosY);
+                textScripts.TextPosition(copsCarsBlownUpMenuPosX, copsCarsBlownUpMenuPosY);
 
-    }
+            }
 
-}
+        }
+    } // namespace Cop
+
+} // namespace Stats
 
 #pragma endregion // StatLoops
 

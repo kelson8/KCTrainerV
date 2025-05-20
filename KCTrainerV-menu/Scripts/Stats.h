@@ -1,58 +1,48 @@
 #pragma once
-#include "Constants.hpp"
 
-class Stats
+namespace Stats 
 {
-
-public:
-    // Instance of the Stats
-    static Stats& GetInstance()
+    namespace Cop 
     {
-        static Stats instance;
-        return instance;
-    }
+        // Functions related to cop stats
+        int GetCopsKilledStat();
+        int GetCopsVehiclesBlownUpStat();
+        void ProcessCopsKilledDisplay(); // Renamed to clarify its purpose
 
-    // Stat tests
-    //int GetCopsKilledStat(PlayerModels character);
-    int GetCopsKilledStat();
-    //int GetCopsVehiclesBlownUpStat(PlayerModels character);
-    int GetCopsVehiclesBlownUpStat();
+        // Position on menu
+        // Cops killed
+        // Menu position X
+        extern float copsKilledMenuPosX;
+        // Menu Position Y
+        extern float copsKilledMenuPosY;
 
-    // For new cops killed stat system, this now displays on the screen.
-    void ProcessCopsKilled();
+        // Cop cars blown up
+        // Menu position X
+        extern float copsCarsBlownUpMenuPosX;
+        // Menu position Y
+        extern float copsCarsBlownUpMenuPosY;
 
-    // Position on menu
-    // Menu position X
-    float copsKilledMenuPosX = 0.204f;
-    // Menu Position Y
-    float copsKilledMenuPosY = 0.963f;
+        // Is the display active        
+        extern bool isCopsKilledDisplayActive;
 
-    // Cop cars blown up
-    //float copsCarsBlownUpMenuPosX = 0.150f;
-    float copsCarsBlownUpMenuPosX = 0.220f;
-    //float copsCarsBlownUpMenuPosY = 0.870f;
-    float copsCarsBlownUpMenuPosY = 0.935f;
+        // Internal counters for before dying (these would be global within the namespace)
+        extern int copvehiclesBlownUpBeforeDying;
+        extern int copsKilledBeforeDying;
 
-    // Is the display active
-    bool isCopsKilledDisplayActive = false;
+        void IncrementCopVehiclesBlownUp();
+        void ResetCopVehiclesBlownUpBeforeDying();
+        int GetCopVehiclesBlownUpBeforeDying();
 
-private:
-    Stats() {} // Private constructor to prevent external instantiation
-    Stats(const Stats&) = delete;
-    Stats& operator=(const Stats&) = delete;
+        void IncrementCopsKilled();
+        void ResetCopsKilledBeforeDying();
+        int GetCopsKilledBeforeDying();
+    } // namespace Cop
 
-    // New methods for tracking cops killed before dying
-    // Cop cars blown up
-    static int copvehiclesBlownUpBeforeDying;
-    void IncrementCopVehiclesBlownUp();
-    void ResetCopVehiclesBlownUpBeforeDying();
-    int GetCopVehiclesBlownUpBeforeDying();
+    namespace Kills 
+    {
 
-    // Cop kills
-    static void IncrementCopsKilled();
-    static void ResetCopsKilledBeforeDying();
-    static int GetCopsKilledBeforeDying();
+    } // namespace Kills
 
-    static int copsKilledBeforeDying; // Static variable to track the count
-};
-
+    // Any top-level Stats functions that don't fit into sub-namespaces
+    // void ResetAllStats();
+} // namespace Stats

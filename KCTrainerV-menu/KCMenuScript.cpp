@@ -50,7 +50,6 @@ void KCMainScript::Tick() {
 #endif
 
     auto& worldScripts = WorldScripts::GetInstance();
-    auto& stats = Stats::GetInstance();
 
     auto& pedScripts = PedScripts::GetInstance();
 
@@ -124,9 +123,9 @@ void KCMainScript::Tick() {
     }
 
     // New stat features
-    if (stats.isCopsKilledDisplayActive)
+    if (Stats::Cop::isCopsKilledDisplayActive)
     {
-        stats.ProcessCopsKilled();
+        Stats::Cop::ProcessCopsKilledDisplay();
     }
     
 #ifdef EXTRA_FEATURES

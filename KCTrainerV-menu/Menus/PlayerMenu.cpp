@@ -136,14 +136,13 @@ void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& pedScripts = PedScripts::GetInstance();
     auto& tasks = Tasks::GetInstance();
-    auto& stats = Stats::GetInstance();
 
     Ped playerPed = playerScripts.GetPlayerPed();
 
     //int copsKilledStat = playerScripts.GetCopsKilledStat(PlayerModels::FRANKLIN);
 
-    int copsKilledStat = stats.GetCopsKilledStat();
-    int copVehiclesBlownUpStat = stats.GetCopsVehiclesBlownUpStat();
+    int copsKilledStat = Stats::Cop::GetCopsKilledStat();
+    int copVehiclesBlownUpStat = Stats::Cop::GetCopsVehiclesBlownUpStat();
 
     PlayerModels currentPlayerModel = playerScripts.GetCurrentPlayerModel();
 
@@ -183,7 +182,8 @@ void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
         }
     }
 
-    mbCtx.BoolOption("Display cops killed", stats.isCopsKilledDisplayActive, { "Log the amount of cops killed before death to the console and the screen." });
+    mbCtx.BoolOption("Display cops killed", Stats::Cop::isCopsKilledDisplayActive, { "Log the amount of cops killed before death to the console and the screen." });
+
 
     //float stepValue = 0.015f;
     float stepValue = 0.001f;
@@ -191,14 +191,13 @@ void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
     
     // Cops killed on menu
     // Player X position on menu
-
-    mbCtx.FloatOption("Cops killed menu X", stats.copsKilledMenuPosX, 0.f, 1.0f, stepValue);
-    mbCtx.FloatOption("Cops killed menu Y", stats.copsKilledMenuPosY, 0.f, 1.0f, stepValue);
+    mbCtx.FloatOption("Cops killed menu X", Stats::Cop::copsKilledMenuPosX, 0.f, 1.0f, stepValue);
+    mbCtx.FloatOption("Cops killed menu Y", Stats::Cop::copsKilledMenuPosY, 0.f, 1.0f, stepValue);
 
 
     //Cop cars blown up on menu
-    mbCtx.FloatOption("Cops cars blown up menu X", stats.copsCarsBlownUpMenuPosX, 0.f, 1.0f, stepValue);
-    mbCtx.FloatOption("Cops cars blown up menu Y", stats.copsCarsBlownUpMenuPosY, 0.f, 1.0f, stepValue);
+    mbCtx.FloatOption("Cops cars blown up menu X", Stats::Cop::copsCarsBlownUpMenuPosX, 0.f, 1.0f, stepValue);
+    mbCtx.FloatOption("Cops cars blown up menu Y", Stats::Cop::copsCarsBlownUpMenuPosY, 0.f, 1.0f, stepValue);
 
 #else
     // Do nothing in release.
