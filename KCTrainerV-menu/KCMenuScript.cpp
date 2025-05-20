@@ -6,6 +6,7 @@
 #include "Scripts/PlayerScripts.h"
 #include "Scripts/MiscScripts.h"
 #include "Scripts/VehicleScripts.h"
+#include "Scripts/PedScripts.h"
 #include "Scripts/WorldScripts.h"
 
 #include "Scripts/TextScripts.h"
@@ -26,6 +27,12 @@
 #include <inc/natives.h>
 #include <format>
 
+// TODO Move most items out of Tick and into another file
+// Might make this neater.
+// Either make an Events.cpp file, or GameTick, Tick file?
+// Make multiple functions such as PedTicks, PlayerTicks,
+// VehicleTicks, and more to organize it a bit better.
+
 // This tick event below uses flags for certain actions so it doesn't constantly run.
 // Such as when the vehicle invincibility is turned on, it won't constantly run the functions.
 
@@ -44,6 +51,8 @@ void KCMainScript::Tick() {
 
     auto& worldScripts = WorldScripts::GetInstance();
     auto& stats = Stats::GetInstance();
+
+    auto& pedScripts = PedScripts::GetInstance();
 
     //TODO Re-enable these, testing with my tick items disabled.
 #ifdef RUN_TICKS
@@ -138,9 +147,9 @@ void KCMainScript::Tick() {
 
     // Make peds attack player
 #ifdef MEMORY_TESTING
-    if (miscScripts.isPedsAttackEnabled)
+    if (pedScripts.isPedsAttackEnabled)
     {
-        miscScripts.PedsAttackPlayer();
+        pedScripts.PedsAttackPlayer();
     }
 #endif // MEMORY_TESTING
 
@@ -148,9 +157,9 @@ void KCMainScript::Tick() {
 
     // Make all peds drive crazy
 #ifdef MEMORY_TESTING
-    if (miscScripts.isCrazyPedDrivingEnabled)
+    if (pedScripts.isCrazyPedDrivingEnabled)
     {
-        miscScripts.MakeAllPedsDriveCrazy();
+        pedScripts.MakeAllPedsDriveCrazy();
     }
 #endif //
 

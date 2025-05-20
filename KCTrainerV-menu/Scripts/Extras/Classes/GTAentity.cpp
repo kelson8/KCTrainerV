@@ -102,7 +102,7 @@ GTAblip GTAentity::CurrentBlip() const
 	return GET_BLIP_FROM_ENTITY(this->mHandle);
 }
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 Vector3 GTAentity::ForwardVector() const
 {
 	//return GET_ENTITY_FORWARD_VECTOR(this->mHandle);
@@ -179,7 +179,7 @@ float GTAentity::GetGroundZ() const
 	return pos.z;
 }
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 void GTAentity::PlaceOnGround()
 {
 	Vector3 pos = this->Position_get();
@@ -315,7 +315,7 @@ GTAmodel::Model GTAentity::Model() const
 	return GET_ENTITY_MODEL(this->mHandle);
 }
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 
 GTAmodel::ModelDimensions GTAentity::ModelDimensions() const
 {
@@ -323,7 +323,7 @@ GTAmodel::ModelDimensions GTAentity::ModelDimensions() const
 }
 #endif
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 void GTAentity::ModelDimensions(Vector3& dim1, Vector3& dim2) const
 {
 	this->Model().Dimensions(dim1, dim2);
@@ -359,7 +359,7 @@ void GTAentity::Rotation_set(Vector3 value)
 	SET_ENTITY_ROTATION(this->mHandle, value.x, value.y, value.z, 2, 1);
 }
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 Vector3 GTAentity::Direction_get() const
 {
 	return Vector3::RotationToDirection(GET_ENTITY_ROTATION(this->mHandle, 2));
@@ -475,7 +475,7 @@ int GTAentity::NetID() const
 }
 
 // TODO Fix
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 bool GTAentity::IsInRangeOf(Vector3 position, float range) const
 {
 	return ((Vector3::Subtract(this->Position_get(), position).Length()) < range);
@@ -520,7 +520,7 @@ Vector3 GTAentity::GetOffsetGivenWorldCoords(Vector3 coord) const
 	return GET_OFFSET_FROM_ENTITY_GIVEN_WORLD_COORDS(this->mHandle, coord);
 }
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 int GTAentity::GetBoneIndex(const std::string& boneLabel) const
 {
 	if (boneLabel.length() == 0)
@@ -579,7 +579,7 @@ Vector3 GTAentity::GetOffsetFromBoneInWorldCoords(const std::string& boneLabel, 
 
 #endif
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 bool GTAentity::HasBone(const std::string& boneLabel) const
 {
 	return this->GetBoneIndex(boneLabel) != -1;
@@ -638,7 +638,7 @@ void GTAentity::SetMass(float mass)
 	SET_OBJECT_PHYSICS_PARAMS(this->mHandle, mass, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
 }
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 void GTAentity::Oscillate(const Vector3& position, float angleFreq, float dampRatio)
 {
 	//Zorg93 - bring entity to position without lerp function using applyforce
@@ -650,7 +650,7 @@ void OscillateEntity(GTAentity entity, const Vector3& position, float angleFreq,
 {
 	entity.Oscillate(position, angleFreq, dampRatio);
 }
-#endif //_DISABLED_CODE
+#endif //DISABLED_CODE
 
 void GTAentity::ApplyForce(Vector3 direction, ForceType forceType)
 {

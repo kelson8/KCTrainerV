@@ -14,6 +14,7 @@
 
 // Chaos Mod
 #include "Util/EntityIterator.h"
+#include "Util/Random.h"
 
 // Menyoo
 #include "GTAped.h"
@@ -468,24 +469,40 @@ void PlayerScripts::FadeScreenOut(int ms)
     //}
 }
 
+/// <summary>
+/// Test running the fade in and out for teleports.
+/// I think I nearly got this working, 
+/// </summary>
 void PlayerScripts::TestFade() {
     //DO_SCREEN_FADE_OUT(1000);
     ////WAIT(1000);
     //WAIT(2000);
     //DO_SCREEN_FADE_IN(1000);
 
-    int fadeTime = 500;
+    //int fadeTime = 500;
+    //int fadeOutTime = 50;
+    int fadeOutTime = 0;
+    //int fadeInTime = 200;
+    //int fadeInTime = 1000;
+    int fadeInTime = 4000;
+
+    // This seems to somewhat work now, doesn't fully fade out like its too quick or something.
+    // Maybe I should play around with this in C#?
+    // TODO Retest with the below methods, using it like this.
+    DO_SCREEN_FADE_OUT(fadeOutTime);
+    WAIT(5000);
+    DO_SCREEN_FADE_IN(fadeInTime);
 
     // Fade out if not already faded out or fading out
-    if (!IS_SCREEN_FADED_OUT() && !IS_SCREEN_FADING_OUT()) {
-        DO_SCREEN_FADE_OUT(fadeTime);
-        WAIT(550); // Wait for fade out
-    }
+    //if (!IS_SCREEN_FADED_OUT() && !IS_SCREEN_FADING_OUT()) {
+    //    DO_SCREEN_FADE_OUT(fadeTime);
+    //    WAIT(550); // Wait for fade out
+    //}
 
-    // Fade in if not already faded in or fading in
-    if (!IS_SCREEN_FADED_IN() && !IS_SCREEN_FADING_IN()) {
-        DO_SCREEN_FADE_IN(fadeTime);
-    }
+    //// Fade in if not already faded in or fading in
+    //if (!IS_SCREEN_FADED_IN() && !IS_SCREEN_FADING_IN()) {
+    //    DO_SCREEN_FADE_IN(fadeTime);
+    //}
 }
 
 #pragma endregion
@@ -693,6 +710,9 @@ void PlayerScripts::TeleportToLocation(TeleportLocation locationToTeleport) {
     const TeleportInfo teleportInfo = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
     //SetPlayerCoords(teleportCoords);
 
+    // TODO Test
+    GTAped playerPed = PLAYER_PED_ID();
+
     // TODO Test IPL loading, not sure if this will work.
 #ifdef LOAD_IPLS
 
@@ -750,8 +770,12 @@ void PlayerScripts::TeleportToLocation(TeleportLocation locationToTeleport) {
     //}
     //g_loadedIpls.clear();
 
-    SetPlayerCoords(teleportInfo.coordinates);
-    SetPlayerHeading(teleportInfo.heading);
+    // These seem to work, using GTAped from Menyoo now.
+    playerPed.Position_set(teleportInfo.coordinates);
+    playerPed.Heading_set(teleportInfo.heading);
+
+    //SetPlayerCoords(teleportInfo.coordinates);
+    //SetPlayerHeading(teleportInfo.heading);
 
     // Request the IPLs for the new location
     for (const auto& ipl : teleportInfo.iplsToLoad) {
@@ -844,13 +868,13 @@ void PlayerScripts::MenyooTest()
 
     // Well this one doesn't work.
     //GTAvehicle playerVeh();
-    VehicleSeat currVehSeat;
-    if (playerPed.IsInVehicle())
-    {
-        // TODO Fix this to work, I can modify a lot with the GTAvehicle class.
-        //playerVeh = playerPed.CurrentVehicle();
-        currVehSeat = playerPed.CurrentVehicleSeat_get();
-    }
+    //VehicleSeat currVehSeat;
+    //if (playerPed.IsInVehicle())
+    //{
+    //    // TODO Fix this to work, I can modify a lot with the GTAvehicle class.
+    //    //playerVeh = playerPed.CurrentVehicle();
+    //    currVehSeat = playerPed.CurrentVehicleSeat_get();
+    //}
 
      //playerPed.CurrentVehicle();
 
@@ -862,7 +886,8 @@ void PlayerScripts::MenyooTest()
 
     // Can get/set position:
     //playerPed.Position_get();
-    playerPed.Position_set(michealsHouseCoords);
+    //playerPed.Position_set(michealsHouseCoords);
+
 
     // Can get/set rotation:
     //playerPed.Rotation_get();
@@ -871,21 +896,34 @@ void PlayerScripts::MenyooTest()
     //playerPed.CanFlyThroughWindscreen_get();
     //playerPed.CanFlyThroughWindscreen_set(true);
    
-    // Hmm, can I use GTAped in my for loops? Might be fun
+    // Hmm, I can use GTAped in my for loops? Might be fun
 
-    for (GTAped ped : GetAllPeds())
-    {
-        // Check if they are the player and not dead, if so do nothing
-        if (!ped.IsPlayer() || ped.IsAlive())
-        {
-            //ped.
-        }
-        //if (!PED::IS_PED_A_PLAYER(ped) && !ENTITY::IS_ENTITY_DEAD(ped, false))
-        //{
-        //    ENTITY::SET_ENTITY_HEALTH(ped, 0, 0);
-        //}
+    // This seems to work, set the peds driving speeds to random.
+    // TODO Move this into VehicleScripts.
+    // Set the min and max speeds for the below, moved out of the loop I only want it randomized once.
+    //float minSpeed = 25.0f;
+    //float maxSpeed = 40.0f;
 
-    }
+    //// Get a random value from the two values above.
+    //float randomSpeed = g_Random.GetRandomFloat(minSpeed, maxSpeed);
+
+    //for (GTAped ped : GetAllPeds())
+    //{
+    //    // Check if they are the player and not dead, if so do nothing
+    //    if (!ped.IsPlayer() || ped.IsAlive())
+    //    {
+    //        if (ped.IsInVehicle())
+    //        {
+    //            //ped.DrivingSpeed_set(40.0f);
+    //            ped.DrivingSpeed_set(randomSpeed);
+    //        }
+    //    }
+    //    
+    //    std::string drivingSpeedString = std::format("All peds driving speed set to {}", randomSpeed);
+
+    //    std::cout << drivingSpeedString << std::endl;
+    //    UI::Notify(drivingSpeedString);
+    //}
 
     // Well this one didn't work.
     //for (GTAvehicle vehicle : GetAllVehs())

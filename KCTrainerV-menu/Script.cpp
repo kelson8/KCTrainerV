@@ -145,6 +145,9 @@ void KCMenu::scriptInit()
 
     coreScript = std::make_shared<KCMainScript>();
 
+    // Setup random, so random numbers work
+    srand(GetTickCount());
+
     // Only run this in debug builds, I might add a ini option for this sometime.
 #ifdef DEBUG_MODE
     // Attach the console to the game in scriptInit

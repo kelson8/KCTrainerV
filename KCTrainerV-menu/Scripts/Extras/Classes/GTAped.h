@@ -24,6 +24,11 @@
 typedef unsigned long DWORD, Hash;
 typedef int BOOL;
 
+// TODO Fix this warning later
+// warning C4099: 'Vector3': type name first seen using 'struct' now seen using 'class'
+// 
+#pragma warning(disable: 4099)
+
 class GTAvehicle;
 class Vector3;
 enum class ParachuteState : int;

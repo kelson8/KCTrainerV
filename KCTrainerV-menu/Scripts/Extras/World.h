@@ -22,6 +22,8 @@
 
 // TODO Fix this file, might be useful for later.
 
+//#define MENYOO_SCRIPT_FILES
+
 #ifdef MENYOO_SCRIPT_FILES
 
 #include <vector>

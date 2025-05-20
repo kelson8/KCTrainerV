@@ -83,6 +83,7 @@
 // Rename this preprocessor to whatever I am moving around.
 // This method of moving code can help with testing.
 //#define MOVE_MENU
+#define MOVE_PED_MENU
 
 namespace Constants 
 {

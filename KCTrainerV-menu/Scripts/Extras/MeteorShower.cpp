@@ -11,6 +11,7 @@
 #include "MeteorShower.h"
 
 #include "../PlayerScripts.h"
+#include "Classes/Model.h"
 
 // Credit to Menyoo: https://github.com/itsjustcurtis/MenyooSP/blob/main/Solution/source/Misc/MeteorShower.cpp
 
@@ -23,7 +24,7 @@
 //#include "..\Scripting\GTAprop.h"
 //#include "..\Scripting\GTAped.h"
 //#include "..\Scripting\Raycast.h"
-//#include "..\Scripting\PTFX.h"
+#include "PTFX.h"
 
 #include "Game.h"
 
@@ -34,6 +35,10 @@
 #include <vector>
 
 // TODO Fix this
+
+// I almost have this ready to work.
+// I have to figure out how to implement the Raycast class, and the World class.
+// Also, I need to modify this a bit where it was using its own Vector3 implementation
 
 #ifdef METEOR_SHOWER_TEST
 
@@ -122,7 +127,7 @@ namespace _MeteorShower_
 
 
 			//GTAprop rock = CREATE_OBJECT(model.hash, pos.x, pos.y, pos.z, 1, 1, 1);
-			Object rock = CREATE_OBJECT(model.hash, pos, true, true, true);
+			GTAprop rock = CREATE_OBJECT(model.hash, pos, true, true, true);
 			//SET_NETWORK_ID_CAN_MIGRATE(rock.NetID(), true);
 			rock.Heading_set(GET_RANDOM_FLOAT_IN_RANGE(0.0f, 360.0f));
 			rock.FreezePosition(false);

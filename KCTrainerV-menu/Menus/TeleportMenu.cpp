@@ -69,6 +69,7 @@ void TeleportMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& playerScripts = PlayerScripts::GetInstance();
+    auto& teleportLocations = TeleportLocations::GetInstance();
     mbCtx.Title("Teleport Locations");
 
 #ifdef NEW_TELEPORTS
@@ -112,8 +113,10 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
 
     if (mbCtx.Option("Waypoint"))
     {
-        Vector3 waypointCoords = playerScripts.GetWaypointCoords();
-        playerScripts.SetPlayerCoords(waypointCoords);
+        GTAped playerPed = PLAYER_PED_ID();
+        //Vector3 waypointCoords = playerScripts.GetWaypointCoords();
+        //playerScripts.SetPlayerCoords(waypointCoords);
+        teleportLocations.WarpToWaypoint(playerPed);
     }
 #endif //!NEW_TELEPORTS
 }

@@ -192,6 +192,15 @@
     <ClCompile Include="Scripts\Stats.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\GTAprop.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\PTFX.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\Camera.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -467,6 +476,18 @@
     </ClInclude>
     <ClInclude Include="Scripts\Stats.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\GTAprop.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\PTFX.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\Camera.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\WeaponPool.h">
+      <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

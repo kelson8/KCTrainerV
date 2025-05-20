@@ -25,6 +25,11 @@
 #include <map>
 #include <string>
 
+// TODO Fix this warning later
+// warning C4099: 'Vector3': type name first seen using 'struct' now seen using 'class'
+// 
+#pragma warning(disable: 4099)
+
 typedef unsigned short UINT16;
 typedef unsigned char uint8_t;
 class Vector3;

@@ -394,15 +394,6 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
                 miscScripts.StopCreditsMusic();
             }
 
-            // Ped tests
-
-#ifdef MEMORY_TESTING
-            mbCtx.BoolOption("Peds attack player", miscScripts.isPedsAttackEnabled, { "Make all peds in the area attack you" });
-            mbCtx.BoolOption("Peds drive crazy", miscScripts.isCrazyPedDrivingEnabled, {
-                "Make all peds in the area drive with the rushed driving style." });
-
-#endif // MEMORY_TESTING
-
 #ifdef CHAOSMOD_FEATURES
             if (mbCtx.Option("Set peds in mowers", { "Place all peds in the area into lawn mowers" }))
             {
@@ -413,21 +404,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
             mbCtx.BoolOption("Toggle airstrike test", miscScripts.airStrikeRunning, { "Toggle the airstrikes on/off" });
 
-            //if (mbCtx.Option("Start airstrike test", { "Start a test for an airstrike" }))
-            //{
-            //    //miscScripts.StartAirstrikeTest();
-            //    miscScripts.airStrikeRunning = true;
-            //}
-
-            //if (mbCtx.Option("Stop airstrike test", { "Stop the test for an airstrike" }))
-            //{
-            //    miscScripts.StopAirstrikeTest();
-            //    miscScripts.airStrikeRunning = false;
-            //}
-
             mbCtx.BoolOption("Draw text on screen", textScripts.drawText, { "Toggle test text to draw on screen." });
-
-            
 
 #ifdef EXTRA_FEATURES
  

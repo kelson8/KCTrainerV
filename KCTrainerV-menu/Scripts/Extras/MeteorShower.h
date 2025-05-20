@@ -12,6 +12,7 @@
 #include "pch.h"
 
 #include "../../Constants.hpp"
+#include "Classes/GTAprop.h"
 
 #include "GenericLoopedMode.h"
 
@@ -21,6 +22,7 @@
 
 // Credit to Menyoo: https://github.com/itsjustcurtis/MenyooSP/blob/main/Solution/source/Misc/MeteorShower.h
 
+//#define METEOR_SHOWER_TEST
 #ifdef METEOR_SHOWER_TEST
 
 namespace _MeteorShower_
@@ -31,8 +33,8 @@ namespace _MeteorShower_
 	private:
 		DWORD timer1;
 		DWORD timer2;
-		//std::vector<GTAprop> rockArray;
-		//std::vector<GTAmodel::Model> rockModels;
+		std::vector<GTAprop> rockArray;
+		std::vector<GTAmodel::Model> rockModels;
 		static const std::vector<std::string> rockModelNames;
 		static Game::Sound::GameSound crateLandSound;
 	public:

@@ -24,7 +24,7 @@
 
 // TODO Disable if this breaks build
 // I have mostly commented out the code that I might fix up later.
-// My disabled code is under the '_DISABLED_CODE' preprocessor
+// My disabled code is under the 'DISABLED_CODE' preprocessor
 #define MENYOO_SCRIPT_FILES
 
 #ifdef MENYOO_SCRIPT_FILES
@@ -32,6 +32,11 @@
 #ifdef MEMORY_TESTING
 
 #include <string>
+
+// TODO Fix this warning later
+// warning C4099: 'Vector3': type name first seen using 'struct' now seen using 'class'
+// 
+#pragma warning(disable: 4099)
 
 typedef unsigned char UINT8;
 typedef unsigned short UINT16;
@@ -85,7 +90,7 @@ public:
 
 	GTAblip CurrentBlip() const;
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 	Vector3 ForwardVector() const;
 	Vector3 RightVector() const;
 	Vector3 UpVector() const;
@@ -105,7 +110,7 @@ public:
 	float HeightAboveGround() const;
 	float GetGroundZ() const;
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 	virtual void PlaceOnGround();
 #endif
 
@@ -143,7 +148,7 @@ public:
 
 	GTAmodel::Model Model() const;
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 	GTAmodel::ModelDimensions ModelDimensions() const;
 	void ModelDimensions(Vector3& dim1C, Vector3& dim2C) const;
 
@@ -158,7 +163,7 @@ public:
 
 	Vector3 Rotation_get() const;
 	void Rotation_set(Vector3 value);
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 	Vector3 Direction_get() const;
 	void Direction_set(Vector3 value);
 #endif
@@ -190,7 +195,7 @@ public:
 
 	virtual int NetID() const;
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 	bool IsInRangeOf(Vector3 position, float range) const;
 #endif
 
@@ -203,7 +208,7 @@ public:
 	Vector3 GetOffsetInWorldCoords(float X, float Y, float Z) const;
 	Vector3 GetOffsetGivenWorldCoords(Vector3 coord) const;
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 	int GetBoneIndex(const std::string& boneLabel) const;
 	int GetBoneIndex(VBone::VBone value) const;
 	Vector3 GetBoneCoords(int boneIndex) const;
@@ -216,7 +221,7 @@ public:
 	Vector3 GetOffsetFromBoneInWorldCoords(const std::string& boneLabel, const Vector3& offset) const;
 #endif
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 	bool HasBone(const std::string& boneLabel) const;
 	bool HasBone(VBone::VBone value) const;
 #endif
@@ -235,7 +240,7 @@ public:
 	void SetMass(float mass);
 
 
-#ifdef _DISABLED_CODE
+#ifdef DISABLED_CODE
 	void Oscillate(const Vector3& position, float angleFreq, float dampRatio);
 	friend void OscillateEntity(GTAentity entity, const Vector3& position, float angleFreq, float dampRatio);
 #endif

@@ -6,9 +6,16 @@
 
 #include "PlayerScripts.h"
 
-#include "Util/EntityIterator.h"
 
 #include "Util/UI.hpp"
+
+// Chaos Mod
+#include "Util/EntityIterator.h"
+#include "Memory/Memory.h"
+#include "Memory/WeaponPool.h"
+#include "Util/Random.h"
+
+
 
 // TODO Set these up
 /*
@@ -360,6 +367,53 @@ void PedScripts::GivePedWeapon(Ped ped, Hash weaponHash, int ammoCount, bool isH
 	//}
 }
 
+#ifdef MEMORY_TESTING
+
+// TODO Move this out of MiscScripts
+/// <summary>
+/// Make all peds in the area attack the player, PedsAttackPlayer.cpp in Chaos Mod
+/// </summary>
+void PedScripts::PedsAttackPlayer()
+{
+	static const Hash enemyGroupHash = MISC::GET_HASH_KEY("_ATTACK_PLAYER");
+	static const Hash playerGroupHash = MISC::GET_HASH_KEY("PLAYER");
+
+	// Set everyone to hate the player
+	SET_RELATIONSHIP_BETWEEN_GROUPS(5, enemyGroupHash, playerGroupHash);
+	SET_RELATIONSHIP_BETWEEN_GROUPS(5, playerGroupHash, enemyGroupHash);
+
+	Player player = PLAYER_ID();
+	Ped playerPed = PLAYER_PED_ID();
+	int playerGroup = GET_PLAYER_GROUP(player);
+
+	for (Ped ped : GetAllPeds())
+	{
+		if (!IS_PED_A_PLAYER(ped))
+		{
+			if (IS_PED_IN_GROUP(ped) && GET_PED_GROUP_INDEX(ped) == playerGroup)
+				REMOVE_PED_FROM_GROUP(ped);
+
+			SET_PED_RELATIONSHIP_GROUP_HASH(ped, enemyGroupHash);
+
+			// https://nativedb.dotindustries.dev/gta5/natives/0x9F7794730795E019?search=SET_PED_COMBAT_ATTRIBUTES
+			// 5 = BF_AlwaysFight
+			// 46 = BF_CanFightArmedPedsWhenNotArmed
+			SET_PED_COMBAT_ATTRIBUTES(ped, 5, true);
+			SET_PED_COMBAT_ATTRIBUTES(ped, 46, true);
+
+			// 2 = Unknown, not listed on the native website
+			SET_PED_FLEE_ATTRIBUTES(ped, 2, true);
+
+			// https://nativedb.dotindustries.dev/gta5/natives/0xF166E48407BAC484?search=TASK_COMBAT_PED
+			// combatFlags seems to always be 0
+			// threatResponseFlags seems to always be 16
+			TASK_COMBAT_PED(ped, playerPed, 0, 16);
+		}
+	}
+}
+
+#endif // MEMORY_TESTING
+
 /// <summary>
 /// Give the ped a weapon attachment, tested working by giving attachment to myself.
 /// https://nativedb.dotindustries.dev/gta5/natives/0xD966D51AA5B28BB9?search=GIVE_WEAPON_COMPONENT_TO_PED
@@ -375,5 +429,77 @@ void PedScripts::GiveWeaponComponent(Ped ped, Hash weaponHash, Hash componentHas
 		GIVE_WEAPON_COMPONENT_TO_PED(ped, weaponHash, componentHash);
 	}
 }
+
+
+#ifdef MEMORY_TESTING
+/// <summary>
+/// TODO Test this
+/// This should give the peds random weapons.
+/// From Chaos Mod, originally in PedsEveryoneWepController.cpp
+/// </summary>
+/// <param name="ped">The ped to give a random weapon</param>
+void PedScripts::GivePedRandomWeapons(Ped ped)
+{
+	const auto& weapons = Memory::GetAllWeapons();
+	
+	Hash wep = weapons[g_Random.GetRandomInt(0, weapons.size() - 1)];
+
+	GIVE_WEAPON_TO_PED(ped, wep, 9999, true, true);
+	SET_CURRENT_PED_WEAPON(ped, wep, true);
+
+}
+
+/// <summary>
+/// Another variation of the above function, this one gives random weapons to all peds.
+/// </summary>
+void PedScripts::GiveAllPedsRandomWeapons()
+{
+	const auto& weapons = Memory::GetAllWeapons();
+	for (Ped ped : GetAllPeds())
+	{
+		Hash wep = weapons[g_Random.GetRandomInt(0, weapons.size() - 1)];
+
+		GIVE_WEAPON_TO_PED(ped, wep, 9999, true, true);
+		SET_CURRENT_PED_WEAPON(ped, wep, true);
+	}
+
+	UI::Notify("All peds given random weapons");
+
+}
+
+/// <summary>
+/// This seems to work.
+/// Set all peds in the area to the rushed driving style.
+/// </summary>
+void PedScripts::MakeAllPedsDriveCrazy()
+{
+
+	Ped player = PLAYER_PED_ID();
+	std::vector<Entity> entities;
+
+	for (Ped ped : GetAllPeds())
+		if (ped != player)
+			entities.push_back(ped);
+
+	//for (Vehicle veh : GetAllVehs())
+	//	if (!IS_PED_IN_VEHICLE(player, veh, false))
+	//		entities.push_back(veh);
+
+
+	Vector3 playerCoord = GET_ENTITY_COORDS(player, false);
+	for (Entity entity : entities)
+	{
+		// First check if the entity is a Ped
+		if (IS_ENTITY_A_PED(entity))
+		{
+			// If so, set driving styles to rushed
+			SET_DRIVE_TASK_DRIVING_STYLE(entity, DrivingStyle::Rushed);
+		}
+	}
+
+}
+
+#endif // MEMORY_TESTING
+
 
 #pragma endregion // WeaponFunctions

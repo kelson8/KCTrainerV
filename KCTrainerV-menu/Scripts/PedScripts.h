@@ -44,9 +44,20 @@ public:
 	void SetMaxCruiseSpeed(Ped ped, float speed);
 	//
 
-
 #ifdef MEMORY_TESTING
+	// Peds
+	// Attacking player and other stuff
+
 	void SetAllPedsAsCops();
+	void PedsAttackPlayer();
+	bool isPedsAttackEnabled = false;
+
+	void MakeAllPedsDriveCrazy();
+	bool isCrazyPedDrivingEnabled = false;
+
+	// Weapons
+	void GivePedRandomWeapons(Ped ped);
+	void GiveAllPedsRandomWeapons();
 #endif
 
 private:

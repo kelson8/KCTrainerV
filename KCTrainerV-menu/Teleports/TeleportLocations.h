@@ -8,6 +8,8 @@
 
 #include <inc/natives.h>
 
+#include "Scripts/Extras/Classes/GTAped.h"
+
 // Taken from TeleLocation.h in Menyoo
 constexpr std::string_view operator ""_sv(const char* str, std::size_t length)  //Maybe not the best location for this but every file that requiers this includes this header file so why not 
 {
@@ -125,6 +127,8 @@ public:
 #endif //NEW_TELEPORTS
 
 	void UnloadAllLoadedIpls(); // New function to unload all loaded IPLs
+
+	void WarpToWaypoint(GTAped ped);
 
 private:
 	TeleportLocations() {} // Private constructor to prevent external instantiation

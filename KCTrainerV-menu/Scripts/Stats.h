@@ -5,7 +5,7 @@ class Stats
 {
 
 public:
-    // Instance of the Stats for use with changing wanted levels and other values.
+    // Instance of the Stats
     static Stats& GetInstance()
     {
         static Stats instance;

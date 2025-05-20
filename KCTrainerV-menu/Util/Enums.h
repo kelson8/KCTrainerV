@@ -8,6 +8,7 @@
 #include <string>
 #include <inc/types.h>
 #include <vector>
+#include <map>
 
 /*
 	Michael = SP0, Franklin = SP1, Trevor = SP2
@@ -134,54 +135,6 @@ enum RelationShipGroup
 };
 
 // These below are from Menyoo
-
-namespace EXPLOSION {
-	enum EXPLOSION : UINT8
-	{
-		GRENADE,
-		GRENADELAUNCHER,
-		STICKYBOMB,
-		MOLOTOV,
-		ROCKET,
-		TANKSHELL,
-		HI_OCTANE,
-		CAR,
-		PLANE,
-		PETROL_PUMP,
-		BIKE,
-		DIR_STEAM,
-		DIR_FLAME,
-		DIR_WATER_HYDRANT,
-		DIR_GAS_CANISTER,
-		BOAT,
-		SHIP_DESTROY,
-		TRUCK,
-		BULLET,
-		SMOKEGRENADELAUNCHER,
-		SMOKEGRENADE,
-		BZGAS,
-		FLARE,
-		GAS_CANISTER,
-		EXTINGUISHER,
-		PROGRAMMABLEAR,
-		TRAIN,
-		BARREL,
-		PROPANE,
-		BLIMP,
-		DIR_FLAME_EXPLODE,
-		TANKER,
-		PLANE_ROCKET,
-		VEHICLE_BULLET,
-		GAS_TANK,
-		EXPLOSION35,
-		EXPLOSION36,
-		EXPLOSION37,
-		FIREWORK,
-		SNOWBALL,
-		PROXMINE,
-		VALKYRIE_CANNON
-	};
-}
 
 enum ControllerInput : UINT16
 {
@@ -649,6 +602,254 @@ namespace ZoneID {
 		ZANCUDO,
 		ZP_ORT,
 		ZQ_UAR
+	};
+}
+
+namespace AnimFlag {
+	enum AnimFlag
+	{
+		Normal = 0,
+		Loop = 1,
+		StayInLastFrame = 2,
+
+		UpperBody = 16,
+		UpperBodyLoop = 17,
+		UpperBodyStayInLastFrame = 18,
+
+		SecondTask = 32,
+		SecondTaskLoop = 33,
+		SecondTaskStayInLastFrame = 34,
+
+		UpperBodySecondTask = 48,
+		UpperBodySecondTaskLoop = 49,
+		UpperBodySecondTaskStayInLastFrame = 50,
+
+		AllowInteruption = 128,
+
+		DisableRootMotion = 524288,
+		DisableRootMotionLoop = 524289,
+		DisableRootMotionStayInLastFrame = 524290,
+
+		RagdollOnCollision = 4194304,
+		RagdollOnCollisionLoop = 4194305,
+
+		UpperbodySecondTaskUnkUnk = 16785456,
+		UpperbodySecondTaskUnkUnkLoop = 16785457,
+		UpperbodySecondTaskUnkUnkStayInLastFrame = 16785458,
+	};
+
+	//struct NamedAnimFlag{ std::string name; int id; };
+	extern std::map<int, std::string> vFlagNames;
+}
+
+enum class DecalType
+{
+	Splatters_blood = 1010,
+	Splatters_blood_dir = 1015,
+	Splatters_blood_mist = 1017,
+	Splatters_mud = 1020,
+	Splatters_paint = 1030,
+	Splatters_water = 1040,
+	Splatters_water_hydrant = 1050,
+	Splatters_blood2 = 1110,
+	WeapImpact_metal = 4010,
+	WeapImpact_concrete = 4020,
+	WeapImpact_mattress = 4030,
+	WeapImpact_mud = 4032,
+	WeapImpact_cardboard = 4040,
+	WeapImpact_wood = 4050,
+	WeapImpact_sand = 4053,
+	WeapImpact_melee_glass = 4100,
+	WeapImpact_glass_blood = 4102,
+	WeapImpact_glass_blood2 = 4104,
+	WeapImpact_shotgun_paper = 4200,
+	WeapImpact_shotgun_mattress = 4201,
+	WeapImpact_shotgun_metal = 4202,
+	WeapImpact_shotgun_wood = 4203,
+	WeapImpact_shotgun_dirt = 4204,
+	WeapImpact_shotgun_tvscreen = 4205,
+	WeapImpact_shotgun_tvscreen2 = 4206,
+	WeapImpact_shotgun_tvscreen3 = 4207,
+	WeapImpact_melee_concrete = 4310,
+	WeapImpact_melee_wood = 4312,
+	WeapImpact_melee_metal = 4314,
+	Burn1 = 4421,
+	Burn2 = 4422,
+	Burn3 = 4423,
+	Burn4 = 4424,
+	Burn5 = 4425,
+	Bang_concrete_bang = 5000,
+	Bang_concrete_bang2 = 5001,
+	Bang_bullet_bang = 5002,
+	Bang_bullet_bang2 = 5004,
+	Bang_glass = 5031,
+	Bang_glass2 = 5032,
+	SolidPool_water = 9000,
+	SolidPool_blood = 9001,
+	SolidPool_oil = 9002,
+	SolidPool_petrol = 9003,
+	SolidPool_mud = 9004,
+	PorousPool_water = 9005,
+	PorousPool_blood = 9006,
+	PorousPool_oil = 9007,
+	PorousPool_petrol = 9008,
+	PorousPool_mud = 9009,
+	PorousPool_water_ped_drip = 9010,
+	LiquidTrail_water = 9050
+};
+
+enum PainType
+{
+	PAINID_LONG = 8,
+	PAINID_UNDERWATER_1 = 9,
+	PAINID_SMOKE = 10,
+	PAINID_SHORT = 13,
+	PAINID_STOMACH = 18,
+	PAINID_POS_PUKE = 19,
+	PAINID_ELETRIC_SHOCK = 20,
+	PAINID_HEART_BEAT = 21,
+	PAINID_FORCE = 22,
+	PAINID_PUNCH_1 = 24,
+	PAINID_UNDERWATER_2 = 29,
+	PAINID_COF = 30,
+	PAINID_PUNCH_2 = 31,
+	PAINID_PUNCH_3 = 32,
+	PAINID_SMALL_FALL = 33
+};
+
+namespace MarkerType {
+	enum MarkerType : UINT8
+	{
+		UpsideDownCone = 0,
+		VerticalCylinder = 1,
+		ThickChevronUp = 2,
+		ThinChevronUp = 3,
+		CheckeredFlagRect = 4,
+		CheckeredFlagCircle = 5,
+		VerticleCircle = 6,
+		PlaneModel = 7,
+		LostMCDark = 8,
+		LostMCLight = 9,
+		Number0 = 10,
+		Number1 = 11,
+		Number2 = 12,
+		Number3 = 13,
+		Number4 = 14,
+		Number5 = 15,
+		Number6 = 16,
+		Number7 = 17,
+		Number8 = 18,
+		Number9 = 19,
+		ChevronUpx1 = 20,
+		ChevronUpx2 = 21,
+		ChevronUpx3 = 22,
+		HorizontalCircleFat = 23,
+		ReplayIcon = 24,
+		HorizontalCircleSkinny = 25,
+		HorizontalCircleSkinny_Arrow = 26,
+		HorizontalSplitArrowCircle = 27,
+		DebugSphere = 28,
+		DollarSign = 29,
+		HorizontalBars = 30,
+		Beast = 31,
+		QuestionMark = 32,
+		Plane = 33,
+		Helicopter = 34,
+		Boat = 35,
+		Car = 36,
+		Motorcycle = 37,
+		Bicycle = 38,
+		Truck = 39,
+		Parachute = 40,
+		Jetpack = 41,
+		SawBlade = 42,
+		VerticalCylinder2 = 43,
+	};
+
+	extern const std::vector<std::string> vNames;
+}
+
+namespace PedRelationship {
+	enum PedRelationship : int
+	{
+		MinusOneWat = -1,
+		Hate = 5,
+		Dislike = 4,
+		Neutral = 3,
+		Like = 2,
+		Respect = 1,
+		Companion = 0,
+		Pedestrians = 255 // or neutral
+	};
+}
+
+enum class WeatherType : int
+{
+	Unknown = -1,
+	ExtraSunny,
+	Clear,
+	Clouds,
+	Smog,
+	Foggy,
+	Overcast,
+	Rain,
+	Thunder,
+	Clearing,
+	Neutral,
+	Snow,
+	Blizzard,
+	SnowLight,
+	//XMAS,
+	Halloween,
+	SNOW_HALLOWEEN,
+	RAIN_HALLOWEEN
+};
+
+namespace EXPLOSION {
+	enum EXPLOSION : UINT8
+	{
+		GRENADE,
+		GRENADELAUNCHER,
+		STICKYBOMB,
+		MOLOTOV,
+		ROCKET,
+		TANKSHELL,
+		HI_OCTANE,
+		CAR,
+		PLANE,
+		PETROL_PUMP,
+		BIKE,
+		DIR_STEAM,
+		DIR_FLAME,
+		DIR_WATER_HYDRANT,
+		DIR_GAS_CANISTER,
+		BOAT,
+		SHIP_DESTROY,
+		TRUCK,
+		BULLET,
+		SMOKEGRENADELAUNCHER,
+		SMOKEGRENADE,
+		BZGAS,
+		FLARE,
+		GAS_CANISTER,
+		EXTINGUISHER,
+		PROGRAMMABLEAR,
+		TRAIN,
+		BARREL,
+		PROPANE,
+		BLIMP,
+		DIR_FLAME_EXPLODE,
+		TANKER,
+		PLANE_ROCKET,
+		VEHICLE_BULLET,
+		GAS_TANK,
+		EXPLOSION35,
+		EXPLOSION36,
+		EXPLOSION37,
+		FIREWORK,
+		SNOWBALL,
+		PROXMINE,
+		VALKYRIE_CANNON
 	};
 }
 

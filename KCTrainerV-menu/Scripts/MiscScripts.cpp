@@ -301,43 +301,7 @@ void MiscScripts::StopTestMusic()
 	AUDIO::TRIGGER_MUSIC_EVENT("MP_MC_CMH_IAA_FINALE_START");
 }
 
-/// <summary>
-/// This seems to work.
-/// Set all peds in the area to the rushed driving style.
-/// </summary>
-#ifdef MEMORY_TESTING
-void MiscScripts::MakeAllPedsDriveCrazy()
-{
-
-	Ped player = PLAYER_PED_ID();
-	std::vector<Entity> entities;
-
-	for (Ped ped : GetAllPeds())
-		if (ped != player)
-			entities.push_back(ped);
-
-	//for (Vehicle veh : GetAllVehs())
-	//	if (!IS_PED_IN_VEHICLE(player, veh, false))
-	//		entities.push_back(veh);
-
-
-	Vector3 playerCoord = GET_ENTITY_COORDS(player, false);
-	for (Entity entity : entities)
-	{
-		// First check if the entity is a Ped
-		if(IS_ENTITY_A_PED(entity))
-		{
-			// If so, set driving styles to rushed
-			SET_DRIVE_TASK_DRIVING_STYLE(entity, DrivingStyle::Rushed);
-		}
-	}
-
-}
-#endif // MEMORY_TESTING
-
-
 // Some of these below were taken from the Chaos Mod.
-
 
 // Taken from MiscIntenseMusic.cpp in Chaos Mod
 
@@ -529,47 +493,7 @@ void MiscScripts::DisableForceField()
 
 #pragma region PedFunctions
 
-/// <summary>
-/// Make all peds in the area attack the player, PedsAttackPlayer.cpp in Chaos Mod
-/// </summary>
-void MiscScripts::PedsAttackPlayer()
-{
-	static const Hash enemyGroupHash = MISC::GET_HASH_KEY("_ATTACK_PLAYER");
-	static const Hash playerGroupHash = MISC::GET_HASH_KEY("PLAYER");
 
-	// Set everonye to hate the player
-	SET_RELATIONSHIP_BETWEEN_GROUPS(5, enemyGroupHash, playerGroupHash);
-	SET_RELATIONSHIP_BETWEEN_GROUPS(5, playerGroupHash, enemyGroupHash);
-
-	Player player = PLAYER_ID();
-	Ped playerPed = PLAYER_PED_ID();
-	int playerGroup = GET_PLAYER_GROUP(player);
-
-	for (Ped ped : GetAllPeds())
-	{
-		if (!IS_PED_A_PLAYER(ped))
-		{
-			if (IS_PED_IN_GROUP(ped) && GET_PED_GROUP_INDEX(ped) == playerGroup)
-				REMOVE_PED_FROM_GROUP(ped);
-
-			SET_PED_RELATIONSHIP_GROUP_HASH(ped, enemyGroupHash);
-
-			// https://nativedb.dotindustries.dev/gta5/natives/0x9F7794730795E019?search=SET_PED_COMBAT_ATTRIBUTES
-			// 5 = BF_AlwaysFight
-			// 46 = BF_CanFightArmedPedsWhenNotArmed
-			SET_PED_COMBAT_ATTRIBUTES(ped, 5, true);
-			SET_PED_COMBAT_ATTRIBUTES(ped, 46, true);
-
-			// 2 = Unknown, not listed on the native website
-			SET_PED_FLEE_ATTRIBUTES(ped, 2, true);
-
-			// https://nativedb.dotindustries.dev/gta5/natives/0xF166E48407BAC484?search=TASK_COMBAT_PED
-			// combatFlags seems to always be 0
-			// threatResponseFlags seems to always be 16
-			TASK_COMBAT_PED(ped, playerPed, 0, 16);
-		}
-	}
-}
 
 #endif // MEMORY_TESTING
 

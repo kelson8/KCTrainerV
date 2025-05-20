@@ -50,13 +50,6 @@ public:
 	void PlayTestMusic(MusicTracks track);
 	void StopTestMusic();
 
-	// Ped tests
-#ifdef MEMORY_TESTING
-	void MakeAllPedsDriveCrazy();
-	bool isCrazyPedDrivingEnabled = false;
-#endif
-	//
-
 	void PlayArenaWarLobbyMusic();
 	void StopArenaWarLobbyMusic();
 	
@@ -81,11 +74,6 @@ public:
 	// Toggle forcefield
 	void EnableForceField();
 	void DisableForceField();
-
-	// Peds
-	// Attacking player and other stuff
-	void PedsAttackPlayer();
-	bool isPedsAttackEnabled = false;
 
 #endif // MEMORY_TESTING
 	

@@ -8,8 +8,13 @@
 #include <inc/natives.h>
 #include <format>
 
+#include "Util/Enums.h"
+
 // From Menyoo, should make it to where I don't have to type the namespaces for the natives.
 #include "Natives/natives2.h"
+#include "Scripts/Extras/Classes/GTAblip.h"
+#include "Scripts/Extras/Classes/GTAvehicle.h"
+#include "Scripts/Extras/Game.h"
 
 #ifdef LOAD_IPLS
 
@@ -226,3 +231,51 @@ const std::string& TeleportLocations::GetTeleportLocationName(TeleportLocation l
 }
 
 #endif // NEW_TELEPORTS
+
+/// <summary>
+/// Adapted from TeleMethods.cpp in Menyoo, original function: ToWaypoint
+/// This seems to work, I set my warping functions to use this.
+/// TODO Make this place the player on the ground and not crash, for some reason the Z ground check doesn't work.
+/// </summary>
+/// <param name="ped"></param>
+void TeleportLocations::WarpToWaypoint(GTAped ped)
+{
+    float gtaGroundCheckHeight[] = {
+    100.0, 150.0, 50.0, 0.0, 200.0, 250.0, 300.0, 350.0, 400.0,
+    450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0
+    };
+    // This looks useful for checking if a waypoint is active and getting a proper Z value.
+    // Hmm, I could use this in FiveM.
+    // We don't need the namespace for these? I always had to use stuff like HUD::IS_WAYPOINT_ACTIVE()
+    if (IS_WAYPOINT_ACTIVE())
+    {
+        Vector3 blipCoords = GTAblip(GET_FIRST_BLIP_INFO_ID(BlipIcon::Waypoint)).Position_get();
+
+        GTAentity e = ped;
+        if (ped.IsInVehicle())
+            e = ped.CurrentVehicle();
+
+        //GET_GROUND_Z_FOR_3D_COORD(blipCoords.x, blipCoords.y, 810.0, &blipCoords.z, 0, 0);
+        GET_GROUND_Z_FOR_3D_COORD(Vector3(blipCoords.x, blipCoords.y, 810.0), &blipCoords.z, 0, 0);
+
+        //Game::RequestControlOfId(e.NetID());
+        e.RequestControl(1000);
+
+        // Why was this an int?
+        //for (int height : gtaGroundCheckHeight)
+        for (float height : gtaGroundCheckHeight)
+        {
+            //SET_ENTITY_COORDS(e.Handle(), blipCoords.x, blipCoords.y, height, 0, 0, 0, 1);
+            SET_ENTITY_COORDS(e.Handle(), Vector3(blipCoords.x, blipCoords.y, height), false, false, false, true);
+            WAIT(100);
+            //if (GET_GROUND_Z_FOR_3D_COORD(blipCoords.x, blipCoords.y, height, &blipCoords.z, 0, 0))
+            if (GET_GROUND_Z_FOR_3D_COORD(Vector3(blipCoords.x, blipCoords.y, height), &blipCoords.z, false, false))
+                break;
+        }
+        //SET_ENTITY_COORDS(e.Handle(), blipCoords.x, blipCoords.y, blipCoords.z, 0, 0, 0, 1);
+        SET_ENTITY_COORDS(e.Handle(), Vector3(blipCoords.x, blipCoords.y, blipCoords.z), false, false, false, true);
+    }
+    else {
+        Game::Print::PrintBottomCentre("~r~Error:~s~ No Waypoint set.");
+    }
+}
