@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "Constants.hpp"
+
 #include "PlayerScripts.h"
 #include "TextScripts.h"
 
@@ -19,9 +21,6 @@
 // Menyoo
 #include "GTAped.h"
 #include "GTAentity.h"
-
-// From Menyoo, makes it to where I don't have to type the namespaces for the natives.
-#include "Natives/natives2.h"
 
 //void FadeScreenIn(int ms);
 //void FadeScreenOut(int ms);

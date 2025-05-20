@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "Constants.hpp"
+
 // From ChaosMod: https://github.com/gta-chaos-mod/ChaosModV/tree/master/ChaosMod/Memory
 
 // Original files

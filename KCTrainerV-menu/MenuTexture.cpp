@@ -1,10 +1,10 @@
+#include "pch.h"
+
 #include "MenuTexture.hpp"
 #include "ImageDimensions.hpp"
 #include "Util/Logger.hpp"
 #include "Util/Paths.hpp"
 
-#include <inc/main.h>
-#include <filesystem>
 
 namespace fs = std::filesystem;
 

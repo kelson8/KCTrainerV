@@ -1,3 +1,6 @@
+#include "pch.h"
+
+#include "../Constants.hpp"
 #include "PedMenu.h"
 
 // My scripts

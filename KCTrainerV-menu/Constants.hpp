@@ -2,8 +2,8 @@
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 
-#define VERSION_MAJOR 1
-#define VERSION_MINOR 0
+#define VERSION_MAJOR 0
+#define VERSION_MINOR 5
 #define VERSION_PATCH 0
 
 // This can enable/disable the tests in Memory.cpp, this is untested and may crash.
@@ -84,6 +84,9 @@
 // This method of moving code can help with testing.
 //#define MOVE_MENU
 #define MOVE_PED_MENU
+
+// Testing moving some stuff over to namespaces, 
+// #define MOVE_MENU_NAMESPACE
 
 namespace Constants 
 {

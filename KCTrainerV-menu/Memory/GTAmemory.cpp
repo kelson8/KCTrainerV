@@ -19,9 +19,8 @@
 * Copyright (C) 2019  MAFINS
 */
 
-#include "GTAmemory.h"
-
 #include "Constants.hpp"
+#include "GTAmemory.h"
 
 //#ifdef MENYOO_SCRIPT_FILES
 #ifdef MEMORY_TESTING

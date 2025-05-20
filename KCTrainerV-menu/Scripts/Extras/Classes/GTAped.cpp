@@ -7,6 +7,8 @@
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 */
+
+#include "Constants.hpp"
 #include "GTAped.h"
 
 #ifdef MENYOO_SCRIPT_FILES

@@ -1,3 +1,6 @@
+#include "pch.h"
+#include "Constants.hpp"
+
 #include "Tasks.h"
 
 #include "../Natives/natives2.h"

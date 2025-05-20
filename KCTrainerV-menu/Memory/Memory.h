@@ -2,8 +2,6 @@
 
 // https://github.com/gta-chaos-mod/ChaosModV/blob/master/ChaosMod/Memory/Memory.h
 
-#include "Constants.hpp"
-
 #ifdef MEMORY_TESTING
 
 #include "Handle.h"

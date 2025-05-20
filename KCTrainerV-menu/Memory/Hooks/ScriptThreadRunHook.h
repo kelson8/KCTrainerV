@@ -1,9 +1,6 @@
 #pragma once
 
 // Taken from Chaos Mod
-
-#include "Constants.hpp"
-
 #ifdef MEMORY_TESTING
 
 //#include "Util/Events.h"

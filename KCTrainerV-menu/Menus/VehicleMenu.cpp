@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "../Constants.hpp"
 #include "VehicleMenu.h"
 
 #include "../Util/Hash.h"

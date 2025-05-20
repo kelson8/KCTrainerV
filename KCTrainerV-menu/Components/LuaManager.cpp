@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "Constants.hpp"
 #include "LuaManager.h"
 
 #ifdef LUA_TEST

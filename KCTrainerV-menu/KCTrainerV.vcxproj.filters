@@ -489,6 +489,7 @@
     <ClInclude Include="Memory\WeaponPool.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="FeatureToggles.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">

@@ -1,5 +1,4 @@
 #pragma once
-#include "../Constants.hpp"
 #include "ScriptMenu.hpp"
 #include "../KCMenuScript.hpp"
 

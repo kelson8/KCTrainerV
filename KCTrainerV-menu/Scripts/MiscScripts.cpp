@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "Constants.hpp"
+
 #include "MiscScripts.h"
 #include "Scripts/PlayerScripts.h"
 #include "Scripts/TextScripts.h"
@@ -32,9 +34,6 @@
 
 #include "Util/Vehicle.h"
 #endif //EXTRA_FEATURES
-
-// Menyoo
-#include "Natives/natives2.h"
 
 #include "Memory/Misc.h"
 

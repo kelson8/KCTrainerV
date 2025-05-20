@@ -5,8 +5,6 @@
 
 #include "Teleports/TeleportLocations.h"
 
-#include <inc/natives.h>
-
 class PlayerScripts
 {
 public:

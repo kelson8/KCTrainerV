@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "TextScripts.h"
 
 #include "Scripts/PlayerScripts.h"
@@ -9,10 +10,7 @@
 #include <format>
 #include <string>
 
-#include <inc/natives.h>
-#include "../Natives/natives2.h"
-
-// When I get this working, I should be able to draw stuff to the screen.
+// This class can draw text to the screen, and also can accept custom color input for the text.
 
 // To use this (This needs to be run in a loop):
 // 1. Set the text: std::string textToDisplay = "Test Text";

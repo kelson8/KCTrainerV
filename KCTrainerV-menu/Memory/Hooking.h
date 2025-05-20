@@ -1,10 +1,6 @@
 ﻿#pragma once
 
-#include "Constants.hpp"
-
 #ifdef MEMORY_TESTING
-
-
 #include <windows.h>
 #include <inttypes.h>
 

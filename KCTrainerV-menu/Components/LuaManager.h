@@ -1,6 +1,4 @@
 #pragma once
-#include "Constants.hpp"
-
 #include <sol/sol.hpp>
 #include <string>
 #include <optional>

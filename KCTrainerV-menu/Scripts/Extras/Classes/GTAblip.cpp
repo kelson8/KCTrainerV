@@ -18,6 +18,7 @@
 * Menyoo PC - Grand Theft Auto V single-player trainer mod
 * Copyright (C) 2019  MAFINS
 */
+
 #include "GTAblip.h"
 
 // This file actually compiled without major changes to the Vector3 code, I may be able to use it.

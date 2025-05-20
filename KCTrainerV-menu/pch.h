@@ -1,5 +1,6 @@
 #pragma once
 
+#include <inc/main.h>
 #include <inc/natives.h>
 #include <Natives/natives2.h>
 
@@ -19,7 +20,11 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <format>
 
 #include <set>
 #include <unordered_map>
 #include <unordered_set>
+
+// Chaos mod
+#include "Util/Hash.h"

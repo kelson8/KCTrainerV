@@ -1,3 +1,6 @@
+#include "pch.h"
+
+#include "../Constants.hpp"
 #include "VehicleScripts.h"
 
 #include "PlayerScripts.h"

@@ -1,8 +1,4 @@
 #pragma once
-
-#include <inc/natives.h>
-
-
 class WorldScripts
 {
 public:

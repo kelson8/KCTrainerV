@@ -9,9 +9,6 @@
 */
 
 #pragma once
-#include "pch.h"
-
-#include "../../Constants.hpp"
 #include "Classes/GTAprop.h"
 
 #include "GenericLoopedMode.h"

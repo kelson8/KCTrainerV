@@ -1,11 +1,9 @@
+#include "pch.h"
+
+#include "Constants.hpp"
 #include "PedScripts.h"
 
-#include "Natives/natives2.h"
-
-#include "Util/Hash.h"
-
 #include "PlayerScripts.h"
-
 
 #include "Util/UI.hpp"
 

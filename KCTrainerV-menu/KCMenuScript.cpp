@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "KCMenuScript.hpp"
 
 // I think this slows down compiling time in here.
@@ -16,16 +18,12 @@
 
 #include "Util/UI.hpp"
 
-#include <iostream>
-
 // New
 //#include "Util/Paths.hpp"
 //#include "Util/Logger.hpp"
 
 //#include "ScriptMenu.hpp"
 
-#include <inc/natives.h>
-#include <format>
 
 // TODO Move most items out of Tick and into another file
 // Might make this neater.

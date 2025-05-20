@@ -181,23 +181,53 @@
     <ClCompile Include="Components\LuaScripts_old.cpp" />
     <ClCompile Include="DllMain.cpp" />
     <ClCompile Include="ImageDimensions.cpp" />
-    <ClCompile Include="KCMenuScript.cpp" />
+    <ClCompile Include="KCMenuScript.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="Memory\GTAmemory.cpp" />
     <ClCompile Include="Memory\Hooking.cpp" />
     <ClCompile Include="Memory\Hooks\HandleToEntityStructHook.cpp" />
     <ClCompile Include="Memory\Hooks\ScriptThreadRunHook.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
-    <ClCompile Include="Menus\KCMainMenu.cpp" />
-    <ClCompile Include="Menus\MiscMenu.cpp" />
+    <ClCompile Include="Menus\KCMainMenu.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Menus\MiscMenu.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="Menus\OldMenus.cpp" />
-    <ClCompile Include="Menus\PedMenu.cpp" />
-    <ClCompile Include="Menus\PlayerMenu.cpp" />
-    <ClCompile Include="Menus\TeleportMenu.cpp" />
-    <ClCompile Include="Menus\VehicleMenu.cpp" />
-    <ClCompile Include="Menus\WorldMenu.cpp" />
-    <ClCompile Include="MenuTexture.cpp" />
+    <ClCompile Include="Menus\PedMenu.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Menus\PlayerMenu.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Menus\TeleportMenu.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Menus\VehicleMenu.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Menus\WorldMenu.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="MenuTexture.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="Natives\natives2.cpp" />
-    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Scripts\Extras\Classes\Camera.cpp" />
     <ClCompile Include="Scripts\Extras\Classes\GTAblip.cpp" />
@@ -216,15 +246,39 @@
     <ClCompile Include="Scripts\Extras\GenericLoopedMode.cpp" />
     <ClCompile Include="Scripts\Extras\MeteorShower.cpp" />
     <ClCompile Include="Scripts\Extras\World.cpp" />
-    <ClCompile Include="Scripts\MiscScripts.cpp" />
-    <ClCompile Include="Scripts\PedScripts.cpp" />
-    <ClCompile Include="Scripts\PlayerScripts.cpp" />
+    <ClCompile Include="Scripts\MiscScripts.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Scripts\PedScripts.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Scripts\PlayerScripts.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="Scripts\Player\PlayerNoClip.cpp" />
-    <ClCompile Include="Scripts\Stats.cpp" />
-    <ClCompile Include="Scripts\Tasks.cpp" />
-    <ClCompile Include="Scripts\TextScripts.cpp" />
-    <ClCompile Include="Scripts\VehicleScripts.cpp" />
-    <ClCompile Include="Scripts\WorldScripts.cpp" />
+    <ClCompile Include="Scripts\Stats.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Scripts\Tasks.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Scripts\TextScripts.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Scripts\VehicleScripts.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Scripts\WorldScripts.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="Teleports\TeleportLocations.cpp" />
     <ClCompile Include="Util\FileFunctions.cpp" />
     <ClCompile Include="Util\GTAmath.cpp" />
@@ -264,6 +318,7 @@
     <ClInclude Include="Components\LuaManager.h" />
     <ClInclude Include="Components\LuaScripts_old.h" />
     <ClInclude Include="Constants.hpp" />
+    <ClInclude Include="FeatureToggles.h" />
     <ClInclude Include="ImageDimensions.hpp" />
     <ClInclude Include="KCMenuScript.hpp" />
     <ClInclude Include="Lib\scrThread.h" />

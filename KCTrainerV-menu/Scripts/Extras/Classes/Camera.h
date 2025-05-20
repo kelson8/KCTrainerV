@@ -19,9 +19,6 @@
 * Copyright (C) 2019  MAFINS
 */
 #pragma once
-
-#include "Constants.hpp"
-
 #ifdef MENYOO_SCRIPT_FILES
 
 #include <vector>

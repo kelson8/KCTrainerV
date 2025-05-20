@@ -1,9 +1,5 @@
 #pragma once
-#include "Constants.hpp"
-
 #include "Util/Enums.h"
-
-#include <inc/natives.h>
 
 class Tasks
 {

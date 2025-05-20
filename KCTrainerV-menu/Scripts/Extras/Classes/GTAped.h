@@ -8,9 +8,6 @@
 * (at your option) any later version.
 */
 #pragma once
-
-#include "Constants.hpp"
-
 #define MENYOO_SCRIPT_FILES
 #ifdef MENYOO_SCRIPT_FILES
 
