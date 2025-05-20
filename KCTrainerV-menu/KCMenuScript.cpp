@@ -9,6 +9,7 @@
 #include "Scripts/WorldScripts.h"
 
 #include "Scripts/TextScripts.h"
+#include "Scripts/Stats.h"
 
 #include "Util/Enums.h"
 
@@ -42,6 +43,7 @@ void KCMainScript::Tick() {
 #endif
 
     auto& worldScripts = WorldScripts::GetInstance();
+    auto& stats = Stats::GetInstance();
 
     //TODO Re-enable these, testing with my tick items disabled.
 #ifdef RUN_TICKS
@@ -113,9 +115,9 @@ void KCMainScript::Tick() {
     }
 
     // New stat features
-    if (playerScripts.isCopsKilledDisplayActive)
+    if (stats.isCopsKilledDisplayActive)
     {
-        playerScripts.ProcessCopsKilled();
+        stats.ProcessCopsKilled();
     }
     
 #ifdef EXTRA_FEATURES

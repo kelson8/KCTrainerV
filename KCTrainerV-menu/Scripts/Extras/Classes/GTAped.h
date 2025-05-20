@@ -368,15 +368,11 @@ public:
 
 	void WetnessHeight_set(float value);
 
-#ifdef DISABLED_CODE
 	bool IsInVehicle() const;
 	bool IsInVehicle(GTAvehicle vehicle) const;
 	GTAvehicle CurrentVehicle() const;
-#endif
 
-#ifdef DISABLED_CODE
 	VehicleSeat CurrentVehicleSeat_get();
-#endif
 
 	int GetRelationshipWithPed(GTAentity otherPed) const;
 

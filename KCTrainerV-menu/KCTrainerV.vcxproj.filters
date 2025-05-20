@@ -186,6 +186,12 @@
     <ClCompile Include="Scripts\Extras\Classes\GTAblip.cpp">
       <Filter>Scripts\Extras\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Extras\World.cpp">
+      <Filter>Scripts\Extras</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Stats.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -456,6 +462,12 @@
     <ClInclude Include="Scripts\Extras\Classes\GTAblip.h">
       <Filter>Scripts\Extras\Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Extras\World.h">
+      <Filter>Scripts\Extras</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Stats.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -518,14 +530,14 @@
     <Filter Include="Scripts\Player">
       <UniqueIdentifier>{771a9beb-6005-4c0a-b6cf-dcc26a90958d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripting">
-      <UniqueIdentifier>{7db6b525-23d0-420e-a4ec-fbeb17db64ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Extras">
       <UniqueIdentifier>{c86250aa-87f7-4291-b531-3904bff0c051}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Extras\Classes">
       <UniqueIdentifier>{82c8db75-5a1a-4d91-9028-21d7c46101c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus\Submenus">
+      <UniqueIdentifier>{c7e9d4b4-06ef-4ffd-93a8-dc35bf48030c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

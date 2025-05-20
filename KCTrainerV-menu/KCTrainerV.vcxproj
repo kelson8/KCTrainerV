@@ -212,10 +212,12 @@
     <ClCompile Include="Scripts\Extras\Game.cpp" />
     <ClCompile Include="Scripts\Extras\GenericLoopedMode.cpp" />
     <ClCompile Include="Scripts\Extras\MeteorShower.cpp" />
+    <ClCompile Include="Scripts\Extras\World.cpp" />
     <ClCompile Include="Scripts\MiscScripts.cpp" />
     <ClCompile Include="Scripts\PedScripts.cpp" />
     <ClCompile Include="Scripts\PlayerScripts.cpp" />
     <ClCompile Include="Scripts\Player\PlayerNoClip.cpp" />
+    <ClCompile Include="Scripts\Stats.cpp" />
     <ClCompile Include="Scripts\Tasks.cpp" />
     <ClCompile Include="Scripts\TextScripts.cpp" />
     <ClCompile Include="Scripts\VehicleScripts.cpp" />
@@ -301,10 +303,12 @@
     <ClInclude Include="Scripts\Extras\Game.h" />
     <ClInclude Include="Scripts\Extras\GenericLoopedMode.h" />
     <ClInclude Include="Scripts\Extras\MeteorShower.h" />
+    <ClInclude Include="Scripts\Extras\World.h" />
     <ClInclude Include="Scripts\MiscScripts.h" />
     <ClInclude Include="Scripts\PedScripts.h" />
     <ClInclude Include="Scripts\PlayerScripts.h" />
     <ClInclude Include="Scripts\Player\PlayerNoClip.h" />
+    <ClInclude Include="Scripts\Stats.h" />
     <ClInclude Include="Scripts\Tasks.h" />
     <ClInclude Include="Scripts\TextScripts.h" />
     <ClInclude Include="Scripts\VehicleScripts.h" />

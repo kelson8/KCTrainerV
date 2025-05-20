@@ -10,6 +10,8 @@
 
 // https://github.com/gta-chaos-mod/ChaosModV/blob/master/ChaosMod/Util/EntityIterator.h
 
+#include "Constants.hpp"
+
 #ifdef MEMORY_TESTING
 
 #include "Memory/Memory.h"

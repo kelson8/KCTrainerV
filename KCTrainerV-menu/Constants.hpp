@@ -79,6 +79,11 @@
 // Enable the Meteor test weather effect from Menyoo, this needs worked on and refactored.
 //#define METEOR_SHOWER_TEST
 
+// Tests for refactoring and reorganzing.
+// Rename this preprocessor to whatever I am moving around.
+// This method of moving code can help with testing.
+//#define MOVE_MENU
+
 namespace Constants 
 {
     static const char* const ScriptName = "KCTrainerV";

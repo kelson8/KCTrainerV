@@ -838,8 +838,6 @@ void GTAped::WetnessHeight_set(float value)
 	SET_PED_WETNESS_HEIGHT(this->mHandle, value);
 }
 
-// TODO Fix these
-#ifdef DISABLED_CODE
 bool GTAped::IsInVehicle() const
 {
 	//return IS_PED_SITTING_IN_ANY_VEHICLE(this->mHandle) != 0;
@@ -855,9 +853,6 @@ GTAvehicle GTAped::CurrentVehicle() const
 	return GET_VEHICLE_PED_IS_USING(this->mHandle);
 }
 
-#endif
-
-#ifdef DISABLED_CODE
 VehicleSeat GTAped::CurrentVehicleSeat_get()
 {
 	if (this->IsInVehicle())
@@ -871,19 +866,16 @@ VehicleSeat GTAped::CurrentVehicleSeat_get()
 	}
 	return VehicleSeat::SEAT_ANY;
 }
-#endif
 
 int GTAped::GetRelationshipWithPed(GTAentity otherPed) const
 {
 	return GET_RELATIONSHIP_BETWEEN_PEDS(this->mHandle, otherPed.Handle());
 }
 
-#ifdef DISABLED_CODE
 void GTAped::SetIntoVehicle(GTAvehicle vehicle, VehicleSeat seat)
 {
 	SET_PED_INTO_VEHICLE(this->mHandle, vehicle.Handle(), (seat));
 }
-#endif
 
 bool GTAped::IsInCover() const
 {

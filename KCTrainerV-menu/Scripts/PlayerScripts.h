@@ -115,13 +115,6 @@ public:
     void TestFade();
     //
 
-    // Stat tests
-    //int GetCopsKilledStat(PlayerModels character);
-    int GetCopsKilledStat();
-    //int GetCopsVehiclesBlownUpStat(PlayerModels character);
-    int GetCopsVehiclesBlownUpStat();
-    //
-
     // Mobile radio toggling
     void EnableMobileRadio();
     void DisableMobileRadio();
@@ -181,23 +174,9 @@ public:
     bool isMobileRadioEnabled = false;
     bool mobileRadioFlag = false;
 
-    // For new cops killed stat system, this now displays on the screen.
-    void ProcessCopsKilled();
-
-    // Position on menu
-    // Menu position X
-    float copsKilledMenuPosX = 0.204f;
-    // Menu Position Y
-    float copsKilledMenuPosY = 0.963f;
-
-    // Cop cars blown up
-    //float copsCarsBlownUpMenuPosX = 0.150f;
-    float copsCarsBlownUpMenuPosX = 0.220f;
-    //float copsCarsBlownUpMenuPosY = 0.870f;
-    float copsCarsBlownUpMenuPosY = 0.935f;
-
-    // Is the display active
-    bool isCopsKilledDisplayActive = false;
+    // Test for Menyoo
+    void MenyooTest();
+    //
 
 private:
     PlayerScripts() {} // Private constructor to prevent external instantiation
@@ -211,22 +190,6 @@ private:
 
     // Get the stat hash
     //static inline Hash GetStatHash(PlayerModels character, const std::string& statName);
-
-    // New methods for tracking cops killed before dying
-
-    // Cop cars blown up
-    static int copvehiclesBlownUpBeforeDying;
-    void IncrementCopVehiclesBlownUp();
-    void ResetCopVehiclesBlownUpBeforeDying();
-    int GetCopVehiclesBlownUpBeforeDying();
-
-    // Cop kills
-    static void IncrementCopsKilled();
-    static void ResetCopsKilledBeforeDying();
-    static int GetCopsKilledBeforeDying();
-
-
-    static int copsKilledBeforeDying; // Static variable to track the count
 
     float mDistance{ 0.0f };
 
