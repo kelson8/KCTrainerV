@@ -25,7 +25,7 @@
 //#include "..\macros.h"
 
 //#include "enums.h"
-#include "..\Natives\natives2.h"
+#include "Natives\natives2.h"
 
 //#include <stdarg.h>
 

@@ -150,22 +150,56 @@ void VehicleMenu::BuildSuperVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMa
 #endif
     mbCtx.Title("Super");
 
-    std::map<std::string, std::function<void()>> optionActions =
-    {
-        {"Spawn Scramjet", [&]()
-        {
-            static const Hash scramJetHash = "scramjet"_hash;
-            vehicleScripts.SpawnVehicle(scramJetHash);
-        }},
-        // Add more super vehicles
-    };
+    //std::map<std::string, std::function<void()>> optionActions =
+    //{
+    //    {"Spawn Scramjet", [&]()
+    //    {
+    //        static const Hash scramJetHash = "scramjet"_hash;
+    //        vehicleScripts.SpawnVehicle(scramJetHash);
+    //    }},
+    //    // Add more super vehicles
+    //};
 
-    for (const auto& pair : optionActions)
+    //for (const auto& pair : optionActions)
+    //{
+    //    if (mbCtx.Option(pair.first))
+    //    {
+    //        pair.second();
+    //    }
+    //}
+
+    if (mbCtx.Option("Scramjet"))
     {
-        if (mbCtx.Option(pair.first))
-        {
-            pair.second();
-        }
+        //static const Hash scramJetHash = "scramjet"_hash;
+        static const Hash scramJetHash = MISC::GET_HASH_KEY("scramjet");
+        // Well the baller3 works?
+        //static const Hash scramJetHash = MISC::GET_HASH_KEY("baller3");
+        vehicleScripts.SpawnVehicle(scramJetHash);
+    }
+
+    // TODO Refactor this if it is working right, move everything into the for loop.
+
+    if (mbCtx.Option("T20"))
+    {
+        //static const Hash t20Hash = MISC::GET_HASH_KEY("t20");
+        static const Hash t20Hash = VEHICLE_T20;
+        
+        vehicleScripts.SpawnVehicle(t20Hash);
+    }
+
+    if (mbCtx.Option("Zentorno"))
+    {
+        //static const Hash zentornoHash = VEHICLE_ZENTORNO;
+        static const Hash zentornoHash = MISC::GET_HASH_KEY("zentorno");
+
+        vehicleScripts.SpawnVehicle(zentornoHash);
+    }
+
+    if (mbCtx.Option("Baller3"))
+    {
+        // Well the baller3 works?
+        static const Hash baller3Hash = MISC::GET_HASH_KEY("baller3");
+        vehicleScripts.SpawnVehicle(baller3Hash);
     }
 }
 #pragma endregion

@@ -22,9 +22,12 @@
 
 #pragma once
 
+#define MENYOO_SCRIPT_FILES
 #ifdef MENYOO_SCRIPT_FILES
 
-#include "..\Natives\types.h" // RGBA, RgbS
+#include <inc/types.h> // RGBA, RgbS
+
+//#include "Natives\types.h" // RGBA, RgbS
 
 #include <string>
 
@@ -67,7 +70,10 @@ public:
 
 	void Render2D(RGBA colour = { 255, 255, 255, 255 });
 	void Render2DScreenSpace(const Vector2& location, const Vector2& size, RGBA colour = { 255, 255, 255, 255 });
+
+#ifdef DISABLED_CODE
 	void Render3D(const Vector3& position, const Vector3& rotation, const Vector3& unk, const Vector3& scale);
+#endif // DISABLED_CODE
 	void Render3DAdditive(const Vector3& position, const Vector3& rotation, const Vector3& unk, const Vector3& scale);
 
 private:

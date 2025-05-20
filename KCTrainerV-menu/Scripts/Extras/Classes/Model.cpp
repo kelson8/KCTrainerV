@@ -10,22 +10,24 @@
 #include "Model.h"
 
 // TODO Fix this file.
+// File seems to be working
 
 #ifdef MENYOO_SCRIPT_FILES
 
 //#include "..\macros.h"
 
-#include "..\Util\GTAmath.h"
-#include "..\Natives\natives2.h"
+#include "Util\GTAmath.h"
+#include "Natives\natives2.h"
 #include "Util/Enums.h"
-#include "..\Memory\GTAmemory.h"
-#include "..\Util\StringManip.h"
+#include "Memory\GTAmemory.h"
+#include "Util\StringManip.h"
 
 #include <string>
 #include <Windows.h> //GetTickCount
 
 namespace GTAmodel
 {
+#ifdef DISABLED_CODE
 	ModelDimensions::ModelDimensions()
 	{
 	}
@@ -33,6 +35,7 @@ namespace GTAmodel
 	ModelDimensions::ModelDimensions(const Vector3& d1, const Vector3& d2) : Dim1(d1), Dim2(d2)
 	{
 	}
+#endif
 
 
 	Model::Model() : hash(0)
@@ -112,12 +115,16 @@ namespace GTAmodel
 		return GTAmemory::GetVehicleModelName(this->hash);
 	}
 
+#ifdef DISABLED_CODE
 	ModelDimensions Model::Dimensions() const
 	{
 		ModelDimensions dims;
 		this->Dimensions(dims.Dim1, dims.Dim2);
 		return dims;
 	}
+#endif
+
+#ifdef DISABLED_CODE
 	//void Model::Dimensions(Vector3M& dim1C, Vector3M& dim2C) const
 	void Model::Dimensions(Vector3& dim1C, Vector3& dim2C) const
 	{
@@ -189,47 +196,58 @@ namespace GTAmodel
 		this->Dimensions(dim1, dim2);
 		return dim2;
 	}
+#endif
 
 	bool Model::IsBicycle() const
 	{
 		return IS_THIS_MODEL_A_BICYCLE(this->hash) != 0;
 	}
+
 	bool Model::IsBike() const
 	{
 		return IS_THIS_MODEL_A_BIKE(this->hash) || this->hash == VEHICLE_CHIMERA;
 	}
+
 	bool Model::IsQuadbike() const
 	{
 		return IS_THIS_MODEL_A_QUADBIKE(this->hash) != 0;
 	}
+
 	bool Model::IsBoat() const
 	{
 		return IS_THIS_MODEL_A_BOAT(this->hash) != 0;
 	}
+
 	bool Model::IsCar() const
 	{
 		return IS_THIS_MODEL_A_CAR(this->hash) != 0;
 	}
+
 	bool Model::IsHeli() const
 	{
 		return IS_THIS_MODEL_A_HELI(this->hash) != 0;
 	}
+
 	bool Model::IsPlane() const
 	{
 		return IS_THIS_MODEL_A_PLANE(this->hash) != 0;
 	}
+
 	bool Model::IsTrain() const
 	{
 		return IS_THIS_MODEL_A_TRAIN(this->hash) != 0;
 	}
+
 	bool Model::IsFastBoat() const
 	{
 		return IS_THIS_MODEL_A_JETSKI(this->hash) != 0;
 	}
+
 	bool Model::IsCargobob() const
 	{
 		return this->VehicleModelName().find("cargobob") != std::string::npos;
 	}
+
 	bool Model::IsBus() const
 	{
 		//if (boost::to_upper_copy(this->VehicleDisplayName(false)).find("BUS") != std::string::npos) return true; return false;
@@ -246,6 +264,7 @@ namespace GTAmodel
 		}
 		return false;
 	}
+
 	bool Model::IsPoliceVehicle() const
 	{
 		switch (this->hash)
@@ -281,6 +300,7 @@ namespace GTAmodel
 		}
 		return false;
 	}
+
 	bool Model::HasSiren() const
 	{
 		if (this->IsPoliceVehicle()) return true;
@@ -293,6 +313,7 @@ namespace GTAmodel
 		}
 		return false;
 	}
+
 	bool Model::IsWheelChangingSupportedVehicle() const
 	{
 		//if (boost::to_upper_copy(this->VehicleDisplayName(false)).find("BUS") != std::string::npos) return true; return false;
@@ -319,6 +340,7 @@ namespace GTAmodel
 		}
 		return true;
 	}
+
 	bool Model::IsBennySupportedVehicle()
 	{
 		//todo needs update (is there maybe a other way?)
@@ -344,6 +366,7 @@ namespace GTAmodel
 	{
 		return IS_MODEL_A_VEHICLE(this->hash) != 0;
 	}
+
 	bool Model::IsPed() const
 	{
 		return GTAmemory::IsModelAPed(this->hash);
@@ -353,6 +376,7 @@ namespace GTAmodel
 	{
 		REQUEST_MODEL(this->hash);
 	}
+
 	bool Model::Load(DWORD timeOut) const
 	{
 		if (HAS_MODEL_LOADED(this->hash)) return true;
@@ -369,14 +393,17 @@ namespace GTAmodel
 			return false;
 		}
 	}
+
 	void Model::LoadAndWait() const
 	{
 		this->Load(7500);
 	}
+
 	bool Model::IsLoaded() const
 	{
 		return HAS_MODEL_LOADED(this->hash) != 0;
 	}
+
 	void Model::Unload() const
 	{
 		if (HAS_MODEL_LOADED(this->hash))
@@ -387,6 +414,7 @@ namespace GTAmodel
 	{
 		REQUEST_COLLISION_FOR_MODEL(this->hash);
 	}
+
 	bool Model::LoadCollision(DWORD timeOut) const
 	{
 		REQUEST_COLLISION_FOR_MODEL(this->hash);
@@ -398,10 +426,12 @@ namespace GTAmodel
 		}
 		return false;
 	}
+
 	bool Model::IsCollisionLoaded() const
 	{
 		return HAS_COLLISION_FOR_MODEL_LOADED(this->hash) != 0;
 	}
+
 	void Model::LoadCollisionAndWait() const
 	{
 		this->LoadCollision(4000);
@@ -412,10 +442,12 @@ namespace GTAmodel
 	{
 		return IS_MODEL_VALID(this->hash) != 0;
 	}
+
 	bool Model::IsInCdImage() const
 	{
 		return IS_MODEL_IN_CDIMAGE(this->hash) != 0;
 	}
+
 	bool Model::Exists() const
 	{
 		return IS_MODEL_VALID(this->hash) && IS_MODEL_IN_CDIMAGE(this->hash);

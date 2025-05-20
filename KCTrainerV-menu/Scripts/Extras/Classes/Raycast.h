@@ -22,9 +22,10 @@
 
 // TODO Fix this file.
 
+#undef MENYOO_SCRIPT_FILES
 #ifdef MENYOO_SCRIPT_FILES
 
-#include "..\Util\GTAmath.h"
+#include "Util\GTAmath.h"
 #include "GTAentity.h"
 
 enum class IntersectOptions : int

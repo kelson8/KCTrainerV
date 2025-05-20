@@ -11,6 +11,8 @@
 
 // TODO Fix this file.
 
+#define MENYOO_SCRIPT_FILES
+
 #ifdef MENYOO_SCRIPT_FILES
 
 #include <string>

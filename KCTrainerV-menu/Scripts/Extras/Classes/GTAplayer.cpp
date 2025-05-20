@@ -16,13 +16,12 @@
 
 //#include "..\macros.h"
 
-#include "..\Natives\natives2.h"
+#include "Natives\natives2.h"
 
-// TODO Add these two files later.
-#include "..\Scripting\GTAped.h"
-#include "..\Scripting\GTAvehicle.h"
+#include "GTAped.h"
+#include "GTAvehicle.h"
 
-#include "..\Scripting\GTAentity.h"
+#include "GTAentity.h"
 
 #include <string>
 
@@ -117,6 +116,7 @@ bool GTAplayer::IsTargetingAt(Entity entity) const
 {
 	return IS_PLAYER_TARGETTING_ENTITY(index, entity) != 0;
 }
+
 GTAentity GTAplayer::AimedEntity() const
 {
 	Entity target;

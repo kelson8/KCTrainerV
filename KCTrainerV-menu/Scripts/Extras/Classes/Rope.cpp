@@ -13,8 +13,8 @@
 
 //#include "..\macros.h"
 
-//#include "..\Util\GTAmath.h"
-#include "..\Natives\natives2.h"
+//#include "Util\GTAmath.h"
+#include "Natives\natives2.h"
 #include "GTAentity.h"
 
 Rope::Rope()

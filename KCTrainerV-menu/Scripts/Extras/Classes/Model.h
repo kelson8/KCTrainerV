@@ -11,10 +11,10 @@
 
 // TODO Fix this file.
 
-#undef MENYOO_SCRIPT_FILES
+#define MENYOO_SCRIPT_FILES
 #ifdef MENYOO_SCRIPT_FILES
 
-#include "..\Util\GTAmath.h"
+#include "Util\GTAmath.h"
 
 #include <string>
 
@@ -27,14 +27,20 @@ namespace GTAmodel
 	class ModelDimensions
 	{
 	public:
+#ifdef DISABLED_CODE
 		//Vector3M Dim1;
 		Vector3 Dim1;
 		//Vector3M Dim2;
 		Vector3 Dim2;
+#endif
 
+#ifdef DISABLED_CODE
 		ModelDimensions();
+#endif
+#ifdef DISABLED_CODE
 		//ModelDimensions(const Vector3M& d1, const Vector3M& d2);
 		ModelDimensions(const Vector3& d1, const Vector3& d2);
+#endif
 	};
 
 	class Model // Inconsistent with other class names - fix?
@@ -57,6 +63,7 @@ namespace GTAmodel
 		std::string VehicleDisplayName(bool properName) const;
 		std::string VehicleModelName() const;
 
+#ifdef DISABLED_CODE
 		ModelDimensions Dimensions() const;
 		//void Dimensions(Vector3M& dim1C, Vector3M& dim2C) const;
 		//void Dimensions(Vector3M_t& dim1, Vector3M_t& dim2) const;
@@ -65,6 +72,7 @@ namespace GTAmodel
 		//Vector3M Dim2() const;
 		Vector3 Dim1() const;
 		Vector3 Dim2() const;
+#endif
 
 		bool IsBicycle() const;
 		bool IsBike() const;

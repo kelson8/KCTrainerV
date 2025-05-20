@@ -1,4 +1,6 @@
 #pragma once
+#include "Constants.hpp"
+
 #include <inc/natives.h>
 
 class PedScripts

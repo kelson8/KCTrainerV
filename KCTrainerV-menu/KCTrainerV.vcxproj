@@ -91,7 +91,7 @@
       <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;NOMINMAX;NOGDI;DEBUG_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(SolutionDir)thirdparty\sol\include;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(SolutionDir)thirdparty\sol\include;$(ProjectDir);$(ProjectDir)Scripts\Extras\Classes</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -199,14 +199,16 @@
     <ClCompile Include="Natives\natives2.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Script.cpp" />
-    <ClCompile Include="Scripting\GTAblip.cpp" />
-    <ClCompile Include="Scripting\GTAentity.cpp" />
-    <ClCompile Include="Scripting\GTAplayer.cpp" />
-    <ClCompile Include="Scripting\Model.cpp" />
-    <ClCompile Include="Scripting\Raycast.cpp" />
-    <ClCompile Include="Scripting\Rope.cpp" />
-    <ClCompile Include="Scripting\Scaleform.cpp" />
-    <ClCompile Include="Scripting\Tasks_old.cpp" />
+    <ClCompile Include="Scripts\Extras\Classes\GTAblip.cpp" />
+    <ClCompile Include="Scripts\Extras\Classes\GTAentity.cpp" />
+    <ClCompile Include="Scripts\Extras\Classes\GTAped.cpp" />
+    <ClCompile Include="Scripts\Extras\Classes\GTAplayer.cpp" />
+    <ClCompile Include="Scripts\Extras\Classes\GTAvehicle.cpp" />
+    <ClCompile Include="Scripts\Extras\Classes\Model.cpp" />
+    <ClCompile Include="Scripts\Extras\Classes\Raycast.cpp" />
+    <ClCompile Include="Scripts\Extras\Classes\Rope.cpp" />
+    <ClCompile Include="Scripts\Extras\Classes\Scaleform.cpp" />
+    <ClCompile Include="Scripts\Extras\Classes\Tasks_old.cpp" />
     <ClCompile Include="Scripts\Extras\Game.cpp" />
     <ClCompile Include="Scripts\Extras\GenericLoopedMode.cpp" />
     <ClCompile Include="Scripts\Extras\MeteorShower.cpp" />
@@ -285,15 +287,17 @@
     <ClInclude Include="Natives\natives2.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Script.hpp" />
-    <ClInclude Include="Scripting\GTAblip.h" />
-    <ClInclude Include="Scripting\GTAentity.h" />
-    <ClInclude Include="Scripting\GTAplayer.h" />
-    <ClInclude Include="Scripting\Model.h" />
-    <ClInclude Include="Scripting\Raycast.h" />
-    <ClInclude Include="Scripting\Rope.h" />
-    <ClInclude Include="Scripting\Scaleform.h" />
-    <ClInclude Include="Scripting\Tasks_old.h" />
     <ClInclude Include="ScriptMenu.hpp" />
+    <ClInclude Include="Scripts\Extras\Classes\GTAblip.h" />
+    <ClInclude Include="Scripts\Extras\Classes\GTAentity.h" />
+    <ClInclude Include="Scripts\Extras\Classes\GTAped.h" />
+    <ClInclude Include="Scripts\Extras\Classes\GTAplayer.h" />
+    <ClInclude Include="Scripts\Extras\Classes\GTAvehicle.h" />
+    <ClInclude Include="Scripts\Extras\Classes\Model.h" />
+    <ClInclude Include="Scripts\Extras\Classes\Raycast.h" />
+    <ClInclude Include="Scripts\Extras\Classes\Rope.h" />
+    <ClInclude Include="Scripts\Extras\Classes\Scaleform.h" />
+    <ClInclude Include="Scripts\Extras\Classes\Tasks_old.h" />
     <ClInclude Include="Scripts\Extras\Game.h" />
     <ClInclude Include="Scripts\Extras\GenericLoopedMode.h" />
     <ClInclude Include="Scripts\Extras\MeteorShower.h" />
@@ -329,6 +333,7 @@
     <None Include="..\CHANGELOG.md" />
     <None Include="..\LICENSE" />
     <None Include="..\README.md" />
+    <None Include="Scripts\Extras\Classes\Readme.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

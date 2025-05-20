@@ -111,12 +111,6 @@
     <ClCompile Include="Scripts\Player\PlayerNoClip.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Scripting\GTAentity.cpp">
-      <Filter>Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\GTAplayer.cpp">
-      <Filter>Scripting</Filter>
-    </ClCompile>
     <ClCompile Include="Memory\GTAmemory.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
@@ -128,24 +122,6 @@
     </ClCompile>
     <ClCompile Include="Util\StringManip.cpp">
       <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\GTAblip.cpp">
-      <Filter>Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\Rope.cpp">
-      <Filter>Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\Scaleform.cpp">
-      <Filter>Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\Tasks_old.cpp">
-      <Filter>Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\Model.cpp">
-      <Filter>Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\Raycast.cpp">
-      <Filter>Scripting</Filter>
     </ClCompile>
     <ClCompile Include="Menus\PlayerMenu.cpp">
       <Filter>Menus</Filter>
@@ -179,6 +155,36 @@
     </ClCompile>
     <ClCompile Include="Scripts\Extras\Game.cpp">
       <Filter>Scripts\Extras</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\GTAentity.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\GTAped.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\GTAplayer.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\GTAvehicle.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\Model.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\Raycast.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\Rope.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\Scaleform.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\Tasks_old.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Extras\Classes\GTAblip.cpp">
+      <Filter>Scripts\Extras\Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -371,12 +377,6 @@
     <ClInclude Include="Scripts\Player\PlayerNoClip.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\GTAentity.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripting\GTAplayer.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
     <ClInclude Include="Memory\GTAmemory.h">
       <Filter>Memory</Filter>
     </ClInclude>
@@ -388,24 +388,6 @@
     </ClInclude>
     <ClInclude Include="Util\StringManip.h">
       <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripting\GTAblip.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripting\Rope.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripting\Scaleform.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripting\Tasks_old.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripting\Model.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripting\Raycast.h">
-      <Filter>Scripting</Filter>
     </ClInclude>
     <ClInclude Include="Menus\PlayerMenu.h">
       <Filter>Menus</Filter>
@@ -443,6 +425,36 @@
     </ClInclude>
     <ClInclude Include="Scripts\Extras\Game.h">
       <Filter>Scripts\Extras</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\GTAentity.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\GTAped.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\GTAplayer.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\GTAvehicle.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\Model.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\Raycast.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\Rope.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\Scaleform.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\Tasks_old.h">
+      <Filter>Scripts\Extras\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Extras\Classes\GTAblip.h">
+      <Filter>Scripts\Extras\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -512,6 +524,9 @@
     <Filter Include="Scripts\Extras">
       <UniqueIdentifier>{c86250aa-87f7-4291-b531-3904bff0c051}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Extras\Classes">
+      <UniqueIdentifier>{82c8db75-5a1a-4d91-9028-21d7c46101c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\thirdparty\ScriptHookV_SDK\lib\ScriptHookV.lib">
@@ -527,6 +542,9 @@
     </None>
     <None Include="..\CHANGELOG.md">
       <Filter>Info</Filter>
+    </None>
+    <None Include="Scripts\Extras\Classes\Readme.md">
+      <Filter>Scripts\Extras\Classes</Filter>
     </None>
   </ItemGroup>
 </Project>

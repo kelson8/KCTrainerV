@@ -8,7 +8,7 @@
 
 // This can enable/disable the tests in Memory.cpp, this is untested and may crash.
 // If this crashes, just disable it here.
-//#define MEMORY_TESTING
+#define MEMORY_TESTING
 
 // Enable debug logging and other debug features.
 // TODO Move into preprocessors in solution.

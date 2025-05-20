@@ -22,35 +22,59 @@
 /// </summary>
 /// <param name="model"></param>
 //void VehicleScripts::RequestModel(Hash model)
-bool VehicleScripts::RequestModel(Hash model)
+//bool VehicleScripts::RequestModel(Hash model)
+//{
+//    WAIT(0);
+//    Util util;
+//
+//    DWORD startTime = GetTickCount();
+//    //DWORD timeout = 3000; // in millis
+//    DWORD timeout = 10; // in millis
+//
+//    REQUEST_MODEL(model);
+//    while (!HAS_MODEL_LOADED(model))
+//    {
+//        WAIT(50);
+//
+//        // Add crash protection to this, seems to work for the vehicle and other items.
+//        if (GetTickCount() > startTime + timeout) {
+//            // Couldn't load model
+//            //WAIT(0);
+//            UI::Notify("Couldn't load model");
+//
+//            util.ShowSubtitle("Couldn't load model");
+//
+//            std::cout << std::format("Couldn't load model: {}", model) << std::endl;
+//
+//            STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
+//            return false;
+//        }
+//    }
+//
+//    // Should only ever return true if this was a success
+//    return true;
+//}
+
+// Taken from Menyoo
+// This seems to have mostly fixed the vehicle spawning, 
+// I still need to fix it to place it above ground, and not fall through the map.
+// This does lag a little bit but seems to work.
+bool VehicleScripts::RequestModel(Hash hash)
 {
-    Util util;
-
-    DWORD startTime = GetTickCount();
-    DWORD timeout = 3000; // in millis
-
-    REQUEST_MODEL(model);
-    while (!HAS_MODEL_LOADED(model))
+    int timeOut = 3000;
+    if (HAS_MODEL_LOADED(hash)) return true;
+    else
     {
-        WAIT(0);
+        REQUEST_MODEL(hash);
 
-        // Add crash protection to this, seems to work for the vehicle and other items.
-        if (GetTickCount() > startTime + timeout) {
-            // Couldn't load model
+        for (timeOut += GetTickCount(); GetTickCount() < timeOut;)
+        {
+            if (HAS_MODEL_LOADED(hash))
+                return true;
             WAIT(0);
-            UI::Notify("Couldn't load model");
-
-            util.ShowSubtitle("Couldn't load model");
-
-            std::cout << std::format("Couldn't load model: {}", model) << std::endl;
-
-            STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
-            return false;
         }
+        return false;
     }
-
-    // Should only ever return true if this was a success
-    return true;
 }
 
 /// <summary>
@@ -163,10 +187,12 @@ void VehicleScripts::RepairVehicle()
  * distance between 'em.
  */
 void VehicleScripts::SpawnVehicle(Hash hash) {
-    Util util;
+    Util util = Util();
     auto& playerScripts = PlayerScripts::GetInstance();
+    //WAIT(100);
+    
 
-    if (STREAMING::IS_MODEL_IN_CDIMAGE(hash) && STREAMING::IS_MODEL_A_VEHICLE(hash)) {
+    //if (STREAMING::IS_MODEL_IN_CDIMAGE(hash) && STREAMING::IS_MODEL_A_VEHICLE(hash)) {
         //Ped playerPed = PLAYER::PLAYER_PED_ID();
         //Ped playerPed = playerScripts.GetPlayerPed();
         Ped playerPed = playerScripts.GetPlayerID();
@@ -228,24 +254,25 @@ void VehicleScripts::SpawnVehicle(Hash hash) {
         }
         
 
+        
         WAIT(0);
-        STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+        //STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
         //if (settings.Persistent) {
         //    ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, true, false);
         //    g_persistentVehicles.push_back(veh);
         //}
         //else {
-            ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, false, true);
-            ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
+            //ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, false, true);
+            //ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
         //}
 
         //util.ShowSubtitle("Spawned " + util.GetGxtName(hash) + " (" + util.GetModelName(hash) + ")");
         util.ShowSubtitle("Spawned " + util.GetGxtName(hash));
-    }
-    else {
-        util.ShowSubtitle("Vehicle doesn't exist");
-    }
+    //}
+    //else {
+    //    util.ShowSubtitle("Vehicle doesn't exist");
+    //}
 }
 
 //Vehicle VehicleScripts::SpawnVehicle(Hash hash, Vector3 coords, float heading, DWORD timeout) {

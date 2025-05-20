@@ -19,14 +19,14 @@
 * Copyright (C) 2019  MAFINS
 */
 
-#ifdef MENYOO_SCRIPT_FILES
 #include "Scaleform.h"
+#ifdef MENYOO_SCRIPT_FILES
 
 //#include "..\macros.h"
 //
-//#include "..\Util\GTAmath.h"
+//#include "Util\GTAmath.h"
 //#include "..\Natives\types.h"
-#include "..\Natives\natives2.h"
+#include "Natives\natives2.h"
 
 #include <string>
 
@@ -154,12 +154,18 @@ void Scaleform::Render2D(RGBA colour)
 }
 void Scaleform::Render2DScreenSpace(const Vector2& location, const Vector2& size, RGBA colour)
 {
-	DRAW_SCALEFORM_MOVIE(this->mHandle, location.x, location.y, size.x, size.y, colour.R, colour.G, colour.B, colour.A, 0);
+	//DRAW_SCALEFORM_MOVIE(this->mHandle, location.x, location.y, size.x, size.y, colour.R, colour.G, colour.B, colour.A, 0);
+	DRAW_SCALEFORM_MOVIE(this->mHandle, location, size.x, size.y, colour.R, colour.G, colour.B, colour.A, 0);
 }
+
+// TODO Fix this
+#ifdef DISABLED_CODE
 void Scaleform::Render3D(const Vector3& position, const Vector3& rotation, const Vector3& unk, const Vector3& scale)
 {
-	DRAW_SCALEFORM_MOVIE_3D_SOLID(this->mHandle, position, rotation, unk, scale, 2);
+	DRAW_SCALEFORM_MOVIE_3D_SOLID(this->mHandle, position, rotation, 0.0f, 0.0f, unk, scale, 2);
 }
+#endif // DISABLED_CODE
+
 void Scaleform::Render3DAdditive(const Vector3& position, const Vector3& rotation, const Vector3& unk, const Vector3& scale)
 {
 	DRAW_SCALEFORM_MOVIE_3D(this->mHandle, position, rotation, unk.x, unk.y, unk.z, scale, 2);

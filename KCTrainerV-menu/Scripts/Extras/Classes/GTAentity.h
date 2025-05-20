@@ -20,6 +20,8 @@
 */
 #pragma once
 
+#include "Constants.hpp"
+
 // TODO Disable if this breaks build
 // I have mostly commented out the code that I might fix up later.
 // My disabled code is under the '_DISABLED_CODE' preprocessor
@@ -139,8 +141,9 @@ public:
 	int MaxHealth_get() const;
 	void MaxHealth_set(int value);
 
-#ifdef _DISABLED_CODE
 	GTAmodel::Model Model() const;
+
+#ifdef _DISABLED_CODE
 	GTAmodel::ModelDimensions ModelDimensions() const;
 	void ModelDimensions(Vector3& dim1C, Vector3& dim2C) const;
 

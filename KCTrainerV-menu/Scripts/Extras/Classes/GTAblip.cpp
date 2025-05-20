@@ -25,7 +25,7 @@
 //#include "..\macros.h"
 
 //#include "..\Util\GTAmath.h"
-#include "..\Natives\natives2.h"
+#include "Natives\natives2.h"
 
 #include <string>
 #include <map>

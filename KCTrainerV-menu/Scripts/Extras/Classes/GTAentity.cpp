@@ -32,9 +32,10 @@
 //
 //#include "enums.h"
 
-#include "..\Util\GTAmath.h"
-#include "..\Natives\natives2.h"
-#include "..\Memory\GTAmemory.h"
+//#include "..\Util\GTAmath.h"
+#include "Util\GTAmath.h"
+#include "Natives\natives2.h"
+#include "Memory\GTAmemory.h"
 #include "GTAblip.h"
 #include "Model.h"
 #include "Raycast.h"
@@ -308,11 +309,14 @@ void GTAentity::MaxHealth_set(int value)
 	SET_ENTITY_MAX_HEALTH(this->mHandle, value);
 }
 
-#ifdef _DISABLED_CODE
+
 GTAmodel::Model GTAentity::Model() const
 {
 	return GET_ENTITY_MODEL(this->mHandle);
 }
+
+#ifdef _DISABLED_CODE
+
 GTAmodel::ModelDimensions GTAentity::ModelDimensions() const
 {
 	return this->Model().Dimensions();

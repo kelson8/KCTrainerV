@@ -4,6 +4,12 @@
 
 #include "Util/Enums.h"
 
+//#include "Scripts/Extras/Classes/GTAblip.h"
+//#include "Scripts/Extras/Classes/GTAentity.h"
+//#include "Scripts/Extras/Classes/GTAped.h"
+//#include "Scripts/Extras/Classes/GTAplayer.h"
+//#include "Scripts/Extras/Classes/GTAvehicle.h"
+
 // TODO Implement this, copied from Menyoo in Routine.cpp
 
 // TODO Copy in GTAentity file - mostly complete.
@@ -11,14 +17,12 @@
 // Copy these remaining files from Menyoo Scripting folder:
 /*
 Camera.cpp
-GTAped.cpp, GTAped.h
 Checkpoint, Checkpoint.h
 CustomHelpText.cpp, CustomHelpText.h
 DxHookIMG.cpp, DxHookIMG.h
 Game.cpp, Game.h
 GameplayCamera.cpp, GameplayCamera.h
 GTAprop.cpp, GTAprop.h
-GTAvehicle.cpp, GTAvehicle.h
 ModelNames.cpp, ModelNames.h
 PTFX.cpp, PTFX.h
 TimecycleModification.cpp, TimecycleModification.h
@@ -28,17 +32,19 @@ World.cpp, World.h
 
 // Fix these files to work:
 /*
-GTAplayer.cpp, GTAplayer.h
-Model.cpp, Model.h
-Rope.cpp, Rope.h
-Scaleform.cpp, Scaleform.h
-Task.cpp, Task.h
+Rope
+Task_old - Rename to something else.
 */
 
 // Files that this builds with so far:
 /*
-GTAblip.cpp, GTAblip.h
-GTAentity.cpp, GTAentity.h
+GTAblip
+GTAentity
+GTAped,
+GTAplayer,
+GTAvehicle,
+Model,
+Scaleform
 */
 
 // This contains required items for this, although I could probably adapt it to use Ped and other ScriptHookV items.
@@ -89,6 +95,8 @@ void set_no_clip()
 
 	if (ent.Exists())
 	{
+		// TODO Figure this part out.
+		
 		if (Menu::bit_controller ? (IS_CONTROL_PRESSED(2, INPUT_FRONTEND_X) && IS_CONTROL_JUST_PRESSED(2, INPUT_FRONTEND_LS)) : IsKeyJustUp(bind_no_clip))
 		{
 			loop_no_clip_toggle = !loop_no_clip_toggle;
@@ -98,6 +106,7 @@ void set_no_clip()
 			}
 			else
 			{
+#ifdef DISABLED_CODE
 				if (bit_noclip_show_help)
 				{
 					bit_noclip_show_help = false;
@@ -107,6 +116,7 @@ void set_no_clip()
 						<< "~n~~INPUT_LOOK_LR~ = " << Game::GetGXTEntry("ITEM_MOVE") << "~n~~INPUT_PARACHUTE_BRAKE_RIGHT~/~INPUT_PARACHUTE_BRAKE_LEFT~ = " << "Ascend/Descend" << "~n~~INPUT_SPRINT~ = " << "Hasten", 6000);
 					bit_noclip_show_help = false;
 				}
+#endif //DISABLED_CODE
 				bit_noclip_already_invis = !ent.IsVisible();
 				bit_noclip_already_collis = ent.IsCollisionEnabled_get();
 				//if (IS_ENTITY_A_PED(tempEntity)) task_HandsUp(tempEntity);
