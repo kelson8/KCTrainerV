@@ -52,6 +52,7 @@ void KCMenu::AttachConsole()
         // TODO Possibly add log messages in here for logging when this attaches and errors to the KCTrainerV.log?
 
         std::string programBuildString = std::format("Program build time and date: {} @ {}", __DATE__, __TIME__);
+        std::string programVersionString = std::format("KCTrainerV Version: {}", Constants::DisplayVersion);
 
         // Redirect standard output, error, and input streams to the console
         FILE* dummy;
@@ -67,6 +68,9 @@ void KCMenu::AttachConsole()
         // Show the time and date when this was built
         //std::cout << std::format("Program build time and date: {} @ ", __DATE__, __TIME__) << std::endl;
         std::cout << programBuildString << std::endl;
+
+        // Show the version string for the trainer
+        std::cout << programVersionString << std::endl;
 
         //std::cerr << "Error output will also appear here." << std::endl;
     }

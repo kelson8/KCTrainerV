@@ -21,6 +21,7 @@
 // Menyoo
 #include "GTAped.h"
 #include "GTAentity.h"
+#include "GTAvehicle.h"
 
 //void FadeScreenIn(int ms);
 //void FadeScreenOut(int ms);
@@ -851,100 +852,3 @@ void PlayerScripts::DisableMobileRadio()
 //----------- End Mobile radio toggling --------------//
 
 #pragma endregion // MobileRadio
-
-#pragma region MenyooTest
-
-//----------- Begin Menyoo tests --------------//
-
-// TODO Test this, using new GTAped and GTAentity from Menyoo
-// This works for teleporting, I just had to adapt the way Menyoo was using these.
-// Look into GTAentity.cpp for some of these, GTAped.cpp, and GTAplayer.cpp are also useful.
-void PlayerScripts::MenyooTest()
-{
-    Ped playerPedID = PLAYER_PED_ID();
-    //GTAped playerPed = playerPedID;
-    GTAped playerPed = PLAYER_PED_ID();
-
-    // Well this one doesn't work.
-    //GTAvehicle playerVeh();
-    //VehicleSeat currVehSeat;
-    //if (playerPed.IsInVehicle())
-    //{
-    //    // TODO Fix this to work, I can modify a lot with the GTAvehicle class.
-    //    //playerVeh = playerPed.CurrentVehicle();
-    //    currVehSeat = playerPed.CurrentVehicleSeat_get();
-    //}
-
-     //playerPed.CurrentVehicle();
-
-    //playerPed.Armour_set(250);
-
-    // This teleport seems to work fine.
-    Vector3 michealsHouseCoords = Vector3(-813.603f, 179.474f, 72.1548f);
-    float michealsHouseHeading = 0.0f;
-
-    // Can get/set position:
-    //playerPed.Position_get();
-    //playerPed.Position_set(michealsHouseCoords);
-
-
-    // Can get/set rotation:
-    //playerPed.Rotation_get();
-    //playerPed.Rotation_set(Vector3(0.0f, 0.0f, 0.0f));
-
-    //playerPed.CanFlyThroughWindscreen_get();
-    //playerPed.CanFlyThroughWindscreen_set(true);
-   
-    // Hmm, I can use GTAped in my for loops? Might be fun
-
-    // This seems to work, set the peds driving speeds to random.
-    // TODO Move this into VehicleScripts.
-    // Set the min and max speeds for the below, moved out of the loop I only want it randomized once.
-    //float minSpeed = 25.0f;
-    //float maxSpeed = 40.0f;
-
-    //// Get a random value from the two values above.
-    //float randomSpeed = g_Random.GetRandomFloat(minSpeed, maxSpeed);
-
-    //for (GTAped ped : GetAllPeds())
-    //{
-    //    // Check if they are the player and not dead, if so do nothing
-    //    if (!ped.IsPlayer() || ped.IsAlive())
-    //    {
-    //        if (ped.IsInVehicle())
-    //        {
-    //            //ped.DrivingSpeed_set(40.0f);
-    //            ped.DrivingSpeed_set(randomSpeed);
-    //        }
-    //    }
-    //    
-    //    std::string drivingSpeedString = std::format("All peds driving speed set to {}", randomSpeed);
-
-    //    std::cout << drivingSpeedString << std::endl;
-    //    UI::Notify(drivingSpeedString);
-    //}
-
-    // Well this one didn't work.
-    //for (GTAvehicle vehicle : GetAllVehs())
-    //{
-
-    //}
-
-
-    //for (Ped ped : GetAllPeds())
-    //    if (ped != player)
-    //        entities.push_back(ped);
-
-    //for (Vehicle veh : GetAllVehs())
-    //    if (!IS_PED_IN_VEHICLE(player, veh, false))
-    //        entities.push_back(veh);
-
-    //for (Entity prop : GetAllProps())
-    //    entities.push_back(prop);
-
-}
-
-//----------- End Menyoo tests --------------//
-
-#pragma endregion
-

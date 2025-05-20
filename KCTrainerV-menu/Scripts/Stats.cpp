@@ -355,8 +355,8 @@ namespace Stats
             ss << "Cops killed this life: " << copsKilledThisLife;
             std::string copsKilledString = ss.str();
 
-            // Print to console
-            std::cout << copsKilledString << std::endl;
+            // Disabled, print to console
+            //std::cout << copsKilledString << std::endl;
 
             // Display to screen
             // This displays the value to the screen

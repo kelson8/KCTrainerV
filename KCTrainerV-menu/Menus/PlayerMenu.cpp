@@ -12,6 +12,7 @@
 #include "../Scripts/PedScripts.h"
 #include "../Scripts/Tasks.h"
 #include "../Scripts/Stats.h"
+#include "../Scripts/MiscScripts.h"
 
 #ifdef MOVE_PLAYER_MENU
 
@@ -113,7 +114,7 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 #ifdef DEBUG_MODE
     if (mbCtx.Option("Menyoo test", { "Run a test with Menyoo classes" }))
     {
-        playerScripts.MenyooTest();
+        MiscScripts::EXFeatures::MenyooTest();
     }
 
     mbCtx.MenuOption("Player Debug", "PlayerDebugSubmenu", { "Debug menu for player functions." });

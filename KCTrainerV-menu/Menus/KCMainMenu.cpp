@@ -100,7 +100,6 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 #endif
 
     auto& pedScripts = PedScripts::GetInstance();
-    auto& miscScripts = MiscScripts::GetInstance();
 
     auto& textScripts = TextScripts::GetInstance();
 
@@ -348,7 +347,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
                 textScripts.NotificationBottomLeft("Test notification");
             }
 
-            mbCtx.BoolOption("ID Gun test", miscScripts.isIdGunEnabled, { "Toggle the ID Gun test from FiveM" });
+            mbCtx.BoolOption("ID Gun test", MiscScripts::IDGun::isIdGunEnabled, { "Toggle the ID Gun test from FiveM" });
 
             int nothing = 0;
             mbCtx.StringArray("--Music--", { "" }, nothing);
@@ -368,30 +367,30 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
                 // Seems to be the music that sometimes happens when flying.
                 //miscScripts.PlayTestMusic(CHASE_PARACHUTE_START);
                 //miscScripts.PlayTestMusic(SHOOTING_RANGE_START);
-                miscScripts.PlayTestMusic(static_cast<MusicTracks>(currentMusicTrack));
+                MiscScripts::Music::PlayTestMusic(static_cast<MusicTracks>(currentMusicTrack));
             }
 
 
             if (mbCtx.Option("AW Lobby music", { "Play the arena war lobby music" }))
             {
-                miscScripts.PlayArenaWarLobbyMusic();
+                MiscScripts::Music::PlayArenaWarLobbyMusic();
             }
 
             if (mbCtx.Option("Stop music", { "Stops the music currently playing" }))
             {
-                miscScripts.StopArenaWarLobbyMusic();
+                MiscScripts::Music::StopArenaWarLobbyMusic();
             }
 
             // This didn't seem to play the end credits music.
             // Taken from MiscRollCredits.cpp in Chaos Mod
             if (mbCtx.Option("Start credits music", { "Start the end credits music" }))
             {
-                miscScripts.StartCreditsMusic();
+                MiscScripts::Music::StartCreditsMusic();
             }
 
             if (mbCtx.Option("Stop credits music", { "Stop the end credits music" }))
             {
-                miscScripts.StopCreditsMusic();
+                MiscScripts::Music::StopCreditsMusic();
             }
 
 #ifdef CHAOSMOD_FEATURES
@@ -401,8 +400,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             }
 #endif // CHAOSMOD_FEATURES
             
-
-            mbCtx.BoolOption("Toggle airstrike test", miscScripts.airStrikeRunning, { "Toggle the airstrikes on/off" });
+            mbCtx.BoolOption("Toggle airstrike test", MiscScripts::EXFeatures::airStrikeRunning, { "Toggle the airstrikes on/off" });
 
             mbCtx.BoolOption("Draw text on screen", textScripts.drawText, { "Toggle test text to draw on screen." });
 
@@ -410,18 +408,18 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
  
 
             // Toggle force field
-            mbCtx.BoolOption("Toggle forcefield", miscScripts.isForceFieldEnabled, { "Turn on/off the forcefield for the player." });
+            mbCtx.BoolOption("Toggle forcefield", MiscScripts::EXFeatures::isForceFieldEnabled, { "Turn on/off the forcefield for the player." });
 
             // I would set a boolean for this but it requires items that I don't think they can be run in a tick all the time.
             // Toggle tv on/off
             if (mbCtx.Option("Enable TV"))
             {
-                miscScripts.EnableTv();
+                MiscScripts::EXFeatures::EnableTv();
             }
 
             if (mbCtx.Option("Disable TV"))
             {
-                miscScripts.DisableTv();
+                MiscScripts::EXFeatures::DisableTv();
             }
 
             //if (mbCtx.Option("Enable Forcefield"))

@@ -16,7 +16,6 @@
 void PedMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
 	auto& pedScripts = PedScripts::GetInstance();
-	auto& miscScripts = MiscScripts::GetInstance();
 
     mbCtx.Title("Peds");
 

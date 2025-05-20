@@ -20,7 +20,6 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& worldScripts = WorldScripts::GetInstance();
-    auto& miscScripts = MiscScripts::GetInstance();
 
     // Respawn locations, TODO add these to a different file.
     Vector3 michealsHouseCoords = Vector3(-813.603f, 179.474f, 72.1548f);
@@ -53,23 +52,23 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // Toggle sky
     if (mbCtx.Option("Enable Sky"))
     {
-        miscScripts.EnableSky();
+        MiscScripts::EXFeatures::EnableSky();
     }
 
     if (mbCtx.Option("Disable Sky"))
     {
-        miscScripts.DisableSky();
+        MiscScripts::EXFeatures::DisableSky();
     }
 
     // Toggle snow
     if (mbCtx.Option("Enable Snow"))
     {
-        miscScripts.EnableSnow();
+        MiscScripts::EXFeatures::EnableSnow();
     }
 
     if (mbCtx.Option("Disable Snow"))
     {
-        miscScripts.DisableSnow();
+        MiscScripts::EXFeatures::DisableSnow();
     }
 #endif // MEMORY_TESTING
 

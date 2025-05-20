@@ -39,7 +39,6 @@ void KCMainScript::Tick() {
     auto& textScripts = TextScripts::GetInstance();
 
     auto& playerScripts = PlayerScripts::GetInstance();
-    auto& miscScripts = MiscScripts::GetInstance();
 
 #ifdef VEHICLE_SCRIPTS_SINGLETON
     auto& vehicleScripts = VehicleScripts::GetInstance();
@@ -76,9 +75,9 @@ void KCMainScript::Tick() {
     //}
 
     // Hmm, this seems to work if I toggle it in my menu.
-    if (miscScripts.airStrikeRunning)
+    if (MiscScripts::EXFeatures::airStrikeRunning)
     {
-        miscScripts.StartAirstrikeTest();
+        MiscScripts::EXFeatures::StartAirstrikeTest();
     }
 
     // Core script logic
@@ -130,16 +129,16 @@ void KCMainScript::Tick() {
     // Player force field
 
 #ifdef MEMORY_TESTING
-    if (miscScripts.isForceFieldEnabled)
+    if (MiscScripts::EXFeatures::isForceFieldEnabled)
     {
-        miscScripts.EnableForceField();
+        MiscScripts::EXFeatures::EnableForceField();
     }
 #endif // MEMORY_TESTING
 
     // Run the tick event for the TV if enabled.
-    if (miscScripts.isTVRunning)
+    if (MiscScripts::EXFeatures::isTVRunning)
     {
-        miscScripts.TvTick();
+        MiscScripts::EXFeatures::TvTick();
     }
 
     // Make peds attack player
@@ -202,9 +201,9 @@ void KCMainScript::Tick() {
     }
 
     // This mostly works, draw entity id, entity x,y,z, entity heading, and entity model hash to the screen.
-    if (miscScripts.isIdGunEnabled)
+    if (MiscScripts::IDGun::isIdGunEnabled)
     {
-        miscScripts.IdGun();
+        MiscScripts::IDGun::IdGun();
     }
 
     // Turn on/off restricted areas

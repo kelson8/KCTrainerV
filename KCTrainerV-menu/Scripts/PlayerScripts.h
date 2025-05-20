@@ -172,10 +172,6 @@ public:
     bool isMobileRadioEnabled = false;
     bool mobileRadioFlag = false;
 
-    // Test for Menyoo
-    void MenyooTest();
-    //
-
 private:
     PlayerScripts() {} // Private constructor to prevent external instantiation
     PlayerScripts(const PlayerScripts&) = delete;
@@ -194,10 +190,5 @@ private:
     // Toggles
     bool heatVisionToggled;
     bool nightVisionToggled;
-
-
-
-
-
 };
 
