@@ -46,6 +46,8 @@ public:
 	//
 
 
+	std::string GetVehicleName(Entity vehicle);
+
 private:
 #ifdef VEHICLE_SCRIPTS_SINGLETON
 	// TODO Re-enable

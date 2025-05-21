@@ -5,6 +5,7 @@
 #include "MiscScripts.h"
 #include "Scripts/PlayerScripts.h"
 #include "Scripts/TextScripts.h"
+#include "Scripts/VehicleScripts.h"
 
 #include <format>
 
@@ -120,21 +121,30 @@ namespace MiscScripts
 
 			auto& playerScripts = PlayerScripts::GetInstance();
 
+			auto& vehicleScripts = VehicleScripts::GetInstance();
+
 			Util util = Util();
 
 			//Ped playerPed = playerScripts.GetPlayerPed();
 			// I think this fixed it, I think I needed the playerID
 			Player playerPed = PLAYER_ID();
 
+			// Check if the player is aiming
 			if (IS_PLAYER_FREE_AIMING(playerPed))
 			{
 				// Aimed at entity
 				Entity entity = GetEntityIsAimingAt(playerPed);
+				
+				// Entity coords and heading
 				Vector3 entityCoords = GET_ENTITY_COORDS(entity, false);
 				float entityHeading = GET_ENTITY_HEADING(entity);
+				
+				// Entity hash
 				Hash entityHash = GET_ENTITY_MODEL(entity);
 
+				//------
 				// Entity ID
+				//------
 				std::string entityIdString = std::format("Entity ID: {}", std::to_string(entity));
 				textScripts.SetTextEntry(entityIdString.c_str());
 
@@ -144,78 +154,69 @@ namespace MiscScripts
 
 				textScripts.TextPosition(entityIdMenuPosX, entityIdMenuPosY);
 
+				//------
 				// Entity coords
-				//std::string entityCoordsString = std::format("Entity Coords: X: {} Y: {} Z: {}",
-				//	std::to_string(entityCoords.x), std::to_string(entityCoords.y), std::to_string(entityCoords.z));
-				//textScripts.SetTextEntry(entityCoordsString.c_str());
-
+				//------
 				std::string entityCoordsString = std::format("Entity Coords: X: {:.2f} Y: {:.2f} Z: {:.2f}",
 					entityCoords.x, entityCoords.y, entityCoords.z);
 				textScripts.SetTextEntry(entityCoordsString.c_str());
 
 				textScripts.TextPosition(entityCoordsMenuPosX, entityCoordsMenuPosY);
 
+				//------
 				// Entity heading
+				//------
 				std::string entityHeadingString = std::format("Entity Heading: {}", std::to_string(entityHeading));
 				textScripts.SetTextEntry(entityHeadingString.c_str());
 
 				textScripts.TextPosition(entityHeadingMenuPosX, entityHeadingMenuPosY);
 
+				//------
+				// Display vehicle name or entity model hash
+				//------
 				// If the entity is a vehicle, show the name of the vehicle instead of the entity model hash.
-				// Well this doesn't seem to work.
-		//#define DISPLAY_VEHICLE_NAME
-#ifdef DISPLAY_VEHICLE_NAME
-				if (IS_ENTITY_A_VEHICLE(entity))
-				{
-					//Vehicle vehicle = GET_VEHICLE_PED_IS_IN(entity, false);
-					// This didn't work either.
-					//std::string vehicleName = util.GetGxtName(vehicle);
-					std::string vehicleName = util.GetGxtName(entity);
-					//Hmm, just says 'CARNOTFOUND'?
-					//std::string vehicleName = GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(vehicle);
+				// I pretty much got this working
 
-					std::string vehicleNameString = std::format("Vehicle Name: {}", vehicleName);
+				// I adapted this from the pun_idgun FiveM resource and it now gets the vehicle name even if the ped is in it.
+				if (IS_ENTITY_A_PED(entity))
+				{
+					Vehicle pedVehicle = GET_VEHICLE_PED_IS_IN(entity, false);
+					// Get the vehicle name
+					std::string vehicleNameString = vehicleScripts.GetVehicleName(pedVehicle);
 					textScripts.SetTextEntry(vehicleNameString.c_str());
 					textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
 				}
-				//Show the entity model hash
-				else
 
+				//------
+				// If this is just a vehicle with no ped in it.
+				//------
+				else if (IS_ENTITY_A_VEHICLE(entity))
 				{
-#endif
-					//Entity Model
+
+					//GTAvehicle entityVeh = entity;
+					
+					// Get the vehicle name
+					std::string vehicleNameString = vehicleScripts.GetVehicleName(entity);
+
+					//textScripts.SetTextEntry(vehicleNameString.c_str());
+					textScripts.SetTextEntry(vehicleNameString.c_str());
+					textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+				}
+				//------
+				// If this is not a ped in a vehicle or a vehicle, show a model hash
+				//------
+				else
+				{
+					//------
+					//Entity Model hash
+					//------
 					std::string entityModelString = std::format("Entity Model Hash: {}", std::to_string(entityHash));
 					textScripts.SetTextEntry(entityModelString.c_str(), 255, 255, 255, 255);
 					textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
 
 					// TODO Add door status if this is a door, I would probably have to check if this is a door model from a list.
 
-#ifdef DISPLAY_VEHICLE_NAME
 				}
-#endif
-
-				/*if (IS_ENTITY_A_PED(entity))
-				{*/
-
-
-				//Vehicle vehicle = GET_VEHICLE_PED_IS_IN(entity, false);
-				//Hash vehicleModel = GET_ENTITY_MODEL(vehicle); // Get the hash of the vehicle
-
-				//if (DOES_ENTITY_EXIST(vehicle))
-				//{
-					// TODO Replicate this
-					/*
-						if hashes[tostring(model_veh)] then
-							modelVehText = hashes[tostring(model_veh)]         -- Set the modelText local with the actual name.
-					   else
-							modelVehText = model_veh                           -- Set the modelText local.
-						end
-
-					*/
-					//}
-
-				//}
-
 			}
 		}
 

@@ -402,3 +402,25 @@ void VehicleScripts::CreateMissionTrain(Hash model, Vector3 pos, bool direction)
     missionTrain = CREATE_MISSION_TRAIN(model, pos, direction, 0, 1);
 
 }
+
+/// <summary>
+/// Will be in use for the ped id gun.
+/// Get the name of the vehicle that is an entity.
+/// </summary>
+/// <param name="vehicle"></param>
+/// <returns>The name of the vehicle like this: "Vehicle Name: Cheetah", or returns blank if nothing found.</returns>
+std::string VehicleScripts::GetVehicleName(Entity vehicle)
+{
+    // Make sure the entity exists and is a vehicle.
+    if (ENTITY::DOES_ENTITY_EXIST(vehicle) && IS_ENTITY_A_VEHICLE(vehicle))
+    {
+        Hash model = ENTITY::GET_ENTITY_MODEL(vehicle);
+        std::string makeName = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MAKE_NAME_FROM_VEHICLE_MODEL(model));
+        std::string modelName = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(model));
+
+        std::string vehicleNameString = std::format("Vehicle Name: {}", modelName);
+        return vehicleNameString;
+    }
+
+    return "";
+}

@@ -83,25 +83,28 @@ extended for multiple instances (for NPCs, etc.).
 \- ikt
 
 # Credits
-Credit to ikt32 on GitHub for the Menu Base, the example menu, and for some vehicle spawning code.
+ikt32 on GitHub for the Menu Base, the example menu, and for some vehicle spawning code.
 * Menu Base: https://github.com/ikt32/GTAVMenuBase
 * Example Menu: https://github.com/ikt32/GTAVKCMenu
 * Vehicle spawning code: https://github.com/ikt32/GTAVAddonLoader
 
-Credit to itsjustcurtis on GitHub for some functions and items I will be using for this menu
+itsjustcurtis on GitHub for some functions and items I will be using for this menu
 * Menyoo: https://github.com/itsjustcurtis/MenyooSP
 
-Credit to gta-chaos-mod on GitHub for some of the Memory management and chaos features I may use:
+gta-chaos-mod on GitHub for some of the Memory management and chaos features I may use:
 * https://github.com/gta-chaos-mod/ChaosModV
 
-Credit to ThePhD on GitHub for the sol2 library I am using for lua: 
+ThePhD on GitHub for the sol2 library I am using for lua: 
 * https://github.com/ThePhD/sol2
 
-Credit to Lua for the lua library I am using:
+Lua for the lua library I am using:
 * https://www.lua.org/download.html
 
-Credit to Mr-X-GTA on GitHub for the GTAV-Classes reverse engineered classes:
+Mr-X-GTA on GitHub for the GTAV-Classes reverse engineered classes:
 * https://github.com/Mr-X-GTA/GTAV-Classes-1
+
+Puntherline on GitHub for the FiveM id gun adaptation (IdGun function in MiscScripts): 
+* https://github.com/Puntherline/pun_idgun/blob/master/client.lua
 
 # License
 This project is Licensed under the GPLV3 license.
