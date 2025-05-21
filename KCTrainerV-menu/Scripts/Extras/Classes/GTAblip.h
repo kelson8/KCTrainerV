@@ -22,8 +22,12 @@
 
 //#include <better-enums-master\enum.h>
 
+#include "GTAentity.h"
+
 #include <map>
 #include <string>
+
+#include <inc/types.h>
 
 // TODO Fix this warning later
 // warning C4099: 'Vector3': type name first seen using 'struct' now seen using 'class'
@@ -916,6 +920,23 @@ public:
 
 	bool Exists() const;
 	void Remove();
+
+	// New functions
+	// Adding blips
+	void AddBlipForCoord(Vector3 coords);
+	
+	// TODO Test these later.
+	void AddBlipForRadius(Vector3 coords, float radius);
+	void AddBlipForArea(Vector3 area, float width, float height);
+	void AddBlipForEntity(GTAentity entity);
+	void AddBlipForPickup(Pickup pickup);
+
+	// Set display
+	void SetBlipDisplay(GTAblip blip, int displayID);
+
+	// Blip routes.
+	void SetBlipRouteColor(GTAblip blip, int color);
+	//
 
 private:
 	int mHandle;

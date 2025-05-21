@@ -484,6 +484,7 @@
       <Filter>Memory</Filter>
     </ClInclude>
     <ClInclude Include="FeatureToggles.h" />
+    <ClInclude Include="defines.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">

@@ -382,6 +382,16 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     // Well I finally got this working.
 
     //-----
+    // Misc Blips sub menu
+    //-----
+    submenus.emplace_back("MiscBlipsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            miscMenu.BuildBlipsSubmenu(mbCtx, context);
+
+        });
+
+    //-----
     // Misc Sub menu test
     //-----
     submenus.emplace_back("MiscDebugSubmenu",
@@ -390,6 +400,8 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             miscMenu.BuildDebugSubMenu(mbCtx, context);
             
         });
+
+
 
 
 #pragma endregion

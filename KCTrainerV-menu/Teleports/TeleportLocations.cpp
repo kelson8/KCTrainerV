@@ -16,6 +16,41 @@
 #include "Scripts/Extras/Classes/GTAvehicle.h"
 #include "Scripts/Extras/Game.h"
 
+namespace Teleports
+{
+    namespace Positions
+    {
+        // To access these in other files:
+        // Look through the std::map, specify the name of the warp.
+        //Teleports::Positions::vSafeHouseLocations.at("Michael's House")
+        //Teleports::Positions::vAirportLocations.at("Airport Runway")
+
+        std::map<std::string, Vector3> locations =
+        {
+            {"Micheals house", Vector3(-813.603f, 179.474f, 72.1548f)},
+
+        };
+
+        // Moved out of NEW_TELEPORTS preprocessor
+        const std::map<std::string, Vector3> vAirportLocations = {
+            {"Airport Runway", Vector3(-1336.0f, -3044.0f, 13.9f)},
+            {"Los Santos Intl Terminal", Vector3(-1088.6f, -2979.5f, 13.9f)}
+        };
+
+        const std::map<std::string, Vector3> vSafeHouseLocations = {
+            {"Michael's House", Vector3(-813.603f, 179.474f, 72.1548f)},
+            //{"Franklin's House (New)", {7.11903f, 536.615f, 176.028f}, 0.0f, {"v_franklinshouse"_sv, "unlocked"_sv, "locked"_sv}},
+            {"Franklin's House (New)", Vector3(7.11903f, 536.615f, 176.028f)},
+            {"Franklin's House (Old)", Vector3(-14.3803f, -1438.51f, 31.1073f)},
+
+            {"Trevor's House", Vector3(1972.61f, 3817.04f, 33.4278f)},
+            {"Trevor's House 2", Vector3(-1151.77f, -1518.14f, 10.6327f)},
+            {"Trevor's Office", Vector3(97.2707f, -1290.994f, 29.2688f)},
+            // ... more safehouses
+        };
+    }
+}
+
 #ifdef LOAD_IPLS
 
 // Copied from Menyoo

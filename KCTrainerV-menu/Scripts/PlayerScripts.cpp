@@ -396,16 +396,16 @@ void PlayerScripts::HealPlayer(Ped player)
 /// </summary>
 void PlayerScripts::KillPlayerMP()
 {
-    Util util;
-
     DWORD startTime = GetTickCount();
     DWORD timeout = 3000; // in millis
 
     std::string animDict = "mp_suicide";
-    std::string animName = "mp_suicide";
+    //std::string animName = "mp_suicide";
+    std::string animName = "pistol";
 
 #ifndef NEW_TEST
     Ped playerPed = PLAYER_PED_ID();
+    Util util;
 #else
     GTAped playerPed = PLAYER_PED_ID();
     if(!playerPed.IsInVehicle() && playerPed.IsOnFoot())
@@ -459,6 +459,9 @@ void PlayerScripts::KillPlayerMP()
         playerPed.Weapon_set(pistolHash);
 
         WAIT(750);
+        //playerPed.Task();
+        // Hmm, not sure how to fix this unresolved linker error, works in MiscScripts..
+        // Well I think it's just this and not the whole Task class being affected.
         playerPed.Task().ShootAt(Vector3(0.0f, 0.0f, 0.0f), 10, 0);
         // Set the players health to 0.
         playerPed.Health_set(0);

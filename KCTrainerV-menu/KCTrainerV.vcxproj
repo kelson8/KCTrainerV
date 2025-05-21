@@ -314,6 +314,7 @@
     <ClInclude Include="Components\LuaManager.h" />
     <ClInclude Include="Components\LuaScripts_old.h" />
     <ClInclude Include="Constants.hpp" />
+    <ClInclude Include="defines.h" />
     <ClInclude Include="FeatureToggles.h" />
     <ClInclude Include="ImageDimensions.hpp" />
     <ClInclude Include="KCMenuScript.hpp" />

@@ -86,8 +86,10 @@ public:
 	void ReactAndFlee(GTAentity pedToFleeFrom);
 	void ReloadWeapon();
 	void RunTo(const Vector3& position, bool ignorePaths = false, int timeout = -1);
+
 	void ShootAt(GTAentity target, int duration, int pattern);
 	void ShootAt(const Vector3& position, int duration, int pattern);
+
 	void ShuffleToNextVehicleSeat(GTAentity vehicle);
 	void Skydive();
 	void SlideTo(const Vector3& position, float heading);

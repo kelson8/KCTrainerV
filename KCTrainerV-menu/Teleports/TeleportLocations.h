@@ -5,8 +5,11 @@
 #include <vector>
 #include <string>
 #include <string_view> // For std::string_view
+#include <map>
+
 
 #include <inc/natives.h>
+#include <inc/types.h>
 
 #include "Scripts/Extras/Classes/GTAped.h"
 
@@ -90,6 +93,19 @@ enum TeleportLocation
 
 #endif //NEW_TELEPORTS
 
+
+namespace Teleports 
+{
+	namespace Positions
+	{
+
+
+		extern std::map<std::string, Vector3> locations;
+
+		extern const std::map<std::string, Vector3> vAirportLocations;
+		extern const std::map<std::string, Vector3> vSafeHouseLocations;
+	}
+}
 
 class TeleportLocations
 {

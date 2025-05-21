@@ -909,6 +909,7 @@ bool GTAblip::Exists() const
 {
 	return DOES_BLIP_EXIST(this->mHandle) != 0;
 }
+
 void GTAblip::Remove()
 {
 	if (DOES_BLIP_EXIST(this->mHandle))
@@ -917,4 +918,65 @@ void GTAblip::Remove()
 		REMOVE_BLIP(&id);
 		this->mHandle = id;
 	}
+}
+
+
+// New functions - kelson8
+
+void GTAblip::AddBlipForCoord(Vector3 coords)
+{
+	ADD_BLIP_FOR_COORD(coords);
+}
+
+// TODO Make an enum for this
+// https://nativedb.dotindustries.dev/gta5/natives/0x9029B2F3DA924928?search=SET_BLIP_DISPLAY
+// List of blips: https://docs.fivem.net/docs/game-references/blips/
+/*
+Display Id behaviours:
+0 = Doesn't show up, ever, anywhere.
+1 = Doesn't show up, ever, anywhere.
+2 = Shows on both main map and minimap. (Selectable on map)
+3 = Shows on main map only. (Selectable on map)
+4 = Shows on main map only. (Selectable on map)
+5 = Shows on minimap only.
+6 = Shows on both main map and minimap. (Selectable on map)
+7 = Doesn't show up, ever, anywhere.
+8 = Shows on both main map and minimap. (Not selectable on map)
+9 = Shows on minimap only.
+10 = Shows on both main map and minimap. (Not selectable on map)
+
+Anything higher than 10 seems to be exactly the same as 10.
+*/
+void GTAblip::SetBlipDisplay(GTAblip blip, int displayID)
+{
+	SET_BLIP_DISPLAY(blip.Handle(), displayID);
+}
+
+
+// Adding blips
+// TODO Test these.
+void GTAblip::AddBlipForRadius(Vector3 coords, float radius)
+{
+	ADD_BLIP_FOR_RADIUS(coords, radius);
+}
+
+void GTAblip::AddBlipForArea(Vector3 area, float width, float height)
+{
+	ADD_BLIP_FOR_AREA(area, width, height);
+}
+
+void GTAblip::AddBlipForEntity(GTAentity entity)
+{
+	ADD_BLIP_FOR_ENTITY(entity.Handle());
+}
+
+void GTAblip::AddBlipForPickup(Pickup pickup)
+{
+	ADD_BLIP_FOR_PICKUP(pickup);
+}
+
+// Blip routes
+void GTAblip::SetBlipRouteColor(GTAblip blip, int color)
+{
+	SET_BLIP_ROUTE_COLOUR(blip.Handle(), color);
 }
