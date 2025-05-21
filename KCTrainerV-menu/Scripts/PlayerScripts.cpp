@@ -525,30 +525,51 @@ void PlayerScripts::TestFade() {
     //WAIT(2000);
     //DO_SCREEN_FADE_IN(1000);
 
-    //int fadeTime = 500;
+    Ped playerPed = PLAYER_PED_ID();
+
     //int fadeOutTime = 50;
+    // 0 seems to work ok for the fade out.
     int fadeOutTime = 0;
-    //int fadeInTime = 200;
+    //int fadeOutTime = 5000;
+
+    //int fadeOutTime = 1000;
     //int fadeInTime = 1000;
+
+    // 4000 seems to work ok for the fade in.
     int fadeInTime = 4000;
+    //int fadeInTime = 10000;
 
     // This seems to somewhat work now, doesn't fully fade out like its too quick or something.
     // Maybe I should play around with this in C#?
     // TODO Retest with the below methods, using it like this.
-    DO_SCREEN_FADE_OUT(fadeOutTime);
-    WAIT(5000);
-    DO_SCREEN_FADE_IN(fadeInTime);
+    //DO_SCREEN_FADE_OUT(fadeOutTime);
+    // // Original wait:
+    ////WAIT(5000);
+    //WAIT(2000);
+    // New
+    //FREEZE_ENTITY_POSITION(playerPed, true);
+    //DO_SCREEN_FADE_IN(fadeInTime);
+    // New
+    //WAIT(1000);
+    //FREEZE_ENTITY_POSITION(playerPed, false);
 
+    // These seem to somewhat work but still not properly.
     // Fade out if not already faded out or fading out
-    //if (!IS_SCREEN_FADED_OUT() && !IS_SCREEN_FADING_OUT()) {
-    //    DO_SCREEN_FADE_OUT(fadeTime);
-    //    WAIT(550); // Wait for fade out
-    //}
+    if (!IS_SCREEN_FADED_OUT() && !IS_SCREEN_FADING_OUT()) {
+        DO_SCREEN_FADE_OUT(fadeOutTime);
+        FREEZE_ENTITY_POSITION(playerPed, true);
+        // Wait for the fade out
+        //WAIT(550);
+        //WAIT(2000);
+    }
 
-    //// Fade in if not already faded in or fading in
-    //if (!IS_SCREEN_FADED_IN() && !IS_SCREEN_FADING_IN()) {
-    //    DO_SCREEN_FADE_IN(fadeTime);
-    //}
+    // Fade in if not already faded in or fading in
+    if (!IS_SCREEN_FADED_IN() && !IS_SCREEN_FADING_IN()) {
+        DO_SCREEN_FADE_IN(fadeInTime);
+        FREEZE_ENTITY_POSITION(playerPed, false);
+        // Wait for the fade in.
+        WAIT(1000);
+    }
 }
 
 #pragma endregion

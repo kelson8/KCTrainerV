@@ -24,14 +24,6 @@ public:
 
 	void RepairVehicle();
 
-	// Spawning
-	void SpawnVehicle(Hash hash);
-	//Vehicle SpawnVehicle(Hash hash, Vector3 coords, float heading, DWORD timeout);
-	Vehicle SpawnVehicle(Hash hash, Vector3 coords, float heading);
-
-	// Toggle for spawning into vehicle, defaults is off.
-	bool spawnInsideVehicle = false;
-
 	// Invincible vehicle toggles
 	void EnableInvincibility();
 	void DisableInvincibility();
@@ -56,4 +48,3 @@ private:
 	VehicleScripts& operator=(const VehicleScripts&) = delete;
 #endif
 };
-

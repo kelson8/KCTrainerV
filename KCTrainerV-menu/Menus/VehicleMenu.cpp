@@ -6,6 +6,7 @@
 
 #include "../Scripts/PlayerScripts.h"
 #include "../Scripts/VehicleScripts.h"
+#include "../Scripts/VehicleSpawner.h"
 
 void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
@@ -16,6 +17,8 @@ void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 #else
     VehicleScripts vehicleScripts = VehicleScripts();
 #endif
+
+    auto& vehicleSpawner = VehicleSpawner::GetInstance();
 
     // This didn't seem to do anything
     //mbCtx.drawInstructionalButtons();
@@ -28,7 +31,8 @@ void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     }
 
     // Toggles the boolean to spawn in the vehicle and remove the old one.
-    mbCtx.BoolOption("Spawn into vehicle", vehicleScripts.spawnInsideVehicle, { "Toggle spawning in the spawned vehicle" });
+    //mbCtx.BoolOption("Spawn into vehicle", vehicleScripts.spawnInsideVehicle, { "Toggle spawning in the spawned vehicle" });
+    mbCtx.BoolOption("Spawn into vehicle", vehicleSpawner.spawnInsideVehicle, { "Toggle spawning in the spawned vehicle" });
 
     // This crashes it, I'll try to fix it later.
 #ifdef _TEST
@@ -76,6 +80,8 @@ void VehicleMenu::BuildSportsVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCM
     VehicleScripts vehicleScripts = VehicleScripts();
 #endif
 
+    auto& vehicleSpawner = VehicleSpawner::GetInstance();
+
     Vector3 playerPos = playerScripts.GetPlayerCoords();
     float playerX = playerPos.x + 3;
     float playerY = playerPos.y + 3;
@@ -105,7 +111,9 @@ void VehicleMenu::BuildSportsVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCM
         //UI::Notify(std::format("Spawning at: X={}, Y={}, Z={}, H={}", playerPosNew.x, playerPosNew.y, playerPosNew.z, playerHeading).c_str());
         std::cout << "[Menu Debug] Spawning at: X=" << playerPosNew.x << ", Y=" << playerPosNew.y << ", Z=" << playerPosNew.z << ", H=" << playerHeading << std::endl;
         //vehicleScripts.SpawnVehicle(cheetahHash, playerPosNew, playerHeading);
-        vehicleScripts.SpawnVehicle(cheetahHash);
+        
+        vehicleSpawner.SpawnVehicle(cheetahHash);
+
         //UI::Notify("SpawnVehicle function called.");
         std::cout << "[Menu Debug] SpawnVehicle function called." << std::endl;
 
@@ -149,6 +157,8 @@ void VehicleMenu::BuildSuperVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMa
 #else
     VehicleScripts vehicleScripts = VehicleScripts();
 #endif
+    auto& vehicleSpawner = VehicleSpawner::GetInstance();
+
     mbCtx.Title("Super");
 
     //std::map<std::string, std::function<void()>> optionActions =
@@ -171,11 +181,25 @@ void VehicleMenu::BuildSuperVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMa
 
     if (mbCtx.Option("Scramjet"))
     {
+
+
+
+        // New test
+#ifdef VEHICLE_SPAWNER_TEST
+        Ped playerPed = PLAYER_PED_ID();
+        Vector3 playerCoords = GET_ENTITY_COORDS(playerPed, true);
+        float playerHeading = GET_ENTITY_HEADING(playerPed);
+        Vector3 playerCoordsNew = Vector3(playerCoords.x + 3, playerCoords.y + 3, playerCoords.z);
+        
+        g_vehicleSpawner.InitiateSpawn("scramjet", playerCoordsNew, playerHeading);
+#else
         //static const Hash scramJetHash = "scramjet"_hash;
         static const Hash scramJetHash = MISC::GET_HASH_KEY("scramjet");
         // Well the baller3 works?
         //static const Hash scramJetHash = MISC::GET_HASH_KEY("baller3");
-        vehicleScripts.SpawnVehicle(scramJetHash);
+        vehicleSpawner.SpawnVehicle(scramJetHash);
+#endif // VEHICLE_SPAWNER_TEST
+        //
     }
 
     // TODO Refactor this if it is working right, move everything into the for loop.
@@ -185,7 +209,7 @@ void VehicleMenu::BuildSuperVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMa
         //static const Hash t20Hash = MISC::GET_HASH_KEY("t20");
         static const Hash t20Hash = VEHICLE_T20;
         
-        vehicleScripts.SpawnVehicle(t20Hash);
+        vehicleSpawner.SpawnVehicle(t20Hash);
     }
 
     if (mbCtx.Option("Zentorno"))
@@ -193,14 +217,16 @@ void VehicleMenu::BuildSuperVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMa
         //static const Hash zentornoHash = VEHICLE_ZENTORNO;
         static const Hash zentornoHash = MISC::GET_HASH_KEY("zentorno");
 
-        vehicleScripts.SpawnVehicle(zentornoHash);
+        vehicleSpawner.SpawnVehicle(zentornoHash);
+
     }
 
     if (mbCtx.Option("Baller3"))
     {
         // Well the baller3 works?
         static const Hash baller3Hash = MISC::GET_HASH_KEY("baller3");
-        vehicleScripts.SpawnVehicle(baller3Hash);
+
+        vehicleSpawner.SpawnVehicle(baller3Hash);
     }
 }
 #pragma endregion

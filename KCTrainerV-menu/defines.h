@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 // Taken from defines.h in my ReVC project
 
 template <typename T>

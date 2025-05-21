@@ -48,6 +48,10 @@ namespace MiscScripts
 		void PlayTestMusic(MusicTracks track);
 		void StopTestMusic();
 
+		// Play test sound effect
+		void PlaySoundEffect(SoundEffects track);
+
+
 		void PlayArenaWarLobbyMusic();
 		void StopMusic();
 
@@ -114,5 +118,30 @@ namespace MiscScripts
 
 		// Testing for Menyoo
 		void MenyooTest();
-	}
+	} // namespace EXFeatures
+
+	namespace Fade
+	{
+		// --- STATIC VARIABLES FOR THE FADE STATE MACHINE ---
+		// These static variables persist across calls to TeleportFadeTick().
+		// They are only visible within the MiscScripts namespace.
+		enum FadeState {
+			Idle,
+			InitiateFadeOut,
+			FadingOut,
+			FadedOutWaiting,
+			InitiateFadeIn,
+			FadingIn,
+		};
+
+		// Declare the static variables (extern for definition in .cpp)
+		extern FadeState s_currentFadeState;
+		extern DWORD s_fadeWaitStartTime;
+		extern Vector3 s_teleportTargetLocation;
+
+		void InitiateTeleportFade(const Vector3& target);
+
+		void FadeThread();
+	} // namespace Fade
+
 } // Namespace MiscScripts

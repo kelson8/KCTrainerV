@@ -142,6 +142,10 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
     }
 #endif
 
+    //-----
+    // Music/Sound effects
+    //-----
+
     int nothing = 0;
     mbCtx.StringArray("--Music--", { "" }, nothing);
 
@@ -152,8 +156,8 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
     //mbCtx.IntOption("Music track", currentMusicTrack, 1, 26, 1, {"List of music tracks within Enums.h in the code."});
     mbCtx.IntOption("Music track", currentMusicTrack, 1, musicTracksCount, 1, { "List of music tracks within Enums.h in the code." });
 
-    // TODO Test this, figure out a good way to do this.
-    if (mbCtx.Option("Play Test sound"))
+    // Play some music from the games list with TRIGGER_MUSIC_EVENT native.
+    if (mbCtx.Option("Play Test music"))
     {
 
         //miscScripts.PlayTestMusic(21);
@@ -163,6 +167,18 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
         MiscScripts::Music::PlayTestMusic(static_cast<MusicTracks>(currentMusicTrack));
     }
 
+    //-----
+    // Play sound effects
+    // This doesn't do anything, disabled for now
+    //-----
+    //mbCtx.IntOption("Sound effect", currentSoundEffect, 1, soundEffectsCount, 1, { "List of sound tracks within Enums.h in the code." });
+    //
+    //if (mbCtx.Option("Play test sound"))
+    //{
+    //    MiscScripts::Music::PlaySoundEffect(static_cast<SoundEffects>(currentSoundEffect));
+    //}
+
+    
     // This stops all the music currently playing with the TRIGGER_MUSIC_EVENT native.
     // Plays MP_MC_CMH_IAA_FINALE_START music event.
     if (mbCtx.Option("Stop music", { "Stops the music currently playing" }))
@@ -220,7 +236,9 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // TODO Figure out why this function doesn't work.
     if (mbCtx.Option("Test Fade out/in", { "Test for fading the screen out and back in" }))
     {
-        playerScripts.TestFade();
+        //playerScripts.TestFade();
+        Vector3 targetLocation = Teleports::Positions::vSafeHouseLocations.at("Michael's House");
+        MiscScripts::Fade::InitiateTeleportFade(targetLocation);
     }
 
 #ifdef DEBUG_MODE

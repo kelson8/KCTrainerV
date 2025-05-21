@@ -88,7 +88,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;NOMINMAX;NOGDI;DEBUG_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;NOMINMAX;NOGDI;DEBUG_MODE;KCTRAINER_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(SolutionDir)thirdparty\sol\include;$(ProjectDir);$(ProjectDir)Scripts\Extras\Classes</AdditionalIncludeDirectories>
@@ -146,7 +146,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FloatingPointModel>Fast</FloatingPointModel>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(SolutionDir)thirdparty\sol\include;$(ProjectDir);$(ProjectDir)Scripts\Extras\Classes</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -259,6 +259,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Scripts\Player\PlayerNoClip.cpp" />
+    <ClCompile Include="Scripts\ScaleformScripts.cpp" />
     <ClCompile Include="Scripts\Stats.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -271,6 +272,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Scripts\VehicleSpawner.cpp" />
     <ClCompile Include="Scripts\WorldScripts.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -367,9 +369,11 @@
     <ClInclude Include="Scripts\PedScripts.h" />
     <ClInclude Include="Scripts\PlayerScripts.h" />
     <ClInclude Include="Scripts\Player\PlayerNoClip.h" />
+    <ClInclude Include="Scripts\ScaleformScripts.h" />
     <ClInclude Include="Scripts\Stats.h" />
     <ClInclude Include="Scripts\TextScripts.h" />
     <ClInclude Include="Scripts\VehicleScripts.h" />
+    <ClInclude Include="Scripts\VehicleSpawner.h" />
     <ClInclude Include="Scripts\WorldScripts.h" />
     <ClInclude Include="Teleports\TeleLocation.h" />
     <ClInclude Include="Teleports\TeleportLocations.h" />

@@ -6,6 +6,11 @@
 #include "Util/UI.hpp"
 
 #include "Teleports/TeleportLocations.h"
+#include "Scripts/MiscScripts.h"
+#include "Scripts/VehicleScripts.h"
+#include "Scripts/VehicleSpawner.h"
+
+#include "defines.h"
 
 #ifdef LUA_TEST
 #include "Components/LuaManager.h"
@@ -35,6 +40,8 @@ namespace KCMenu
 #ifdef DEBUG_MODE
     void AttachConsole();
 #endif // DEBUG_MODE
+
+    bool thread2Started = false;
 }
 
 #ifdef DEBUG_MODE
@@ -206,6 +213,28 @@ void KCMenu::scriptInit()
     // Now that scriptMenu is created, we can potentially pass it to coreScript
     coreScript->SetScriptMenu(scriptMenu.get()); // Add a setter in KCMainScript
 #endif
+}
+
+// This works! I moved the fade thread over to here.
+void KCMenu::Thread2()
+{
+    // Ok this is running.
+    if (!thread2Started)
+    {
+        log_output("Thread 2 started");
+        thread2Started = true;
+    }
+    while (true)
+    {
+        // Run the vehicle spawner test.
+#ifdef VEHICLE_SPAWNER_TEST
+        g_vehicleSpawner.VehicleSpawnTick();
+#endif
+
+        // Run the fade thread
+        MiscScripts::Fade::FadeThread();
+        WAIT(0);
+    }
 }
 
 // This function starts the infinite loop that updates the script instance and menu, every game tick.

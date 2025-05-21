@@ -15,6 +15,8 @@
 
 #include "Util/Util.hpp"
 
+#include "../Teleports/TeleportLocations.h"
+
 // Test for lua
 #ifdef LUA_TEST
 #include "Components/LuaManager.h"
@@ -252,7 +254,7 @@ namespace MiscScripts
 	namespace Music
 	{
 		/// <summary>
-		/// This works for playing sound tracks with the TRIGGER_MUSIC_EVENT native
+		/// This works for playing music with the TRIGGER_MUSIC_EVENT native
 		/// Here is a list of these: https://github.com/DurtyFree/gta-v-data-dumps/blob/master/musicEventNames.json
 		/// These can be found in the decompiled scripts by searching for 'TRIGGER_MUSIC_EVENT'
 		/// </summary>
@@ -304,6 +306,11 @@ namespace MiscScripts
 				{25, "GROUND_LEVEL_START"}, // Seems to be the sound that plays when you get cops
 
 				{26, "FS_OBSTACLE_START"}, // This one is another one that occurs when flying
+				// TODO Test this
+				//{27, "CHARACTER_CHANGE_UP_MASTER"},
+				//{28, "CHARACTER_CHANGE_SKY_MASTER"},
+				//{29, "SHORT_PLAYER_SWITCH_SOUND_SET"},
+				//{30, "CHARACTER_CHANGE_DOWN_MASTER"},
 
 				// Doesn't do anything
 				/*
@@ -328,9 +335,45 @@ namespace MiscScripts
 
 		}
 
+		/// <summary>
+		/// Stop current music playing.
+		/// </summary>
 		void StopTestMusic()
 		{
 			AUDIO::TRIGGER_MUSIC_EVENT("MP_MC_CMH_IAA_FINALE_START");
+		}
+		
+		/// <summary>
+		/// Play sound effects
+		/// TODO Figure out how to make these work, they don't play in here.
+		/// </summary>
+		/// <param name="track"></param>
+		void PlaySoundEffect(SoundEffects track)
+		{
+			// Better to use std::map for a lot of these:
+			// https://github.com/DurtyFree/gta-v-data-dumps/blob/master/soundNames.json
+			static const std::map<int, std::string> soundEffects =
+			{
+				{1, "CHARACTER_CHANGE_UP_MASTER"},
+				{2, "CHARACTER_CHANGE_SKY_MASTER"},
+				{3, "SHORT_PLAYER_SWITCH_SOUND_SET"},
+				{4, "CHARACTER_CHANGE_DOWN_MASTER"},
+			};
+
+			// Sound effect ID
+			auto soundEffectID = AUDIO::GET_SOUND_ID();
+
+			auto it = soundEffects.find(track);
+			if (it != soundEffects.end()) {
+				//TRIGGER_MUSIC_EVENT(it->second.c_str());
+				PLAY_SOUND(soundEffectID, it->second.c_str(), 0, false, false, false);
+				//PLAY_SOUND_FRONTEND(100, it->second.c_str(), 0, false);
+				//PLAY_SOUND_FRONTEND(soundEffectID, it->second.c_str(), 0, false);
+			}
+			else {
+				// Handle invalid track number
+				UI::Notify("Track number invalid.");
+			}
 		}
 
 		// Some of these below were taken from the Chaos Mod.
@@ -786,5 +829,104 @@ namespace MiscScripts
 		//----------- End Menyoo tests --------------//
 
 #pragma endregion
+
 	} // namespace EXFeatures
-}
+
+#pragma region FadeFunctions
+	namespace Fade
+	{
+		FadeState s_currentFadeState = Idle; // Initialize directly
+		static DWORD s_fadeWaitStartTime = 0; // For tracking wait duration
+		static Vector3 s_teleportTargetLocation; // To store the destination
+
+		void InitiateTeleportFade(const Vector3& target) {
+			if (s_currentFadeState == Idle) {
+				s_teleportTargetLocation = target;
+				s_currentFadeState = InitiateFadeOut;
+			}
+		}
+
+		/// <summary>
+		/// TODO Test this, run it in the DLLMain
+		/// </summary>
+		
+		// --- THE TICK FUNCTION FOR THE FADE STATE MACHINE ---
+		// This function must be called repeatedly, once per game frame,
+		// from your main script loop (e.g., Thread_menu_loops2).
+		void FadeThread() {
+			Ped playerPed = PLAYER_PED_ID(); // Get player ped every tick as it might change
+
+			// Define your fade durations (can be consts or variables)
+			const int fadeOutDuration = 500; // Milliseconds
+			const int waitAfterFadeOut = 500; // Milliseconds
+			const int fadeInDuration = 500;  // Milliseconds
+
+			switch (s_currentFadeState) {
+			case Idle:
+				// Do nothing when idle.
+				break;
+
+			case InitiateFadeOut:
+				// Start the fade out if not already fading/faded
+				if (!IS_SCREEN_FADED_OUT() && !IS_SCREEN_FADING_OUT()) {
+					DO_SCREEN_FADE_OUT(fadeOutDuration);
+					FREEZE_ENTITY_POSITION(playerPed, true);
+					s_currentFadeState = FadingOut;
+				}
+				else {
+					// If already fading or faded (e.g., button spammed),
+					// transition to the next appropriate state immediately.
+					if (IS_SCREEN_FADED_OUT()) {
+						s_currentFadeState = FadedOutWaiting;
+						s_fadeWaitStartTime = GetTickCount();
+					}
+					else if (IS_SCREEN_FADING_OUT()) {
+						s_currentFadeState = FadingOut;
+					}
+				}
+				break;
+
+			case FadingOut:
+				// Wait for the screen to be fully faded out
+				if (IS_SCREEN_FADED_OUT()) {
+					// Screen is fully black. Perform the teleport.
+					// THIS IS THE CRITICAL POINT FOR TELEPORTATION!
+					SET_ENTITY_COORDS(playerPed, s_teleportTargetLocation, false, false, false, true);
+
+					// Set timer for waiting in blackness
+					s_fadeWaitStartTime = GetTickCount();
+					s_currentFadeState = FadedOutWaiting;
+				}
+				break;
+
+			case FadedOutWaiting:
+				// Wait for the desired duration while the screen is black
+				if (GetTickCount() - s_fadeWaitStartTime >= waitAfterFadeOut) {
+					s_currentFadeState = InitiateFadeIn;
+				}
+				break;
+
+			case InitiateFadeIn:
+				// Start the fade in if not already fading/faded
+				if (!IS_SCREEN_FADED_IN() && !IS_SCREEN_FADING_IN()) {
+					DO_SCREEN_FADE_IN(fadeInDuration);
+					FREEZE_ENTITY_POSITION(playerPed, false); // Unfreeze player
+					s_currentFadeState = FadingIn;
+				}
+				else {
+					// If already fading or faded in, go back to Idle
+					s_currentFadeState = Idle;
+				}
+				break;
+
+			case FadingIn:
+				// Wait for the screen to be fully faded in
+				if (IS_SCREEN_FADED_IN()) {
+					s_currentFadeState = Idle; // Fade sequence complete
+				}
+				break;
+			}
+		}
+	} // namespace Fade
+#pragma endregion
+} // namespace MiscScripts

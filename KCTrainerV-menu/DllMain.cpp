@@ -15,6 +15,8 @@
 
 #include <iostream>
 
+#include "Scripts/MiscScripts.h"
+
 // For MinHook and Memory functions for my menu.
 #ifdef MEMORY_TESTING
 #include "Memory/Memory.h"
@@ -168,6 +170,8 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
             // This is being run in Script.cpp, I may try to run it in here if I can get it working.
             //AttachConsole();
             scriptRegister(hInstance, KCMenu::ScriptMain);
+            // Run the second thread, mostly just for fading the screen for now.
+            scriptRegisterAdditionalThread(hInstance, KCMenu::Thread2);
             LOG(INFO, "Script registered");
             break;
         }

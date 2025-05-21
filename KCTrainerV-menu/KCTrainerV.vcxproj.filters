@@ -198,6 +198,12 @@
     <ClCompile Include="Scripts\Extras\Classes\Camera.cpp">
       <Filter>Scripts\Extras\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\ScaleformScripts.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\VehicleSpawner.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -485,6 +491,12 @@
     </ClInclude>
     <ClInclude Include="FeatureToggles.h" />
     <ClInclude Include="defines.h" />
+    <ClInclude Include="Scripts\ScaleformScripts.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\VehicleSpawner.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">

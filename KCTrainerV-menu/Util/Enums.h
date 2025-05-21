@@ -92,6 +92,22 @@ constexpr int maxMusicTrackValue = static_cast<int>(MusicTracks::SHOOTING_RANGE_
 // To get the count of actual enum members:
 constexpr int musicTracksCount = static_cast<int>(MusicTracks::MUSIC_TRACKS_COUNT) - 1; // Subtract 1 because the values start at 1
 	
+enum SoundEffects 
+{
+	// TODO Test this
+	CHARACTER_CHANGE_UP_MASTER = 1,
+	CHARACTER_CHANGE_SKY_MASTER = 2,
+	SHORT_PLAYER_SWITCH_SOUND_SET = 3,
+	CHARACTER_CHANGE_DOWN_MASTER = 4,
+
+	SOUND_EFFECTS_COUNT // Sentinel value
+};
+
+// To get the maximum value (the last actual track's value):
+constexpr int maxSoundEffectTrackValue = static_cast<int>(SoundEffects::CHARACTER_CHANGE_DOWN_MASTER);
+
+// To get the count of actual enum members:
+constexpr int soundEffectsCount = static_cast<int>(SoundEffects::SOUND_EFFECTS_COUNT) - 1; // Subtract 1 because the values start at 1
 
 // https://nativedb.dotindustries.dev/gta5/natives/0x29439776AAA00A62?search=GET_VEHICLE_CLASS
 // Use this with the native GET_VEHICLE_CLASS

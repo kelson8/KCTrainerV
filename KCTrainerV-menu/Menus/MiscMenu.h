@@ -29,6 +29,9 @@ private:
 	// This doesn't need to be accessed outside this class.
 	int currentMusicTrack = 1;
 
+	// Set the current sound effect for PLAY_SOUND native
+	int currentSoundEffect = 1;
+
 	// Current set blip for the blip menu
 
 	// Hmm, I didn't know the World namespace had creating blips.

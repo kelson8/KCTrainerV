@@ -11,8 +11,8 @@
 #define MEMORY_TESTING
 
 // Enable debug logging and other debug features.
-// TODO Move into preprocessors in solution.
-#define KCTRAINER_DEBUG
+// Moved into preprocessors in solution.
+//#define KCTRAINER_DEBUG
 
 // Enable extra debugging features for my menu, such as moving around the Y coords for drawing to the screen.
 // Disable in release builds.
@@ -83,6 +83,10 @@
 // This method of moving code can help with testing.
 //#define MOVE_MENU
 #define MOVE_PED_MENU
+
+// Enable the vehicle spawner test which runs in the second thread
+//#define VEHICLE_SPAWNER_TEST
+
 
 // Testing moving some stuff over to namespaces, 
 // #define MOVE_MENU_NAMESPACE
