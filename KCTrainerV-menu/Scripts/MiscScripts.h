@@ -9,6 +9,8 @@ namespace MiscScripts
 		// ID Gun tests from FiveM
 		void IdGun();
 		Entity GetEntityIsAimingAt(Ped ped);
+		void ResetIdGunPositions();
+
 		//bool isIdGunEnabled = false;
 		extern bool isIdGunEnabled;
 

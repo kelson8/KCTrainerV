@@ -355,9 +355,12 @@ void GTAped::GiveNM(const NMString& messageid)
 	GIVE_PED_NM_MESSAGE(this->mHandle);
 }
 
-GTAentity GTAped::Clone(float heading, bool createNetH, bool createPedH)
+// This should fix the float to bool conversion, I wonder if these parameters changed?
+//GTAentity GTAped::Clone(float heading, bool createNetH, bool createPedH)
+GTAentity GTAped::Clone(bool isNetwork, bool bScriptHostPed, bool copyHeadBlendFlag)
 {
-	return CLONE_PED(this->mHandle, heading, createNetH, createPedH);
+	//return CLONE_PED(this->mHandle, heading, createNetH, createPedH);
+	return CLONE_PED(this->mHandle, isNetwork, bScriptHostPed, copyHeadBlendFlag);
 }
 
 bool GTAped::IsSubTaskActive(const PedSubTask& taskType)

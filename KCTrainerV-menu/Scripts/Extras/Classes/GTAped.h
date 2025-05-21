@@ -205,7 +205,8 @@ public:
 
 	void GiveNM(const NMString& messageid);
 
-	GTAentity Clone(float heading, bool createNetH, bool createPedH);
+	//GTAentity Clone(float heading, bool createNetH, bool createPedH);
+	GTAentity Clone(bool isNetwork, bool bScriptHostPed, bool copyHeadBlendFlag);
 
 	bool IsSubTaskActive(const PedSubTask& taskType);
 

@@ -382,6 +382,16 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     // Well I finally got this working.
 
     //-----
+    // Misc IDGun Debug sub menu
+    //-----
+    submenus.emplace_back("MiscIDGunDebugSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            miscMenu.BuildIDGunDebugMenu(mbCtx, context);
+
+        });
+
+    //-----
     // Misc Blips sub menu
     //-----
     submenus.emplace_back("MiscBlipsSubmenu",

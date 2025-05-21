@@ -31,7 +31,10 @@ void MiscMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     mbCtx.MenuOption("Blips", { "MiscBlipsSubmenu" }, { "Testing with blips, adding/removing and more." });
 
     mbCtx.MenuOption("Debug Sub Menu", "MiscDebugSubmenu", { "Debug testing menu." });
-
+    
+#ifdef DEBUG_MODE
+    mbCtx.MenuOption("IDGun Debug", "MiscIDGunDebugSubmenu", { "IDGun debug menu." });
+#endif
 }
 
 
@@ -102,6 +105,49 @@ void MiscMenu::BuildBlipsSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
         else {
             log_output(std::format("Blip handle {} is invalid or doesn't exist.", blip.Handle()));
         }
+    }
+}
+
+/// <summary>
+/// Misc menu - ID Gun debug sub menu
+/// </summary>
+/// <param name="mbCtx"></param>
+/// <param name="context"></param>
+void MiscMenu::BuildIDGunDebugMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+{
+    mbCtx.Title("ID Gun Debug");
+
+    int nothing = 0;
+    float stepValue = 0.001f;
+    mbCtx.StringArray("--ID Gun Debug--", { "" }, nothing, { "Debug options for the IDGun postion display on screen." });
+
+    //-----
+    // ID Gun positions on the menu
+    //-----
+
+    // Entity ID Menu Pos X
+    mbCtx.FloatOption("Entity ID X", MiscScripts::IDGun::entityIdMenuPosX, 0.f, 1.0f, stepValue);
+    // Entity ID Menu Pos Y
+    mbCtx.FloatOption("Entity ID Y", MiscScripts::IDGun::entityIdMenuPosY, 0.f, 1.0f, stepValue);
+
+    // Entity Coords Menu Pos X
+    mbCtx.FloatOption("Entity Coordinates X", MiscScripts::IDGun::entityCoordsMenuPosX, 0.f, 1.0f, stepValue);
+    // Entity Coords Menu Pos Y
+    mbCtx.FloatOption("Entity Coordinates Y", MiscScripts::IDGun::entityCoordsMenuPosY, 0.f, 1.0f, stepValue);
+
+    // Entity heading Menu Pos X
+    mbCtx.FloatOption("Entity Heading X", MiscScripts::IDGun::entityHeadingMenuPosX, 0.f, 1.0f, stepValue);
+    // Entity heading Menu Pos Y
+    mbCtx.FloatOption("Entity Heading Y", MiscScripts::IDGun::entityHeadingMenuPosY, 0.f, 1.0f, stepValue);
+
+    // Entity model/Vehicle name Menu Pos X
+    mbCtx.FloatOption("Entity Model/Vehicle Name X", MiscScripts::IDGun::entityModelMenuPosY, 0.f, 1.0f, stepValue);
+    // Entity model/Vehicle name Menu Pos Y
+    mbCtx.FloatOption("Entity Model/Vehicle Name Y", MiscScripts::IDGun::entityModelMenuPosY, 0.f, 1.0f, stepValue);
+
+    if (mbCtx.Option("Reset to defaults", { "Reset the menu position back to defaults." }))
+    {
+        MiscScripts::IDGun::ResetIdGunPositions();
     }
 }
 
@@ -278,3 +324,4 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
             //    
             //}
 }
+

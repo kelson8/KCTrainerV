@@ -197,6 +197,11 @@ void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
     mbCtx.FloatOption("Cops cars blown up menu X", Stats::Cop::copsCarsBlownUpMenuPosX, 0.f, 1.0f, stepValue);
     mbCtx.FloatOption("Cops cars blown up menu Y", Stats::Cop::copsCarsBlownUpMenuPosY, 0.f, 1.0f, stepValue);
 
+    if (mbCtx.Option("Reset to defaults", { "Reset the menu position back to defaults." }))
+    {
+        Stats::Cop::ResetCopsKilledMenuPositions();
+    }
+
 #else
     // Do nothing in release.
     return;

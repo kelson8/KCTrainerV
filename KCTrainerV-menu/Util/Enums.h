@@ -74,6 +74,7 @@ enum MusicTracks
 
 	GROUND_LEVEL_START = 25,
 	FS_OBSTACLE_START = 26,
+	MP_LEADERBOARD_SCENE = 27,
 
 	// These do nothing
 	/*

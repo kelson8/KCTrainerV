@@ -109,8 +109,27 @@ namespace MiscScripts
 		}
 
 		/// <summary>
+		/// Reset values back to defaults.
+		/// </summary>
+		void ResetIdGunPositions()
+		{
+			entityIdMenuPosX = 0.190f;
+			entityIdMenuPosY = 0.75f;
+
+			entityCoordsMenuPosX = 0.190f;
+			entityCoordsMenuPosY = 0.80f;
+
+			entityHeadingMenuPosX = 0.190f;
+			entityHeadingMenuPosY = 0.85f;
+
+			entityModelMenuPosX = 0.190f;
+			entityModelMenuPosY = 0.9f;
+		}
+
+		/// <summary>
 		/// TODO Finalize some changes with this, from pun_idgun in FiveM
-		/// This seems to mostly work other then getting the ped names and vehicle names.
+		/// This seems to mostly work other then getting the ped names.
+		/// This works for getting vehicle names now.
 		/// Shows these values:
 		/// Entity ID
 		/// Entity X, Y, Z
@@ -274,6 +293,8 @@ namespace MiscScripts
 			//}
 
 			// Better to use std::map for a lot of these:
+			// Keep this in sync with the MusicTracks enum in Enums.h
+			// If anything is added to this, also add to the enum.
 			static const std::map<int, std::string> musicTracks =
 			{
 				{1, "GTA_ONLINE_STOP_SCORE"},
@@ -306,6 +327,9 @@ namespace MiscScripts
 				{25, "GROUND_LEVEL_START"}, // Seems to be the sound that plays when you get cops
 
 				{26, "FS_OBSTACLE_START"}, // This one is another one that occurs when flying
+				// TODO Test
+				{27, "MP_LEADERBOARD_SCENE"},
+
 				// TODO Test this
 				//{27, "CHARACTER_CHANGE_UP_MASTER"},
 				//{28, "CHARACTER_CHANGE_SKY_MASTER"},

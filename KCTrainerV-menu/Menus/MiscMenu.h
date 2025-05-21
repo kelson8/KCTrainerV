@@ -18,6 +18,7 @@ public:
 
 	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context) override;
 	void BuildBlipsSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
+	void BuildIDGunDebugMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 	void BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 
 private:
