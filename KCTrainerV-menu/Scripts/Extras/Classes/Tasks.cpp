@@ -19,8 +19,11 @@
 * Copyright (C) 2019  MAFINS
 */
 
-#ifdef MENYOO_SCRIPT_FILES
 #include "Tasks.h"
+#ifdef MENYOO_SCRIPT_FILES
+
+
+#include "Util/Enums.h"
 
 //#include "..\macros.h"
 
@@ -52,86 +55,111 @@ void Tasks::AimAt(GTAentity target, int duration)
 {
 	TASK_AIM_GUN_AT_ENTITY(_ped.Handle(), target.Handle(), duration, false);
 }
+
 void Tasks::AimAt(const Vector3& target, int duration)
 {
-	TASK_AIM_GUN_AT_COORD(_ped.Handle(), target.x, target.y, target.z, duration, false, false);
+	//TASK_AIM_GUN_AT_COORD(_ped.Handle(), target.x, target.y, target.z, duration, false, false);
+	TASK_AIM_GUN_AT_COORD(_ped.Handle(), target, duration, false, false);
 }
+
 void Tasks::Arrest(GTAentity ped)
 {
 	TASK_ARREST_PED(_ped.Handle(), ped.Handle());
 }
+
 void Tasks::ChatTo(GTAentity ped)
 {
-	TASK_CHAT_TO_PED(_ped.Handle(), ped.Handle(), 16, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	TASK_CHAT_TO_PED(_ped.Handle(), ped.Handle(), 16, Vector3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
 }
+
 void Tasks::Climb()
 {
 	TASK_CLIMB(_ped.Handle(), true);
 }
+
 void Tasks::Cower(int duration)
 {
 	TASK_COWER(_ped.Handle(), duration);
 }
+
 void Tasks::CruiseWithVehicle(GTAentity vehicle, float speed)
 {
 	this->CruiseWithVehicle(vehicle, speed, 0);
 }
+
 void Tasks::CruiseWithVehicle(GTAentity vehicle, float speed, int drivingstyle)
 {
 	TASK_VEHICLE_DRIVE_WANDER(_ped.Handle(), vehicle.Handle(), speed, drivingstyle);
 }
+
 void Tasks::DriveTo(GTAentity vehicle, Vector3 position, float radius, float speed)
 {
 	this->DriveTo(vehicle, position, radius, speed, 0);
 }
+
 void Tasks::DriveTo(GTAentity vehicle, Vector3 position, float radius, float speed, int drivingstyle)
 {
-	TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(_ped.Handle(), vehicle.Handle(), position.x, position.y, position.z, speed, drivingstyle, radius);
+	//TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(_ped.Handle(), vehicle.Handle(), position.x, position.y, position.z, speed, drivingstyle, radius);
+	TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(_ped.Handle(), vehicle.Handle(), position, speed, drivingstyle, radius);
 }
+
 void Tasks::EnterVehicle(GTAentity vehicle, VehicleSeat seat, int timeout, float speed, int flag)
 {
 	TASK_ENTER_VEHICLE(_ped.Handle(), vehicle.Handle(), timeout, (seat), speed, flag, 0);
 }
+
 void Tasks::EveryoneLeaveVehicle(GTAentity vehicle)
 {
 	TASK_EVERYONE_LEAVE_VEHICLE(vehicle.Handle());
 }
+
 void Tasks::FightAgainst(GTAentity target)
 {
 	TASK_COMBAT_PED(_ped.Handle(), target.Handle(), 0, 16);
 }
+
 void Tasks::FightAgainst(GTAentity target, int duration)
 {
 	TASK_COMBAT_PED_TIMED(_ped.Handle(), target.Handle(), duration, 0);
 }
+
 void Tasks::FightAgainstHatedTargets(float radius)
 {
 	TASK_COMBAT_HATED_TARGETS_AROUND_PED(_ped.Handle(), radius, 0);
 }
+
 void Tasks::FightAgainstHatedTargets(float radius, int duration)
 {
 	TASK_COMBAT_HATED_TARGETS_AROUND_PED_TIMED(_ped.Handle(), radius, duration, 0);
 }
+
 void Tasks::ThrowProjectile(const Vector3& targetPos)
 {
-	TASK_THROW_PROJECTILE(_ped.Handle(), targetPos.x, targetPos.y, targetPos.z, 0, false);
+	//TASK_THROW_PROJECTILE(_ped.Handle(), targetPos.x, targetPos.y, targetPos.z, 0, false);
+	TASK_THROW_PROJECTILE(_ped.Handle(), targetPos, 0, false);
 }
+
 void Tasks::FleeFrom(GTAentity ped)
 {
 	this->FleeFrom(ped, -1);
 }
+
 void Tasks::FleeFrom(GTAentity ped, int duration)
 {
 	TASK_SMART_FLEE_PED(_ped.Handle(), ped.Handle(), 100.0f, duration, false, false);
 }
+
 void Tasks::FleeFrom(const Vector3& position)
 {
 	this->FleeFrom(position, -1);
 }
+
 void Tasks::FleeFrom(const Vector3& position, int duration)
 {
-	TASK_SMART_FLEE_COORD(_ped.Handle(), position.x, position.y, position.z, 1000.0f, duration, false, false);
+	//TASK_SMART_FLEE_COORD(_ped.Handle(), position.x, position.y, position.z, 1000.0f, duration, false, false);
+	TASK_SMART_FLEE_COORD(_ped.Handle(), position, 1000.0f, duration, false, false);
 }
+
 template<typename... Args> void Tasks::FollowPointRoute(float speed, Args&&... p)
 {
 	TASK_FLUSH_ROUTE();
@@ -143,87 +171,114 @@ template<typename... Args> void Tasks::FollowPointRoute(float speed, Args&&... p
 
 	TASK_FOLLOW_POINT_ROUTE(_ped.Handle(), speed, 0);
 }
+
 void Tasks::FollowPointRoute(const std::vector<Vector3>& points, float speed)
 {
 	TASK_FLUSH_ROUTE();
 
 	for (const auto& point : points)
 	{
-		TASK_EXTEND_ROUTE(point.x, point.y, point.z);
+		//TASK_EXTEND_ROUTE(point.x, point.y, point.z);
+		TASK_EXTEND_ROUTE(Vector3(point.x, point.y, point.z));
 	}
 
 	TASK_FOLLOW_POINT_ROUTE(_ped.Handle(), speed, 0);
 }
+
 void Tasks::FollowPointRoute(const std::initializer_list<Vector3>& points, float speed)
 {
 	TASK_FLUSH_ROUTE();
 
 	for (auto& point : points)
 	{
-		TASK_EXTEND_ROUTE(point.x, point.y, point.z);
+		//TASK_EXTEND_ROUTE(point.x, point.y, point.z);
+		TASK_EXTEND_ROUTE(Vector3(point.x, point.y, point.z));
 	}
 
 	TASK_FOLLOW_POINT_ROUTE(_ped.Handle(), speed, 0);
 }
+
 void Tasks::GoTo(GTAentity target)
 {
 	this->GoTo(target, Vector3(), -1);
 }
+
 void Tasks::GoTo(GTAentity target, const Vector3& offset)
 {
 	this->GoTo(target, offset, -1);
 }
+
+// TODO setup the duration for this
 void Tasks::GoTo(GTAentity target, const Vector3& offset, int timeout)
 {
-	TASK_GOTO_ENTITY_OFFSET_XY(_ped.Handle(), target.Handle(), timeout, offset.x, offset.y, offset.z, 1.0f, true);
+	//TASK_GOTO_ENTITY_OFFSET_XY(_ped.Handle(), target.Handle(), timeout, offset.x, offset.y, offset.z, 1.0f, true);
+	TASK_GOTO_ENTITY_OFFSET_XY(_ped.Handle(), target.Handle(), timeout, 1000, Vector2(offset.x, offset.y), 1.0f, true);
 }
+
 void Tasks::GoTo(const Vector3& position, bool ignorePaths, int timeout)
 {
 	if (ignorePaths)
 	{
-		TASK_GO_STRAIGHT_TO_COORD(_ped.Handle(), position.x, position.y, position.z, 1.0f, timeout, 0.0f /* heading */, 0.0f);
+		//TASK_GO_STRAIGHT_TO_COORD(_ped.Handle(), position.x, position.y, position.z, 1.0f, timeout, 0.0f /* heading */, 0.0f);
+		TASK_GO_STRAIGHT_TO_COORD(_ped.Handle(), position, 1.0f, timeout, 0.0f /* heading */, 0.0f);
 	}
 	else
 	{
-		TASK_FOLLOW_NAV_MESH_TO_COORD(_ped.Handle(), position.x, position.y, position.z, 1.0f, timeout, 0.0f, 0, 0.0f);
+		//TASK_FOLLOW_NAV_MESH_TO_COORD(_ped.Handle(), position.x, position.y, position.z, 1.0f, timeout, 0.0f, 0, 0.0f);
+		TASK_FOLLOW_NAV_MESH_TO_COORD(_ped.Handle(), position, 1.0f, timeout, 0.0f, 0, 0.0f);
 	}
 }
+
 void Tasks::GuardCurrentPosition()
 {
 	TASK_GUARD_CURRENT_POSITION(_ped.Handle(), 15.0f, 10.0f, true);
 }
+
 void Tasks::HandsUp(int duration)
 {
 	TASK_HANDS_UP(_ped.Handle(), duration, 0, -1, false);
 }
+
 void Tasks::Jump()
 {
 	TASK_JUMP(_ped.Handle(), true, false, false);
 }
+
 void Tasks::LeaveVehicle()
 {
 	TASK_LEAVE_ANY_VEHICLE(_ped.Handle(), 0, 0 /* flags */);
 }
+
 void Tasks::LeaveVehicle(GTAentity vehicle, bool closeDoor)
 {
 	TASK_LEAVE_VEHICLE(_ped.Handle(), vehicle.Handle(), closeDoor ? 0 : 1 << 8);
 }
+
 void Tasks::LookAt(GTAentity target, int duration)
 {
 	TASK_LOOK_AT_ENTITY(_ped.Handle(), target.Handle(), duration, 0 /* flags */, 2);
 }
+
 void Tasks::LookAt(const Vector3& position, int duration)
 {
-	TASK_LOOK_AT_COORD(_ped.Handle(), position.x, position.y, position.z, duration, 0 /* flags */, 2);
+	//TASK_LOOK_AT_COORD(_ped.Handle(), position.x, position.y, position.z, duration, 0 /* flags */, 2);
+	TASK_LOOK_AT_COORD(_ped.Handle(), position, duration, 0 /* flags */, 2);
 }
+
 void Tasks::ParachuteTo(const Vector3& position)
 {
-	TASK_PARACHUTE_TO_TARGET(_ped.Handle(), position.x, position.y, position.z);
+	//TASK_PARACHUTE_TO_TARGET(_ped.Handle(), position.x, position.y, position.z);
+	TASK_PARACHUTE_TO_TARGET(_ped.Handle(), position);
 }
+
 void Tasks::ParkVehicle(GTAentity vehicle, const Vector3& position, float heading)
 {
-	TASK_VEHICLE_PARK(_ped.Handle(), vehicle.Handle(), position.x, position.y, position.z, heading, 1, 0.0f, false);
+	//TASK_VEHICLE_PARK(_ped.Handle(), vehicle.Handle(), position.x, position.y, position.z, heading, 1, 0.0f, false);
+	TASK_VEHICLE_PARK(_ped.Handle(), vehicle.Handle(), position, heading, 1, 0.0f, false);
 }
+
+// TODO Fix this
+//#ifdef DISABLED_CODE
 void Tasks::PerformSequence(TaskSequence& sequence)
 {
 	if (!sequence.IsClosed())
@@ -237,14 +292,19 @@ void Tasks::PerformSequence(TaskSequence& sequence)
 
 	TASK_PERFORM_SEQUENCE(_ped.Handle(), sequence.Handle());
 }
+
+//#endif
+
 bool Tasks::IsPlayingAnimation(const std::string& animDict, const std::string& animName)
 {
 	return IS_ENTITY_PLAYING_ANIM(_ped.Handle(), animDict.c_str(), animName.c_str(), 3) != 0;
 }
+
 void Tasks::PlayAnimation(const std::string& animDict, const std::string& animName)
 {
 	this->PlayAnimation(animDict, animName, 4.0f, -4.0f, -1, AnimFlag::Loop, 0, false);
 }
+
 void Tasks::PlayAnimation(const std::string& animDict, const std::string& animName, float speed, float speedMultiplier, int duration, int flag, float playbackRate, bool lockPos)
 {
 	REQUEST_ANIM_DICT(animDict.c_str());
@@ -256,70 +316,90 @@ void Tasks::PlayAnimation(const std::string& animDict, const std::string& animNa
 
 	TASK_PLAY_ANIM(_ped.Handle(), animDict.c_str(), animName.c_str(), speed, speedMultiplier, duration, flag, playbackRate, lockPos, lockPos, lockPos);
 }
+
 void Tasks::PutAwayMobilePhone()
 {
 	TASK_USE_MOBILE_PHONE(_ped.Handle(), false, 0);
 }
+
 void Tasks::PutAwayParachute()
 {
 	TASK_PARACHUTE(_ped.Handle(), false, false);
 }
+
 void Tasks::ReactAndFlee(GTAentity pedToFleeFrom)
 {
 	TASK_REACT_AND_FLEE_PED(_ped.Handle(), pedToFleeFrom.Handle());
 }
+
 void Tasks::ReloadWeapon()
 {
 	TASK_RELOAD_WEAPON(_ped.Handle(), true);
 }
+
 void Tasks::RunTo(const Vector3& position, bool ignorePaths, int timeout)
 {
 	if (ignorePaths)
 	{
-		TASK_GO_STRAIGHT_TO_COORD(_ped.Handle(), position.x, position.y, position.z, 4.0f, timeout, 0.0f /* heading */, 0.0f);
+		//TASK_GO_STRAIGHT_TO_COORD(_ped.Handle(), position.x, position.y, position.z, 4.0f, timeout, 0.0f /* heading */, 0.0f);
+		TASK_GO_STRAIGHT_TO_COORD(_ped.Handle(), position, 4.0f, timeout, 0.0f /* heading */, 0.0f);
 	}
 	else
 	{
-		TASK_FOLLOW_NAV_MESH_TO_COORD(_ped.Handle(), position.x, position.y, position.z, 4.0f, timeout, 0.0f, 0, 0.0f);
+		//TASK_FOLLOW_NAV_MESH_TO_COORD(_ped.Handle(), position.x, position.y, position.z, 4.0f, timeout, 0.0f, 0, 0.0f);
+		TASK_FOLLOW_NAV_MESH_TO_COORD(_ped.Handle(), position, 4.0f, timeout, 0.0f, 0, 0.0f);
 	}
 }
+
 void Tasks::ShootAt(GTAentity target, int duration, int pattern)
 {
 	TASK_SHOOT_AT_ENTITY(_ped.Handle(), target.Handle(), duration, (pattern));
 }
+
 void Tasks::ShootAt(const Vector3& position, int duration, int pattern)
 {
-	TASK_SHOOT_AT_COORD(_ped.Handle(), position.x, position.y, position.z, duration, (pattern));
+	//TASK_SHOOT_AT_COORD(_ped.Handle(), position.x, position.y, position.z, duration, (pattern));
+	TASK_SHOOT_AT_COORD(_ped.Handle(), position, duration, (pattern));
 }
+
 void Tasks::ShuffleToNextVehicleSeat(GTAentity vehicle)
 {
 	TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT(_ped.Handle(), vehicle.Handle(), false);
 }
+
 void Tasks::Skydive()
 {
 	TASK_SKY_DIVE(_ped.Handle(), false);
 }
+
 void Tasks::SlideTo(const Vector3& position, float heading)
 {
-	TASK_PED_SLIDE_TO_COORD(_ped.Handle(), position.x, position.y, position.z, heading, 0.7f);
+	//TASK_PED_SLIDE_TO_COORD(_ped.Handle(), position.x, position.y, position.z, heading, 0.7f);
+	TASK_PED_SLIDE_TO_COORD(_ped.Handle(), position, heading, 0.7f);
 }
+
 void Tasks::StandStill(int duration)
 {
 	TASK_STAND_STILL(_ped.Handle(), duration);
 }
+
 bool Tasks::IsUsingScenario(const std::string& name)
 {
 	return IS_PED_USING_SCENARIO(_ped.Handle(), name.c_str()) != 0;
 }
+
 void Tasks::StartScenario(const std::string& name, const Vector3& position, float heading)
 {
-	TASK_START_SCENARIO_AT_POSITION(_ped.Handle(), name.c_str(), position.x, position.y, position.z, heading, 0, 0, 1);
+	//TASK_START_SCENARIO_AT_POSITION(_ped.Handle(), name.c_str(), position.x, position.y, position.z, heading, 0, 0, 1);
+	TASK_START_SCENARIO_AT_POSITION(_ped.Handle(), name.c_str(), position, heading, 0, 0, 1);
 	if (name.find("MUSICIAN") != std::string::npos)
 	{
 		//CLEAR_PED_TASKS_IMMEDIATELY(_ped.Handle());
-		TASK_START_SCENARIO_AT_POSITION(_ped.Handle(), "WORLD_HUMAN_MUSICIAN", position.x, position.y, position.z, heading, 0, 0, 1);
+		//TASK_START_SCENARIO_AT_POSITION(_ped.Handle(), "WORLD_HUMAN_MUSICIAN", position.x, position.y, position.z, heading, 0, 0, 1);
+		TASK_START_SCENARIO_AT_POSITION(_ped.Handle(), "WORLD_HUMAN_MUSICIAN", position, heading, 0, 0, 1);
 	}
 }
+
 void Tasks::StartScenario(const std::string& name, int unkDelay, bool playEnterAnim)
 {
 	TASK_START_SCENARIO_IN_PLACE(_ped.Handle(), name.c_str(), unkDelay, playEnterAnim);
@@ -329,69 +409,89 @@ void Tasks::StartScenario(const std::string& name, int unkDelay, bool playEnterA
 		TASK_START_SCENARIO_IN_PLACE(_ped.Handle(), "WORLD_HUMAN_MUSICIAN", unkDelay, playEnterAnim);
 	}
 }
+
 void Tasks::UseNearestScenario(bool warp)
 {
 	this->UseNearestScenario(_ped.Position_get(), 15.0f, warp);
 }
+
 void Tasks::UseNearestScenario(float radius, bool warp)
 {
 	this->UseNearestScenario(_ped.Position_get(), radius, warp);
 }
+
 void Tasks::UseNearestScenario(const Vector3& pos, float radius, bool warp)
 {
 	if (warp)
-		TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(_ped.Handle(), pos.x, pos.y, pos.z, radius, 0);
+		//TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(_ped.Handle(), pos.x, pos.y, pos.z, radius, 0);
+		TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(_ped.Handle(), pos, radius, 0);
 	else
-		TASK_USE_NEAREST_SCENARIO_TO_COORD(_ped.Handle(), pos.x, pos.y, pos.z, radius, 0);
+		//TASK_USE_NEAREST_SCENARIO_TO_COORD(_ped.Handle(), pos.x, pos.y, pos.z, radius, 0);
+		TASK_USE_NEAREST_SCENARIO_TO_COORD(_ped.Handle(), pos, radius, 0);
 }
+
 void Tasks::SwapWeapon()
 {
 	TASK_SWAP_WEAPON(_ped.Handle(), false);
 }
+
 void Tasks::TurnTo(GTAentity target, int duration)
 {
 	TASK_TURN_PED_TO_FACE_ENTITY(_ped.Handle(), target.Handle(), duration);
 }
+
 void Tasks::TurnTo(const Vector3& position, int duration)
 {
-	TASK_TURN_PED_TO_FACE_COORD(_ped.Handle(), position.x, position.y, position.z, duration);
+	//TASK_TURN_PED_TO_FACE_COORD(_ped.Handle(), position.x, position.y, position.z, duration);
+	TASK_TURN_PED_TO_FACE_COORD(_ped.Handle(), position, duration);
 }
+
 void Tasks::UseMobilePhone()
 {
 	TASK_USE_MOBILE_PHONE(_ped.Handle(), true, 0);
 }
+
 void Tasks::UseMobilePhone(int duration)
 {
 	TASK_USE_MOBILE_PHONE_TIMED(_ped.Handle(), duration);
 }
+
 void Tasks::UseParachute()
 {
 	TASK_PARACHUTE(_ped.Handle(), true, false);
 }
+
 void Tasks::VehicleChase(GTAentity target)
 {
 	TASK_VEHICLE_CHASE(_ped.Handle(), target.Handle());
 }
+
 void Tasks::VehicleShootAtPed(GTAentity target)
 {
 	TASK_VEHICLE_SHOOT_AT_PED(_ped.Handle(), target.Handle(), 20.0f);
 }
+
 void Tasks::Wait(int duration)
 {
 	TASK_PAUSE(_ped.Handle(), duration);
 }
+
 void Tasks::WanderAround()
 {
 	TASK_WANDER_STANDARD(_ped.Handle(), 0.0f, 0);
 }
+
 void Tasks::WanderAround(const Vector3& position, float radius)
 {
-	TASK_WANDER_IN_AREA(_ped.Handle(), position.x, position.y, position.z, radius, 0.0f, 0.0f);
+	//TASK_WANDER_IN_AREA(_ped.Handle(), position.x, position.y, position.z, radius, 0.0f, 0.0f);
+	TASK_WANDER_IN_AREA(_ped.Handle(), position, radius, 0.0f, 0.0f);
 }
+
 void Tasks::WarpIntoVehicle(GTAentity vehicle, VehicleSeat seat)
 {
 	TASK_WARP_PED_INTO_VEHICLE(_ped.Handle(), vehicle.Handle(), (seat));
 }
+
 void Tasks::WarpOutOfVehicle(GTAentity vehicle)
 {
 	TASK_LEAVE_VEHICLE(_ped.Handle(), vehicle.Handle(), 16);

@@ -35,7 +35,10 @@ typedef int Texture;
 typedef int TextureDict;
 typedef int CoverPoint;
 typedef int Camera;
-typedef int TaskSequence;
+
+// TODO If this effects anything, revert this!!! Disabled for Menyoo task test
+//typedef int TaskSequence;
+
 typedef int ColourIndex;
 typedef int Sphere;
 typedef int ScrHandle;

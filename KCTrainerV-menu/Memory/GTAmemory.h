@@ -20,6 +20,10 @@
 */
 #pragma once
 
+
+// TODO Remove if needed, this kept getting disabled so I'm leaving it here
+#define MEMORY_TESTING
+
 #define MENYOO_SCRIPT_FILES
 
 //#ifdef MENYOO_SCRIPT_FILES

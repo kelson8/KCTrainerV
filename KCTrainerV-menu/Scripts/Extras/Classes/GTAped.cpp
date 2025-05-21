@@ -20,7 +20,7 @@
 #include "Natives/natives2.h"
 #include "GTAblip.h"
 #include "GTAentity.h"
-//#include "Tasks.h"
+#include "Tasks.h"
 #include "GTAvehicle.h"
 //#include "WeaponIndivs.h"
 
@@ -283,7 +283,7 @@ namespace PedDamagePacks {
 	};
 }
 
-
+#define DISABLED_CODE
 #ifdef DISABLED_CODE
 GTAped::GTAped() : GTAentity(), _tasks(0)//, _euphoria(NaturalMotion::Euphoria(0))
 {
@@ -306,12 +306,14 @@ GTAped::GTAped(GTAentity handle) : GTAentity(handle)//, _euphoria(NaturalMotion:
 }
 #endif
 
+
 GTAped& GTAped::operator = (const GTAped& value)
 {
 	this->mHandle = value.mHandle;
 #ifdef DISABLED_CODE
 	this->_tasks = value._tasks;
 #endif
+#undef DISABLED_CODE
 	//this->_euphoria = value._euphoria;
 	return *this;
 }
@@ -810,12 +812,12 @@ void GTAped::HasGravity_set(bool value)
 	GTAentity::HasGravity_set(value);
 }
 
-#ifdef DISABLED_CODE
+//#ifdef DISABLED_CODE
 Tasks GTAped::Task()
 {
 	return _tasks;
 }
-#endif
+//#endif
 
 int GTAped::TaskSequenceProgress_get() const
 {

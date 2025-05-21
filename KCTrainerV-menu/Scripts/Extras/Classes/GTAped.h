@@ -13,7 +13,7 @@
 
 //#include "Euphoria.h"
 #include "GTAentity.h"
-//#include "Tasks.h"
+#include "Tasks.h"
 
 #include <string>
 #include <vector>
@@ -362,6 +362,7 @@ public:
 	void HasGravity_set(bool value) override;
 
 	//Tasks Task();
+	Tasks Task();
 	int TaskSequenceProgress_get() const;
 	bool IsPerformingAnyTaskSequence() const;
 
@@ -410,8 +411,8 @@ public:
 	void GiveWeaponsFromArray(const std::vector<s_Weapon_Components_Tint>& value);
 #endif
 
-//private:
-//	Tasks _tasks;
+private:
+	Tasks _tasks;
 //	//NaturalMotion::Euphoria _euphoria;
 //
 };

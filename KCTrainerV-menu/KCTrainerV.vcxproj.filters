@@ -138,9 +138,6 @@
     <ClCompile Include="Menus\PedMenu.cpp">
       <Filter>Menus</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Tasks.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="Menus\MiscMenu.cpp">
       <Filter>Menus</Filter>
     </ClCompile>
@@ -180,7 +177,7 @@
     <ClCompile Include="Scripts\Extras\Classes\Scaleform.cpp">
       <Filter>Scripts\Extras\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Extras\Classes\Tasks_old.cpp">
+    <ClCompile Include="Scripts\Extras\Classes\Tasks.cpp">
       <Filter>Scripts\Extras\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Extras\Classes\GTAblip.cpp">
@@ -422,9 +419,6 @@
     <ClInclude Include="Menus\PedMenu.h">
       <Filter>Menus</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Tasks.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="Menus\MiscMenu.h">
       <Filter>Menus</Filter>
     </ClInclude>
@@ -465,7 +459,7 @@
     <ClInclude Include="Scripts\Extras\Classes\Scaleform.h">
       <Filter>Scripts\Extras\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Extras\Classes\Tasks_old.h">
+    <ClInclude Include="Scripts\Extras\Classes\Tasks.h">
       <Filter>Scripts\Extras\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\Extras\Classes\GTAblip.h">

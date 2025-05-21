@@ -24,6 +24,7 @@
 #include "GTAped.h"
 #include "GTAentity.h"
 #include "GTAvehicle.h"
+#include "Tasks.h"
 
 
 // Chaos Mod
@@ -655,6 +656,39 @@ namespace MiscScripts
 			//GTAped playerPed = playerPedID;
 			GTAped playerPed = PLAYER_PED_ID();
 
+			
+			// Testing with tasks
+			bool taskTest = true;
+
+			// Playing animations on the player
+			bool playAnimation = false;
+
+			// If enabled, this applies random force to vehicles in the area pretty much throwing them.
+			bool throwVehicles = false;
+
+			const Vector3& playerPos = playerPed.Position_get();
+
+			// This seems to work, has a short delay to it.
+			if (playAnimation)
+			{
+				if (!playerPed.Task().IsPlayingAnimation("mini@strip_club@idles@dj@idle_01", "idle_01"))
+					playerPed.Task().PlayAnimation("mini@strip_club@idles@dj@idle_01", "idle_01", 1, 1, -1, AnimFlag::UpperBodySecondTask, 0, false);
+			}
+
+			if (taskTest)
+			{
+				for (GTAped ped : GetAllPeds())
+				{
+					// Oops, forgot the player check.
+					if (!ped.IsPlayer())
+					{
+						//ped.Task().Cower(2500);
+						ped.Task().HandsUp(2500);
+						//ped.Task().WanderAround();
+					}
+				}
+			}
+
 			// TODO Test later
 			//GTAvehicle playerVeh;
 			//VehicleSeat currVehSeat;
@@ -715,19 +749,24 @@ namespace MiscScripts
 
 
 			// Well this seems to work.
-			float minRandomNumber = 10.0f;
-			float maxRandomNumber = 40.0f;
-			float randomNumber = g_Random.GetRandomFloat(minRandomNumber, maxRandomNumber);
-			Vector3 randomCoords = Vector3(randomNumber, randomNumber, randomNumber);
 
-			// Vehicle testing
-			for (GTAvehicle vehicle : GetAllVehs())
+			if (throwVehicles)
 			{
-				//vehicle.AlarmActive_set(true);
-				// Well this works so other stuff should work here.
-				//vehicle.Explode();
-				vehicle.ApplyForce(randomCoords, ForceType::MaxForceRot);
+				float minRandomNumber = 10.0f;
+				float maxRandomNumber = 40.0f;
+				float randomNumber = g_Random.GetRandomFloat(minRandomNumber, maxRandomNumber);
+				Vector3 randomCoords = Vector3(randomNumber, randomNumber, randomNumber);
+
+				// Vehicle testing
+				for (GTAvehicle vehicle : GetAllVehs())
+				{
+					//vehicle.AlarmActive_set(true);
+					// Well this works so other stuff should work here.
+					//vehicle.Explode();
+					vehicle.ApplyForce(randomCoords, ForceType::MaxForceRot);
+				}
 			}
+
 
 
 			//for (Ped ped : GetAllPeds())

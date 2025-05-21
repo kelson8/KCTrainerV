@@ -22,7 +22,7 @@
 
 // TODO Fix this file, might be useful for later.
 
-//#define MENYOO_SCRIPT_FILES
+#define MENYOO_SCRIPT_FILES
 
 #ifdef MENYOO_SCRIPT_FILES
 
@@ -45,7 +45,11 @@ class RGBA;
 class RgbS;
 class Vector3;
 class Vector2;
+
+#ifdef DISABLED_CODE
 class Camera;
+#endif
+
 class GTAblip;
 class Checkpoint;
 namespace GTAmodel {
@@ -68,8 +72,10 @@ namespace World
 	
 	void GravityLevel_set(int value);
 
+#ifdef DISABLED_CODE
 	Camera RenderingCamera_get();
 	void RenderingCamera_set(Camera newCamera, bool ease = false);
+#endif
 
 	void Weather_set(WeatherType weather);
 	void Weather_set(const std::string& weatherName);
@@ -85,6 +91,7 @@ namespace World
 	std::string WeatherName_get();
 	std::string WeatherName_get(const WeatherType& weatherType);
 
+#ifdef DISABLED_CODE
 	void GetActiveCheckpoints(std::vector<Checkpoint>& result);
 
 
@@ -98,6 +105,7 @@ namespace World
 
 	void GetNearbyProps(std::vector<GTAprop>& result, GTAped ped, float radius);
 	void GetNearbyProps(std::vector<GTAprop>& result, const Vector3& position, float radius);
+#endif
 
 	GTAprop GetClosestPropOfType(const Vector3& position, float radius, const GTAmodel::Model& model, bool isMissionEntity = false);
 	GTAped GetClosestPed(const Vector3& position, float radius);
@@ -116,9 +124,11 @@ namespace World
 	GTAblip CreateBlip(Vector3 position);
 	GTAblip CreateBlip(Vector3 position, float radius);
 
+#ifdef DISABLED_CODE
 	Camera CreateCamera();
 	Camera CreateCamera(const Vector3& position, const Vector3& rotation, float fov);
 	void DestroyAllCameras();
+#endif
 
 	GTAped CreatePed(GTAmodel::Model model, Vector3 position, float heading, bool placeOnGround);
 	GTAped CreatePed(GTAmodel::Model model, Vector3 position, const Vector3& rotation, bool placeOnGround);
@@ -135,10 +145,11 @@ namespace World
 	void AddExplosion(const Vector3& position, EXPLOSION::EXPLOSION type, float radius, float cameraShake, bool audible = true, bool visible = true);
 	void AddOwnedExplosion(GTAentity owner, const Vector3& position, EXPLOSION::EXPLOSION type, float radius, float cameraShake, bool audible = true, bool visible = true);
 	
+#ifdef DISABLED_CODE
 	Checkpoint CreateCheckpoint(const CheckpointIcon& icon, const Vector3& position, const Vector3& pointTo, float radius, const RGBA& colour, BYTE reserved = 0);
-
 	inline Rope AddRope(RopeType type, const Vector3& position, Vector3 rotation, float length, float minLength, bool breakable);
-	
+#endif
+
 	void SetBlackout(bool enable);
 
 	Hash AddRelationshipGroup(const std::string& groupName);
@@ -155,7 +166,9 @@ namespace World
 
 	//RaycastResult Raycast(Vector3 source, Vector3 target, IntersectOptions options);
 	//RaycastResult Raycast(Vector3 source, Vector3 target, IntersectOptions options, GTAentity entity);
+#ifdef DISABLED_CODE
 	GTAentity EntityFromAimCamRay();
+#endif
 
 	void DrawMarker(int type, const Vector3& pos, const Vector3& dir, const Vector3& rot, const Vector3& scale, const RGBA& colour);
 	void DrawMarker(int type, const Vector3& pos, const Vector3& dir, const Vector3& rot, const Vector3& scale, const RGBA& colour, 
@@ -169,16 +182,22 @@ namespace World
 
 
 	// World - Relationships - nearby
+#ifdef DISABLED_CODE
 	void KillNearbyPeds(GTAped originPed, float range, PedRelationship::PedRelationship relationshipWithOriginPed);
+#endif
+
 	void KillMyEnemies();
 
 }
 
 
 // World - clear area
+#ifdef DISABLED_CODE
 void clear_area_of_entities(const EntityType& type, const Vector3& coords, float radius, const std::vector<GTAentity>& excludes);
 void clear_area_of_vehicles_around_entity(Entity entity, float radius, bool memry = true);
 void clear_area_of_peds_around_entity(Entity entity, float radius, bool memry = true);
+#endif
+
 void clear_attachments_off_entity(const GTAentity& entity, const EntityType& entType);
 
 #endif // MENYOO_SCRIPT_FILES

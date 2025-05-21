@@ -10,7 +10,7 @@
 
 #include "../Scripts/PlayerScripts.h"
 #include "../Scripts/PedScripts.h"
-#include "../Scripts/Tasks.h"
+
 #include "../Scripts/Stats.h"
 #include "../Scripts/MiscScripts.h"
 
@@ -22,7 +22,6 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& pedScripts = PedScripts::GetInstance();
-    auto& tasks = Tasks::GetInstance();
 
     Ped playerPed = playerScripts.GetPlayerPed();
 
@@ -112,11 +111,6 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     //}
 
 #ifdef DEBUG_MODE
-    if (mbCtx.Option("Menyoo test", { "Run a test with Menyoo classes" }))
-    {
-        MiscScripts::EXFeatures::MenyooTest();
-    }
-
     mbCtx.MenuOption("Player Debug", "PlayerDebugSubmenu", { "Debug menu for player functions." });
     //if (mbCtx.Option("Log cops killed stat", { "Log the cops killed stat to the console." }))
     //{
@@ -138,7 +132,6 @@ void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
 
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& pedScripts = PedScripts::GetInstance();
-    auto& tasks = Tasks::GetInstance();
 
     Ped playerPed = playerScripts.GetPlayerPed();
 

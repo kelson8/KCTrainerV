@@ -20,6 +20,7 @@
 */
 #pragma once
 
+#define MENYOO_SCRIPT_FILES
 #ifdef MENYOO_SCRIPT_FILES
 
 #include "GTAentity.h"

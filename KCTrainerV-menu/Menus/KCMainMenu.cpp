@@ -349,6 +349,13 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
             mbCtx.BoolOption("ID Gun test", MiscScripts::IDGun::isIdGunEnabled, { "Toggle the ID Gun test from FiveM" });
 
+#ifdef DEBUG_MODE
+            if (mbCtx.Option("Menyoo test", { "Run a test with Menyoo classes" }))
+            {
+                MiscScripts::EXFeatures::MenyooTest();
+            }
+#endif
+
             int nothing = 0;
             mbCtx.StringArray("--Music--", { "" }, nothing);
 

@@ -21,6 +21,7 @@
 
 #include "../../Constants.hpp"
 #include "World.h"
+#include "Classes/GTAprop.h"
 
 //#include "..\macros.h"
 
@@ -86,11 +87,13 @@ namespace World
 		SET_GRAVITY_LEVEL(value);
 	}
 
+#ifdef DISABLED_CODE
 	Camera RenderingCamera_get()
 	{
 		if (IS_GAMEPLAY_CAM_RENDERING()) return 0;
 		return GET_RENDERING_CAM();
 	}
+
 	void RenderingCamera_set(Camera newCamera, bool ease)
 	{
 		if (newCamera.Handle() == 0)
@@ -103,6 +106,7 @@ namespace World
 			RENDER_SCRIPT_CAMS(true, ease, 3000, 1, 0, 0);
 		}
 	}
+#endif
 
 	void Weather_set(WeatherType weather)
 	{
@@ -203,6 +207,8 @@ namespace World
 		else return std::string();
 	}
 
+
+#ifdef DISABLED_CODE
 	void GetActiveCheckpoints(std::vector<Checkpoint>& result)
 	{
 		UINT64 addr = GTAmemory::CheckpointBaseAddr();
@@ -218,6 +224,7 @@ namespace World
 	{
 		return GetNearbyPeds(result, ped, radius, 10000);
 	}
+
 	void GetNearbyPeds(std::vector<GTAped>& result, GTAped ped, float radius, int maxAmount)
 	{
 		const Vector3 position = ped.Position_get();
@@ -264,6 +271,7 @@ namespace World
 	{
 		return GetNearbyVehicles(result, ped, radius, 10000);
 	}
+
 	void GetNearbyVehicles(std::vector<GTAvehicle>& result, GTAped ped, float radius, int maxAmount)
 	{
 		const Vector3 position = ped.Position_get();
@@ -293,6 +301,7 @@ namespace World
 
 		delete[] handles;
 	}
+
 	void GetNearbyVehicles(std::vector<GTAvehicle>& result, const Vector3& position, float radius)
 	{
 		//std::vector<Entity> handles;
@@ -306,10 +315,13 @@ namespace World
 		}
 	}
 
+
 	void GetNearbyProps(std::vector<GTAprop>& result, GTAped ped, float radius)
 	{
 		GetNearbyProps(result, ped.Position_get(), radius);
 	}
+
+
 	void GetNearbyProps(std::vector<GTAprop>& result, const Vector3& position, float radius)
 	{
 		//std::vector<Entity> handles;
@@ -322,50 +334,62 @@ namespace World
 				result.push_back(currprop);
 		}
 	}
+#endif
 
 	GTAprop GetClosestPropOfType(const Vector3& position, float radius, const GTAmodel::Model& model, bool isMissionEntity)
 	{
-		return GET_CLOSEST_OBJECT_OF_TYPE(position.x, position.y, position.z, radius, model.hash, isMissionEntity, false, true);
+		//return GET_CLOSEST_OBJECT_OF_TYPE(position.x, position.y, position.z, radius, model.hash, isMissionEntity, false, true);
+		return GET_CLOSEST_OBJECT_OF_TYPE(position, radius, model.hash, isMissionEntity, false, true);
 	}
+
 	GTAped GetClosestPed(const Vector3& position, float radius)
 	{
 		int handle = 0;
 
-		GET_CLOSEST_PED(position.x, position.y, position.z, radius, true, true, &handle, false, false, -1);
+		//GET_CLOSEST_PED(position.x, position.y, position.z, radius, true, true, &handle, false, false, -1);
+		GET_CLOSEST_PED(position, radius, true, true, &handle, false, false, -1);
 
 		return handle;
 	}
+
 	GTAvehicle GetClosestVehicle(const Vector3& position, float radius)
 	{
-		return GET_CLOSEST_VEHICLE(position.x, position.y, position.z, radius, 0, 70);
+		//return GET_CLOSEST_VEHICLE(position.x, position.y, position.z, radius, 0, 70);
+		return GET_CLOSEST_VEHICLE(position, radius, 0, 70);
 	}
 
 	float GetDistance(const Vector3& origin, const Vector3& destination)
 	{
-		return GET_DISTANCE_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1);
+		//return GET_DISTANCE_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1);
+		return GET_DISTANCE_BETWEEN_COORDS(origin, destination, 1);
 	}
 
 	float GetGroundHeight(const Vector2& position)
 	{
 		float height = 0.0f;
-		GET_GROUND_Z_FOR_3D_COORD(position.x, position.y, 1000.0f, &height, 0, 0);
+		//GET_GROUND_Z_FOR_3D_COORD(position.x, position.y, 1000.0f, &height, 0, 0);
+		GET_GROUND_Z_FOR_3D_COORD(Vector3(position.x, position.y, 1000.0f), &height, false, false);
 
 		return height;
 	}
 	float GetGroundHeight(const Vector3& position)
 	{
 		float height = 0.0f;
-		GET_GROUND_Z_FOR_3D_COORD(position.x, position.y, 1000.0f, &height, 0, 0);
+		//GET_GROUND_Z_FOR_3D_COORD(position.x, position.y, 1000.0f, &height, 0, 0);
+		GET_GROUND_Z_FOR_3D_COORD(Vector3(position.x, position.y, 1000.0f), &height, 0, 0);
 
 		return height;
 	}
+
 	Vector3 GetNextPositionOnStreet(const Vector3& position)
 	{
-		Vector3_t outPos;
+		//Vector3_t outPos;
+		Vector3 outPos;
 
 		for (int i = 1; i < 40; i++)
 		{
-			GET_NTH_CLOSEST_VEHICLE_NODE(position.x, position.y, position.z, i, &outPos, 1, 0x40400000, 0);
+			//GET_NTH_CLOSEST_VEHICLE_NODE(position.x, position.y, position.z, i, &outPos, 1, 0x40400000, 0);
+			GET_NTH_CLOSEST_VEHICLE_NODE(position, i, &outPos, 1, 0x40400000, 0);
 
 			if (!IS_POINT_OBSCURED_BY_A_MISSION_ENTITY(outPos.x, outPos.y, outPos.z, 2.0f, 2.0f, 2.0f, 0))
 			{
@@ -377,13 +401,16 @@ namespace World
 
 	std::string GetZoneName(const Vector3& position, bool properName)
 	{
-		const char* name = GET_NAME_OF_ZONE(position.x, position.y, position.z);
+		//const char* name = GET_NAME_OF_ZONE(position.x, position.y, position.z);
+		const char* name = GET_NAME_OF_ZONE(position);
 		return properName ? (GET_FILENAME_FOR_AUDIO_CONVERSATION(name)) : name;
 	}
+
 	std::string GetStreetName(const Vector3& position)
 	{
 		Hash streetName, crossingRoad;
-		GET_STREET_NAME_AT_COORD(position.x, position.y, position.z, &streetName, &crossingRoad);
+		//GET_STREET_NAME_AT_COORD(position.x, position.y, position.z, &streetName, &crossingRoad);
+		GET_STREET_NAME_AT_COORD(position, &streetName, &crossingRoad);
 		return GET_STREET_NAME_FROM_HASH_KEY(streetName);
 	}
 
@@ -407,17 +434,23 @@ namespace World
 	}
 	GTAblip CreateBlip(Vector3 position)
 	{
-		return ADD_BLIP_FOR_COORD(position.x, position.y, position.z);
-	}
-	GTAblip CreateBlip(Vector3 position, float radius)
-	{
-		return ADD_BLIP_FOR_RADIUS(position.x, position.y, position.z, radius);
+		//return ADD_BLIP_FOR_COORD(position.x, position.y, position.z);
+		return ADD_BLIP_FOR_COORD(position);
 	}
 
+	GTAblip CreateBlip(Vector3 position, float radius)
+	{
+		//return ADD_BLIP_FOR_RADIUS(position.x, position.y, position.z, radius);
+		return ADD_BLIP_FOR_RADIUS(position, radius);
+	}
+
+
+#ifdef DISABLED_CODE
 	Camera CreateCamera()
 	{
 		return CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 1);
 	}
+
 	Camera CreateCamera(const Vector3& position, const Vector3& rotation, float fov)
 	{
 		//Camera cam =  CREATE_CAM_WITH_PARAMS("DEFAULT_SCRIPTED_CAMERA", position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, fov, 1, 2);
@@ -430,10 +463,13 @@ namespace World
 		cam.FieldOfView_set(fov);
 		return cam;
 	}
+
 	void DestroyAllCameras()
 	{
 		Camera::DestroyAllCameras();
 	}
+
+#endif //DISABLED_CODE
 
 	GTAped CreatePed(GTAmodel::Model model, Vector3 position, float heading, bool placeOnGround)
 	{
@@ -441,31 +477,44 @@ namespace World
 
 		if (placeOnGround)
 		{
-			position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			//position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			position.z = World::GetGroundHeight(position);
 		}
 
 		model.Load(3000);
 
-		GTAentity ped = CREATE_PED(26, model.hash, position.x, position.y, position.z, heading, 1, 1);
-		if (placeOnGround) ped.PlaceOnGround();
+		//GTAentity ped = CREATE_PED(26, model.hash, position.x, position.y, position.z, heading, 1, 1);
+		GTAentity ped = CREATE_PED(26, model.hash, position, heading, 1, 1);
+
+		// TODO Fix this
+		// Hmm, this requires the raycasting class, which might fix it.
+		//if (placeOnGround) ped.PlaceOnGround();
 		return ped;
 	}
+
 	GTAped CreatePed(GTAmodel::Model model, Vector3 position, const Vector3& rotation, bool placeOnGround)
 	{
 		if (placeOnGround)
 		{
-			position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			//position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			position.z = World::GetGroundHeight(position);//model.Dim2().z;
 		}
 		auto ped = CreatePed(model, position, rotation.z, false);
 		ped.Position_set(position); // More accurate position
-		if (placeOnGround) ped.PlaceOnGround();
+
+		// TODO Fix this
+		//if (placeOnGround) ped.PlaceOnGround();
+		
 		ped.Rotation_set((rotation)); // Rotation
 		return ped;
 	}
+
 	GTAped CreateRandomPed(const Vector3& position)
 	{
-		return CREATE_RANDOM_PED(position.x, position.y, position.z);
+		//return CREATE_RANDOM_PED(position.x, position.y, position.z);
+		return CREATE_RANDOM_PED(position);
 	}
+
 	GTAped CreatePedInsideVehicle(const GTAmodel::Model& model, const GTAvehicle& vehicle, const VehicleSeat& seat)
 	{
 		if (!model.IsInCdImage()) return 0;
@@ -484,24 +533,30 @@ namespace World
 
 		if (placeOnGround)
 		{
-			position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			//position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			position.z = World::GetGroundHeight(position);
 		}
 
 		model.Load(3000);
 
-		GTAentity vehicle = CREATE_VEHICLE(model.hash, position.x, position.y, position.z, heading, 1, 1, 0);
-		if (placeOnGround) vehicle.PlaceOnGround();
+		//GTAentity vehicle = CREATE_VEHICLE(model.hash, position.x, position.y, position.z, heading, 1, 1, 0);
+		GTAentity vehicle = CREATE_VEHICLE(model.hash, position, heading, 1, 1, 0);
+		//if (placeOnGround) vehicle.PlaceOnGround();
 		return vehicle;
 	}
+
 	GTAvehicle CreateVehicle(GTAmodel::Model model, Vector3 position, const Vector3& rotation, bool placeOnGround)
 	{
 		if (placeOnGround)
 		{
-			position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			//position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			position.z = World::GetGroundHeight(position);
 		}
 		auto vehicle = CreateVehicle(model, position, rotation.z, false);
 		vehicle.Position_set(position); // More accurate position
-		if (placeOnGround) vehicle.PlaceOnGround();
+
+		//if (placeOnGround) vehicle.PlaceOnGround();
+
 		vehicle.Rotation_set(rotation); // Rotation
 		return vehicle;
 	}
@@ -512,24 +567,32 @@ namespace World
 
 		if (placeOnGround)
 		{
-			position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			//position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			position.z = World::GetGroundHeight(position);
 		}
 
 		model.Load(3000);
 
-		GTAentity prop = CREATE_OBJECT(model.hash, position.x, position.y, position.z, 1, 1, dynamic);
-		if (placeOnGround) prop.PlaceOnGround();
+		//GTAentity prop = CREATE_OBJECT(model.hash, position.x, position.y, position.z, 1, 1, dynamic);
+		GTAentity prop = CREATE_OBJECT(model.hash, position, true, true, dynamic);
+
+		//if (placeOnGround) prop.PlaceOnGround();
+
 		return prop;
 	}
+
 	GTAprop CreateProp(GTAmodel::Model model, Vector3 position, const Vector3& rotation, bool dynamic, bool placeOnGround)
 	{
 		if (placeOnGround)
 		{
-			position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			//position.z = World::GetGroundHeight(position) + model.Dim1().z;//model.Dim2().z;
+			position.z = World::GetGroundHeight(position);
 		}
 		GTAprop prop = CreateProp(model, position, dynamic, false);
 		prop.Position_set(position); // More accurate position
-		if (placeOnGround) prop.PlaceOnGround();
+
+		//if (placeOnGround) prop.PlaceOnGround();
+
 		prop.Rotation_set(rotation); // Rotation
 
 		return prop;
@@ -537,26 +600,36 @@ namespace World
 
 	void ShootBullet(const Vector3& sourcePosition, const Vector3& targetPosition, GTAentity owner, Hash weaponHash, int damage, float speed, bool audible, bool visible)
 	{
-		SHOOT_SINGLE_BULLET_BETWEEN_COORDS(sourcePosition.x, sourcePosition.y, sourcePosition.z, targetPosition.x, targetPosition.y, targetPosition.z, damage, 1, weaponHash, owner.Handle(), audible, !visible, speed);
-	}
-	void AddExplosion(const Vector3& position, EXPLOSION::EXPLOSION type, float radius, float cameraShake, bool audible, bool visible)
-	{
-		ADD_EXPLOSION(position.x, position.y, position.z, static_cast<int>(type), radius, audible, !visible, cameraShake, 0);
-	}
-	void AddOwnedExplosion(GTAentity owner, const Vector3& position, EXPLOSION::EXPLOSION type, float radius, float cameraShake, bool audible, bool visible)
-	{
-		ADD_OWNED_EXPLOSION(owner.Handle(), position.x, position.y, position.z, static_cast<int>(type), radius, audible, !visible, cameraShake);
+		//SHOOT_SINGLE_BULLET_BETWEEN_COORDS(sourcePosition.x, sourcePosition.y, sourcePosition.z, targetPosition.x, targetPosition.y, targetPosition.z, damage, 1, weaponHash, owner.Handle(), audible, !visible, speed);
+		SHOOT_SINGLE_BULLET_BETWEEN_COORDS(sourcePosition, targetPosition, damage, 1, weaponHash, owner.Handle(), audible, !visible, speed);
 	}
 
+	void AddExplosion(const Vector3& position, EXPLOSION::EXPLOSION type, float radius, float cameraShake, bool audible, bool visible)
+	{
+		//ADD_EXPLOSION(position.x, position.y, position.z, static_cast<int>(type), radius, audible, !visible, cameraShake, 0);
+		ADD_EXPLOSION(position, static_cast<int>(type), radius, audible, !visible, cameraShake, 0);
+	}
+
+	void AddOwnedExplosion(GTAentity owner, const Vector3& position, EXPLOSION::EXPLOSION type, float radius, float cameraShake, bool audible, bool visible)
+	{
+		//ADD_OWNED_EXPLOSION(owner.Handle(), position.x, position.y, position.z, static_cast<int>(type), radius, audible, !visible, cameraShake);
+		ADD_OWNED_EXPLOSION(owner.Handle(), position, static_cast<int>(type), radius, audible, !visible, cameraShake);
+	}
+
+	// TODO Implement Checkpoint.cpp and Checkpoint.h
+
+#ifdef DISABLED_CODE
 	Checkpoint CreateCheckpoint(const CheckpointIcon& icon, const Vector3& position, const Vector3& pointTo, float radius, const RGBA& colour, BYTE reserved)
 	{
-		return CREATE_CHECKPOINT(static_cast<int>(icon), position.x, position.y, position.z, pointTo.x, pointTo.y, pointTo.z, radius, colour.R, colour.G, colour.B, colour.A, reserved);
+		//return CREATE_CHECKPOINT(static_cast<int>(icon), position.x, position.y, position.z, pointTo.x, pointTo.y, pointTo.z, radius, colour.R, colour.G, colour.B, colour.A, reserved);
+		return CREATE_CHECKPOINT(static_cast<int>(icon), position, pointTo, radius, colour.R, colour.G, colour.B, colour.A, reserved);
 	}
 
 	Rope AddRope(RopeType type, const Vector3& position, Vector3 rotation, float length, float minLength, bool breakable)
 	{
 		return Rope::AddRope(type, position, rotation, length, minLength, breakable);
 	}
+#endif // DISABLED_CODE
 
 	void SetBlackout(bool enable)
 	{
@@ -570,18 +643,22 @@ namespace World
 
 		return hash;
 	}
+
 	void RemoveRelationshipGroup(Hash groupHash)
 	{
 		REMOVE_RELATIONSHIP_GROUP(groupHash);
 	}
+
 	void RemoveRelationshipGroup(const std::string& group)
 	{
 		REMOVE_RELATIONSHIP_GROUP(GET_HASH_KEY(group));
 	}
+
 	int GetRelationshipBetweenGroups(Hash group1, Hash group2)
 	{
 		return (GET_RELATIONSHIP_BETWEEN_GROUPS(group1, group2));
 	}
+
 	int GetRelationshipBetweenGroups(const std::string& group1, const std::string& group2)
 	{
 		Hash group1h = GET_HASH_KEY(group1);
@@ -589,11 +666,13 @@ namespace World
 
 		return (GET_RELATIONSHIP_BETWEEN_GROUPS(group1h, group2h));
 	}
+
 	void SetRelationshipBetweenGroups(int relationship, Hash group1, Hash group2)
 	{
 		SET_RELATIONSHIP_BETWEEN_GROUPS(relationship, group1, group2);
 		SET_RELATIONSHIP_BETWEEN_GROUPS(relationship, group2, group1);
 	}
+
 	void SetRelationshipBetweenGroups(int relationship, const std::string& group1, const std::string& group2)
 	{
 		Hash group1h = GET_HASH_KEY(group1);
@@ -602,11 +681,13 @@ namespace World
 		SET_RELATIONSHIP_BETWEEN_GROUPS(relationship, group1h, group2h);
 		SET_RELATIONSHIP_BETWEEN_GROUPS(relationship, group2h, group1h);
 	}
+
 	void ClearRelationshipBetweenGroups(int relationship, Hash group1, Hash group2)
 	{
 		CLEAR_RELATIONSHIP_BETWEEN_GROUPS(relationship, group1, group2);
 		CLEAR_RELATIONSHIP_BETWEEN_GROUPS(relationship, group2, group1);
 	}
+
 	void ClearRelationshipBetweenGroups(int relationship, const std::string& group1, const std::string& group2)
 	{
 		Hash group1h = GET_HASH_KEY(group1);
@@ -618,7 +699,8 @@ namespace World
 
 	bool WorldToScreen(const Vector3& worldCoords, Vector2& screenCoords)
 	{
-		return (GET_SCREEN_COORD_FROM_WORLD_COORD(worldCoords.x, worldCoords.y, worldCoords.z, &screenCoords.x, &screenCoords.y)) != 0;
+		//return (GET_SCREEN_COORD_FROM_WORLD_COORD(worldCoords.x, worldCoords.y, worldCoords.z, &screenCoords.x, &screenCoords.y)) != 0;
+		return (GET_SCREEN_COORD_FROM_WORLD_COORD(worldCoords, &screenCoords.x, &screenCoords.y)) != 0;
 	}
 
 	/*RaycastResult Raycast(Vector3 source, Vector3 target, IntersectOptions options)
@@ -629,6 +711,8 @@ namespace World
 	{
 	return RaycastResult::Raycast(source, target, options, entity);
 	}*/
+
+#ifdef DISABLED_CODE
 	GTAentity EntityFromAimCamRay()
 	{
 		GTAplayer myPlayer = PLAYER_ID();
@@ -647,10 +731,13 @@ namespace World
 		return ray.DidHitEntity() ? ray.HitEntity() : 0;
 	}
 
+#endif // DISABLED_CODE
+
 	void DrawMarker(int type, const Vector3& pos, const Vector3& dir, const Vector3& rot, const Vector3& scale, const RGBA& colour)
 	{
 		DrawMarker(type, pos, dir, rot, scale, colour, false, false, 2, false, std::string(), std::string(), false);
 	}
+
 	void DrawMarker(int type, const Vector3& pos, const Vector3& dir, const Vector3& rot, const Vector3& scale, const RGBA& colour,
 		bool bobUpAndDown, bool faceCamY, int unk2, bool rotateY, const std::string& textureDict, const std::string& textureName, bool drawOnEnt)
 	{
@@ -661,31 +748,42 @@ namespace World
 			dict = (PCHAR)textureDict.c_str();
 			name = (PCHAR)textureName.c_str();
 		}
-		DRAW_MARKER(type, pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z, colour.R, colour.G, colour.B, colour.A, bobUpAndDown, faceCamY, unk2, rotateY, dict, name, drawOnEnt);
+		//DRAW_MARKER(type, pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, rot.x, rot.y, rot.z, scale.x, scale.y, scale.z, colour.R, colour.G, colour.B, colour.A, bobUpAndDown, faceCamY, unk2, rotateY, dict, name, drawOnEnt);
+		DRAW_MARKER(type, pos, dir, rot, scale, colour.R, colour.G, colour.B, colour.A, bobUpAndDown, faceCamY, unk2, rotateY, dict, name, drawOnEnt);
 	}
 
 	void DrawLine(const Vector3& startPos, const Vector3& endPos, const RGBA& colour)
 	{
-		DRAW_LINE(startPos.x, startPos.y, startPos.z, endPos.x, endPos.y, endPos.z, colour.R, colour.G, colour.B, colour.A);
+		//DRAW_LINE(startPos.x, startPos.y, startPos.z, endPos.x, endPos.y, endPos.z, colour.R, colour.G, colour.B, colour.A);
+		DRAW_LINE(startPos, endPos, colour.R, colour.G, colour.B, colour.A);
 	}
+
 	void DrawPoly(const Vector3& pos1, const Vector3& pos2, const Vector3& pos3, const RGBA& colour)
 	{
-		DRAW_POLY(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z, pos3.x, pos3.y, pos3.z, colour.R, colour.G, colour.B, colour.A);
+		//DRAW_POLY(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z, pos3.x, pos3.y, pos3.z, colour.R, colour.G, colour.B, colour.A);
+		DRAW_POLY(pos1, pos2, pos3, colour.R, colour.G, colour.B, colour.A);
 	}
+
 	void DrawLightWithRange(const Vector3& position, const RgbS& colour, float range, float intensity)
 	{
-		DRAW_LIGHT_WITH_RANGE(position.x, position.y, position.z, colour.R, colour.G, colour.B, range, intensity);
+		//DRAW_LIGHT_WITH_RANGE(position.x, position.y, position.z, colour.R, colour.G, colour.B, range, intensity);
+		DRAW_LIGHT_WITH_RANGE(position, colour.R, colour.G, colour.B, range, intensity);
 	}
+
 	void DrawSpotLight(const Vector3& pos, const Vector3& dir, const RgbS& colour, float distance, float brightness, float roundness, float radius, float fadeout)
 	{
-		DRAW_SPOT_LIGHT(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, colour.R, colour.G, colour.B, distance, brightness, roundness, radius, fadeout);
+		//DRAW_SPOT_LIGHT(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, colour.R, colour.G, colour.B, distance, brightness, roundness, radius, fadeout);
+		DRAW_SPOT_LIGHT(pos, dir, colour.R, colour.G, colour.B, distance, brightness, roundness, radius, fadeout);
 	}
+
 	void DrawSpotLightWithShadow(const Vector3& pos, const Vector3& dir, const RgbS& colour, float distance, float brightness, float roundness, float radius, float fadeout, float shadowUnk)
 	{
-		DRAW_SHADOWED_SPOT_LIGHT(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, colour.R, colour.G, colour.B, distance, brightness, roundness, radius, fadeout, shadowUnk);
+		//DRAW_SHADOWED_SPOT_LIGHT(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, colour.R, colour.G, colour.B, distance, brightness, roundness, radius, fadeout, shadowUnk);
+		DRAW_SHADOWED_SPOT_LIGHT(pos, dir, colour.R, colour.G, colour.B, distance, brightness, roundness, radius, fadeout, shadowUnk);
 	}
 
 
+#ifdef DISABLED_CODE
 	// World - Relationships - nearby
 	void KillNearbyPeds(GTAped originPed, float range, PedRelationship::PedRelationship relationshipWithOriginPed)
 	{
@@ -744,6 +842,8 @@ namespace World
 		}*/
 
 	}
+#endif //DISABLED_CODE
+
 	void KillMyEnemies()
 	{
 		std::vector<GTAblip> vBlips;
@@ -769,6 +869,7 @@ namespace World
 
 
 // World - clear area
+#ifdef DISABLED_CODE
 void clear_area_of_entities(const EntityType& type, const Vector3& coords, float radius, const std::vector<GTAentity>& excludes)
 {
 
@@ -814,6 +915,9 @@ void clear_area_of_entities(const EntityType& type, const Vector3& coords, float
 
 	//SET_STREAMING(FALSE);
 }
+#endif
+
+#ifdef DISABLED_CODE
 void clear_area_of_vehicles_around_entity(Entity entity, float radius, bool memry)
 {
 
@@ -864,6 +968,10 @@ void clear_area_of_vehicles_around_entity(Entity entity, float radius, bool memr
 
 
 }
+#endif
+
+
+#ifdef DISABLED_CODE
 void clear_area_of_peds_around_entity(Entity entity, float radius, bool memry)
 {
 
@@ -906,6 +1014,9 @@ void clear_area_of_peds_around_entity(Entity entity, float radius, bool memry)
 	}
 
 }
+
+#endif
+
 void clear_attachments_off_entity(const GTAentity& entity, const EntityType& entType)
 {
 	auto* handles = &_worldEntities;
