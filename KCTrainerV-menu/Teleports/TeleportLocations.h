@@ -71,11 +71,11 @@ enum TeleportLocation
 	AIRPORT_RUNWAY = 0,
 	HOSPITAL_LS1_ROOFTOP = 1,
 
-#ifdef LOAD_IPLS
+//#ifdef LOAD_IPLS
 	// Yacht for the mission when Micheal has to get Tracy.
 	// I thought this was the MP_YACHT
 	SP_YACHT1 = 2,
-#endif
+//#endif
 	RICHARDS_MAJESTIC_MOVIE_STUDIO = 3, // RICHARDS_MAJESTIC
 	TRAIN_STATION1 = 4,
 	TRAIN_STATION2 = 5,
@@ -142,7 +142,9 @@ public:
 	const std::string& GetTeleportLocationName(TeleportLocation location);
 #endif //NEW_TELEPORTS
 
+#ifdef LOAD_IPLS
 	void UnloadAllLoadedIpls(); // New function to unload all loaded IPLs
+#endif
 
 	void WarpToWaypoint(GTAped ped);
 

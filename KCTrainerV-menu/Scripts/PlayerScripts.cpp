@@ -241,7 +241,8 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
         forwardSpeed = GET_ENTITY_SPEED(playerVeh);
     }
 
-    STREAMING::LOAD_SCENE(position);
+    // TODO Test without this, Menyoo and my FiveM scripts isn't doing this.
+    //STREAMING::LOAD_SCENE(position);
 
     // TODO Implement fade functions for this.
     // Fade time in miliseconds for fading functions
@@ -285,12 +286,18 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
  //   }
     
     
+
+    // These fades work!! TODO Make separate teleport function with fading.
+    //DO_SCREEN_FADE_OUT(2000);
+    WAIT(500);
     // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
     // And it checks if the player is in a flying vehicle.
     SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
         Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
     // TODO Figure out what this part does
-    SET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed, Vector3(vel.x, vel.y, vel.z));
+    //SET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed, Vector3(vel.x, vel.y, vel.z));
+    //DO_SCREEN_FADE_IN(2000);
+    WAIT(500);
 
     // Set the vehicle to the speed it previously was, this doesn't seem to work.
     if (isInVeh)
@@ -390,9 +397,8 @@ void PlayerScripts::HealPlayer(Ped player)
 }
 
 /// <summary>
-/// TODO Test this
+/// This works now.
 /// Taken from PlayerSuicide.cpp in Chaos Mod, I didn't know this was an animation
-/// Oops, this crashes it.
 /// </summary>
 void PlayerScripts::KillPlayerMP()
 {
@@ -431,19 +437,6 @@ void PlayerScripts::KillPlayerMP()
         // Possibly make a AnimScripts.cpp?
         while (!HAS_ANIM_DICT_LOADED("mp_suicide")) {
             WAIT(0);
-
-            if (GetTickCount() > startTime + timeout) 
-            {
-                UI::Notify("Couldn't load animation");
-
-                util.ShowSubtitle("Couldn't load animation");
-                WAIT(0);
-
-                REMOVE_ANIM_DICT("mp_suicide");
-
-                // Make this break out of the function, it shouldn't continue.
-                return;
-            }
         }
 
 
@@ -517,7 +510,9 @@ void PlayerScripts::FadeScreenOut(int ms)
 
 /// <summary>
 /// Test running the fade in and out for teleports.
-/// I think I nearly got this working, 
+/// This seems to work fine now.
+/// TODO Move into MiscScripts::Fade namespace
+/// TODO Make fadeOutTime and fadeInTime variables as int for this function.
 /// </summary>
 void PlayerScripts::TestFade() {
     //DO_SCREEN_FADE_OUT(1000);
@@ -527,49 +522,45 @@ void PlayerScripts::TestFade() {
 
     Ped playerPed = PLAYER_PED_ID();
 
-    //int fadeOutTime = 50;
-    // 0 seems to work ok for the fade out.
-    int fadeOutTime = 0;
     //int fadeOutTime = 5000;
+    // 4000 seems to work ok for the fade out
+    int fadeOutTime = 4000;
 
-    //int fadeOutTime = 1000;
-    //int fadeInTime = 1000;
+    // 3000 seems to work ok for the fade in.
+    int fadeInTime = 3000;
 
-    // 4000 seems to work ok for the fade in.
-    int fadeInTime = 4000;
-    //int fadeInTime = 10000;
-
-    // This seems to somewhat work now, doesn't fully fade out like its too quick or something.
-    // Maybe I should play around with this in C#?
-    // TODO Retest with the below methods, using it like this.
-    //DO_SCREEN_FADE_OUT(fadeOutTime);
-    // // Original wait:
-    ////WAIT(5000);
-    //WAIT(2000);
-    // New
-    //FREEZE_ENTITY_POSITION(playerPed, true);
-    //DO_SCREEN_FADE_IN(fadeInTime);
-    // New
-    //WAIT(1000);
-    //FREEZE_ENTITY_POSITION(playerPed, false);
+    // This seems to mostly work now
+    
+    DO_SCREEN_FADE_OUT(fadeOutTime);
+     // Original wait:
+    //WAIT(4000);
+    WAIT(fadeOutTime);
+     //New
+    FREEZE_ENTITY_POSITION(playerPed, true);
+    DO_SCREEN_FADE_IN(fadeInTime);
+     //New
+    //WAIT(500);
+    //WAIT(2500);
+    WAIT(fadeInTime);
+    FREEZE_ENTITY_POSITION(playerPed, false);
 
     // These seem to somewhat work but still not properly.
     // Fade out if not already faded out or fading out
-    if (!IS_SCREEN_FADED_OUT() && !IS_SCREEN_FADING_OUT()) {
-        DO_SCREEN_FADE_OUT(fadeOutTime);
-        FREEZE_ENTITY_POSITION(playerPed, true);
-        // Wait for the fade out
-        //WAIT(550);
-        //WAIT(2000);
-    }
+    //if (!IS_SCREEN_FADED_OUT() && !IS_SCREEN_FADING_OUT()) {
+    //    DO_SCREEN_FADE_OUT(fadeOutTime);
+    //    FREEZE_ENTITY_POSITION(playerPed, true);
+    //    // Wait for the fade out
+    //    //WAIT(550);
+    //    //WAIT(2000);
+    //}
 
-    // Fade in if not already faded in or fading in
-    if (!IS_SCREEN_FADED_IN() && !IS_SCREEN_FADING_IN()) {
-        DO_SCREEN_FADE_IN(fadeInTime);
-        FREEZE_ENTITY_POSITION(playerPed, false);
-        // Wait for the fade in.
-        WAIT(1000);
-    }
+    //// Fade in if not already faded in or fading in
+    //if (!IS_SCREEN_FADED_IN() && !IS_SCREEN_FADING_IN()) {
+    //    DO_SCREEN_FADE_IN(fadeInTime);
+    //    FREEZE_ENTITY_POSITION(playerPed, false);
+    //    // Wait for the fade in.
+    //    WAIT(1000);
+    //}
 }
 
 #pragma endregion
@@ -850,6 +841,10 @@ void PlayerScripts::TeleportToLocation(TeleportLocation locationToTeleport) {
         g_loadedIpls.push_back(ipl); // Keep track of loaded IPLs
     }
 #else
+    // These seem to work, using GTAped from Menyoo now.
+    //playerPed.Position_set(teleportInfo.coordinates);
+    //playerPed.Heading_set(teleportInfo.heading);
+
     SetPlayerCoords(teleportInfo.coordinates);
     SetPlayerHeading(teleportInfo.heading);
 #endif // LOAD_IPLS

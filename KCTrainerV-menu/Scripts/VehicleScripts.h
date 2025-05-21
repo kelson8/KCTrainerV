@@ -14,8 +14,7 @@ public:
 #endif
 
 	// Request vehicle model
-	//void RequestModel(Hash model);
-	bool RequestModel(Hash model);
+	void RequestModel(Hash model);
 
 	void ChangePlayerVehicleColor();
 	static void ToggleBombBayDoors();

@@ -16,67 +16,18 @@
 #include <iostream>
 #include <format>
 
+
 /// <summary>
-/// Requesting a vehicle model for use in the game spawning functions.
-/// This function will timeout after 3 seconds to prevent crashing.
-/// 
-/// Usage: Make a vehicle spawner do nothing if this is false.
-/// if(!VehicleScripts::RequestModel(model) return;
+/// Taken from Menyoo
+/// Request the vehicle model for spawning in, this actually should work on any model
 /// </summary>
-/// <param name="model"></param>
-//void VehicleScripts::RequestModel(Hash model)
-//bool VehicleScripts::RequestModel(Hash model)
-//{
-//    WAIT(0);
-//    Util util;
-//
-//    DWORD startTime = GetTickCount();
-//    //DWORD timeout = 3000; // in millis
-//    DWORD timeout = 10; // in millis
-//
-//    REQUEST_MODEL(model);
-//    while (!HAS_MODEL_LOADED(model))
-//    {
-//        WAIT(50);
-//
-//        // Add crash protection to this, seems to work for the vehicle and other items.
-//        if (GetTickCount() > startTime + timeout) {
-//            // Couldn't load model
-//            //WAIT(0);
-//            UI::Notify("Couldn't load model");
-//
-//            util.ShowSubtitle("Couldn't load model");
-//
-//            std::cout << std::format("Couldn't load model: {}", model) << std::endl;
-//
-//            STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
-//            return false;
-//        }
-//    }
-//
-//    // Should only ever return true if this was a success
-//    return true;
-//}
-
-// Taken from Menyoo
-// This seems to have mostly fixed the vehicle spawning, 
-// I still need to fix it to place it above ground, and not fall through the map.
-// This does lag a little bit but seems to work.
-bool VehicleScripts::RequestModel(Hash hash)
+/// <param name="hash"></param>
+void VehicleScripts::RequestModel(Hash hash)
 {
-    int timeOut = 3000;
-    if (HAS_MODEL_LOADED(hash)) return true;
-    else
+    REQUEST_MODEL(hash);
+    while (!HAS_MODEL_LOADED(hash))
     {
-        REQUEST_MODEL(hash);
-
-        for (timeOut += GetTickCount(); GetTickCount() < timeOut;)
-        {
-            if (HAS_MODEL_LOADED(hash))
-                return true;
-            WAIT(0);
-        }
-        return false;
+        WAIT(0);
     }
 }
 
@@ -237,23 +188,9 @@ void VehicleScripts::CreateMissionTrain(Hash model, Vector3 pos, bool direction)
     //SET_RANDOM_TRAINS(false);
 
     // Request the model, if it doesn't load do nothing.
-    if (!VehicleScripts::RequestModel(model))
-    {
-        return;
-    }
 
-
-    /*
-        while (!STREAMING::HAS_MODEL_LOADED(hash)) {
-        WAIT(0);
-        if (GetTickCount() > startTime + timeout) {
-            // Couldn't load model
-            WAIT(0);
-            STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-            return 0;
-        }
-    }
-    */
+    // I finally fixed the wait function.
+    VehicleScripts::RequestModel(model);
 
     missionTrain = CREATE_MISSION_TRAIN(model, pos, direction, 0, 1);
 

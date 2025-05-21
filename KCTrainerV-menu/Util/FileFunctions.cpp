@@ -155,7 +155,9 @@ void FileFunctions::TeleportToSavedCoords(const std::string& fileName)
 		inputFile.close();
 
 		// Explicitly unload loaded IPLs when teleporting to saved coords
+#ifdef LOAD_IPLS
 		teleportLocations.UnloadAllLoadedIpls();
+#endif
 	}
 	else {
 		//std::cerr << "Error opening file " << fileName << " for reading." << std::endl;

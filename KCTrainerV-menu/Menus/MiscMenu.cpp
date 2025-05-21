@@ -236,9 +236,9 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // TODO Figure out why this function doesn't work.
     if (mbCtx.Option("Test Fade out/in", { "Test for fading the screen out and back in" }))
     {
-        //playerScripts.TestFade();
-        Vector3 targetLocation = Teleports::Positions::vSafeHouseLocations.at("Michael's House");
-        MiscScripts::Fade::InitiateTeleportFade(targetLocation);
+        playerScripts.TestFade();
+        //Vector3 targetLocation = Teleports::Positions::vSafeHouseLocations.at("Michael's House");
+        //MiscScripts::Fade::InitiateTeleportFade(targetLocation);
     }
 
 #ifdef DEBUG_MODE

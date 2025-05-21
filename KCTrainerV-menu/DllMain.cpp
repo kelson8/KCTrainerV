@@ -171,7 +171,8 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
             //AttachConsole();
             scriptRegister(hInstance, KCMenu::ScriptMain);
             // Run the second thread, mostly just for fading the screen for now.
-            scriptRegisterAdditionalThread(hInstance, KCMenu::Thread2);
+            // Disabled, I fixed the WAIT function, this can be used for later.
+            //scriptRegisterAdditionalThread(hInstance, KCMenu::Thread2);
             LOG(INFO, "Script registered");
             break;
         }

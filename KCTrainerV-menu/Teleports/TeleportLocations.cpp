@@ -153,11 +153,17 @@ static const std::vector<TeleportInfo> teleportLocations = {
     {"Train station #2", {670.2056f, -685.7708f, 25.15311f}, 10.0f, {}},
     //{ "Dignity Party (Vespucci Beach)", {-2023.455f, -1038.181f, 8.0629f}, 90.0f, {vYacht_Smboat1} },
     // ... more locations
-
-    
 #else
-    {"Airport Runway", {-1336.0f, -3044.0f, 13.9f}, 320.0f},
-    {"Hospital LS1 Rooftop" ,{331.20f, -1409.31f, 77.53f}, 46.10f},
+    {"Airport Runway", {-1336.0f, -3044.0f, 13.9f}, 320.0f}, // No IPLs needed for the runway
+    {"Hospital LS1 Rooftop" ,{331.20f, -1409.31f, 77.53f}, 46.10f}, // No IPLs needed
+    //{ "Dignity Heist (Vespucci Beach)", {-2023.455f, -1038.181f, 8.0629f}, 90.0f, {vYacht_Heist1}}, // SP_YACHT1
+    // SP_YACHT1 - IPLs seem to auto load on start, I'll leave them alone.
+    { "Dignity Heist (Vespucci Beach)", {-2023.455f, -1038.181f, 8.0629f}, 90.0f},
+    {"Richard's Majestic Movie Studio", {-1038.258423, -494.781830, 36.322914}, 89.88f},
+    {"Train station #1", {247.965f, -1201.17f, 38.92f}, 10.0f},
+    {"Train station #2", {670.2056f, -685.7708f, 25.15311f}, 10.0f},
+    //{ "Dignity Party (Vespucci Beach)", {-2023.455f, -1038.181f, 8.0629f}, 90.0f, {vYacht_Smboat1} },
+    // ... more locations
 #endif // LOAD_IPLS
 };
 

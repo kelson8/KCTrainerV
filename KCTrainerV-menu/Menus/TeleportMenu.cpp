@@ -89,12 +89,13 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
         playerScripts.WarpToLocation(TeleportLocation::HOSPITAL_LS1_ROOFTOP);
     }
 
-#ifdef LOAD_IPLS
+    // This seems to autoload? At least with my other mods it does, not sure if it's supposed to.
+//#ifdef LOAD_IPLS
     if (mbCtx.Option("Singleplayer Yacht"))
     {
         playerScripts.WarpToLocation(TeleportLocation::SP_YACHT1);
     }
-#endif
+//#endif
 
     if (mbCtx.Option("Richards Majestic Movie Studio"))
     {

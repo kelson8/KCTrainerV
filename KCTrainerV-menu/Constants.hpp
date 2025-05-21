@@ -28,7 +28,7 @@
 
 // This will enable teleports that will use IPLs such as multiplayer locations and other singleplayer locations.
 // I will need to set this up and adapt items from Menyoo but I should be able to figure it out.
-#define LOAD_IPLS
+//#define LOAD_IPLS
 
 // Enable extra logging for IPLs, such as unloading, possibly loading in the future
 // TODO Disable in release builds, this isn't very useful unless debugging.

@@ -45,7 +45,9 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     }
 
 
-    // TODO Fix this to work.
+    //-----
+    // Kill the player with a pistol just like in online.
+    //-----
     if (mbCtx.Option("MP Suicide", { "Kill yourself with the multiplayer animation." }))
     {
         playerScripts.KillPlayerMP();

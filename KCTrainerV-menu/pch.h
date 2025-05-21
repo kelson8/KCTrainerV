@@ -4,6 +4,9 @@
 #include <inc/natives.h>
 #include <Natives/natives2.h>
 
+// Logging to cout and other stuff
+#include "defines.h"
+
 // Strings and other stuff
 #include <iostream>
 #include <fstream>
