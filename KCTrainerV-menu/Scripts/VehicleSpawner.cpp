@@ -98,33 +98,46 @@ void VehicleSpawner::VehicleSpawnTick() {
  * distance between 'em.
  * 
  * I adapted this and got it working.
- * TODO Make this clear the area also.
+ * TODO Make this remove the old vehicle, for some reason it stays spawned in.
  */
 void VehicleSpawner::SpawnVehicle(Hash hash) {
     Util util = Util();
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& vehicleScripts = VehicleScripts::GetInstance();
 
+    // I had to change playerPed to this, logging to the console showed the coords were indeed wrong.
+    Ped playerPed = PLAYER_PED_ID();
+
+    //-----
+    // Clear the area
+    //-----
+
+    Vector3 currentPos = ENTITY::GET_ENTITY_COORDS(playerPed, true);
+    float clearAreaRadius = 25;
+
+    CLEAR_AREA_OF_VEHICLES(currentPos, clearAreaRadius, true, false, false, false, false, false, false);
+
+
+    //-----
     // Make sure the model exists and is a vehicle.
+    //-----
     if (STREAMING::IS_MODEL_IN_CDIMAGE(hash) && STREAMING::IS_MODEL_A_VEHICLE(hash)) {
-        //Ped playerPed = PLAYER::PLAYER_PED_ID();
-        //Ped playerPed = playerScripts.GetPlayerPed();
-        //Ped playerPed = playerScripts.GetPlayerID();
-        // I had to change playerPed to this, logging to the console showed the coords were indeed wrong.
-        Ped playerPed = PLAYER_PED_ID();
 
-        // I finally fixed the wait function.
+        //-----
+        // Request the model
+        //-----
         vehicleScripts.RequestModel(hash);
-
-        // Hmm, I disabled some of the spawn inside vehicle code and set the position to the player position, what will that do?
 
         // TODO Possibly setup ini file for loading the SpawnInside value?
         //spawnInsideVehicle = settings.SpawnInside;
         //if (findStringInNames("trailer", hash) || findStringInNames("train", hash)) {
         //    spawnInside = false;
         //}
-
-        Vector3 currentPos = ENTITY::GET_ENTITY_COORDS(playerPed, true);
+        
+        //-----
+        // Set the position
+        //-----
+        
         float currentX = currentPos.x + 3;
         float currentY = currentPos.y + 3;
         float currentZ = currentPos.z;
@@ -135,21 +148,32 @@ void VehicleSpawner::SpawnVehicle(Hash hash) {
         //Vector3 pos = ENTITY::GET_ENTITY_COORDS(playerPed, true);
         Vector3 pos = newPos;
 
+        //-----
+        // If set to spawn inside vehicle and player is in vehicle.
+        // Remove the old one.
+        //-----
         if (spawnInsideVehicle && PED::IS_PED_IN_ANY_VEHICLE(playerPed, false)) {
             Vehicle oldVeh = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
             Vector3 oldVehiclePos = ENTITY::GET_ENTITY_COORDS(playerPed, true);
+
             oldVehiclePos = ENTITY::GET_ENTITY_COORDS(oldVeh, true);
             ENTITY::SET_ENTITY_AS_MISSION_ENTITY(oldVeh, true, true);
             VEHICLE::DELETE_VEHICLE(&oldVeh);
             pos = oldVehiclePos;
         }
 
+        //-----
+        // Create the vehicle
+        //-----
         Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, pos, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()), 0, 1, 0);
         VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh, 5.0f);
         VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.0f);
 
         std::string vehicleName = util.GetGxtName(hash);
 
+        //-----
+        // Set the player to spawn in the vehicle, turn the engine on.
+        //-----
         if (spawnInsideVehicle) {
             //if (vehicleScripts.spawnInsideVehicle) {
             ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()));
@@ -162,6 +186,7 @@ void VehicleSpawner::SpawnVehicle(Hash hash) {
         WAIT(0);
         STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
+        // TODO Look into how this is working.
         //if (settings.Persistent) {
         //    ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, true, false);
         //    g_persistentVehicles.push_back(veh);
@@ -171,6 +196,9 @@ void VehicleSpawner::SpawnVehicle(Hash hash) {
             //ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
         //}
 
+        //-----
+        // Display the spawned message on the screen and log to console.
+        //-----
         //util.ShowSubtitle("Spawned " + util.GetGxtName(hash) + " (" + util.GetModelName(hash) + ")");
         util.ShowSubtitle("Spawned " + vehicleName);
 
@@ -183,6 +211,9 @@ void VehicleSpawner::SpawnVehicle(Hash hash) {
         //log_output(currentCoordsConsoleLogString);
     }
     else {
+        //-----
+        // Display the error message.
+        //-----
         util.ShowSubtitle("Vehicle doesn't exist");
 
         std::string consoleErrorString = std::format("Error, vehicle with hash {} doesn't exist!", hash);
@@ -191,6 +222,16 @@ void VehicleSpawner::SpawnVehicle(Hash hash) {
 }
 
 //Vehicle VehicleScripts::SpawnVehicle(Hash hash, Vector3 coords, float heading, DWORD timeout) {
+
+/// <summary>
+/// Spawn a vehicle at a specified coords and heading
+/// It is a more basic function then the other one 
+/// that spawns it on the player or puts the player inside.
+/// </summary>
+/// <param name="hash"></param>
+/// <param name="coords"></param>
+/// <param name="heading"></param>
+/// <returns></returns>
 Vehicle VehicleSpawner::SpawnVehicle(Hash hash, Vector3 coords, float heading) {
     auto& vehicleScripts = VehicleScripts::GetInstance();
 
@@ -199,12 +240,12 @@ Vehicle VehicleSpawner::SpawnVehicle(Hash hash, Vector3 coords, float heading) {
         return 0;
     }
 
-    // This function seems to work for this.
-    // Make this do nothing if the model isn't loaded
-
     // I finally fixed the wait function.
     vehicleScripts.RequestModel(hash);
 
+    //-----
+    // Create the vehicle
+    //-----
     Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, coords, heading, 0, 1, 0);
     VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh, 5.0f);
     WAIT(0);

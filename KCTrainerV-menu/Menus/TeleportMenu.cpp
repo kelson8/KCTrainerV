@@ -11,6 +11,9 @@
 
 #include "../Util/FileFunctions.h"
 
+// Menyoo
+#include "../Scripts/Extras/Game.h"
+
 // Teleports
 #include "Teleports/TeleportLocations.h"
 
@@ -18,10 +21,18 @@
 #include "Components/LuaManager.h"
 #endif //LUA_TEST
 
+//Vector3 _customTeleLoc = Vector3(0.0, 0.0, 0.0);
+Vector3 _customTeleLoc;
+
+// TODO Setup sub menu for the custom teleport later
+// Add X, Y, and Z float options in the menu.
+bool grabbedCoords = false;
+
 void TeleportMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& fileFunctions = FileFunctions::GetInstance();
     auto& textScripts = TextScripts::GetInstance();
+    auto& playerScripts = PlayerScripts::GetInstance();
 
     // Hmm, I guess all sub menus need a title, it broke without one.
     mbCtx.Title("Teleport");
@@ -59,6 +70,100 @@ void TeleportMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     }
 
     mbCtx.BoolOption("Display coords", textScripts.drawCoords, { "Toggle drawing coordinates and heading on screen." });
+
+    // TODO Setup sub menu for the custom teleport later
+    // TODO Add X, Y, and Z float options in the menu.
+    // This seems to work for teleporting the player to a specific X, Y, and Z.
+    // This idea is coming from Menyoo, Sub_CustomCoords function in Teleport_Submenus.cpp.
+    if (mbCtx.Option("Custom Teleport", { "Teleport to a custom X, Y, and Z using an on screen keyboard" }))
+    {
+        
+        Ped playerPedID = PLAYER_PED_ID();
+        //if (!grabbedCoords)
+        //{
+        //    _customTeleLoc = GET_ENTITY_COORDS(playerPedID, 0);
+        //    grabbedCoords = true;
+        //}
+
+        try {
+            //_customTeleLoc.x = std::stof(Game::InputBox(std::to_string(_customTeleLoc.x), 11U, std::string(), std::to_string(_customTeleLoc.x)));
+            _customTeleLoc.x = std::stof(Game::InputBox(std::to_string(_customTeleLoc.x), 11U));
+        }
+        catch (...)
+        {
+
+        }
+
+        try {
+            //_customTeleLoc.y = std::stof(Game::InputBox(std::to_string(_customTeleLoc.y), 11U, std::string(), std::to_string(_customTeleLoc.y)));
+            _customTeleLoc.y = std::stof(Game::InputBox(std::to_string(_customTeleLoc.y), 11U));
+        }
+        catch (...)
+        {
+
+        }
+
+        try {
+            //_customTeleLoc.z = std::stof(Game::InputBox(std::to_string(_customTeleLoc.z), 11U, std::string(), std::to_string(_customTeleLoc.z)));
+            _customTeleLoc.z = std::stof(Game::InputBox(std::to_string(_customTeleLoc.z), 11U));
+        }
+        catch (...)
+        {
+
+        }
+
+        playerScripts.SetPlayerCoords(_customTeleLoc);
+
+        std::string valuesOutputString = std::format("Values: X: {}, Y: {}, Z: {}", _customTeleLoc.x, _customTeleLoc.y, _customTeleLoc.z);
+
+        std::cout << valuesOutputString << std::endl;
+
+
+        // TODO Replicate this from Menyoo
+        /*
+        			GTAentity thisEntity = Static_241;
+
+			if (!GrabbedCoords)
+			{
+				_customTeleLoc = GET_ENTITY_COORDS(PLAYER_PED_ID(), 0);
+				GrabbedCoords = true;
+			}
+
+			bool x_plus = 0, x_minus = 0,
+				y_plus = 0, y_minus = 0,
+				z_plus = 0, z_minus = 0,
+				x_custom = 0, y_custom = 0, z_custom = 0, apply = 0, update = 0;
+
+			AddTitle("Custom Coordinates");
+			AddOption("Update to current", update);
+			AddNumber("  X", _customTeleLoc.x, 4, x_custom, x_plus, x_minus);
+			AddNumber("  Y", _customTeleLoc.y, 4, y_custom, y_plus, y_minus);
+			AddNumber("  Z", _customTeleLoc.z, 4, z_custom, z_plus, z_minus);
+			AddOption("Apply", apply);
+
+
+			if (x_plus) { _customTeleLoc.x += 0.1f; return; }
+			if (y_plus) { _customTeleLoc.y += 0.1f; return; }
+			if (z_plus) { _customTeleLoc.z += 0.1f; return; }
+			if (x_minus) { _customTeleLoc.x -= 0.1f; return; }
+			if (y_minus) { _customTeleLoc.y -= 0.1f; return; }
+			if (z_minus) { _customTeleLoc.z -= 0.1f; return; }
+
+			if (apply)
+			{
+				GrabbedCoords = false;
+				teleport_net_ped(thisEntity, _customTeleLoc.x, _customTeleLoc.y, _customTeleLoc.z);
+			}
+
+			if (update)
+			{
+				GrabbedCoords = false;
+			}
+        */
+
+    }
+
+
 
     // Debug functions for the teleport menu, disabled in release builds.
 #ifdef DEBUG_MODE

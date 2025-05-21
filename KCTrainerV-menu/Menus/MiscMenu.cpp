@@ -243,14 +243,13 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
 #ifdef DEBUG_MODE
 
-    // Test for on screen keyboard
-    // So far this shows up but takes a bit to show up, and the text doesn't get logged anywhere.
-    // It isn't working like in Menyoo.
+    // This works for outputting text to the console, fixing the wait fixed this also.
     if (mbCtx.Option("On screen keyboard", { "Show a on screen keyboard" }))
     {
         std::string inputString = Game::InputBox("DEFAULT", 64);
         if (inputString.length() > 0)
         {
+            UI::Notify(inputString);
             std::cout << inputString << std::endl;
         }
         else {

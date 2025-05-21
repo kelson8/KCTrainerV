@@ -466,38 +466,18 @@ namespace Game
 	//On screen keyboard
 	std::string InputBox(const std::string& escReturn, int maxChars, std::string titlegxt, std::string preText)
 	{
+		WAIT(0);
 		preText = preText.substr(0, maxChars);
 
 		//CustomKeyboardText ckt;
 		DISPLAY_ONSCREEN_KEYBOARD(true, "", "", preText.c_str(), "", "", "", maxChars);
 
-		// TODO Test this
-		//WAIT(50);
 
-		// New for a delay, to possibly stop this from crashing
-		DWORD startTime = GetTickCount();
-		//DWORD timeout = 500; // in millis
-		
-		DWORD timeout = 10; // in millis
-		//DWORD timeout = 5000; // in millis
-
-		// This seems to show up if I disable this but I have to click ok on an error then the menu crashes.
-		// So not ideal.
+		// This works for displaying a keyboard and outputting the text
 		while (UPDATE_ONSCREEN_KEYBOARD() == 0)
 		{
 		 
 			WAIT(0); // Important to yield the game thread
-			// New addition, break out of this if it hangs like my other items.
-			// Actually, a very short delay on this seems to have fixed it
-			// Although this doesn't return a value when I do this.
-			if (GetTickCount() > startTime + timeout) 
-			{
-				//WAIT(0);
-
-				UI::Notify("Couldn't load on screen keyboard");
-				//return "";
-				return escReturn;
-			}
 
 			SET_TEXT_FONT(/*GTAfont::Arial*/0);
 			SET_TEXT_SCALE(0.34f, 0.34f);
@@ -521,6 +501,7 @@ namespace Game
 					BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 					ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(titlegxt.c_str());
 				}
+				// TODO Fix this.
 			//	//else
 			//	//{
 			//	//	BEGIN_TEXT_COMMAND_DISPLAY_TEXT("jamyfafi");
@@ -536,18 +517,7 @@ namespace Game
 			return escReturn;
 		}
 
-		else if (UPDATE_ONSCREEN_KEYBOARD() == 1) // User pressed OK
-		{
-			return GET_ONSCREEN_KEYBOARD_RESULT();
-		}
-		else
-		{
-			// This should ideally not happen, but handle it defensively
-			UI::Notify("Error: On-screen keyboard state issue.");
-			return escReturn;
-		}
-
-		//return GET_ONSCREEN_KEYBOARD_RESULT();
+		return GET_ONSCREEN_KEYBOARD_RESULT();
 	}
 
 	// I have these in PlayerScripts.

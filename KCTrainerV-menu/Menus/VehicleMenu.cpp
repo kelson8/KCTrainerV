@@ -2,6 +2,10 @@
 #include "../Constants.hpp"
 #include "VehicleMenu.h"
 
+#include "../Scripts/Extras/Game.h"
+
+#include "../Util/UI.hpp"
+
 #include "../Util/Hash.h"
 
 #include "../Scripts/PlayerScripts.h"
@@ -49,8 +53,28 @@ void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     }
 #endif //_TEST
 
+    if (mbCtx.Option("Vehicle spawn keyboard", { "Display a in game keyboard to spawn a vehicle with." }))
+    {
+        std::string inputString = Game::InputBox("DEFAULT", 64);
+        if (inputString.length() > 0)
+        {
+            Hash vehicleHash = MISC::GET_HASH_KEY(inputString.c_str());
+            //std::string spawnedVehicleString = std::format("Spawned vehicle: {}", inputString);
+            //UI::Notify(inputString);
+            //UI::Notify(spawnedVehicleString);
+            std::cout << inputString << std::endl;
+            vehicleSpawner.SpawnVehicle(vehicleHash);
+        }
+        else {
+            std::string invalidInputString = "Input string not valid!";
+            UI::Notify(invalidInputString);
+            std::cout << invalidInputString << std::endl;
+
+        }
+        
+    }
+
     // Moved vehicle spawning code into the categories.
-    // TODO Fix vehicle spawners to work again.
     mbCtx.MenuOption("Categories", "VehicleCategorySubmenu", { "Show the list of vehicle categories." });
 }
 
