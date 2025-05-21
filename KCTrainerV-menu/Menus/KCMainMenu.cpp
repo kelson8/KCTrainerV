@@ -78,11 +78,6 @@ namespace
     };
 }
 
-// Set for playing the music tracks
-#ifndef MOVE_MENUS
-int currentMusicTrack;
-#endif
-
 /*
  * This function builds the menu's submenus, and the submenus are passed into the CScriptMenu constructor.
  * While this provides a cleaner way to define the menu, dynamically created submenu are not possible.
@@ -90,8 +85,10 @@ int currentMusicTrack;
  */
 std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu() 
 {
+    //-----
     // Instances of these objects, this is a great way to use booleans and stuff between files.
     // Scripts
+    //-----
     auto& playerScripts = PlayerScripts::GetInstance();
 #ifdef VEHICLE_SCRIPTS_SINGLETON
     auto& vehicleScripts = VehicleScripts::GetInstance();
@@ -103,10 +100,14 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
     auto& textScripts = TextScripts::GetInstance();
 
+    //-----
     // Functions
     auto& fileFunctions = FileFunctions::GetInstance();
+    //-----
 
+    //-----
     // Menus
+    //-----
     auto& playerMenu = PlayerMenu::GetInstance();
     auto& pedMenu = PedMenu::GetInstance();
     auto& teleportMenu = TeleportMenu::GetInstance();
@@ -115,6 +116,10 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     auto& miscMenu = MiscMenu::GetInstance();
 
     std::vector<CScriptMenu<KCMainScript>::CSubmenu> submenus;
+    //-----
+    // Main Menu
+    // This is where all the menus are added
+    //-----
     submenus.emplace_back("mainmenu",
         [](NativeMenu::Menu& mbCtx, KCMainScript& context) 
         {
@@ -146,11 +151,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             mbCtx.MenuOption("Ped", "pedmenu", { "Show the ped menu." });
             mbCtx.MenuOption("World", "worldmenu", { "This submenu contains items for the world menu." });
 
-#ifdef MOVE_MENUS
             mbCtx.MenuOption("Misc", "miscMenu", { "Misc menu." });
-#else
-            mbCtx.MenuOption("Test Sub Menu", "submenutest", { "Testing menu." });
-#endif //MOVE_MENUS
 
             // Showing a non-scrolling aligned item is also possible, if the vector only contains one element.
             int nothing = 0;
@@ -167,6 +168,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 #pragma region PlayerMenu
 
+    //-----
+    // Player Menu
+    //-----
     submenus.emplace_back("playermenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -176,6 +180,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     );
 
 
+    //-----
+    // Player debugsub menu
+    //-----
     submenus.emplace_back("PlayerDebugSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -188,6 +195,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 #pragma endregion
 
 #pragma region VehicleMenu
+    //-----
+    // Vehicle menu
+    //-----
     submenus.emplace_back("vehiclemenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -197,7 +207,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 #pragma region VehicleCategorySubMenu
 
-    // This works
+    //-----
+    // Vehicle category sub menu
+    //-----
     submenus.emplace_back("VehicleCategorySubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -205,6 +217,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
+    //-----
+    // Sports vehicle category sub menu
+    //-----
     submenus.emplace_back("SportsVehicleCategorySubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -212,7 +227,11 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
+    //-----
+    // Super vehicle category sub menu
+    //-----
     submenus.emplace_back("SuperVehicleCategorySubmenu",
+
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
             vehicleMenu.BuildSuperVehicleCategorySubmenu(mbCtx, context);
@@ -220,6 +239,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     );
 
 #pragma region TeleportMenu
+    //-----
+    // Teleport menu
+    //-----
     submenus.emplace_back("teleportmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -233,6 +255,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     // Moved teleport locations down here, so it doesn't clutter up the teleport menu.
 #pragma region TeleportLocationsSubMenu
 
+    //-----
+    // Teleport locations sub menu
+    //-----
     submenus.emplace_back("teleportlocations",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -244,7 +269,11 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             // First I'll need to fix it in TeleportLocations.cpp, TeleportLocations.h, PlayerScripts.cpp, and PlayerScripts.h:
 #ifdef NEW_TELEPORTS
 #pragma region AirportsTeleportSubMenu
-        submenus.emplace_back("AirportsTeleportSubmenu",
+    //-----
+    // Airports teleport sub menu
+    //-----
+        
+    submenus.emplace_back("AirportsTeleportSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
             teleportMenu.BuildAirportSubMenu(mbCtx, context);
@@ -257,6 +286,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 #pragma region SafehousesTeleportSubmenu
 #ifdef NEW_TELEPORTS
+    //-----
+    // Safe houses teleport sub menu
+    //-----
     submenus.emplace_back("SafehousesTeleportSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -273,6 +305,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 #pragma region DebugTeleportSubMenu
 #ifdef DEBUG_MODE
+    //-----
+    // Debug teleport functions sub menu
+    //-----
     submenus.emplace_back("debugteleportmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -286,6 +321,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 #pragma region LuaTeleportMenu
 #ifdef LUA_TEST
+    //-----
+    // Lua Test for teleport menu
+    //-----
     submenus.emplace_back("luateleportmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -300,6 +338,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 
 #pragma region PedMenu
+    //-----
+    // Ped Menu
+    //-----
     submenus.emplace_back("pedmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -310,6 +351,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 
 #pragma region WorldMenu
+    //-----
+    // World Menu
+    //-----
     submenus.emplace_back("worldmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
@@ -319,189 +363,34 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 #pragma endregion
 
+
+    
+#pragma region MiscMenu
     // Moved down here to reflect position in menu.
-    // TODO Figure out what menu to move this into, for now I'll leave it in the KCMainMenu file.
+    // Moved this into MiscMenu.
     // ---
     // TODO Move chaos mode features into their own sub menu, possibly name it Chaos Mod or Chaos Features?
     // TODO Also add credits to the Chaos mod features menu, such as an about button or something at the bottom.
-    
-#pragma region SubMenuTest
-#ifdef MOVE_MENUS
+
     submenus.emplace_back("miscMenu",
-#else
-    submenus.emplace_back("submenutest",
-#endif
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-
-#ifndef MOVE_MENUS
-            mbCtx.Title("Misc Menu");
-
-            if (mbCtx.Option("Notify", { "Test notification" }))
-            {
-                UI::Notify("Test notification");
-            }
-
-            if (mbCtx.Option("Notify phone sound", { "Test notification with phone sound" }))
-            {
-                textScripts.NotificationBottomLeft("Test notification");
-            }
-
-            mbCtx.BoolOption("ID Gun test", MiscScripts::IDGun::isIdGunEnabled, { "Toggle the ID Gun test from FiveM" });
-
-#ifdef DEBUG_MODE
-            if (mbCtx.Option("Menyoo test", { "Run a test with Menyoo classes" }))
-            {
-                MiscScripts::EXFeatures::MenyooTest();
-            }
-#endif
-
-            int nothing = 0;
-            mbCtx.StringArray("--Music--", { "" }, nothing);
-
-            // Incremement the max number for this as I add more into the Enums.h and MiscScripts.cpp
-            // To add more to this:
-            // 1. Add a value with a number into Enums.h
-            // 2. Add a value into the std::map in MiscScript.cpp in the PlayTestMusic function.
-            //mbCtx.IntOption("Music track", currentMusicTrack, 1, 26, 1, {"List of music tracks within Enums.h in the code."});
-            mbCtx.IntOption("Music track", currentMusicTrack, 1, musicTracksCount, 1, {"List of music tracks within Enums.h in the code."});
-
-            // TODO Test this, figure out a good way to do this.
-            if (mbCtx.Option("Play Test sound"))
-            {
-                
-                //miscScripts.PlayTestMusic(21);
-                // Seems to be the music that sometimes happens when flying.
-                //miscScripts.PlayTestMusic(CHASE_PARACHUTE_START);
-                //miscScripts.PlayTestMusic(SHOOTING_RANGE_START);
-                MiscScripts::Music::PlayTestMusic(static_cast<MusicTracks>(currentMusicTrack));
-            }
-
-
-            if (mbCtx.Option("AW Lobby music", { "Play the arena war lobby music" }))
-            {
-                MiscScripts::Music::PlayArenaWarLobbyMusic();
-            }
-
-            if (mbCtx.Option("Stop music", { "Stops the music currently playing" }))
-            {
-                MiscScripts::Music::StopArenaWarLobbyMusic();
-            }
-
-            // This didn't seem to play the end credits music.
-            // Taken from MiscRollCredits.cpp in Chaos Mod
-            if (mbCtx.Option("Start credits music", { "Start the end credits music" }))
-            {
-                MiscScripts::Music::StartCreditsMusic();
-            }
-
-            if (mbCtx.Option("Stop credits music", { "Stop the end credits music" }))
-            {
-                MiscScripts::Music::StopCreditsMusic();
-            }
-
-#ifdef CHAOSMOD_FEATURES
-            if (mbCtx.Option("Set peds in mowers", { "Place all peds in the area into lawn mowers" }))
-            {
-                miscScripts.SetAllPedsInMowers();
-            }
-#endif // CHAOSMOD_FEATURES
-            
-            mbCtx.BoolOption("Toggle airstrike test", MiscScripts::EXFeatures::airStrikeRunning, { "Toggle the airstrikes on/off" });
-
-            mbCtx.BoolOption("Draw text on screen", textScripts.drawText, { "Toggle test text to draw on screen." });
-
-#ifdef EXTRA_FEATURES
- 
-
-            // Toggle force field
-            mbCtx.BoolOption("Toggle forcefield", MiscScripts::EXFeatures::isForceFieldEnabled, { "Turn on/off the forcefield for the player." });
-
-            // I would set a boolean for this but it requires items that I don't think they can be run in a tick all the time.
-            // Toggle tv on/off
-            if (mbCtx.Option("Enable TV"))
-            {
-                MiscScripts::EXFeatures::EnableTv();
-            }
-
-            if (mbCtx.Option("Disable TV"))
-            {
-                MiscScripts::EXFeatures::DisableTv();
-            }
-
-            //if (mbCtx.Option("Enable Forcefield"))
-            //{
-            //    miscScripts.EnableSky();
-            //}
-
-            //if (mbCtx.Option("Disable Forcefield"))
-            //{
-            //    miscScripts.EnableSky();
-            //}
-#endif //EXTRA_FEATURES
-
-            // TODO Figure out why this function doesn't work.
-            if (mbCtx.Option("Test Fade out/in", { "Test for fading the screen out and back in" }))
-            {
-                playerScripts.TestFade();
-            }
-
-
-
-#ifdef DEBUG_MODE
-
-            // Test for on screen keyboard
-            // So far this shows up but takes a bit to show up, and the text doesn't get logged anywhere.
-            // It isn't working like in Menyoo.
-            if (mbCtx.Option("On screen keyboard", { "Show a on screen keyboard" }))
-            {
-                std::string inputString = Game::InputBox("DEFAULT", 64);
-                if (inputString.length() > 0)
-                {
-                    std::cout << inputString << std::endl;
-                }
-                else {
-                    std::cout << "Input string doesn't exist!" << std::endl;
-                }
-                
-            }
-
-            // Not sure how to use this yet.
-            //if (mbCtx.Option("Reclass CVehicle test", { "Test for displaying the current vehicle name in memory" }))
-            //{
-            //    Ped playerPed = PLAYER::PLAYER_PED_ID();
-            //    Vehicle currentVehicle = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
-
-            //    if (ENTITY::DOES_ENTITY_EXIST(currentVehicle))
-            //    {
-            //        //CVehicle* vehiclePtr = reinterpret_cast<CVehicle*>(GET_ENTITY_ADDRESS)
-
-            //    }
-            //}
-#endif
-
-            // TODO Figure out implementation for this, shouldn't be too hard.
-            //if (mbCtx.Option("Test reload menu"), { "Test for reloading the menu config, may crash." })
-            //{
-            //    
-            //}
-
-
-#else
             miscMenu.Build(mbCtx, context);
-#endif
-
         });
 
-        // Why doesn't this work in here?
-#ifdef MOVE_MENUS
-        submenus.emplace_back("submenutest", 
-            [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+
+    // Well I finally got this working.
+
+    //-----
+    // Misc Sub menu test
+    //-----
+    submenus.emplace_back("MiscDebugSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-                miscMenu.BuildTestSubMenu(mbCtx, context);
-        }
-            );
-#endif //MOVE_MENUS
+            miscMenu.BuildDebugSubMenu(mbCtx, context);
+            
+        });
+
 
 #pragma endregion
 

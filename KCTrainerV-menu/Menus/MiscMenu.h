@@ -15,11 +15,15 @@ public:
 	}
 
 	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context) override;
-	void BuildTestSubMenu(NativeMenu::Menu mbCtx, KCMainScript& context);
+	void BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 
 private:
 	MiscMenu() {} // Private constructor to prevent external instantiation
 	MiscMenu(const MiscMenu&) = delete;
 	MiscMenu& operator=(const MiscMenu&) = delete;
+
+	// Set for playing the music tracks
+	// This doesn't need to be accessed outside this class.
+	int currentMusicTrack = 1;
 };
 

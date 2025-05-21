@@ -18,10 +18,16 @@
 #include "Util/EntityIterator.h"
 #include "Util/Random.h"
 
+
 // Menyoo
+// Enable the new animation test for the MP Suicide animation using Menyoo.
+// Currently it gives a linker error and is disabled
+//#define NEW_TEST
+
 #include "GTAped.h"
 #include "GTAentity.h"
 #include "GTAvehicle.h"
+#include "Tasks.h"
 
 //void FadeScreenIn(int ms);
 //void FadeScreenOut(int ms);
@@ -395,10 +401,29 @@ void PlayerScripts::KillPlayerMP()
     DWORD startTime = GetTickCount();
     DWORD timeout = 3000; // in millis
 
+    std::string animDict = "mp_suicide";
+    std::string animName = "mp_suicide";
+
+#ifndef NEW_TEST
     Ped playerPed = PLAYER_PED_ID();
+#else
+    GTAped playerPed = PLAYER_PED_ID();
+    if(!playerPed.IsInVehicle() && playerPed.IsOnFoot())
+#endif // !NEW_TEST
+
+#ifndef NEW_TEST
     if (!IS_PED_IN_ANY_VEHICLE(playerPed, false) && IS_PED_ON_FOOT(playerPed)
         && GET_PED_PARACHUTE_STATE(playerPed) == -1)
     {
+#endif // !NEW_TEST
+
+#ifdef NEW_TEST
+            if (!playerPed.Task().IsPlayingAnimation(animDict, animName))
+                playerPed.Task().PlayAnimation(animDict, animName, 1, 1, -1, AnimFlag::UpperBodySecondTask, 0, false);
+#endif // NEW_TEST
+
+#ifndef NEW_TEST
+
         REQUEST_ANIM_DICT("mp_suicide");
         // Added this check like in the vehicle spawner, if it doens't load this shouldn't crash the game
         // This at least makes it not crash, but it doesn't work like my vehicle spawner doesn't.
@@ -421,14 +446,31 @@ void PlayerScripts::KillPlayerMP()
             }
         }
 
+
+
+#endif // !NEW_TEST
+
         // Give the player a pistol
         Hash pistolHash = "WEAPON_PISTOL"_hash;
 
+#ifdef NEW_TEST
+
+        // TODO Fix this, Task().ShootAt gives a linker error, I am including the Task.h
+        playerPed.Weapon_set(pistolHash);
+
+        WAIT(750);
+        playerPed.Task().ShootAt(Vector3(0.0f, 0.0f, 0.0f), 10, 0);
+        // Set the players health to 0.
+        playerPed.Health_set(0);
+
+#endif // NEW_TEST
+
+#ifndef NEW_TEST
         GIVE_WEAPON_TO_PED(playerPed, pistolHash, 9999, true, true);
         
         // Play the MP Suicide animation
         TASK_PLAY_ANIM(playerPed, "mp_suicide", "pistol", 8.0f, -1.0f, 800, 1, 0.f, false, false, false);
-        
+        //
         WAIT(750);
         //SET_PED_SHOOTS_AT_COORD(playerPed, 0, 0, 0, true);
         // Make the player shoot
@@ -438,6 +480,7 @@ void PlayerScripts::KillPlayerMP()
 
     // Set the players health to 0.
     SET_ENTITY_HEALTH(playerPed, 0, 0);
+#endif // !NEW_TEST
 }
 
 #pragma endregion // HealthArmorAndKilling

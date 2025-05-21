@@ -49,7 +49,7 @@ namespace MiscScripts
 		void StopTestMusic();
 
 		void PlayArenaWarLobbyMusic();
-		void StopArenaWarLobbyMusic();
+		void StopMusic();
 
 		void StartCreditsMusic();
 		void StopCreditsMusic();

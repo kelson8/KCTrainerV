@@ -341,7 +341,8 @@ namespace MiscScripts
 		{
 			AUDIO::TRIGGER_MUSIC_EVENT("AW_LOBBY_MUSIC_START");
 		}
-		void StopArenaWarLobbyMusic()
+
+		void StopMusic()
 		{
 			AUDIO::TRIGGER_MUSIC_EVENT("MP_MC_CMH_IAA_FINALE_START");
 		}
