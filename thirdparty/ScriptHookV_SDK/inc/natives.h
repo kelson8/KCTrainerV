@@ -913,7 +913,12 @@ namespace ENTITY
     static void SET_ENTITY_MAX_SPEED(Entity entity, float speed) { invoke<int>(0x0E46A3FCBDE2A1B1, entity, speed); } // 0x0E46A3FCBDE2A1B1 0x46AFFED3 b323
     static void SET_ENTITY_ONLY_DAMAGED_BY_PLAYER(Entity entity, BOOL toggle) { invoke<int>(0x79F020FF9EDC0748, entity, toggle); } // 0x79F020FF9EDC0748 0x4B707F50 b323
     static void SET_ENTITY_ONLY_DAMAGED_BY_RELATIONSHIP_GROUP(Entity entity, BOOL p1, Any p2) { invoke<int>(0x7022BD828FA0B082, entity, p1, p2); } // 0x7022BD828FA0B082 0x202237E2 b323
-    static void SET_ENTITY_PROOFS(Entity entity, BOOL bulletProof, BOOL fireProof, BOOL explosionProof, BOOL collisionProof, BOOL meleeProof, BOOL steamProof, BOOL p7, BOOL waterProof) { invoke<int>(0xFAEE099C6F890BB8, entity, bulletProof, fireProof, explosionProof, collisionProof, meleeProof, steamProof, p7, waterProof); } // 0xFAEE099C6F890BB8 0x7E9EAB66 b323
+
+    // Obtained new value from here:
+    // https://nativedb.dotindustries.dev/gta5/natives/0xFAEE099C6F890BB8?search=SET_ENTITY_PROOFS
+    //static void SET_ENTITY_PROOFS(Entity entity, BOOL bulletProof, BOOL fireProof, BOOL explosionProof, BOOL collisionProof, BOOL meleeProof, BOOL steamProof, BOOL p7, BOOL waterProof) { invoke<int>(0xFAEE099C6F890BB8, entity, bulletProof, fireProof, explosionProof, collisionProof, meleeProof, steamProof, p7, waterProof); } // 0xFAEE099C6F890BB8 0x7E9EAB66 b323
+    static void SET_ENTITY_PROOFS(Entity entity, BOOL bulletProof, BOOL fireProof, BOOL explosionProof, BOOL collisionProof, BOOL meleeProof, BOOL steamProof, BOOL dontResetOnCleanup, BOOL waterProof) { invoke<int>(0xFAEE099C6F890BB8, entity, bulletProof, fireProof, explosionProof, collisionProof, meleeProof, steamProof, dontResetOnCleanup, waterProof); } // 0xFAEE099C6F890BB8 0x7E9EAB66 b323
+    
     static BOOL GET_ENTITY_PROOFS(Entity entity, BOOL* bulletProof, BOOL* fireProof, BOOL* explosionProof, BOOL* collisionProof, BOOL* meleeProof, BOOL* steamProof, BOOL* p7, BOOL* drownProof) { return invoke<BOOL>(0xBE8CD9BE829BBEBF, entity, bulletProof, fireProof, explosionProof, collisionProof, meleeProof, steamProof, p7, drownProof); } // 0xBE8CD9BE829BBEBF  b1604
     static void SET_ENTITY_QUATERNION(Entity entity, Vector4 vec) { invoke<int>(0x77B21BE7AC540F07, entity, vec.x, vec.y, vec.z, vec.w); } // 0x77B21BE7AC540F07 0x83B6046F b323
     static void SET_ENTITY_RECORDS_COLLISIONS(Entity entity, BOOL toggle) { invoke<int>(0x0A50A1EEDAD01E65, entity, toggle); } // 0x0A50A1EEDAD01E65 0x6B189A1A b323

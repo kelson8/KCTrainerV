@@ -4,9 +4,45 @@ namespace Stats
 {
     namespace Cop 
     {
+
+        // TODO Add settings class in here for separating the menu positions and other items
+#ifdef STAT_CLASS_TEST
+        class Settings 
+        {
+        public:
+            static Settings& GetInstance() {
+                static Settings instance;
+                return instance;
+            }
+
+            // Position on menu
+            // Menu position X
+            float copsKilledMenuPosX = 0.204f;
+            // Menu Position Y
+            float copsKilledMenuPosY = 0.963f;
+
+            // Cop cars blown up
+            //float copsCarsBlownUpMenuPosX = 0.150f;
+            float copsCarsBlownUpMenuPosX = 0.220f;
+            //float copsCarsBlownUpMenuPosY = 0.870f;
+            float copsCarsBlownUpMenuPosY = 0.935f;
+
+            bool isCopsKilledDisplayActive = false;
+
+        private:
+            Settings() = default;
+            Settings(const Settings&) = delete;
+            Settings& operator=(const Settings&) = delete;
+
+        };
+
+#endif
+
         // Functions related to cop stats
         int GetCopsKilledStat();
         int GetCopsVehiclesBlownUpStat();
+
+        void ResetCopsKilledMenuPositions();
         void ProcessCopsKilledDisplay(); // Renamed to clarify its purpose
 
         // Position on menu

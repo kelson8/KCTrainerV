@@ -146,4 +146,10 @@ namespace MiscScripts
 		void FadeThread();
 	} // namespace Fade
 
+	namespace Model
+	{
+		void Request(Hash hash);
+		void MarkAsNoLongerNeeded(Hash model);
+	} // namespace Model
+
 } // Namespace MiscScripts

@@ -90,11 +90,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     // Scripts
     //-----
     auto& playerScripts = PlayerScripts::GetInstance();
-#ifdef VEHICLE_SCRIPTS_SINGLETON
     auto& vehicleScripts = VehicleScripts::GetInstance();
-#else
-    VehicleScripts vehicleScripts = VehicleScripts();
-#endif
 
     auto& pedScripts = PedScripts::GetInstance();
 
@@ -235,6 +231,17 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
             vehicleMenu.BuildSuperVehicleCategorySubmenu(mbCtx, context);
+        }
+    );
+
+    //-----
+    // SUV vehicle category sub menu
+    //-----
+    submenus.emplace_back("SuvVehicleCategorySubmenu",
+
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            vehicleMenu.BuildSuvCategorySubmenu(mbCtx, context);
         }
     );
 

@@ -4,24 +4,35 @@ class VehicleScripts
 public:
 
 	// Instance of the VehicleScripts
-	// TODO Re-enable
-#ifdef VEHICLE_SCRIPTS_SINGLETON
 	static VehicleScripts& GetInstance()
 	{
 		static VehicleScripts instance;
 		return instance;
 	}
-#endif
 
 	// Request vehicle model
-	void RequestModel(Hash model);
+	//void RequestModel(Hash model);
 
 	void ChangePlayerVehicleColor();
 	static void ToggleBombBayDoors();
 
 	Vehicle GetPlayerVehicle();
 
+	// Vehicle mods
+	void SetArmor(int value);
+	int vehicleArmorLevel = 0;
+	//
+
+	// Repair vehicle
 	void RepairVehicle();
+	void RepairTires();
+
+	// Bullet proof
+	void EnableBulletProof();
+	void DisableBulletProof();
+	// Flags
+	bool isBulletProofEnabled = false;
+	bool bulletProofFlag = false;
 
 	// Invincible vehicle toggles
 	void EnableInvincibility();
@@ -30,6 +41,8 @@ public:
 	bool isInvincibleVehicleEnabled = false;
 	// This will make the loop not constantly run
 	bool invincibilityFlag = false;
+
+
 
 	//
 	void CreateMissionTrain(Hash model, Vector3 pos, bool direction);
@@ -40,10 +53,7 @@ public:
 	std::string GetVehicleName(Entity vehicle);
 
 private:
-#ifdef VEHICLE_SCRIPTS_SINGLETON
-	// TODO Re-enable
 	VehicleScripts() {} // Private constructor to prevent external instantiation
 	VehicleScripts(const VehicleScripts&) = delete;
 	VehicleScripts& operator=(const VehicleScripts&) = delete;
-#endif
 };

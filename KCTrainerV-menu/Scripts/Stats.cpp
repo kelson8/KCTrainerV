@@ -98,7 +98,9 @@ namespace Stats
 {
     namespace Cop
     {
+        //-----
         // Position on menu
+        //-----
         // Menu position X
         float copsKilledMenuPosX = 0.204f;
         // Menu Position Y
@@ -192,8 +194,9 @@ namespace Stats
 
 #pragma region StatLoops
 
-
+        //-----
         // Stat loops
+        //-----
 
         //------------ Cops cars blown up Logic --------------/
         // Set default value for this to 0
@@ -252,6 +255,28 @@ namespace Stats
         }
 
         //------------ End Cops killed logic --------------/
+
+
+
+        //------------ Begin Cop menu position debug --------------/
+
+        /// <summary>
+        /// Reset the Cops Killed menu positions back to default.
+        /// </summary>
+        void ResetCopsKilledMenuPositions()
+        {
+            // Position on menu
+            // Menu position X
+            copsKilledMenuPosX = 0.204f;
+            // Menu Position Y
+            copsKilledMenuPosY = 0.963f;
+
+            // Cop cars blown up
+            copsCarsBlownUpMenuPosX = 0.220f;
+            copsCarsBlownUpMenuPosY = 0.935f;
+        }
+
+        //------------ End Cop menu position debug --------------/
 
         //------------ Cops killed stat display -------------/ 
         //------------ And Cop vehicles blown up stat display --------------/
@@ -390,10 +415,9 @@ namespace Stats
                 textScripts.SetTextEntry(copCarsBlownUpString.c_str(), 255, 255, 255, 255);
 
                 textScripts.TextPosition(copsCarsBlownUpMenuPosX, copsCarsBlownUpMenuPosY);
-
             }
-
         }
+
     } // namespace Cop
 
 } // namespace Stats

@@ -952,5 +952,71 @@ namespace MiscScripts
 			}
 		}
 	} // namespace Fade
+
+
+	namespace Model
+	{
+		/// <summary>
+		/// Taken from Menyoo
+		/// Request the vehicle model for spawning in, this actually should work on any model
+		/// </summary>
+		/// <param name="hash"></param>
+		void Request(Hash hash)
+		{
+			REQUEST_MODEL(hash);
+			while (!HAS_MODEL_LOADED(hash))
+			{
+				WAIT(0);
+			}
+
+			log_output(std::format("Model {} requested for game script.", hash));
+		}
+
+		
+		
+		/// <summary>
+		/// Set model as no longer needed, let the game cleanup the model for later.
+		/// </summary>
+		/// <param name="model"></param>
+		void MarkAsNoLongerNeeded(Hash model) 
+		{
+			SET_MODEL_AS_NO_LONGER_NEEDED(model);
+			log_output(std::format("Model {} set as no longer needed, to be cleaned up.", model));
+		}
+
+		// TODO Add these to the header
+
+		/// <summary>
+		/// Is the model in the cdimage.
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		bool IsInCdImage(Hash model)
+		{
+			if (STREAMING::IS_MODEL_IN_CDIMAGE(model))
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Is the model in the cdimage, and is it a vehicle?
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		bool IsAVehicle(Hash model)
+		{
+			//if (!(STREAMING::IS_MODEL_IN_CDIMAGE(model) && STREAMING::IS_MODEL_A_VEHICLE(model))) {
+			if (STREAMING::IS_MODEL_IN_CDIMAGE(model) && STREAMING::IS_MODEL_A_VEHICLE(model)) {
+				return true;
+			}
+
+			return false;
+		}
+
+	} // namespace Model
+
 #pragma endregion
 } // namespace MiscScripts

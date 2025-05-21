@@ -296,10 +296,12 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
         if (inputString.length() > 0)
         {
             UI::Notify(inputString);
-            std::cout << inputString << std::endl;
+            log_output(inputString);
+            //std::cout << inputString << std::endl;
         }
         else {
-            std::cout << "Input string doesn't exist!" << std::endl;
+            log_output("Input string doesn't exist!");
+            //std::cout << "Input string doesn't exist!" << std::endl;
         }
 
     }

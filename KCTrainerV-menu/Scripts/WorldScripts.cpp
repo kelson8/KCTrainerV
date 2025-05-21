@@ -86,7 +86,9 @@ void WorldScripts::DisableHospitalSpawns()
 	for (int i = 0; i < 10; i++)
 	{
 		DISABLE_HOSPITAL_RESTART(i, true);
-		std::cout << "Hospital " << i << " disabled." << std::endl;
+		//std::cout << "Hospital " << i << " disabled." << std::endl;
+		std::string hospistalDisabledString = std::format("Hospital {} disabled", i);
+		log_output(hospistalDisabledString);
 	}
 
 	UI::Notify("All hospitals disabled");

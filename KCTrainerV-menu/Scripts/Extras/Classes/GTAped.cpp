@@ -283,8 +283,6 @@ namespace PedDamagePacks {
 	};
 }
 
-#define DISABLED_CODE
-#ifdef DISABLED_CODE
 GTAped::GTAped() : GTAentity(), _tasks(0)//, _euphoria(NaturalMotion::Euphoria(0))
 {
 }
@@ -294,26 +292,12 @@ GTAped::GTAped(int handle) : GTAentity(handle), _tasks(Tasks(handle))//, _euphor
 GTAped::GTAped(GTAentity handle) : GTAentity(handle), _tasks(Tasks(handle))//, _euphoria(NaturalMotion::Euphoria(handle.Handle()))
 {
 }
-#else
-GTAped::GTAped() : GTAentity()//, _euphoria(NaturalMotion::Euphoria(0))
-{
-}
-GTAped::GTAped(int handle) : GTAentity(handle)//, _euphoria(NaturalMotion::Euphoria(handle))
-{
-}
-GTAped::GTAped(GTAentity handle) : GTAentity(handle)//, _euphoria(NaturalMotion::Euphoria(handle.Handle()))
-{
-}
-#endif
 
 
 GTAped& GTAped::operator = (const GTAped& value)
 {
 	this->mHandle = value.mHandle;
-#ifdef DISABLED_CODE
 	this->_tasks = value._tasks;
-#endif
-#undef DISABLED_CODE
 	//this->_euphoria = value._euphoria;
 	return *this;
 }
@@ -627,11 +611,7 @@ bool GTAped::IsIdle() const
 		&& !this->IsGettingIntoAVehicle()
 		&& !this->IsInCombat()
 		&& !this->IsInMeleeCombat()
-#ifdef DISABLED_CODE
 		&& !this->IsInVehicle();
-#else
-		;
-#endif
 }
 
 bool GTAped::IsProne() const

@@ -5,6 +5,8 @@
  * script function to ScriptHookV using scriptRegister.
  */
 
+#include "pch.h"
+
 #include "Script.hpp"
 #include "Constants.hpp"
 #include "Util/Logger.hpp"
@@ -17,10 +19,15 @@
 
 #include "Scripts/MiscScripts.h"
 
+#include "defines.h"
+
 // For MinHook and Memory functions for my menu.
 #ifdef MEMORY_TESTING
 #include "Memory/Memory.h"
 #endif
+
+HMODULE MainModule = 0;
+MODULEINFO MainModuleInfo = { 0 };
 
 namespace fs = std::filesystem;
 
@@ -154,6 +161,28 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
     switch (reason) {
         case DLL_PROCESS_ATTACH: 
         {
+            // Display the program and module handle in the console
+            /* Example:
+            [KCTrainerV]: MODULEINFO: lpBaseofDll=00007FF7AE8D0000, SizeOfImage=67644416, EntryPoint=00007FF7B0134A9C
+            */
+            MainModule = GetModuleHandle(NULL);
+            if (!GetModuleInformation(GetCurrentProcess(), MainModule, &MainModuleInfo, sizeof(MainModuleInfo)))
+                log_output("Unable to get MODULEINFO from GTA5.exe");
+                //addlog(ige::LogType::LOG_INIT, "Unable to get MODULEINFO from GTA5.exe", __FILENAME__);
+            else
+            {
+                std::ostringstream moduleinfostream;
+                moduleinfostream << "MODULEINFO: lpBaseofDll=" << MainModuleInfo.lpBaseOfDll
+                    << ", SizeOfImage=" << MainModuleInfo.SizeOfImage
+                    << ", EntryPoint=" << MainModuleInfo.EntryPoint;
+
+                log_output(moduleinfostream.str());
+
+                //addlog(ige::LogType::LOG_INIT, moduleinfostream.str(), __FILENAME__);
+            }
+
+            //
+
             g_Logger.SetMinLevel(DEBUG);
             initializePaths(hInstance);
             // Log the script name, and when it was built

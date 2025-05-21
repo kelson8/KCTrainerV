@@ -65,8 +65,9 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
     mbCtx.BoolOption("Never wanted", playerScripts.neverWantedEnabled, { "Test for toggling never wanted" });
 
-    // TODO Test this, might work as like a separator.
-    // This works kind of like one, I would like to replicate the separators in Menyoo if possible.
+    // Display cops and cop vehicles blown up, moved out of debug menu.
+    mbCtx.BoolOption("Display cops killed", Stats::Cop::isCopsKilledDisplayActive, { "Display amount of cops killed and cop vehicles blown up on screen." });
+
     int nothing = 0;
     mbCtx.StringArray("--Visions--", { "" }, nothing);
 
@@ -144,6 +145,14 @@ void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
 
     PlayerModels currentPlayerModel = playerScripts.GetCurrentPlayerModel();
 
+    // Strings for menu
+    std::string michealPlayerModelString = "Current player model: Micheal";
+    std::string franklinPlayerModelString = "Current player model: Franklin";
+    std::string trevorPlayerModelString = "Current player model: Trevor";
+
+    std::string copsKilledString = std::format("Cops killed: {}", copsKilledStat);
+    std::string copsCarsBlownUpString = std::format("Cop cars blown up: {}", copVehiclesBlownUpStat);
+
     int nothing = 0;
     mbCtx.StringArray("--Logging--", { "" }, nothing);
     // TODO Setup player selector for these
@@ -152,14 +161,16 @@ void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
         // My code defaults to 0 if the value is invalid, possibly change this?
         if (copsKilledStat != 0)
         {
-            std::cout << "Cops killed: " << copsKilledStat << std::endl;
+            //std::cout << copsKilledString << std::endl;
+            log_output(copsKilledString);
         }
         
     }
 
     if (mbCtx.Option("Cop vehicles exploded", { "Log the cops blown up stat to the console." }))
     {
-        std::cout << "Cops cars blown up: " << copVehiclesBlownUpStat << std::endl;
+        //std::cout << copsCarsBlownUpString << std::endl;
+        log_output(copsCarsBlownUpString);
     }
 
     if (mbCtx.Option("Current player model", {"Log the currently selected player, Micheal, Franklin, or Trevor."}))
@@ -167,20 +178,24 @@ void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
         switch (currentPlayerModel)
         {
         case PlayerModels::MICHEAL:
-            std::cout << "Current player model: Micheal" << std::endl;
+            //std::cout << michealPlayerModelString << std::endl;
+            log_output(michealPlayerModelString);
             break;
 
         case PlayerModels::FRANKLIN:
-            std::cout << "Current player model: Franklin" << std::endl;
+            //std::cout << franklinPlayerModelString << std::endl;
+            log_output(franklinPlayerModelString);
             break;
 
         case PlayerModels::TREVOR:
-            std::cout << "Current player model: Trevor" << std::endl;
+            //std::cout << trevorPlayerModelString << std::endl;
+            log_output(trevorPlayerModelString);
             break;
         }
     }
 
-    mbCtx.BoolOption("Display cops killed", Stats::Cop::isCopsKilledDisplayActive, { "Log the amount of cops killed before death to the console and the screen." });
+    // Moved out of Debug menu, this should be toggleable in release builds.
+    //mbCtx.BoolOption("Display cops killed", Stats::Cop::isCopsKilledDisplayActive, { "Log the amount of cops killed before death to the console and the screen." });
 
 
     //float stepValue = 0.015f;

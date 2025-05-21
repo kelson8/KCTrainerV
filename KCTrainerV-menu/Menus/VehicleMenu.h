@@ -15,9 +15,12 @@ public:
 	}
 
 	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context) override;
+
 	void BuildVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 	void BuildSportsVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 	void BuildSuperVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
+
+	void BuildSuvCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 
 private:
 	VehicleMenu() {} // Private constructor to prevent external instantiation

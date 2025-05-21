@@ -2,8 +2,9 @@
 
 #include "../Constants.hpp"
 #include "VehicleScripts.h"
-
+#include "MiscScripts.h"
 #include "PlayerScripts.h"
+
 #include "../Util/Enums.h"
 
 #include "Util/UI.hpp"
@@ -22,14 +23,16 @@
 /// Request the vehicle model for spawning in, this actually should work on any model
 /// </summary>
 /// <param name="hash"></param>
-void VehicleScripts::RequestModel(Hash hash)
-{
-    REQUEST_MODEL(hash);
-    while (!HAS_MODEL_LOADED(hash))
-    {
-        WAIT(0);
-    }
-}
+// Moved into MiscScripts:
+// MiscScripts::Model::Request(Hash hash)
+//void VehicleScripts::RequestModel(Hash hash)
+//{
+//    REQUEST_MODEL(hash);
+//    while (!HAS_MODEL_LOADED(hash))
+//    {
+//        WAIT(0);
+//    }
+//}
 
 /// <summary>
 /// Get the players current vehicle.
@@ -85,9 +88,78 @@ void VehicleScripts::ChangePlayerVehicleColor() {
     }
 }
 
-void VehicleScripts::RepairVehicle()
+#pragma region VehicleMods
+
+// TODO Move these into VehicleMods.cpp
+
+/// <summary>
+/// This seems to work, tested by going into LS Customs
+/// Set the vehicle armor
+/// Values should range from 0-3 or 0-4?
+/// </summary>
+/// <param name="value"></param>
+void VehicleScripts::SetArmor(int value)
+{
+    Vehicle currentVeh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
+    // Make sure the vehicle exists first
+    if (ENTITY::DOES_ENTITY_EXIST(currentVeh))
+        //if (currentVeh != 0)
+    {
+        SET_VEHICLE_MOD(currentVeh, VehicleMod::Armor, value, false);
+        std::string armorLevelString = std::format("Set armor level to {}", value);
+        UI::Notify(armorLevelString);
+    }
+}
+
+// TODO Set these up later.
+
+void SetSpoiler()
 {
 
+}
+
+void SetWheelType()
+{
+
+}
+
+void SetWheels()
+{
+
+}
+
+void SetTranismission()
+{
+
+}
+
+void SetEngine()
+{
+
+}
+
+void SetBrakes()
+{
+
+}
+
+
+#pragma endregion //VehicleMods
+
+#pragma region RepairVehicle
+
+
+/// <summary>
+/// Check if the player is in a vehicle.
+/// If the vehicle exists, set it to fixed, set dirt level to 0.
+/// Set engine health to 2000, set petrol tank health to 2000.
+/// Set vehicle body health to 2000.
+/// Clear the vehicle undriveable flag.
+/// Set the vehicle engine to be on.
+/// Repair the vehicle tires.
+/// </summary>
+void VehicleScripts::RepairVehicle()
+{
     // TODO Fix this.
     //Vehicle currentVeh = GetPlayerVehicle();
     // This works
@@ -108,23 +180,98 @@ void VehicleScripts::RepairVehicle()
         VEHICLE::SET_VEHICLE_PETROL_TANK_HEALTH(currentVeh, 2000.0f);
         VEHICLE::SET_VEHICLE_BODY_HEALTH(currentVeh, 2000.0F);
 
-        VEHICLE::SET_VEHICLE_UNDRIVEABLE(currentVeh, 0);
+        VEHICLE::SET_VEHICLE_UNDRIVEABLE(currentVeh, false);
         VEHICLE::SET_VEHICLE_ENGINE_ON(currentVeh, true, true, false);
 
         // Fix the tires
-
-        // TODO Setup switch for checking if this is a car
-        for (int i = 0; i < 8; i++)
-        {
-            VEHICLE::SET_VEHICLE_TYRE_FIXED(currentVeh, i);
-        }
-
-        /*if(VEHICLE::IS_VEHICLE_A_CAR)*/
+        RepairTires();
     }
     else {
         UI::Notify("Not in a vehicle");
     }
 }
+
+/// <summary>
+/// Fix all the current vehicles tires.
+/// </summary>
+void VehicleScripts::RepairTires()
+{
+    auto& playerScripts = PlayerScripts::GetInstance();
+    Ped playerPed = playerScripts.GetPlayerPed();
+
+    if (playerScripts.IsPlayerInVehicle())
+    {
+        Vehicle currentVeh = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
+
+        //-----
+        // Repair the tires.
+        // TODO Setup switch for checking if this is a car
+        //-----
+        /*if(VEHICLE::IS_VEHICLE_A_CAR)*/
+
+        for (int i = 0; i < 8; i++)
+        {
+            VEHICLE::SET_VEHICLE_TYRE_FIXED(currentVeh, i);
+        }
+    }
+}
+
+#pragma endregion
+
+#pragma region VehicleProofs
+
+/// <summary>
+/// Enable bullet proof tires for the current vehicle
+/// Also, this now is set to repair the vehicle tires.
+/// Why does this also work for the last vehicle, like if I'm out of it? 
+/// My vehicle check function shouldn't check for that.
+/// TODO Rename function to EnableBulletProofTires
+/// </summary>
+void VehicleScripts::EnableBulletProof()
+{
+    auto& playerScripts = PlayerScripts::GetInstance();
+    Ped playerPed = playerScripts.GetPlayerPed();
+
+    if (playerScripts.IsPlayerInVehicle())
+    {
+        Vehicle currentVeh = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
+        //SET_ENTITY_PROOFS(currentVeh, true, false, false, false, false, false, false, false);
+
+        //-----
+        // Repair the tires.
+        //-----
+        RepairTires();
+
+        SET_VEHICLE_TYRES_CAN_BURST(currentVeh, false);
+
+        //UI::Notify("Vehicle is now bullet proof");
+        UI::Notify("Vehicle tires is now bullet proof");
+    }
+}
+
+/// <summary>
+/// Disable bullet proof tires for the current vehicle
+/// Why does this also work for the last vehicle, like if I'm out of it? 
+/// My vehicle check function shouldn't check for that.
+/// TODO Rename function to DisableBulletProofTires
+/// </summary>
+void VehicleScripts::DisableBulletProof()
+{
+    auto& playerScripts = PlayerScripts::GetInstance();
+    Ped playerPed = playerScripts.GetPlayerPed();
+
+    if (playerScripts.IsPlayerInVehicle())
+    {
+        Vehicle currentVeh = PED::GET_VEHICLE_PED_IS_IN(playerPed, false);
+        
+        //SET_VEHICLE_MOD(currentVeh, VehicleMod::BackWheels, )
+        SET_VEHICLE_TYRES_CAN_BURST(currentVeh, true);
+        //SET_ENTITY_PROOFS(currentVeh, false, false, false, false, false, false, false, false);
+        //UI::Notify("Vehicle is no longer bullet proof");
+        UI::Notify("Vehicle tires is no longer bullet proof");
+    }
+}
+
 
 /// <summary>
 /// Enable invincibility for the current vehicle
@@ -158,6 +305,8 @@ void VehicleScripts::DisableInvincibility()
     }
 }
 
+#pragma endregion // VehicleProofs
+
 // TODO Fix this to work, I might experiment with this in FiveM
 // TODO Figure out which direction the bool makes you face.
     // Models can be one of these:
@@ -190,7 +339,8 @@ void VehicleScripts::CreateMissionTrain(Hash model, Vector3 pos, bool direction)
     // Request the model, if it doesn't load do nothing.
 
     // I finally fixed the wait function.
-    VehicleScripts::RequestModel(model);
+    //VehicleScripts::RequestModel(model);
+    MiscScripts::Model::Request(model);
 
     missionTrain = CREATE_MISSION_TRAIN(model, pos, direction, 0, 1);
 

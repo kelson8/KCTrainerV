@@ -70,14 +70,19 @@ void KCMenu::AttachConsole()
         // Optional: Set the console title
         SetConsoleTitle("KCTrainerV");
 
-        std::cout << "Console attached successfully!" << std::endl;
+        log_output("Console attached successfully!");
+        //std::cout << "Console attached successfully!" << std::endl;
+
 
         // Show the time and date when this was built
         //std::cout << std::format("Program build time and date: {} @ ", __DATE__, __TIME__) << std::endl;
-        std::cout << programBuildString << std::endl;
+        log_output(programVersionString);
+        //std::cout << programBuildString << std::endl;
 
         // Show the version string for the trainer
-        std::cout << programVersionString << std::endl;
+        //std::cout << programVersionString << std::endl;
+        log_output(programVersionString);
+        //std::cout << programVersionString << std::endl;
 
         //std::cerr << "Error output will also appear here." << std::endl;
     }
@@ -85,7 +90,8 @@ void KCMenu::AttachConsole()
     {
         // Handle the case where console allocation fails (unlikely in most scenarios)
         // You might want to log an error message using your in-game system.
-        std::cerr << "Failed to allocate console." << std::endl;
+        log_error("Failed to allocate console.");
+        //std::cerr << "Failed to allocate console." << std::endl;
     }
 #else
     std::cerr << "AllocConsole() is only available on Windows." << std::endl;
@@ -176,8 +182,11 @@ void KCMenu::scriptInit()
             gameBuild = "Unknown";
 
         //LOG("Game Build: " << gameBuild);
-        LOG(INFO, std::format("Game Build: {}", gameBuild));
-        std::cout << "Game Build: " << gameBuild << std::endl;
+        std::string gameBuildString = std::format("Game Build: {}", gameBuild);
+
+        LOG(INFO, gameBuildString);
+        //std::cout << "Game Build: " << gameBuild << std::endl;
+        log_output(gameBuildString);
 
         return true;
     }();

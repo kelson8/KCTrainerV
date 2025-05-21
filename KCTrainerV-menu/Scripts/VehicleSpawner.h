@@ -53,6 +53,10 @@ private:
 	float m_spawnHeading;
 	Vehicle m_lastSpawnedVehicle; // Stores the handle of the vehicle once spawned
 #endif // VEHICLE_SPAWNER_TEST
+
+	bool vehicleSpawned = false;
+
+	Vehicle vehicleToSpawn;
 };
 
 #ifdef VEHICLE_SPAWNER_TEST

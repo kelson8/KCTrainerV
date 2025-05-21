@@ -39,12 +39,7 @@ void KCMainScript::Tick() {
     auto& textScripts = TextScripts::GetInstance();
 
     auto& playerScripts = PlayerScripts::GetInstance();
-
-#ifdef VEHICLE_SCRIPTS_SINGLETON
     auto& vehicleScripts = VehicleScripts::GetInstance();
-#else
-    VehicleScripts vehicleScripts = VehicleScripts();
-#endif
 
     auto& worldScripts = WorldScripts::GetInstance();
 
@@ -74,7 +69,9 @@ void KCMainScript::Tick() {
     //    worldScripts.SetRespawnLocation(michealsHouseCoords, michealsHouseHeading);
     //}
 
-    // Hmm, this seems to work if I toggle it in my menu.
+    //-----
+    // Run the airstrikes
+    //-----
     if (MiscScripts::EXFeatures::airStrikeRunning)
     {
         MiscScripts::EXFeatures::StartAirstrikeTest();
@@ -109,7 +106,9 @@ void KCMainScript::Tick() {
         playerScripts.EnableNeverWanted();
         playerScripts.neverWantedFlag = true;
     }
+    //-----
     // This should only run once, the above needs to be in a loop
+    //-----
     else if (!playerScripts.neverWantedEnabled && playerScripts.neverWantedFlag)
     {
         playerScripts.DisableNeverWanted();
@@ -119,15 +118,18 @@ void KCMainScript::Tick() {
         playerScripts.neverWantedFlag = false;
     }
 
+    //-----
     // New stat features
+    //-----
     if (Stats::Cop::isCopsKilledDisplayActive)
     {
         Stats::Cop::ProcessCopsKilledDisplay();
     }
     
 #ifdef EXTRA_FEATURES
+    //-----
     // Player force field
-
+    //-----
 #ifdef MEMORY_TESTING
     if (MiscScripts::EXFeatures::isForceFieldEnabled)
     {
@@ -135,13 +137,17 @@ void KCMainScript::Tick() {
     }
 #endif // MEMORY_TESTING
 
+    //-----
     // Run the tick event for the TV if enabled.
+    //-----
     if (MiscScripts::EXFeatures::isTVRunning)
     {
         MiscScripts::EXFeatures::TvTick();
     }
 
+    //-----
     // Make peds attack player
+    //-----
 #ifdef MEMORY_TESTING
     if (pedScripts.isPedsAttackEnabled)
     {
@@ -151,7 +157,9 @@ void KCMainScript::Tick() {
 
 #endif //EXTRA_FEATURES
 
+    //-----
     // Make all peds drive crazy
+    //-----
 #ifdef MEMORY_TESTING
     if (pedScripts.isCrazyPedDrivingEnabled)
     {
@@ -159,8 +167,9 @@ void KCMainScript::Tick() {
     }
 #endif //
 
-    
+    //-----
     // Invincibility toggle
+    //-----
     if(vehicleScripts.isInvincibleVehicleEnabled && !vehicleScripts.invincibilityFlag)
     {
         vehicleScripts.EnableInvincibility();
@@ -171,7 +180,9 @@ void KCMainScript::Tick() {
         vehicleScripts.invincibilityFlag = false;
     }
     
+    //-----
     // Mobile radio toggle
+    //-----
     if(playerScripts.isMobileRadioEnabled && !playerScripts.mobileRadioFlag)
     {
         playerScripts.EnableMobileRadio();
@@ -183,14 +194,18 @@ void KCMainScript::Tick() {
     }
     
     
-
+    //-----
     // Display text on screen
     // I got this to work
+    //-----
     if (textScripts.drawText)
     {
         textScripts.SetupText();
     }
 
+    //-----
+    // Draw coordinates to the screen
+    //-----
     if (textScripts.drawCoords)
     {
         // Will this slow down the whole menu?
@@ -200,7 +215,10 @@ void KCMainScript::Tick() {
         textScripts.DisplayCoordinates();
     }
 
+    //-----
     // This mostly works, draw entity id, entity x,y,z, entity heading, and entity model hash to the screen.
+    // Also draw vehicle name to the screen.
+    //-----
     if (MiscScripts::IDGun::isIdGunEnabled)
     {
         MiscScripts::IDGun::IdGun();
@@ -214,8 +232,10 @@ void KCMainScript::Tick() {
     //}
     //
     
+    //-----
     // Adapted from Menyoo
     // Set fireworks in a loop near the player
+    //-----
     if (worldScripts.isFireworksStarted)
     {
         worldScripts.FireworksLoop();
@@ -223,7 +243,9 @@ void KCMainScript::Tick() {
 
 
 #ifdef MEMORY_TESTING
+    //-----
     // Make all the peds in the area calm, meaning they shouldn't run from anything.
+    //-----
     if (worldScripts.isPedsCalmActive)
     {
         worldScripts.SetPedsCalm();
@@ -236,6 +258,34 @@ void KCMainScript::Tick() {
     //HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Test");
     //textScripts.SetTextPosition();
     
+    //-----
+    // Bullet proof toggle
+    //-----
+    if (vehicleScripts.isBulletProofEnabled && !vehicleScripts.bulletProofFlag)
+    {
+        vehicleScripts.EnableBulletProof();
+        vehicleScripts.bulletProofFlag = true;
+    }
+    else if (!vehicleScripts.isBulletProofEnabled && vehicleScripts.bulletProofFlag)
+    {
+        vehicleScripts.DisableBulletProof();
+        vehicleScripts.bulletProofFlag = false;
+    }
+
+    //-----
+    // Mobile radio toggle
+    //-----
+    if (playerScripts.isMobileRadioEnabled && !playerScripts.mobileRadioFlag)
+    {
+        playerScripts.EnableMobileRadio();
+        playerScripts.mobileRadioFlag = true;
+    }
+    else if (!playerScripts.isMobileRadioEnabled && playerScripts.mobileRadioFlag)
+    {
+        playerScripts.DisableMobileRadio();
+        playerScripts.mobileRadioFlag = false;
+    }
+
 
 #endif // RUN_TICKS
 

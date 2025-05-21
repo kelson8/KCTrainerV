@@ -411,7 +411,7 @@ void PlayerScripts::KillPlayerMP()
 
 #ifndef NEW_TEST
     Ped playerPed = PLAYER_PED_ID();
-    Util util;
+    //Util util;
 #else
     GTAped playerPed = PLAYER_PED_ID();
     if(!playerPed.IsInVehicle() && playerPed.IsOnFoot())

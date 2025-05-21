@@ -440,7 +440,9 @@ void PedScripts::GivePedRandomWeapons(Ped ped)
 {
 	const auto& weapons = Memory::GetAllWeapons();
 	
-	Hash wep = weapons[g_Random.GetRandomInt(0, weapons.size() - 1)];
+	//Hash wep = weapons[g_Random.GetRandomInt(0, weapons.size() - 1)];
+	// TODO Test this, should fix this warning.
+	Hash wep = weapons[g_Random.GetRandomInt(0, static_cast<int>(weapons.size()) - 1)];
 
 	GIVE_WEAPON_TO_PED(ped, wep, 9999, true, true);
 	SET_CURRENT_PED_WEAPON(ped, wep, true);
@@ -455,7 +457,9 @@ void PedScripts::GiveAllPedsRandomWeapons()
 	const auto& weapons = Memory::GetAllWeapons();
 	for (Ped ped : GetAllPeds())
 	{
-		Hash wep = weapons[g_Random.GetRandomInt(0, weapons.size() - 1)];
+		//Hash wep = weapons[g_Random.GetRandomInt(0, weapons.size() - 1)];
+		// TODO Test this, should fix this warning.
+		Hash wep = weapons[g_Random.GetRandomInt(0, static_cast<int>(weapons.size()) - 1)];
 
 		GIVE_WEAPON_TO_PED(ped, wep, 9999, true, true);
 		SET_CURRENT_PED_WEAPON(ped, wep, true);

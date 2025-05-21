@@ -69,9 +69,6 @@
 // This is no longer in use for now, I may use it in the future if I move more menus around
 //#define MOVE_MENUS
 
-// If this is on it enables the singleton in VehicleScripts.h
-#define VEHICLE_SCRIPTS_SINGLETON
-
 // This toggles my tick events running such as god mode and never wanted, can be turned off for testing.
 #define RUN_TICKS
 

@@ -53,10 +53,14 @@ void FileFunctions::SaveCoordinatesToFile(const std::string& fileName)
 		outputFile << playerCoordsText << std::endl;
 		outputFile << playerHeadingText << std::endl;
 		outputFile.close();
-		std::cout << "Player coordinates and heading saved to '" << fileName << "'" << std::endl;
+		std::string playerCoordsHeadingString = std::format("Player coordinates and heading saved to '{}'", fileName);
+
+		//std::cout << "Player coordinates and heading saved to '" << fileName << "'" << std::endl;
+		log_output(playerCoordsHeadingString);
 	}
 	else {
-		std::cerr << "Error opening file '" << fileName << "' for writing!" << std::endl;
+		std::string errorString = std::format("Error opening file '{}' for writing!", fileName);
+		//std::cerr << "Error opening file '" << fileName << "' for writing!" << std::endl;
 	}
 }
 

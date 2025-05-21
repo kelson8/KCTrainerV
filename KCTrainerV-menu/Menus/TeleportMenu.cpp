@@ -116,7 +116,8 @@ void TeleportMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
         std::string valuesOutputString = std::format("Values: X: {}, Y: {}, Z: {}", _customTeleLoc.x, _customTeleLoc.y, _customTeleLoc.z);
 
-        std::cout << valuesOutputString << std::endl;
+        //std::cout << valuesOutputString << std::endl;
+        log_output(valuesOutputString);
 
 
         // TODO Replicate this from Menyoo
