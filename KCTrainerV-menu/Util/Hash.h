@@ -4,8 +4,8 @@
 
 #include <inc/natives.h>
 
-using Hash   = unsigned long;
-using size_t = unsigned long long;
+//using Hash   = unsigned long;
+//using size_t = unsigned long long;
 
 // Well, I removed constexpr and this seems to have fixed this for now.
 // Making this inline seems to have solved this, now I can use it in multiple files.

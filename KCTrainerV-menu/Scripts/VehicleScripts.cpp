@@ -323,28 +323,83 @@ void VehicleScripts::DisableInvincibility()
         "s_m_m_lsmetro_01
     */
 
-// I have a list of hashses in Enums.h for the train models.
-void VehicleScripts::CreateMissionTrain(Hash model, Vector3 pos, bool direction)
+// I have a list of hashes in Enums.h for the train models.
+//void VehicleScripts::CreateMissionTrain(Hash model, Vector3 pos, bool direction
+#ifdef TRAIN_TEST
+void VehicleScripts::CreateMissionTrain(Hash model, bool direction)
 {
-    //Util util;
+    Ped playerPedId = PLAYER_PED_ID();
+    Vector3 trainStationCoords = Vector3(626.68f, 6442.31f, 30.88f);
+    float trainStationHeading = -177.0f;
+
+    Vector3 trainPos = Vector3(613.0f, 6438.0f, 31.0f);
+
+    std::string trainCreatedMessage = std::format("Train model '{}' created at X: {}, Y: {}, Z:{}.", model, trainPos.x, trainPos.y, trainPos.z);
+
+#pragma region TrainHashKeys
+    Hash freight = "freight"_hash;
+    Hash freightCar = "freightcar"_hash;
+    Hash freightGrain = "freightgrain"_hash;
+    Hash freightCont1 = "freightcont1"_hash;
+    Hash freightCont2 = "freightcont2"_hash;
+
+    Hash tankerCar = "tankercar"_hash;
+    Hash metroTrain = "metrotrain"_hash;
+#pragma endregion
 
     DWORD startTime = GetTickCount();
     DWORD timeout = 3000; // in millis
 
+    //-----
     // First, delete all trains
+    //-----
     DELETE_ALL_TRAINS();
     // This can also be toggled if needed
     //SET_RANDOM_TRAINS(false);
 
-    // Request the model, if it doesn't load do nothing.
+    
+    //-----
+    // Set the player position
+    //-----
+    SET_ENTITY_COORDS(playerPedId, trainStationCoords, false, false, false, false);
+    SET_ENTITY_HEADING(playerPedId, trainStationHeading);
 
+    //-----
+    // Request the model
     // I finally fixed the wait function.
+    //-----
     //VehicleScripts::RequestModel(model);
-    MiscScripts::Model::Request(model);
 
-    missionTrain = CREATE_MISSION_TRAIN(model, pos, direction, 0, 1);
+    MiscScripts::Model::Request(model);
+    // Request train models
+    //MiscScripts::Model::Request(freight);
+    //MiscScripts::Model::Request(freightCar);
+    //MiscScripts::Model::Request(freightGrain);
+    //MiscScripts::Model::Request(freightCont1);
+    //MiscScripts::Model::Request(freightCont2);
+    //
+    //MiscScripts::Model::Request(tankerCar);
+    //MiscScripts::Model::Request(metroTrain);
+
+
+    //-----
+    // Create the train
+    //-----
+    //if (HAS_MODEL_LOADED(model))
+    //{
+        missionTrain = CREATE_MISSION_TRAIN(model, trainPos, direction, 0, 1);
+    //}
+    
+
+    //-----
+    // Log the train created message and display it
+    //-----
+    UI::Notify(trainCreatedMessage);
+    log_output(trainCreatedMessage);
 
 }
+
+#endif // TRAIN_TEST
 
 /// <summary>
 /// Will be in use for the ped id gun.

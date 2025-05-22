@@ -224,6 +224,19 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     );
 
     //-----
+    // Sports classics vehicle category sub menu
+    //-----
+    submenus.emplace_back("SportsClassicsVehicleCategorySubmenu",
+
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            vehicleMenu.BuildSportsClassicsVehicleCategorySubmenu(mbCtx, context);
+        }
+    );
+
+    //
+
+    //-----
     // Super vehicle category sub menu
     //-----
     submenus.emplace_back("SuperVehicleCategorySubmenu",

@@ -6,6 +6,9 @@
 # Built asis from my tests
 builds/
 
+# Pycharm
+.idea/
+
 # Old readme, can be found here: https://github.com/ikt32/GTAVMenuExample/blob/master/README.md
 README-old.md
 

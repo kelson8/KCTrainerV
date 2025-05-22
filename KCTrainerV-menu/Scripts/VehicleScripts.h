@@ -45,8 +45,11 @@ public:
 
 
 	//
-	void CreateMissionTrain(Hash model, Vector3 pos, bool direction);
+	//void CreateMissionTrain(Hash model, Vector3 pos, bool direction);
+#ifdef TRAIN_TEST
+	void CreateMissionTrain(Hash model, bool direction);
 	Vehicle missionTrain = 0;
+#endif
 	//
 
 

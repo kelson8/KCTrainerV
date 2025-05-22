@@ -12,6 +12,8 @@
 #include "../Scripts/VehicleScripts.h"
 #include "../Scripts/VehicleSpawner.h"
 
+#include "Scripts/Vehicles/VehicleData.h"
+
 void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     mbCtx.Title("Vehicle");
@@ -48,8 +50,9 @@ void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     //mbCtx.BoolOption("Spawn into vehicle", vehicleScripts.spawnInsideVehicle, { "Toggle spawning in the spawned vehicle" });
     mbCtx.BoolOption("Spawn into vehicle", vehicleSpawner.spawnInsideVehicle, { "Toggle spawning in the spawned vehicle" });
 
+//#define TRAIN_TEST
     // This crashes it, I'll try to fix it later.
-#ifdef _TEST
+#ifdef TRAIN_TEST
     if (mbCtx.Option("Create Test Train", {"Create a train as a test at Train Station #1 warp."}))
     {
         Hash trainHash = "freight"_hash;
@@ -59,9 +62,11 @@ void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
         Vector3 trainPos = Vector3(trainX, trainY, trainZ);
 
         //vehicleScripts.CreateMissionTrain(0, trainPos, true);
-        vehicleScripts.CreateMissionTrain(trainHash, trainPos, true);
+        //vehicleScripts.CreateMissionTrain(trainHash, trainPos, true);
+        vehicleScripts.CreateMissionTrain(trainHash, true);
     }
-#endif //_TEST
+#endif //TRAIN_TEST
+#undef TRAIN_TEST
 
     if (mbCtx.Option("Vehicle spawn keyboard", { "Display a in game keyboard to spawn a vehicle with." }))
     {
@@ -98,13 +103,14 @@ void VehicleMenu::BuildVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScr
     auto& vehicleScripts = VehicleScripts::GetInstance();
 
     mbCtx.MenuOption("Sports", "SportsVehicleCategorySubmenu");
+    mbCtx.MenuOption("Sports Classics", "SportsClassicsVehicleCategorySubmenu");
     mbCtx.MenuOption("Super", "SuperVehicleCategorySubmenu");
 
     // TODO Set these up
-    // mbCtx.MenuOption("Sports Classics", "SportsClassicsVehicleCategorySubmenu");
-    //mbCtx.MenuOption("Coupes", "SportsClassicsVehicleCategorySubmenu");
-    //mbCtx.MenuOption("Muscle", "SportsClassicsVehicleCategorySubmenu");
-    //mbCtx.MenuOption("Offroad", "SportsClassicsVehicleCategorySubmenu");
+    // 
+    //mbCtx.MenuOption("Coupes", "CoupesVehicleCategorySubmenu");
+    //mbCtx.MenuOption("Muscle", "MuscleVehicleCategorySubmenu");
+    //mbCtx.MenuOption("Offroad", "OffroadVehicleCategorySubmenu");
     
     mbCtx.MenuOption("SUV's", "SuvVehicleCategorySubmenu");
     
@@ -132,36 +138,35 @@ void VehicleMenu::BuildSportsVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCM
 
     auto& vehicleSpawner = VehicleSpawner::GetInstance();
 
-#pragma region SportsVehicleHashes
-    static const Hash cheetahHash = "cheetah"_hash;
-#pragma endregion
-
-    // Player position, mostly for testing the SpawnVehicle option with custom coords like this:
-    // vehicleSpawner.SpawnVehicle(cheetahHash, playerPosNew, playerHeading);
-    Vector3 playerPos = playerScripts.GetPlayerCoords();
-    float playerX = playerPos.x + 3;
-    float playerY = playerPos.y + 3;
-    float playerZ = playerPos.z;
-    Vector3 playerPosNew = Vector3(playerX, playerY, playerZ);
-    float playerHeading = playerScripts.GetPlayerHeading();
-
-    std::map<std::string, std::function<void()>> optionActions =
-    {
-        {"Spawn Cheetah", [&]()
-        {
-            //vehicleSpawner.SpawnVehicle(cheetahHash, playerPosNew, playerHeading);
-            vehicleSpawner.SpawnVehicle(cheetahHash);
-        }},
-    };
-
-    for (const auto& pair : optionActions)
-    {
-        if (mbCtx.Option(pair.first))
-        {
-            pair.second();
+    // Dynamically build menu options from your external data
+    for (const auto& vehicleInfo : VehicleData::g_sportsVehicles) {
+        if (mbCtx.Option(vehicleInfo.name)) {
+            // Use the hash from the VehicleInfo struct
+            //vehicleSpawner.SpawnVehicle(vehicleInfo.hash);
+            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
         }
     }
 }
+#pragma endregion
+
+#pragma region SportsClassicVehicles
+void VehicleMenu::BuildSportsClassicsVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+{
+    mbCtx.Title("Sports Classics");
+
+    auto& vehicleSpawner = VehicleSpawner::GetInstance();
+    auto& vehicleScripts = VehicleScripts::GetInstance();
+
+    // Dynamically build menu options from your external data
+    for (const auto& vehicleInfo : VehicleData::g_sportsClassicsVehicles) {
+        if (mbCtx.Option(vehicleInfo.name)) {
+            // Use the hash from the VehicleInfo struct
+            //vehicleSpawner.SpawnVehicle(vehicleInfo.hash);
+            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
+        }
+    }
+}
+
 #pragma endregion
 
 #pragma region SuperVehicles
@@ -174,36 +179,15 @@ void VehicleMenu::BuildSuperVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMa
 {
     mbCtx.Title("Super");
 
-#pragma region SuperVehicleHashes
-    static const Hash scramJetHash = "scramjet"_hash;
-    static const Hash t20Hash = "t20"_hash;
-    static const Hash zentornoHash = "zentorno"_hash;
-#pragma endregion
-
-    auto& vehicleScripts = VehicleScripts::GetInstance();
     auto& vehicleSpawner = VehicleSpawner::GetInstance();
+    auto& vehicleScripts = VehicleScripts::GetInstance();
 
-    std::map<std::string, std::function<void()>> optionActions =
-    {
-        {"Scramjet", [&]()
-        {
-            vehicleSpawner.SpawnVehicle(scramJetHash);
-        }},
-        {"T20", [&]()
-        {
-            vehicleSpawner.SpawnVehicle(t20Hash);
-        }},
-        {"Zentorno", [&]()
-        {
-             vehicleSpawner.SpawnVehicle(zentornoHash);
-        }},
-    };
-
-    for (const auto& pair : optionActions)
-    {
-        if (mbCtx.Option(pair.first))
-        {
-            pair.second();
+    // Dynamically build menu options from your external data
+    for (const auto& vehicleInfo : VehicleData::g_superVehicles) {
+        if (mbCtx.Option(vehicleInfo.name)) {
+            // Use the hash from the VehicleInfo struct
+            //vehicleSpawner.SpawnVehicle(vehicleInfo.hash);
+            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
         }
     }
 }
@@ -222,25 +206,15 @@ void VehicleMenu::BuildSuvCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScript&
     auto& vehicleScripts = VehicleScripts::GetInstance();
     auto& vehicleSpawner = VehicleSpawner::GetInstance();
 
-#pragma region SuvVehicleHashes
-    static const Hash ballerLeHash = "baller3"_hash;
-#pragma endregion
-
-    std::map<std::string, std::function<void()>> optionActions =
-    {
-        {"Baller LE", [&]()
-        {
-            vehicleSpawner.SpawnVehicle(ballerLeHash);
-        }},
-    };
-
-    for (const auto& pair : optionActions)
-    {
-        if (mbCtx.Option(pair.first))
-        {
-            pair.second();
+    // Dynamically build menu options from your external data
+    for (const auto& vehicleInfo : VehicleData::g_suvVehicles) {
+        if (mbCtx.Option(vehicleInfo.name)) {
+            // Use the hash from the VehicleInfo struct
+            //vehicleSpawner.SpawnVehicle(vehicleInfo.hash);
+            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
         }
     }
+
 }
 
 #pragma endregion //SuvVehicles

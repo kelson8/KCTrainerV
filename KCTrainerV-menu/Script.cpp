@@ -5,6 +5,8 @@
 #include "Util/Paths.hpp"
 #include "Util/UI.hpp"
 
+#include "Constants.hpp"
+
 #include "Teleports/TeleportLocations.h"
 #include "Scripts/MiscScripts.h"
 #include "Scripts/VehicleScripts.h"
@@ -45,6 +47,7 @@ namespace KCMenu
 }
 
 #ifdef DEBUG_MODE
+
 /// <summary>
 /// This was mostly taken from KCTrainerIV, originally in use in my ReVC tests.
 /// Runs a console window for cout and other errors to be displayed
@@ -59,7 +62,8 @@ void KCMenu::AttachConsole()
         // TODO Possibly add log messages in here for logging when this attaches and errors to the KCTrainerV.log?
 
         std::string programBuildString = std::format("Program build time and date: {} @ {}", __DATE__, __TIME__);
-        std::string programVersionString = std::format("KCTrainerV Version: {}", Constants::DisplayVersion);
+        //std::string programVersionString = std::format("KCTrainerV Version: {}", Constants::DisplayVersion);
+        std::string programVersionString = std::format("{} Version: {}", Constants::ScriptName, Constants::DisplayVersion);
 
         // Redirect standard output, error, and input streams to the console
         FILE* dummy;
@@ -68,30 +72,28 @@ void KCMenu::AttachConsole()
         freopen_s(&dummy, "CONIN$", "r", stdin);
 
         // Optional: Set the console title
-        SetConsoleTitle("KCTrainerV");
+        //SetConsoleTitle("KCTrainerV");
+        SetConsoleTitle(Constants::ScriptName);
 
         log_output("Console attached successfully!");
         //std::cout << "Console attached successfully!" << std::endl;
 
 
         // Show the time and date when this was built
-        //std::cout << std::format("Program build time and date: {} @ ", __DATE__, __TIME__) << std::endl;
-        log_output(programVersionString);
+        log_output(programBuildString);
         //std::cout << programBuildString << std::endl;
 
         // Show the version string for the trainer
         //std::cout << programVersionString << std::endl;
         log_output(programVersionString);
         //std::cout << programVersionString << std::endl;
-
-        //std::cerr << "Error output will also appear here." << std::endl;
     }
     else
     {
         // Handle the case where console allocation fails (unlikely in most scenarios)
         // You might want to log an error message using your in-game system.
         log_error("Failed to allocate console.");
-        //std::cerr << "Failed to allocate console." << std::endl;
+        LOG(ERROR, "Failed to allocate console.");
     }
 #else
     std::cerr << "AllocConsole() is only available on Windows." << std::endl;

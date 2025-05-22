@@ -165,21 +165,21 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
             /* Example:
             [KCTrainerV]: MODULEINFO: lpBaseofDll=00007FF7AE8D0000, SizeOfImage=67644416, EntryPoint=00007FF7B0134A9C
             */
-            MainModule = GetModuleHandle(NULL);
-            if (!GetModuleInformation(GetCurrentProcess(), MainModule, &MainModuleInfo, sizeof(MainModuleInfo)))
-                log_output("Unable to get MODULEINFO from GTA5.exe");
-                //addlog(ige::LogType::LOG_INIT, "Unable to get MODULEINFO from GTA5.exe", __FILENAME__);
-            else
-            {
-                std::ostringstream moduleinfostream;
-                moduleinfostream << "MODULEINFO: lpBaseofDll=" << MainModuleInfo.lpBaseOfDll
-                    << ", SizeOfImage=" << MainModuleInfo.SizeOfImage
-                    << ", EntryPoint=" << MainModuleInfo.EntryPoint;
+            //MainModule = GetModuleHandle(NULL);
+            //if (!GetModuleInformation(GetCurrentProcess(), MainModule, &MainModuleInfo, sizeof(MainModuleInfo)))
+            //    log_output("Unable to get MODULEINFO from GTA5.exe");
+            //    //addlog(ige::LogType::LOG_INIT, "Unable to get MODULEINFO from GTA5.exe", __FILENAME__);
+            //else
+            //{
+            //    std::ostringstream moduleinfostream;
+            //    moduleinfostream << "MODULEINFO: lpBaseofDll=" << MainModuleInfo.lpBaseOfDll
+            //        << ", SizeOfImage=" << MainModuleInfo.SizeOfImage
+            //        << ", EntryPoint=" << MainModuleInfo.EntryPoint;
 
-                log_output(moduleinfostream.str());
+            //    log_output(moduleinfostream.str());
 
-                //addlog(ige::LogType::LOG_INIT, moduleinfostream.str(), __FILENAME__);
-            }
+            //    //addlog(ige::LogType::LOG_INIT, moduleinfostream.str(), __FILENAME__);
+            //}
 
             //
 

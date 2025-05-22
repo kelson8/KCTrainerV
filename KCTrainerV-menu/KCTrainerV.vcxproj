@@ -179,7 +179,10 @@
     <ClCompile Include="Components\KeyStates.cpp" />
     <ClCompile Include="Components\LuaManager.cpp" />
     <ClCompile Include="Components\LuaScripts_old.cpp" />
-    <ClCompile Include="DllMain.cpp" />
+    <ClCompile Include="DllMain.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="ImageDimensions.cpp" />
     <ClCompile Include="KCMenuScript.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -245,6 +248,7 @@
     <ClCompile Include="Scripts\Extras\Game.cpp" />
     <ClCompile Include="Scripts\Extras\GenericLoopedMode.cpp" />
     <ClCompile Include="Scripts\Extras\MeteorShower.cpp" />
+    <ClCompile Include="Scripts\Extras\WeaponIndivs.cpp" />
     <ClCompile Include="Scripts\Extras\World.cpp" />
     <ClCompile Include="Scripts\MiscScripts.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -276,6 +280,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Scripts\Vehicles\VehicleData.cpp" />
     <ClCompile Include="Scripts\WorldScripts.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -367,6 +372,7 @@
     <ClInclude Include="Scripts\Extras\Game.h" />
     <ClInclude Include="Scripts\Extras\GenericLoopedMode.h" />
     <ClInclude Include="Scripts\Extras\MeteorShower.h" />
+    <ClInclude Include="Scripts\Extras\WeaponIndivs.h" />
     <ClInclude Include="Scripts\Extras\World.h" />
     <ClInclude Include="Scripts\MiscScripts.h" />
     <ClInclude Include="Scripts\PedScripts.h" />
@@ -377,6 +383,7 @@
     <ClInclude Include="Scripts\TextScripts.h" />
     <ClInclude Include="Scripts\VehicleScripts.h" />
     <ClInclude Include="Scripts\VehicleSpawner.h" />
+    <ClInclude Include="Scripts\Vehicles\VehicleData.h" />
     <ClInclude Include="Scripts\WorldScripts.h" />
     <ClInclude Include="Teleports\TeleLocation.h" />
     <ClInclude Include="Teleports\TeleportLocations.h" />

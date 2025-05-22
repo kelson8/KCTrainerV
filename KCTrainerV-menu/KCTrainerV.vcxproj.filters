@@ -204,6 +204,12 @@
     <ClCompile Include="Scripts\VehicleSpawner.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Extras\WeaponIndivs.cpp">
+      <Filter>Scripts\Extras</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Vehicles\VehicleData.cpp">
+      <Filter>Scripts\Vehicles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -497,6 +503,12 @@
     <ClInclude Include="Scripts\VehicleSpawner.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Extras\WeaponIndivs.h">
+      <Filter>Scripts\Extras</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Vehicles\VehicleData.h">
+      <Filter>Scripts\Vehicles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -567,6 +579,9 @@
     </Filter>
     <Filter Include="Menus\Submenus">
       <UniqueIdentifier>{c7e9d4b4-06ef-4ffd-93a8-dc35bf48030c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Vehicles">
+      <UniqueIdentifier>{bd30f741-3920-4773-a714-0b22769d992e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
