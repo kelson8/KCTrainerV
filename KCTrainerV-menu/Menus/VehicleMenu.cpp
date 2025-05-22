@@ -120,11 +120,9 @@ void VehicleMenu::BuildSportsVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCM
 
     auto& vehicleSpawner = VehicleSpawner::GetInstance();
 
-    // Dynamically build menu options from your external data
-    for (const auto& vehicleInfo : VehicleData::g_sportsVehicles) {
+    for (const auto& vehicleInfo : VehicleData::g_sportsVehicles) 
+    {
         if (mbCtx.Option(vehicleInfo.name)) {
-            // Use the hash from the VehicleInfo struct
-            //vehicleSpawner.SpawnVehicle(vehicleInfo.hash);
             vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
         }
     }
@@ -139,11 +137,9 @@ void VehicleMenu::BuildSportsClassicsVehicleCategorySubmenu(NativeMenu::Menu& mb
     auto& vehicleSpawner = VehicleSpawner::GetInstance();
     auto& vehicleScripts = VehicleScripts::GetInstance();
 
-    // Dynamically build menu options from your external data
-    for (const auto& vehicleInfo : VehicleData::g_sportsClassicsVehicles) {
+    for (const auto& vehicleInfo : VehicleData::g_sportsClassicsVehicles) 
+    {
         if (mbCtx.Option(vehicleInfo.name)) {
-            // Use the hash from the VehicleInfo struct
-            //vehicleSpawner.SpawnVehicle(vehicleInfo.hash);
             vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
         }
     }
@@ -164,11 +160,10 @@ void VehicleMenu::BuildSuperVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMa
     auto& vehicleSpawner = VehicleSpawner::GetInstance();
     auto& vehicleScripts = VehicleScripts::GetInstance();
 
-    // Dynamically build menu options from your external data
-    for (const auto& vehicleInfo : VehicleData::g_superVehicles) {
+    for (const auto& vehicleInfo : VehicleData::g_superVehicles) 
+    {
         if (mbCtx.Option(vehicleInfo.name)) {
             // Use the hash from the VehicleInfo struct
-            //vehicleSpawner.SpawnVehicle(vehicleInfo.hash);
             vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
         }
     }
@@ -188,11 +183,10 @@ void VehicleMenu::BuildSuvCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScript&
     auto& vehicleScripts = VehicleScripts::GetInstance();
     auto& vehicleSpawner = VehicleSpawner::GetInstance();
 
-    // Dynamically build menu options from your external data
-    for (const auto& vehicleInfo : VehicleData::g_suvVehicles) {
+    for (const auto& vehicleInfo : VehicleData::g_suvVehicles) 
+    {
         if (mbCtx.Option(vehicleInfo.name)) {
             // Use the hash from the VehicleInfo struct
-            //vehicleSpawner.SpawnVehicle(vehicleInfo.hash);
             vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
         }
     }

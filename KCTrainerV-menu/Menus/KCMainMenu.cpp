@@ -450,5 +450,30 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 #pragma endregion
 
+#pragma region WorldMenu
+
+    //-----
+    // World weather sub menu
+    //-----
+    submenus.emplace_back("WorldWeatherSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            worldMenu.BuildWeatherMenu(mbCtx, context);
+
+        });
+
+    //-----
+    // World time sub menu
+    //-----
+    submenus.emplace_back("WorldTimeSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            worldMenu.BuildTimeMenu(mbCtx, context);
+
+        });
+
+#pragma endregion
+
+
     return submenus;
 }
