@@ -5,6 +5,8 @@
 
 #ifdef LUA_TEST
 #include <sol/sol.hpp>
+#include "LuaNatives.h"
+
 
 #include <inc/natives.h>
 #include "Natives/natives2.h"
@@ -17,11 +19,20 @@
 // TODO Test this later.
 // I have a lot of Chaos Mod functions adapted at the bottom of this file that should work.
 
+#undef LUA_CHAOSMOD_TEST
+
 LuaManager::LuaManager() {
     lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug, sol::lib::bit32);
-    // Bind C++ functions or natives here if they need to be available immediately
+    
+	// TODO Test this for possibly making _invoke work in lua.
+#ifdef LUA_CHAOSMOD_TEST
+	LuaManager::InvokeNativeTest();
+#endif // LUA_CHAOSMOD_TEST
+	// Bind C++ functions or natives here if they need to be available immediately
     //lua.set_function("TRIGGER_MUSIC_EVENT", AUDIO::TRIGGER_MUSIC_EVENT);
     // ... other bindings ...
+
+	log_output("Attempting to start lua manager");
 }
 
 LuaManager& LuaManager::GetInstance() {
@@ -38,6 +49,8 @@ sol::state& LuaManager::GetLuaState() {
 /// Bind the lua natives I want to use for testing.
 /// </summary>
 void LuaManager::BindNativesToLua() {
+	// These are now in the LuaNatives.cpp and LuaNatives.h files, well when I fix it
+	// TODO Disable these later.
 	lua.set_function("GetPlayerPedId", PLAYER_PED_ID);
 	lua.set_function("SetEntityCoords", SET_ENTITY_COORDS);
 	lua.set_function("TRIGGER_MUSIC_EVENT", TRIGGER_MUSIC_EVENT);
@@ -46,6 +59,16 @@ void LuaManager::BindNativesToLua() {
 	lua.set_function("DeleteEntity", DELETE_ENTITY);
 	lua.set_function("GetHashKey", MISC::GET_HASH_KEY);
 	lua.set_function("IsPlayerDead", IS_PLAYER_DEAD);
+
+	// Custom for wait, TODO Test
+	lua.set_function("WAIT", SYSTEM::WAIT);
+
+	// Bind the hash lookup function to Lua
+	// This makes 'GET_NATIVE_HASH(nativeName)' available in Lua
+#ifdef LUA_NATIVES_TEST
+	lua.set_function("GET_NATIVE_HASH", &LuaNatives::GetNativeHashByName);
+#endif // LUA_NATIVES_TEST
+
 	// Bind more natives as needed
 }
 
@@ -92,7 +115,6 @@ void LuaManager::InitializeLuaEnvironment() {
 	BindGameTypesToLua();
 }
 
-
 LuaManager::~LuaManager() {
     // Clean up Lua state if needed (though Sol2 handles it well)
 }
@@ -128,21 +150,24 @@ sol::optional<sol::function> LuaManager::get_function(const std::string& name) {
 
 // Below copied from LuaScripts.cpp in Chaos Mod
 
+#undef LUA_CHAOSMOD_TEST
+#ifdef LUA_CHAOSMOD_TEST
+
 // MinGW doesn't have SEH :(
-//#ifdef _MSC_VER
-//#define MAGIC_CATCH_BEGIN \
-//	__try                 \
-//	{
-//#define MAGIC_CATCH_END(x)               \
-//	}                                    \
-//	__except (EXCEPTION_EXECUTE_HANDLER) \
-//	{                                    \
-//		x;                               \
-//	}
-//#else
-//#define MAGIC_CATCH_BEGIN {
-//#define MAGIC_CATCH_END(x) }
-//#endif
+#ifdef _MSC_VER
+#define MAGIC_CATCH_BEGIN \
+	__try                 \
+	{
+#define MAGIC_CATCH_END(x)               \
+	}                                    \
+	__except (EXCEPTION_EXECUTE_HANDLER) \
+	{                                    \
+		x;                               \
+	}
+#else
+#define MAGIC_CATCH_BEGIN {
+#define MAGIC_CATCH_END(x) }
+#endif
 
 //void LuaPrint(const std::string& text)
 //{
@@ -160,7 +185,7 @@ sol::optional<sol::function> LuaManager::get_function(const std::string& name) {
 //#endif
 //}
 
-/*
+
 
 static char* _TryParseString(void* str)
 {
@@ -257,8 +282,6 @@ public:
 	}
 };
 
-
-
 enum class LuaNativeReturnType
 {
 	None,
@@ -270,93 +293,109 @@ enum class LuaNativeReturnType
 	Vector3
 };
 
-*/
 
 // TODO Adapt to possibly make all natives work
 // TODO Attempt to replicate this part in KCTrainerV, this might allow me to run all natives in lua
 // TODO Test this, I got this to build like this.
-//static sol::object LuaInvoke(const sol::environment& env, uint64_t nativeHash, LuaNativeReturnType returnType,
-//	const sol::variadic_args& args)
-//{
-//	if (nativeHash == 0x213AEB2B90CBA7AC || nativeHash == 0x5A5F40FE637EB584 || nativeHash == 0x933D6A9EEC1BACD0
-//		|| nativeHash == 0xE80492A9AC099A93 || nativeHash == 0x8EF07E15701D61ED)
-//	{
-//		return sol::make_object(env.lua_state(), sol::lua_nil);
-//	}
-//
-//	nativeInit(nativeHash);
-//
-//	for (const sol::stack_proxy& arg : args)
-//	{
-//		if (arg.is<bool>())
-//		{
-//			nativePush(arg.get<bool>());
-//		}
-//		else if (arg.is<int>())
-//		{
-//			nativePush(arg.get<int>());
-//		}
-//		else if (arg.is<float>())
-//		{
-//			nativePush(arg.get<float>());
-//		}
-//		else if (arg.is<const char*>())
-//		{
-//			nativePush(arg.get<const char*>());
-//		}
-//		else if (arg.is<LuaHolder>())
-//		{
-//			LuaHolder& holder = arg.get<LuaHolder>();
-//
-//			if (holder.m_Obj.valid())
-//			{
-//				DWORD64 data = holder.m_Obj.as<DWORD64>();
-//
-//				nativePush(&data);
-//			}
-//			else
-//			{
-//				nativePush(&holder.m_Data);
-//			}
-//		}
-//	}
-//
-//	void** returned;
-//	if (!_CallNative(&returned))
-//	{
-//		LOG(ERROR, "Error invoking native 0x", nativeHash);
-//		//LuaPrint(env.get<sol::table>("EnvInfo")["ScriptName"],
-//		//	(std::ostringstream() << "Error while invoking native 0x" << std::uppercase << std::hex << nativeHash)
-//		//	.str());
-//	}
-//	else if (returned)
-//	{
-//		switch (returnType)
-//		{
-//		case LuaNativeReturnType::Bool:
-//			return sol::make_object(env.lua_state(), *reinterpret_cast<bool*>(returned));
-//		case LuaNativeReturnType::Int:
-//			return sol::make_object(env.lua_state(), *reinterpret_cast<int*>(returned));
-//		case LuaNativeReturnType::UInt:
-//			return sol::make_object(env.lua_state(), *reinterpret_cast<int*>(returned));
-//		case LuaNativeReturnType::Float:
-//			return sol::make_object(env.lua_state(), *reinterpret_cast<float*>(returned));
-//		case LuaNativeReturnType::String:
-//			return sol::make_object(env.lua_state(), _TryParseString(*returned));
-//		case LuaNativeReturnType::Vector3:
-//		{
-//			LuaVector3 vector3;
-//			if (_TryParseVector3(returned, vector3.X, vector3.Y, vector3.Z))
-//				return sol::make_object(env.lua_state(), vector3);
-//		}
-//		break;
-//		default:
-//			break;
-//		}
-//	}
-//
-//	return sol::make_object(env.lua_state(), sol::lua_nil);
-//}
+static sol::object LuaInvoke(const sol::environment& env, uint64_t nativeHash, LuaNativeReturnType returnType,
+	const sol::variadic_args& args)
+{
+	if (nativeHash == 0x213AEB2B90CBA7AC || nativeHash == 0x5A5F40FE637EB584 || nativeHash == 0x933D6A9EEC1BACD0
+		|| nativeHash == 0xE80492A9AC099A93 || nativeHash == 0x8EF07E15701D61ED)
+	{
+		return sol::make_object(env.lua_state(), sol::lua_nil);
+	}
+
+	nativeInit(nativeHash);
+
+	for (const sol::stack_proxy& arg : args)
+	{
+		if (arg.is<bool>())
+		{
+			nativePush(arg.get<bool>());
+		}
+		else if (arg.is<int>())
+		{
+			nativePush(arg.get<int>());
+		}
+		else if (arg.is<float>())
+		{
+			nativePush(arg.get<float>());
+		}
+		else if (arg.is<const char*>())
+		{
+			nativePush(arg.get<const char*>());
+		}
+		else if (arg.is<LuaHolder>())
+		{
+			LuaHolder& holder = arg.get<LuaHolder>();
+
+			if (holder.m_Obj.valid())
+			{
+				DWORD64 data = holder.m_Obj.as<DWORD64>();
+
+				nativePush(&data);
+			}
+			else
+			{
+				nativePush(&holder.m_Data);
+			}
+		}
+	}
+
+	void** returned;
+	if (!_CallNative(&returned))
+	{
+		LOG(ERROR, "Error invoking native 0x", nativeHash);
+		//LuaPrint(env.get<sol::table>("EnvInfo")["ScriptName"],
+		//	(std::ostringstream() << "Error while invoking native 0x" << std::uppercase << std::hex << nativeHash)
+		//	.str());
+	}
+	else if (returned)
+	{
+		switch (returnType)
+		{
+		case LuaNativeReturnType::Bool:
+			return sol::make_object(env.lua_state(), *reinterpret_cast<bool*>(returned));
+		case LuaNativeReturnType::Int:
+			return sol::make_object(env.lua_state(), *reinterpret_cast<int*>(returned));
+		case LuaNativeReturnType::UInt:
+			return sol::make_object(env.lua_state(), *reinterpret_cast<int*>(returned));
+		case LuaNativeReturnType::Float:
+			return sol::make_object(env.lua_state(), *reinterpret_cast<float*>(returned));
+		case LuaNativeReturnType::String:
+			return sol::make_object(env.lua_state(), _TryParseString(*returned));
+		case LuaNativeReturnType::Vector3:
+		{
+			LuaVector3 vector3;
+			if (_TryParseVector3(returned, vector3.X, vector3.Y, vector3.Z))
+				return sol::make_object(env.lua_state(), vector3);
+		}
+		break;
+		default:
+			break;
+		}
+	}
+
+	return sol::make_object(env.lua_state(), sol::lua_nil);
+}
+
+/// <summary>
+/// TODO Test this, not sure what it will do.
+/// </summary>
+void LuaManager::InvokeNativeTest()
+{
+	//m_GlobalState["_invoke"] = [](const sol::this_environment& curEnv, uint64_t hash,
+	GetLuaState()["_invoke"] = [](const sol::this_environment& curEnv, uint64_t hash,
+		LuaNativeReturnType returnType, const sol::variadic_args& args)
+		{
+			return LuaInvoke(curEnv, hash, returnType, args);
+		};
+}
+
+
+#endif // LUA_CHAOSMOD_TEST
+
 
 // TODO Adapt this too, might make this actually work
 //LuaManager::LuaManager()

@@ -21,30 +21,11 @@ void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     auto& vehicleScripts = VehicleScripts::GetInstance();
     auto& vehicleSpawner = VehicleSpawner::GetInstance();
 
-    // This didn't seem to do anything
-    //mbCtx.drawInstructionalButtons();
+    //--------------
+    // Vehicle options sub menu
+    //---------------
+    mbCtx.MenuOption("Options", "VehicleOptionsSubmenu", { "Show a list of vehicle options" });
 
-    mbCtx.BoolOption("Toggle Invincible vehicle", vehicleScripts.isInvincibleVehicleEnabled, { "Toggle invincibility for your current vehicle" });
-
-    if (mbCtx.Option("Repair vehicle", { "Fully fix your vehicle and tires." }))
-    {
-        vehicleScripts.RepairVehicle();
-    }
-
-    //-----
-    // Bullet proof tires toggle
-    //-----
-    mbCtx.BoolOption("Bulletproof tires", vehicleScripts.isBulletProofEnabled, { "Set vehicle to have bulletproof tires" });
-
-
-    //-----
-    // Vehicle armor options
-    //-----
-    mbCtx.IntOption("Vehicle Armor Level", vehicleScripts.vehicleArmorLevel, 0, 4, 1, { "Armor level selector" });
-    if (mbCtx.Option("Set armor"))
-    {
-        vehicleScripts.SetArmor(vehicleScripts.vehicleArmorLevel);
-    }
 
     // Toggles the boolean to spawn in the vehicle and remove the old one.
     //mbCtx.BoolOption("Spawn into vehicle", vehicleScripts.spawnInsideVehicle, { "Toggle spawning in the spawned vehicle" });
@@ -92,6 +73,7 @@ void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     }
 
     // Moved vehicle spawning code into the categories.
+    // TODO Move Vehicle categories into VehicleCategoryMenu.cpp in Submenus/Vehicle folder.
     mbCtx.MenuOption("Categories", "VehicleCategorySubmenu", { "Show the list of vehicle categories." });    
 }
 

@@ -6,6 +6,8 @@
 
 #include "Constants.hpp"
 
+#include <inc/types.h>
+
 /*
  * The class for the "script" that runs.
  * This may serve as the core logic of the script.

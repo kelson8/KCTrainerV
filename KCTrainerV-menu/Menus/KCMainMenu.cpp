@@ -34,6 +34,7 @@
 #include "VehicleMenu.h"
 #include "WorldMenu.h"
 #include "MiscMenu.h"
+#include "Submenus/Vehicle/VehicleOptionsMenu.h"
 
 // Teleports
 #include "Teleports/TeleportLocations.h"
@@ -107,7 +108,10 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     auto& playerMenu = PlayerMenu::GetInstance();
     auto& pedMenu = PedMenu::GetInstance();
     auto& teleportMenu = TeleportMenu::GetInstance();
+    
     auto& vehicleMenu = VehicleMenu::GetInstance();
+    auto& vehicleOptionsMenu = VehicleOptionsMenu::GetInstance();
+    
     auto& worldMenu = WorldMenu::GetInstance();
     auto& miscMenu = MiscMenu::GetInstance();
 
@@ -198,6 +202,16 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
             vehicleMenu.Build(mbCtx, context);
+        }
+    );
+
+    //-----
+    // Vehicle options sub menu
+    //-----
+    submenus.emplace_back("VehicleOptionsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            vehicleOptionsMenu.Build(mbCtx, context);
         }
     );
 

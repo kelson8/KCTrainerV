@@ -118,10 +118,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;NOMINMAX;NOGDI;DEBUG_MODE;LUA_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;NOMINMAX;NOGDI;DEBUG_MODE;KCTRAINER_DEBUG;LUA_TEST;LUA_CHAOSMOD_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(SolutionDir)thirdparty\sol\include;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(SolutionDir)thirdparty\sol\include;$(ProjectDir);$(ProjectDir)Scripts\Extras\Classes</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -176,8 +176,10 @@
     <ClCompile Include="..\thirdparty\minhook\src\hook.c" />
     <ClCompile Include="..\thirdparty\minhook\src\trampoline.c" />
     <ClCompile Include="..\thirdparty\Patterns\Patterns.cpp" />
+    <ClCompile Include="Components\GeneratedLuaNativeBindings.cpp" />
     <ClCompile Include="Components\KeyStates.cpp" />
     <ClCompile Include="Components\LuaManager.cpp" />
+    <ClCompile Include="Components\LuaNatives.cpp" />
     <ClCompile Include="Components\LuaScripts_old.cpp" />
     <ClCompile Include="DllMain.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -210,6 +212,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.cpp" />
     <ClCompile Include="Menus\TeleportMenu.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -322,6 +325,7 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="Components\KeyStates.h" />
     <ClInclude Include="Components\LuaManager.h" />
+    <ClInclude Include="Components\LuaNatives.h" />
     <ClInclude Include="Components\LuaScripts_old.h" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="defines.h" />
@@ -348,6 +352,7 @@
     <ClInclude Include="Menus\MiscMenu.h" />
     <ClInclude Include="Menus\PedMenu.h" />
     <ClInclude Include="Menus\PlayerMenu.h" />
+    <ClInclude Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.h" />
     <ClInclude Include="Menus\TeleportMenu.h" />
     <ClInclude Include="Menus\VehicleMenu.h" />
     <ClInclude Include="Menus\WorldMenu.h" />

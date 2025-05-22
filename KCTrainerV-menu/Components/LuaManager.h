@@ -21,6 +21,12 @@ public:
 
     // New
     void BindNativesToLua();
+
+#ifdef LUA_NATIVES_TEST
+    // Located in GeneratedLuaNativeBindings.cpp.
+    void BindAllNativesToLua();
+#endif
+
     // TODO Fix this
     //void BindCustomFunctionsToLua(KCMainScript& scriptContext);
     void BindGameTypesToLua();
@@ -33,6 +39,10 @@ public:
     bool load_script(const std::string& filepath);
     sol::optional<sol::function> get_function(const std::string& name);
     // Add other helpful methods as needed (e.g., get_table)
+
+#ifdef LUA_CHAOSMOD_TEST
+    void InvokeNativeTest();
+#endif // LUA_CHAOSMOD_TEST
 
 private:
     sol::state lua;

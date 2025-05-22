@@ -1,4 +1,6 @@
 #pragma once
+#include "Constants.hpp"
+
 #include "Util/Enums.h"
 
 // TODO Refactor this file a bit, possibly make a Config class under the IDGun namespace for the variables like before.
@@ -37,14 +39,17 @@ namespace MiscScripts
 		//
 	}
 
-	namespace Music
+	namespace Lua
 	{
 		// Lua tests
 #ifdef LUA_TEST
 		void InitializeLuaMusic();
 		void PlayLuaMusic(const std::string& track_id);
 #endif //LUA_TEST
+	}
 
+	namespace Music
+	{
 		// Play test music
 		//void PlayTestMusic(int track);
 		void PlayTestMusic(MusicTracks track);

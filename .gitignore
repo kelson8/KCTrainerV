@@ -6,6 +6,18 @@
 # Built asis from my tests
 builds/
 
+# Downloaded vehicle images
+python/vehicle_images
+
+# Extra natives files, testing for LUA.
+python/converters/natives.h
+python/converters/GeneratedLuaNativeBindings.cpp
+python/converters/GeneratedNativeHashes.cpp
+
+KCTrainerV-menu/Components/LuaNatives.cpp
+KCTrainerV-menu/Components/LuaNatives.h
+KCTrainerV-menu/Components/GeneratedLuaNativeBindings.cpp
+
 # Pycharm
 .idea/
 

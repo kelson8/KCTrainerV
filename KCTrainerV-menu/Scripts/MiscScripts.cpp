@@ -52,22 +52,27 @@
 #include "../Components/LuaManager.h"
 
 // TODO Fix these to use namespaces also.
-
-void MiscScripts::InitializeLuaMusic()
+namespace MiscScripts
 {
-	auto& luaManager = LuaManager::GetInstance();
-	luaManager.load_script("scripts/music_config.lua");
-}
+	namespace Lua
+	{
+		void InitializeLuaMusic()
+		{
+			auto& luaManager = LuaManager::GetInstance();
+			luaManager.load_script("scripts/music_config.lua");
+		}
 
-void MiscScripts::PlayLuaMusic(const std::string& track_id)
-{
-	auto& luaManager = LuaManager::GetInstance();
-	sol::optional<sol::function> play_func = luaManager.get_function("play_music");
-	if (play_func) {
-		(*play_func)(track_id);
-	}
-	else {
-		// Handle error: play_music function not found
+		void PlayLuaMusic(const std::string& track_id)
+		{
+			auto& luaManager = LuaManager::GetInstance();
+			sol::optional<sol::function> play_func = luaManager.get_function("play_music");
+			if (play_func) {
+				(*play_func)(track_id);
+			}
+			else {
+				// Handle error: play_music function not found
+			}
+		}
 	}
 }
 

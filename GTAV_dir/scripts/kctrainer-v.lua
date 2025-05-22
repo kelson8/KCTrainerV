@@ -16,6 +16,34 @@
 -- print("Player Ped:", playerPed)
 
 
+-- TODO Fix this later
+-- New
+-- Define return types (as in previous example)
+-- RETURN_BOOL = 0
+-- RETURN_INT = 1
+-- RETURN_UINT = 2
+-- RETURN_FLOAT = 3
+-- RETURN_STRING = 4
+-- RETURN_VECTOR3 = 5
+-- RETURN_VOID = 6
+
+-- -- Create a wrapper function for cleaner calls
+-- function invoke(nativeName, returnType, ...)
+--     local nativeHash = GET_NATIVE_HASH(nativeName)
+--     if nativeHash == 0 then
+--         -- Handle the error in Lua if the native name wasn't found
+--         print("ERROR: Native '" .. nativeName .. "' not found!")
+--         return nil
+--     end
+--     return _invoke(nativeHash, returnType, ...)
+-- end
+--
+
+-- Example Usage:
+-- local playerPed = invoke("GET_PLAYER_PED", RETURN_INT, -1)
+-- invoke("SET_ENTITY_COORDS", RETURN_VOID, playerPed, 123.45, 678.90, 10.0, false, false, false, true)
+
+
 
 -- function teleport_player(x, y, z)
 function teleport_player(pos)

@@ -210,6 +210,15 @@
     <ClCompile Include="Scripts\Vehicles\VehicleData.cpp">
       <Filter>Scripts\Vehicles</Filter>
     </ClCompile>
+    <ClCompile Include="Components\GeneratedLuaNativeBindings.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\LuaNatives.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.cpp">
+      <Filter>Menus\Submenus\Vehicle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -509,6 +518,12 @@
     <ClInclude Include="Scripts\Vehicles\VehicleData.h">
       <Filter>Scripts\Vehicles</Filter>
     </ClInclude>
+    <ClInclude Include="Components\LuaNatives.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.h">
+      <Filter>Menus\Submenus\Vehicle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -582,6 +597,9 @@
     </Filter>
     <Filter Include="Scripts\Vehicles">
       <UniqueIdentifier>{bd30f741-3920-4773-a714-0b22769d992e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus\Submenus\Vehicle">
+      <UniqueIdentifier>{09e1e908-4f62-49be-a866-4c1a70a7f672}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
