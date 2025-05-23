@@ -25,9 +25,14 @@
 #include <string>
 #include <format>
 
+#include <numeric>
+
 #include <set>
 #include <unordered_map>
 #include <unordered_set>
+
+// Tiny XML2
+#include "tinyxml2.h"
 
 // Chaos mod
 #include "Util/Hash.h"

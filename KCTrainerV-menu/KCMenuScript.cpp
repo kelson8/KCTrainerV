@@ -131,10 +131,11 @@ void KCMainScript::Tick() {
     // Player force field
     //-----
 #ifdef MEMORY_TESTING
-    if (MiscScripts::EXFeatures::isForceFieldEnabled)
-    {
-        MiscScripts::EXFeatures::EnableForceField();
-    }
+    // Seems to crash, disabled.
+    //if (MiscScripts::EXFeatures::isForceFieldEnabled)
+    //{
+    //    MiscScripts::EXFeatures::EnableForceField();
+    //}
 #endif // MEMORY_TESTING
 
     //-----

@@ -36,6 +36,8 @@
 #include "MiscMenu.h"
 #include "Submenus/Vehicle/VehicleOptionsMenu.h"
 
+#include "Submenus/Player/ModelChangerMenu.h"
+
 // Teleports
 #include "Teleports/TeleportLocations.h"
 
@@ -105,7 +107,15 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     //-----
     // Menus
     //-----
+
+    // Player
     auto& playerMenu = PlayerMenu::GetInstance();
+
+#ifdef PLAYER_SKIN_CHANGER
+    auto& modelChangerMenu = ModelChangerMenu::GetInstance();
+#endif // PLAYER_SKIN_CHANGER
+
+
     auto& pedMenu = PedMenu::GetInstance();
     auto& teleportMenu = TeleportMenu::GetInstance();
     
@@ -126,6 +136,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             // Title and Subtitle are required on each submenu.
             mbCtx.Title(Constants::ScriptName);
             mbCtx.Subtitle(std::string("~b~") + Constants::DisplayVersion);
+
+            // Draw the buttons on the screen for navigation.
+            mbCtx.drawInstructionalButtons();
 
             // This is a normal option. It'll return true when "select" is presed.
             //if (mbCtx.Option("Click me!", { "This will log something to " + Paths::GetModuleNameWithoutExtension(Paths::GetOurModuleHandle()) + ".log" })) 
@@ -179,9 +192,22 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
+    //-----
+    // Player Model changer sub Menu
+    // TODO Fix this, it shows a list of the categories but opening it does nothing.
+    // Also, I will need to figure out a way to select each model.
+    //-----
+#ifdef PLAYER_SKIN_CHANGER
+    submenus.emplace_back("PlayerModelChangerSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            modelChangerMenu.Build(mbCtx, context);
+        }
+    );
+#endif
 
     //-----
-    // Player debugsub menu
+    // Player debug sub menu
     //-----
     submenus.emplace_back("PlayerDebugSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
@@ -413,15 +439,13 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         });
 
 
-    // Well I finally got this working.
-
     //-----
-    // Misc IDGun Debug sub menu
+    // Misc Music sub menu
     //-----
-    submenus.emplace_back("MiscIDGunDebugSubmenu",
+    submenus.emplace_back("MiscMusicSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            miscMenu.BuildIDGunDebugMenu(mbCtx, context);
+            miscMenu.BuildMusicMenu(mbCtx, context);
 
         });
 
@@ -446,7 +470,15 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         });
 
 
+    //-----
+    // Misc IDGun Debug sub menu
+    //-----
+    submenus.emplace_back("MiscIDGunDebugSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            miscMenu.BuildIDGunDebugMenu(mbCtx, context);
 
+        });
 
 #pragma endregion
 

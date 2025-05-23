@@ -84,6 +84,8 @@
 // Enable the vehicle spawner test which runs in the second thread
 //#define VEHICLE_SPAWNER_TEST
 
+// Enable the Player Skin Changer test, so far this only displays the categories.
+//#define PLAYER_SKIN_CHANGER
 
 // Testing moving some stuff over to namespaces, 
 // #define MOVE_MENU_NAMESPACE
@@ -100,4 +102,7 @@ namespace Constants
     static const char* const ScriptFolder = "KCTrainerV";
 
     static const char* const coordsFileName = "CurrentCoords.txt";
+    static const char* const notificationFileName = "CustomNotifications.txt";
+
+    static const char* const pedsFileName = "PedList.xml";
 }

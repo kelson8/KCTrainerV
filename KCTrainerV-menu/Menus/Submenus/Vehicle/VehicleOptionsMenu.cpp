@@ -19,6 +19,7 @@ void VehicleOptionsMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     mbCtx.Title("Vehicle Options");
 
+
     auto& vehicleScripts = VehicleScripts::GetInstance();
     auto& vehicleSpawner = VehicleSpawner::GetInstance();
 
@@ -26,8 +27,7 @@ void VehicleOptionsMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // Vehicle Options
     //--------------
 
-    // This didn't seem to do anything
-    //mbCtx.drawInstructionalButtons();
+
 
     mbCtx.BoolOption("Toggle Invincible vehicle", vehicleScripts.isInvincibleVehicleEnabled, { "Toggle invincibility for your current vehicle" });
 

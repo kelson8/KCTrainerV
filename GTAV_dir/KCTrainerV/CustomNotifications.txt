@@ -1,0 +1,9 @@
+# This is a comment line
+# Write notifications to this file in this format:
+# Notification: <message>
+
+Notification: Welcome to KCTrainerV!
+Notification: Have fun modding GTA V!
+Notification: ~y~Warning: ~w~Watch out for those cops!
+Notification: ~r~FATAL ERROR:~w~ Just kidding!
+Notification: Random message for you.

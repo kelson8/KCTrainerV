@@ -12,6 +12,11 @@
 #include "Scripts/VehicleScripts.h"
 #include "Scripts/VehicleSpawner.h"
 
+#include "Scripts/NotificationManager.h"
+#include "Scripts/PedModelManager.h"
+
+#include "Util/FileFunctions.h"
+
 #include "defines.h"
 
 #ifdef LUA_TEST
@@ -37,6 +42,12 @@ namespace
 // These functions are only called in Script.cpp so don't need to be exposed.
 namespace KCMenu 
 {
+    void LoadNotificationFile();
+
+#ifdef PLAYER_SKIN_CHANGER
+    void LoadPedsFile();
+#endif
+
     void scriptInit();
     void scriptTick();
 #ifdef DEBUG_MODE
@@ -142,6 +153,15 @@ void KCMenu::ScriptMain()
         teleportLocations.GetTeleportLocations();
 #endif //!NEW_TELEPORTS
 
+        // Load notifications from the file.
+        KCMenu::LoadNotificationFile();
+
+#ifdef PLAYER_SKIN_CHANGER
+        // Load the peds from the file list
+        // For changing player model, and in the future spawning peds.
+        KCMenu::LoadPedsFile();
+#endif
+
         // The Lua initialization is now done before scriptInit
 //#ifdef LUA_TEST
 //        // Run lua init, TODO Test this.
@@ -157,6 +177,54 @@ void KCMenu::ScriptMain()
     scriptTick();
 }
 
+
+
+void KCMenu::LoadNotificationFile()
+{
+    auto& fileFunctions = FileFunctions::GetInstance();
+    // Get the mod path and file name, to check if it exists.
+    std::filesystem::path modPath = Paths::GetModPath();
+    std::string pathString = (modPath / Constants::notificationFileName).string();
+
+    if (fileFunctions.DoesFileExist(pathString))
+    {
+        NotificationManager::LoadNotificationsFromFile(pathString);
+    }
+    else {
+        std::string errorMessage = std::format("Notification file {} not found.", pathString);
+        LOG(ERROR, errorMessage);
+        log_output(errorMessage);
+    }
+}
+
+
+#ifdef PLAYER_SKIN_CHANGER
+void KCMenu::LoadPedsFile()
+{
+    auto& fileFunctions = FileFunctions::GetInstance();
+
+    auto& pedModelManager = PedModelManager::GetInstance();
+
+
+    // Get the mod path and file name, to check if it exists.
+    std::filesystem::path modPath = Paths::GetModPath();
+    std::string pathString = (modPath / Constants::pedsFileName).string();
+
+    if (fileFunctions.DoesFileExist(pathString))
+    {
+        pedModelManager.LoadPedsFromFile(pathString);
+    }
+    else {
+        std::string errorMessage = std::format("Peds file {} not found.", pathString);
+        LOG(ERROR, errorMessage);
+        log_output(errorMessage);
+    }
+}
+#endif
+
+/// <summary>
+/// Script init
+/// </summary>
 void KCMenu::scriptInit() 
 {
     // TODO Figure out how to add a reload option to the menu, I might use the scriptInit but this might crash the menu.

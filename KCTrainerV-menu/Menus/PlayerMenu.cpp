@@ -113,6 +113,13 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     //    VehicleScripts::ToggleBombBayDoors();
     //}
 
+    //------
+    // Player Model changer, located in Submenus/Player/ModelChanger.cpp
+#ifdef PLAYER_SKIN_CHANGER
+    mbCtx.MenuOption("Model changer", "PlayerModelChangerSubmenu", { "Change your skin model from a list" });
+#endif
+    //------
+
 #ifdef DEBUG_MODE
     mbCtx.MenuOption("Player Debug", "PlayerDebugSubmenu", { "Debug menu for player functions." });
     //if (mbCtx.Option("Log cops killed stat", { "Log the cops killed stat to the console." }))

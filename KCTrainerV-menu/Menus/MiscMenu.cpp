@@ -2,13 +2,16 @@
 
 #include "../Constants.hpp"
 #include "MiscMenu.h"
+
 #include "../Scripts/MiscScripts.h"
+#include "../Scripts/NotificationManager.h"
 
 #include "../common.h"
 
 #include "../Teleports/TeleportLocations.h"
 
 #include "defines.h"
+
 
 // Menyoo
 #include "../Scripts/Extras/Game.h"
@@ -27,8 +30,10 @@ void MiscMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     auto& textScripts = TextScripts::GetInstance();
 
     mbCtx.Title("Misc");
+    mbCtx.MenuOption("Music", { "MiscMusicSubmenu" }, { "Play game soundtracks, and music, doesn't work for radio." });
 
     mbCtx.MenuOption("Blips", { "MiscBlipsSubmenu" }, { "Testing with blips, adding/removing and more." });
+    
 
     mbCtx.MenuOption("Debug Sub Menu", "MiscDebugSubmenu", { "Debug testing menu." });
     
@@ -37,6 +42,86 @@ void MiscMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 #endif
 }
 
+/// <summary>
+/// Misc Menu - Music submenu
+/// </summary>
+/// <param name="mbCtx"></param>
+/// <param name="context"></param>
+void MiscMenu::BuildMusicMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+{
+    mbCtx.Title("Music");
+
+    // Scripts
+    auto& playerScripts = PlayerScripts::GetInstance();
+    auto& vehicleScripts = VehicleScripts::GetInstance();
+    auto& pedScripts = PedScripts::GetInstance();
+    auto& textScripts = TextScripts::GetInstance();
+
+    // Functions
+    auto& fileFunctions = FileFunctions::GetInstance();
+
+
+    //-----
+    // Music/Sound effects
+    //-----
+
+    int nothing = 0;
+    mbCtx.StringArray("--Music--", { "" }, nothing);
+
+    // Incremement the max number for this as I add more into the Enums.h and MiscScripts.cpp
+    // To add more to this:
+    // 1. Add a value with a number into Enums.h
+    // 2. Add a value into the std::map in MiscScript.cpp in the PlayTestMusic function.
+    //mbCtx.IntOption("Music track", currentMusicTrack, 1, 26, 1, {"List of music tracks within Enums.h in the code."});
+    mbCtx.IntOption("Music track", currentMusicTrack, 1, musicTracksCount, 1, { "List of music tracks within Enums.h in the code." });
+
+    // Play some music from the games list with TRIGGER_MUSIC_EVENT native.
+    if (mbCtx.Option("Play Test music"))
+    {
+
+        //miscScripts.PlayTestMusic(21);
+        // Seems to be the music that sometimes happens when flying.
+        //miscScripts.PlayTestMusic(CHASE_PARACHUTE_START);
+        //miscScripts.PlayTestMusic(SHOOTING_RANGE_START);
+        MiscScripts::Music::PlayTestMusic(static_cast<MusicTracks>(currentMusicTrack));
+    }
+
+    //-----
+    // Play sound effects
+    // This doesn't do anything, disabled for now
+    //-----
+    //mbCtx.IntOption("Sound effect", currentSoundEffect, 1, soundEffectsCount, 1, { "List of sound tracks within Enums.h in the code." });
+    //
+    //if (mbCtx.Option("Play test sound"))
+    //{
+    //    MiscScripts::Music::PlaySoundEffect(static_cast<SoundEffects>(currentSoundEffect));
+    //}
+
+
+    // This stops all the music currently playing with the TRIGGER_MUSIC_EVENT native.
+    // Plays MP_MC_CMH_IAA_FINALE_START music event.
+    if (mbCtx.Option("Stop music", { "Stops the music currently playing" }))
+    {
+        MiscScripts::Music::StopMusic();
+    }
+
+    if (mbCtx.Option("AW Lobby music", { "Play the arena war lobby music" }))
+    {
+        MiscScripts::Music::PlayArenaWarLobbyMusic();
+    }
+
+    // This didn't seem to play the end credits music.
+    // Taken from MiscRollCredits.cpp in Chaos Mod
+    //if (mbCtx.Option("Start credits music", { "Start the end credits music" }))
+    //{
+    //    MiscScripts::Music::StartCreditsMusic();
+    //}
+
+    //if (mbCtx.Option("Stop credits music", { "Stop the end credits music" }))
+    //{
+    //    MiscScripts::Music::StopCreditsMusic();
+    //}
+}
 
 
 /// <summary>
@@ -169,9 +254,19 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // Functions
     auto& fileFunctions = FileFunctions::GetInstance();
 
+    // List of text formats:
+    // https://docs.fivem.net/docs/game-references/text-formatting/
+
+    // TODO Make this get text from a file.
     if (mbCtx.Option("Notify", { "Test notification" }))
     {
-        UI::Notify("Test notification");
+        //UI::Notify("Test notification");
+        // Shows a wanted star and RockStar logo
+        //UI::Notify("Wanted: ~ws~ ~EX_R*~");
+        // Shows 6 wanted stars
+        //UI::Notify("~ws~ ~ws~ ~ws~ ~ws~ ~ws~ ~ws~");
+        std::string notificationText = NotificationManager::GetRandomNotification();
+        UI::Notify(notificationText);
     }
 
     if (mbCtx.Option("Notify phone sound", { "Test notification with phone sound" }))
@@ -188,66 +283,6 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
     }
 #endif
 
-    //-----
-    // Music/Sound effects
-    //-----
-
-    int nothing = 0;
-    mbCtx.StringArray("--Music--", { "" }, nothing);
-
-    // Incremement the max number for this as I add more into the Enums.h and MiscScripts.cpp
-    // To add more to this:
-    // 1. Add a value with a number into Enums.h
-    // 2. Add a value into the std::map in MiscScript.cpp in the PlayTestMusic function.
-    //mbCtx.IntOption("Music track", currentMusicTrack, 1, 26, 1, {"List of music tracks within Enums.h in the code."});
-    mbCtx.IntOption("Music track", currentMusicTrack, 1, musicTracksCount, 1, { "List of music tracks within Enums.h in the code." });
-
-    // Play some music from the games list with TRIGGER_MUSIC_EVENT native.
-    if (mbCtx.Option("Play Test music"))
-    {
-
-        //miscScripts.PlayTestMusic(21);
-        // Seems to be the music that sometimes happens when flying.
-        //miscScripts.PlayTestMusic(CHASE_PARACHUTE_START);
-        //miscScripts.PlayTestMusic(SHOOTING_RANGE_START);
-        MiscScripts::Music::PlayTestMusic(static_cast<MusicTracks>(currentMusicTrack));
-    }
-
-    //-----
-    // Play sound effects
-    // This doesn't do anything, disabled for now
-    //-----
-    //mbCtx.IntOption("Sound effect", currentSoundEffect, 1, soundEffectsCount, 1, { "List of sound tracks within Enums.h in the code." });
-    //
-    //if (mbCtx.Option("Play test sound"))
-    //{
-    //    MiscScripts::Music::PlaySoundEffect(static_cast<SoundEffects>(currentSoundEffect));
-    //}
-
-    
-    // This stops all the music currently playing with the TRIGGER_MUSIC_EVENT native.
-    // Plays MP_MC_CMH_IAA_FINALE_START music event.
-    if (mbCtx.Option("Stop music", { "Stops the music currently playing" }))
-    {
-        MiscScripts::Music::StopMusic();
-    }
-
-    if (mbCtx.Option("AW Lobby music", { "Play the arena war lobby music" }))
-    {
-        MiscScripts::Music::PlayArenaWarLobbyMusic();
-    }
-
-    // This didn't seem to play the end credits music.
-    // Taken from MiscRollCredits.cpp in Chaos Mod
-    //if (mbCtx.Option("Start credits music", { "Start the end credits music" }))
-    //{
-    //    MiscScripts::Music::StartCreditsMusic();
-    //}
-
-    //if (mbCtx.Option("Stop credits music", { "Stop the end credits music" }))
-    //{
-    //    MiscScripts::Music::StopCreditsMusic();
-    //}
 
 #ifdef CHAOSMOD_FEATURES
     if (mbCtx.Option("Set peds in mowers", { "Place all peds in the area into lawn mowers" }))
@@ -263,7 +298,8 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
 #ifdef EXTRA_FEATURES
 
     // Toggle force field
-    mbCtx.BoolOption("Toggle forcefield", MiscScripts::EXFeatures::isForceFieldEnabled, { "Turn on/off the forcefield for the player." });
+    // Seems to crash, disabled.
+    //mbCtx.BoolOption("Toggle forcefield", MiscScripts::EXFeatures::isForceFieldEnabled, { "Turn on/off the forcefield for the player." });
 
     // I would set a boolean for this but it requires items that I don't think they can be run in a tick all the time.
     // Toggle tv on/off

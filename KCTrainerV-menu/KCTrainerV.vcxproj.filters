@@ -219,6 +219,18 @@
     <ClCompile Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.cpp">
       <Filter>Menus\Submenus\Vehicle</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\NotificationManager.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\thirdparty\tinyxml2\tinyxml2.cpp">
+      <Filter>ThirdParty\tinyxml2</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\PedModelManager.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\Submenus\Player\ModelChangerMenu.cpp">
+      <Filter>Menus\Submenus\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -524,6 +536,18 @@
     <ClInclude Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.h">
       <Filter>Menus\Submenus\Vehicle</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\NotificationManager.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\tinyxml2\tinyxml2.h">
+      <Filter>ThirdParty\tinyxml2</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\PedModelManager.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\Player\ModelChangerMenu.h">
+      <Filter>Menus\Submenus\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -600,6 +624,12 @@
     </Filter>
     <Filter Include="Menus\Submenus\Vehicle">
       <UniqueIdentifier>{09e1e908-4f62-49be-a866-4c1a70a7f672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\tinyxml2">
+      <UniqueIdentifier>{f09530d6-36da-40f7-8e20-efde70e4f817}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus\Submenus\Player">
+      <UniqueIdentifier>{a7365182-2af1-464b-96c9-2e955f807033}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

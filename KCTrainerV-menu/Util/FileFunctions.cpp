@@ -173,8 +173,11 @@ void FileFunctions::TeleportToSavedCoords(const std::string& fileName)
 #ifdef _WIN32
 bool FileFunctions::DoesFileExist(const std::string& fileName)
 {
-	std::ifstream file(fileName);
-	return file.good();
+	// New for C++17:
+	return std::filesystem::exists(fileName);
+	// Old method:
+	//std::ifstream file(fileName);
+	//return file.good();
 }
 
 std::string FileFunctions::CurrentDirectory()
