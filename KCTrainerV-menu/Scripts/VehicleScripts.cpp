@@ -19,20 +19,39 @@
 
 
 /// <summary>
-/// Taken from Menyoo
-/// Request the vehicle model for spawning in, this actually should work on any model
+/// Tick event for VehicleScripts
 /// </summary>
-/// <param name="hash"></param>
-// Moved into MiscScripts:
-// MiscScripts::Model::Request(Hash hash)
-//void VehicleScripts::RequestModel(Hash hash)
-//{
-//    REQUEST_MODEL(hash);
-//    while (!HAS_MODEL_LOADED(hash))
-//    {
-//        WAIT(0);
-//    }
-//}
+void VehicleScripts::Tick()
+{
+    //-----
+    // Invincibility toggle
+    //-----
+    if (VehicleScripts::isInvincibleVehicleEnabled && !VehicleScripts::invincibilityFlag)
+    {
+        VehicleScripts::EnableInvincibility();
+        VehicleScripts::invincibilityFlag = true;
+    }
+    else if (!VehicleScripts::isInvincibleVehicleEnabled && VehicleScripts::invincibilityFlag)
+    {
+        VehicleScripts::DisableInvincibility();
+        VehicleScripts::invincibilityFlag = false;
+    }
+
+    //-----
+    // Bullet proof toggle
+    // TODO Rename to bullet proof tires, rename flag and toggle also.
+    //-----
+    if (VehicleScripts::isBulletProofEnabled && !VehicleScripts::bulletProofFlag)
+    {
+        VehicleScripts::EnableBulletProof();
+        VehicleScripts::bulletProofFlag = true;
+    }
+    else if (!VehicleScripts::isBulletProofEnabled && VehicleScripts::bulletProofFlag)
+    {
+        VehicleScripts::DisableBulletProof();
+        VehicleScripts::bulletProofFlag = false;
+    }
+}
 
 /// <summary>
 /// Get the players current vehicle.

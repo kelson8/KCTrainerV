@@ -9,6 +9,56 @@
 
 #include "../Natives/natives2.h"
 
+/// <summary>
+/// Run all WorldScripts tick events.
+/// </summary>
+void WorldScripts::Tick()
+{
+	// Turn on/off restricted areas
+	// This works but doesn't turn back off, disabled for now.
+	//if (WorldScripts::isRestrictedAreasDisabled)
+	//{
+	//    WorldScripts::DisableRestrictedAreas();
+	//}
+
+	//-----
+	// Adapted from Menyoo
+	// Set fireworks in a loop near the player
+	//-----
+	if (WorldScripts::isFireworksStarted)
+	{
+		WorldScripts::FireworksLoop();
+	}
+
+#ifdef MEMORY_TESTING
+	//-----
+	// Make all the peds in the area calm, meaning they shouldn't run from anything.
+	//-----
+	if (WorldScripts::isPedsCalmActive)
+	{
+		WorldScripts::SetPedsCalm();
+	}
+#endif // MEMORY_TESTING
+	// End adapted from Menyoo
+
+	//-----
+	// Black out/EMP mode toggle
+	// Well this toggle format works, I may have to do that with the other tick options.
+	// Instead of making a enable/disable function for each one.
+	//-----
+	if (WorldScripts::isBlackoutActive && !WorldScripts::blackoutFlag)
+	{
+		WorldScripts::ToggleBlackout();
+		//WorldScripts::EnableBlackoutMode();
+		WorldScripts::blackoutFlag = true;
+	}
+	else if (!WorldScripts::isBlackoutActive && WorldScripts::blackoutFlag)
+	{
+		WorldScripts::ToggleBlackout();
+		//WorldScripts::DisableBlackoutMode();       
+		WorldScripts::blackoutFlag = false;
+	}
+}
 
 /// <summary>
 /// Kill all peds in the area.
@@ -213,6 +263,21 @@ void WorldScripts::SetPedsCalm()
 }
 
 // End adapted from Menyoo.
+
+/// <summary>
+/// Toggle blackout/EMP mode.
+/// </summary>
+void WorldScripts::ToggleBlackout()
+{
+	if (WorldScripts::isBlackoutActive) 
+	{
+		SET_ARTIFICIAL_LIGHTS_STATE(true);
+	}
+	else 
+	{
+		SET_ARTIFICIAL_LIGHTS_STATE(false);
+	}
+}
 
 // TODO Adapt these from Menyoo
 

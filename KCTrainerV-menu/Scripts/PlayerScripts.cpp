@@ -101,6 +101,80 @@ bool PlayerScripts::IsPlayerInVehicle() {
     return ENTITY::DOES_ENTITY_EXIST(playerVehicle);
 }
 
+#pragma region PlayerTickEvents
+
+/// <summary>
+/// Run the tick event for player related items.
+/// </summary>
+void PlayerScripts::Tick()
+{
+    // If the player has died, run this
+    // TODO Set this up.
+    //if (!PlayerScripts::IsPlayerAlive() && PlayerScripts::playerAliveFlag)
+    //{
+        // playerAliveFlag = false;
+    //} else {
+        // playerAliveFlag = true;
+    //
+
+    // Respawn locations, TODO add these to a different file.
+    //Vector3 michealsHouseCoords = Vector3(-813.603f, 179.474f, 72.1548f);
+    //float  michealsHouseHeading = 0.0f;
+
+    //if (PLAYER::IS_PLAYER_DEAD(playerScripts.GetPlayerID()))
+    //{
+    //    // Well this works.. Just spams the console lol.
+    //    // At least I know this is firing off, now how do I change the respawn locations?
+    //    //std::cout << "Player is dead";
+    //    worldScripts.SetRespawnLocation(michealsHouseCoords, michealsHouseHeading);
+    //}
+
+    if (PlayerScripts::invincibilityEnabled && !PlayerScripts::invincibilityFlag)
+    {
+        ENTITY::SET_ENTITY_PROOFS(PlayerScripts::GetPlayerPed(), true, true, true, true, true, true, true, true);
+        UI::Notify("Invincibility enabled");
+        PlayerScripts::invincibilityFlag = true;
+    }
+    else if (!PlayerScripts::invincibilityEnabled && PlayerScripts::invincibilityFlag) {
+        ENTITY::SET_ENTITY_PROOFS(PlayerScripts::GetPlayerPed(), false, false, false, false, false, false, false, false);
+        UI::Notify("Invincibility disabled");
+        PlayerScripts::invincibilityFlag = false;
+    }
+
+    if (PlayerScripts::neverWantedEnabled)
+    {
+        PlayerScripts::EnableNeverWanted();
+        PlayerScripts::neverWantedFlag = true;
+    }
+
+    //-----
+    // This should only run once, the above needs to be in a loop
+    //-----
+    else if (!PlayerScripts::neverWantedEnabled && PlayerScripts::neverWantedFlag)
+    {
+        PlayerScripts::DisableNeverWanted();
+        // This should stop this from constantly running
+        // I added a debug notify line here to test that.
+        UI::Notify("Never wanted off.");
+        PlayerScripts::neverWantedFlag = false;
+    }
+
+    //-----
+    // Mobile radio toggle
+    //-----
+    if (PlayerScripts::isMobileRadioEnabled && !PlayerScripts::mobileRadioFlag)
+    {
+        PlayerScripts::EnableMobileRadio();
+        PlayerScripts::mobileRadioFlag = true;
+    }
+    else if (!PlayerScripts::isMobileRadioEnabled && PlayerScripts::mobileRadioFlag)
+    {
+        PlayerScripts::DisableMobileRadio();
+        PlayerScripts::mobileRadioFlag = false;
+    }
+}
+#pragma endregion
+
 
 #pragma region PlayerPedAndChar
 

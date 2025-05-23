@@ -38,6 +38,8 @@ namespace Stats
 
 #endif
 
+        void Tick();
+
         // Functions related to cop stats
         int GetCopsKilledStat();
         int GetCopsVehiclesBlownUpStat();

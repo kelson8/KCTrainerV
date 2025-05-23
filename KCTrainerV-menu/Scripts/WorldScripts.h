@@ -9,6 +9,7 @@ public:
 		return instance;
 	}
 
+	void Tick();
 
 	void KillAllPedsInArea();
 	void BlowUpAllVehiclesInArea();
@@ -27,12 +28,17 @@ public:
 	void SetPedsCalm();
 	//
 
+	void ToggleBlackout();
+
 	bool isRestrictedAreasDisabled = false;
 	bool areasDisabledFlag = false;
 
 	bool isFireworksStarted = false;
 
 	bool isPedsCalmActive = false;
+
+	bool isBlackoutActive = false;
+	bool blackoutFlag = false;
 
 private:
 	WorldScripts() {} // Private constructor to prevent external instantiation

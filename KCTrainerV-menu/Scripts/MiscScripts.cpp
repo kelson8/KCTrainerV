@@ -104,6 +104,21 @@ namespace MiscScripts
 		//float entityModelMenuPosY = 0.973f;
 		float entityModelMenuPosY = 0.9f;
 
+		/// <summary>
+		/// Main tick for the IDGun
+		/// </summary>
+		void Tick()
+		{
+			//-----
+			// This mostly works, draw entity id, entity x,y,z, entity heading, and entity model hash to the screen.
+			// Also draw vehicle name to the screen.
+			//-----
+			if (isIdGunEnabled)
+			{
+				IdGun();
+			}
+		}
+
 		Entity GetEntityIsAimingAt(Ped ped)
 		{
 			// Blank value for function
@@ -459,6 +474,41 @@ namespace MiscScripts
 
 		bool isForceFieldEnabled = false;
 
+		/// <summary>
+		/// Main tick for EXFeatures
+		/// </summary>
+		void Tick()
+		{
+			//-----
+			// Run the airstrikes
+			//-----
+			if (airStrikeRunning)
+			{
+				StartAirstrikeTest();
+			}
+
+#ifdef EXTRA_FEATURES
+			//-----
+			// Player force field
+			//-----
+#ifdef MEMORY_TESTING
+			// Seems to crash, disabled.
+			//if (isForceFieldEnabled)
+			//{
+			//    EnableForceField();
+			//}
+#endif // MEMORY_TESTING
+
+			//-----
+			// Run the tick event for the TV if enabled.
+			//-----
+			if (isTVRunning)
+			{
+				TvTick();
+			}
+#endif //EXTRA_FEATURES
+		}
+
 		// Taken from MiscAirStrike.cpp in Chaos Mod
 		static Vector3 getRandomOffsetCoord(Vector3 startCoord, float maxOffset)
 		{
@@ -466,8 +516,6 @@ namespace MiscScripts
 				startCoord.y + g_Random.GetRandomFloat(-maxOffset, maxOffset),
 				startCoord.z + g_Random.GetRandomFloat(-maxOffset, maxOffset));
 		}
-
-
 		
 		Hash airstrikeHash;
 		void StartAirstrikeTest()

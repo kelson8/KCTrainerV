@@ -10,8 +10,7 @@ public:
 		return instance;
 	}
 
-	// Request vehicle model
-	//void RequestModel(Hash model);
+	void Tick();
 
 	void ChangePlayerVehicleColor();
 	static void ToggleBombBayDoors();

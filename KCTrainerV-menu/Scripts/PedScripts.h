@@ -10,6 +10,8 @@ public:
 		return instance;
 	}
 
+	void Tick();
+
 	// TODO Test some of these, most of these are untested.
 	void CreatePed(int pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed);
 	

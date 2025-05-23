@@ -45,6 +45,33 @@ CreateThread(function()
 */
 
 /// <summary>
+/// Main tick event for TextScripts
+/// </summary>
+void TextScripts::Tick()
+{
+	//-----
+	// Display text on screen
+	// I got this to work
+	//-----
+	if (TextScripts::drawText)
+	{
+		TextScripts::SetupText();
+	}
+
+	//-----
+	// Draw coordinates to the screen
+	//-----
+	if (TextScripts::drawCoords)
+	{
+		// Will this slow down the whole menu?
+		// Oops, this wait breaks the menu..
+		// TODO, figure out how to slow down the coordinates display, I guess it's fine for now.
+		//WAIT(100);
+		TextScripts::DisplayCoordinates();
+	}
+}
+
+/// <summary>
 /// This should setup the text entry for drawing to the screen.
 /// This will need to be ran before drawing anything to the screen.
 /// Adapted from my FiveM scripts originally in lua.

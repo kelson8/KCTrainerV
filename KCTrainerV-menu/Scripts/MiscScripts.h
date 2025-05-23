@@ -8,6 +8,8 @@ namespace MiscScripts
 {
 	namespace IDGun
 	{
+		void Tick();
+
 		// ID Gun tests from FiveM
 		void IdGun();
 		Entity GetEntityIsAimingAt(Ped ped);
@@ -68,6 +70,8 @@ namespace MiscScripts
 
 	namespace EXFeatures
 	{
+		void Tick();
+
 		// Toggle sky
 #ifdef EXTRA_FEATURES
 #ifdef MEMORY_TESTING

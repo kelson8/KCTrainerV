@@ -11,6 +11,8 @@ public:
 		return instance;
 	}
 
+	void Tick();
+
 	// TODO Possibly make these private functions?
 	void SetTextEntry(const char* text);
 	void SetTextEntry(const char* text, int colorR, int colorG, int colorB, int colorA);

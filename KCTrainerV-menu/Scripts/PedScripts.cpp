@@ -72,6 +72,36 @@ TASK_AIM_GUN_AT_ENTITY
 */
 
 /// <summary>
+/// Ped scripts tick event, some items run constantly and some are toggling flags.
+/// </summary>
+void PedScripts::Tick()
+{
+#ifdef EXTRA_FEATURES
+
+	//-----
+	// Make peds attack player
+	//-----
+#ifdef MEMORY_TESTING
+	if (PedScripts::isPedsAttackEnabled)
+	{
+		PedScripts::PedsAttackPlayer();
+	}
+#endif // MEMORY_TESTING
+#endif //EXTRA_FEATURES
+
+	//-----
+	// Make all peds drive crazy
+	//-----
+#ifdef MEMORY_TESTING
+	if (PedScripts::isCrazyPedDrivingEnabled)
+	{
+		PedScripts::MakeAllPedsDriveCrazy();
+	}
+#endif //
+
+}
+
+/// <summary>
 /// Set all peds as cops.
 /// Makes all peds in the area have a cop icon on the radar.
 /// Taken from Chaos Mod

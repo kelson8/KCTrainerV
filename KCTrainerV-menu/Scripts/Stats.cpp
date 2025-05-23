@@ -115,6 +115,20 @@ namespace Stats
         bool isCopsKilledDisplayActive = false;
 
         /// <summary>
+        /// Main tick event for hte cops stat display.
+        /// </summary>
+        void Tick()
+        {
+            //-----
+            // New stat features
+            //-----
+            if (isCopsKilledDisplayActive)
+            {
+                ProcessCopsKilledDisplay();
+            }
+        }
+
+        /// <summary>
         /// Get the cops kiled stat
         /// <param name="character">The player to select the stat for, using the PlayerModels enum class.</param>
         /// </summary>
@@ -416,6 +430,12 @@ namespace Stats
 
                 textScripts.TextPosition(copsCarsBlownUpMenuPosX, copsCarsBlownUpMenuPosY);
             }
+
+            // Hmm, if I need to I could use this in here.
+            //if (isPlayerDead || isPlayerBeingArrested)
+            //{
+
+            //}
         }
 
     } // namespace Cop
