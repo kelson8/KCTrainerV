@@ -25,7 +25,19 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
     Ped playerPed = playerScripts.GetPlayerPed();
 
+    // Set the weaponAmmo for the give weapon function to 1000 for now.
+    int weaponAmmo = 1000;
+
+    //------
+    // Weapon hashes
+    // List of weapons with images: https://wiki.rage.mp/wiki/Weapons
+    //------
     Hash militaryRifleHash = "weapon_militaryrifle"_hash;
+    
+    //-----
+    // Weapon component hashes
+    // List of weapon components: https://wiki.rage.mp/wiki/Weapons_Components
+    //-----
     Hash militaryRifleExtendedClip = "COMPONENT_MILITARYRIFLE_CLIP_02"_hash;
 
     // This seems to work fine for an invincibility toggle in here like this.
@@ -93,7 +105,7 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     if (mbCtx.Option("Give weapon"))
     {
         //pedScripts.GivePedWeapon(playerPed, "weapon_flashlight"_hash, -1, false, false);
-        pedScripts.GivePedWeapon(playerPed, militaryRifleHash, -1, false, false);
+        pedScripts.GivePedWeapon(playerPed, militaryRifleHash, weaponAmmo, false, false);
     }
 
     // This works too, I need to make a list of these later but for now I am just testing them.

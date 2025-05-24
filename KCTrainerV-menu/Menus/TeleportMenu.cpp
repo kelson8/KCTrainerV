@@ -16,6 +16,8 @@
 
 // Teleports
 #include "Teleports/TeleportLocations.h"
+#include "Teleports/TeleportManager.h"
+
 
 #ifdef LUA_TEST
 #include "Components/LuaManager.h"
@@ -185,7 +187,12 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
 
 #endif //NEW_TELEPORTS
 
+    // TODO Make these use the sub menus I have defined, should make this file a bit more organized.
+    // Just don't enable the NEW_TELEPORTS preprocessor, I may remove it later.
+    // I could just move these into the other functions for sub menus.
 #ifndef NEW_TELEPORTS
+
+#ifndef NEW_TELEPORT_CATEGORIES
     if (mbCtx.Option("Airport"))
     {
         playerScripts.WarpToLocation(TeleportLocation::AIRPORT_RUNWAY);
@@ -226,9 +233,113 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
         //playerScripts.SetPlayerCoords(waypointCoords);
         teleportLocations.WarpToWaypoint(playerPed);
     }
+
+   
+
+#endif // !NEW_TELEPORT_CATEGORIES
+
+    // This format works
+#ifdef NEW_TELEPORT_CATEGORIES
+    mbCtx.MenuOption("Airports", "AirportsSubmenu", { "List of airport locations." });
+    mbCtx.MenuOption("Safehouses", "SafehousesSubmenu", { "List of safehouse locations." });
+#endif
+
 #endif //!NEW_TELEPORTS
 }
 
+#ifdef NEW_TELEPORT_CATEGORIES
+// TODO Rename once I remove the old one.
+
+/// <summary>
+/// Build the airports sub menu
+/// This method can auto build the menu with a list of locations.
+/// So I don't have to manually type them all out.
+/// Uses the TeleportInfo struct
+/// </summary>
+/// <param name="mbCtx"></param>
+/// <param name="context"></param>
+void TeleportMenu::BuildNewAirportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+{
+    // Change title for each of these!
+    mbCtx.Title("Airports");
+
+    // Scripts
+    auto& playerScripts = PlayerScripts::GetInstance();
+    //auto& teleportLocations = TeleportLocations::GetInstance();
+
+    // Get teleports from the std::vector<TeleportInfo>
+    for (const auto& teleportInfo : Teleports::Positions::vAirportLocations)
+    {
+        if (mbCtx.Option(teleportInfo.name)) {
+            playerScripts.SetPlayerCoords(teleportInfo.coordinates);
+            playerScripts.SetPlayerHeading(teleportInfo.heading);
+        }
+    }
+}
+
+#endif
+
+#ifdef NEW_TELEPORT_CATEGORIES
+// TODO Rename once I remove the old one.
+
+/// <summary>
+/// Build the safe houses sub menu
+/// This method can auto build the menu with a list of locations.
+/// So I don't have to manually type them all out.
+/// Uses the TeleportInfo struct
+/// </summary>
+/// <param name="mbCtx"></param>
+/// <param name="context"></param>
+void TeleportMenu::BuildNewSafehousesSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+{
+    // Change title for each of these!
+    mbCtx.Title("Safehouses");
+
+    // Scripts
+    auto& playerScripts = PlayerScripts::GetInstance();
+    //auto& teleportLocations = TeleportLocations::GetInstance();
+
+    // Get teleports from the std::vector<TeleportInfo>
+    for (const auto& teleportInfo : Teleports::Positions::vSafeHouseLocations)
+    {
+        if (mbCtx.Option(teleportInfo.name)) {
+            playerScripts.SetPlayerCoords(teleportInfo.coordinates);
+            playerScripts.SetPlayerHeading(teleportInfo.heading);
+        }
+    }
+}
+
+#endif
+
+
+/// <summary>
+/// Build the test teleport sub menu
+/// This method can auto build the menu with a list of locations.
+/// So I don't have to manually type them all out.
+/// Uses the TeleportInfo struct
+/// </summary>
+/// <param name="mbCtx"></param>
+/// <param name="context"></param>
+#ifdef NEW_TELEPORT_CATEGORIES
+void TeleportMenu::BuildTestTeleportSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+{
+    // Change title for each of these!
+    mbCtx.Title("Test Locations");
+
+    // Scripts
+    auto& playerScripts = PlayerScripts::GetInstance();
+    //auto& teleportLocations = TeleportLocations::GetInstance();
+
+    // Get teleports from the std::vector<TeleportInfo>
+    for (const auto& teleportInfo : Teleports::Positions::vTestLocations)
+    {
+        if (mbCtx.Option(teleportInfo.name)) {
+            playerScripts.SetPlayerCoords(teleportInfo.coordinates);
+            playerScripts.SetPlayerHeading(teleportInfo.heading);
+        }
+    }
+}
+#endif
 
 // teleportlocations
 
@@ -355,3 +466,47 @@ void TeleportMenu::BuildLuaTeleportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript
         //}
 }
 #endif
+
+#ifdef LOAD_TELEPORT_INI
+// TODO Move this, and attempt to fix it.
+// It should load the teleport locations from a file.
+#pragma region TeleportIniTest
+// Define a function to build the entire Teleport Menu
+void BuildTeleportCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context, const std::string& categoryName) {
+    // Get the specific category data from the manager
+    const TeleportCategory* category = TeleportManager::GetInstance().GetCategory(categoryName);
+
+    if (!category || category->locations.empty()) {
+        mbCtx.Title(categoryName); // Use category name as submenu title
+        mbCtx.Option("No locations in this category.");
+        return;
+    }
+
+    mbCtx.Title(category->name); // Set the submenu title to the category name
+
+    // Iterate through each teleport location in the current category
+    for (const auto& loc : category->locations) {
+        // Display the location name as a regular Option (no submenu after this)
+        std::vector<std::string> details;
+        details.push_back(std::format("X: {:.2f} Y: {:.2f} Z: {:.2f}", loc.coords.x, loc.coords.y, loc.coords.z));
+        if (loc.heading != 0.0f) { // Only add heading if it's not default
+            details.push_back(std::format("H: {:.2f}", loc.heading));
+        }
+
+        if (mbCtx.Option(loc.name, details)) { // Use Option, as this is the final action
+            // --- Teleport Logic (using your fade-to-black system) ---
+            // Assuming KCMenu::Fade::InitiateTeleportFade(coords, heading) is available
+            KCMenu::Fade::InitiateTeleportFade(loc.coords, loc.heading);
+            // OR if you want immediate, non-fading teleport for testing:
+            // Ped playerPed = PLAYER_PED_ID();
+            // SET_ENTITY_COORDS(playerPed, loc.coords.x, loc.coords.y, loc.coords.z, FALSE, FALSE, FALSE, TRUE);
+            // if (loc.heading != 0.0f) {
+            //     ENTITY::SET_ENTITY_HEADING(playerPed, loc.heading);
+            // }
+            // UI::Notify(std::format("Teleported to: {}", loc.name).c_str());
+        }
+    }
+}
+#pragma endregion
+
+#endif // LOAD_TELEPORT_INI

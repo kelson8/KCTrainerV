@@ -231,6 +231,9 @@
     <ClCompile Include="Menus\Submenus\Player\ModelChangerMenu.cpp">
       <Filter>Menus\Submenus\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Teleports\TeleportManager.cpp">
+      <Filter>Teleports</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -547,6 +550,18 @@
     </ClInclude>
     <ClInclude Include="Menus\Submenus\Player\ModelChangerMenu.h">
       <Filter>Menus\Submenus\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\IScriptBuilder.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\LuaTypes.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Teleports\TeleportManager.h">
+      <Filter>Teleports</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\StringUtils.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

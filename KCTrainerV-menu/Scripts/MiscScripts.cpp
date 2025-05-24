@@ -51,7 +51,6 @@
 #ifdef LUA_TEST
 #include "../Components/LuaManager.h"
 
-// TODO Fix these to use namespaces also.
 namespace MiscScripts
 {
 	namespace Lua
@@ -804,8 +803,18 @@ namespace MiscScripts
 					if (!ped.IsPlayer())
 					{
 						//ped.Task().Cower(2500);
-						ped.Task().HandsUp(2500);
+						//ped.Task().HandsUp(2500);
 						//ped.Task().WanderAround();
+
+						// This is fun, I can set them all on fire and extinguish them
+						if (ped.IsOnFire())
+						{
+							ped.SetOnFire(false);
+						}
+						else 
+						{
+							ped.SetOnFire(true);
+						}
 					}
 				}
 			}

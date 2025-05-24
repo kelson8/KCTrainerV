@@ -4,8 +4,9 @@
 #include "Util/Enums.h"
 
 #include "Teleports/TeleportLocations.h"
+#include "IScriptBuilder.h"
 
-class PlayerScripts
+class PlayerScripts : public IScriptBuilder
 {
 public:
 
@@ -35,7 +36,7 @@ public:
     std::string GetPlayerVehicleName();
     std::string GetDistanceTraveled();
 
-    void Tick();
+    void Tick() override;
 
     // Teleports
     // This is in use for the teleport function

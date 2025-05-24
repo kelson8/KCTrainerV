@@ -1,3 +1,26 @@
+/*
+ * Portions of this file (or the concepts implemented herein) are adapted from:
+ * Original Project: ChaosModV
+ * Source File: https://github.com/gta-chaos-mod/ChaosModV/blob/master/ChaosMod/Components/LuaScripts.cpp
+ * Original License: GNU General Public License v3.0 (GPLv3)
+ *
+ * KCTrainerV
+ * Copyright (C) 2025 kelson8
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/gpl-3.0.html>.
+ */
+
 #include "pch.h"
 
 #include "Constants.hpp"
@@ -16,10 +39,10 @@
 #include "Util/UI.hpp"
 #include "Util/Logger.hpp"
 
-// TODO Test this later.
-// I have a lot of Chaos Mod functions adapted at the bottom of this file that should work.
+#include "LuaTypes.h"
 
-#undef LUA_CHAOSMOD_TEST
+// TODO Fix this later
+// I have a lot of Chaos Mod functions adapted at the bottom of this file that should work.
 
 LuaManager::LuaManager() {
     lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug, sol::lib::bit32);
@@ -100,6 +123,7 @@ void LuaManager::BindGameTypesToLua() {
 void LuaManager::InitializeLuaEnvironment() {
 	//lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug, sol::lib::bit32);
 	// Load your Lua scripts
+	// TODO Make this load from a file in Constants.hpp.
 	try 
 	{
 		lua.script_file("KCTrainerV/scripts/kctrainer-v.lua");
@@ -150,7 +174,7 @@ sol::optional<sol::function> LuaManager::get_function(const std::string& name) {
 
 // Below copied from LuaScripts.cpp in Chaos Mod
 
-#undef LUA_CHAOSMOD_TEST
+//#undef LUA_CHAOSMOD_TEST
 #ifdef LUA_CHAOSMOD_TEST
 
 // MinGW doesn't have SEH :(
@@ -226,19 +250,6 @@ template <typename T, typename... A> static T Generate(const A &&...args)
 	return T(args...);
 }
 
-struct LuaVector3
-{
-	alignas(8) float X = 0.f;
-	alignas(8) float Y = 0.f;
-	alignas(8) float Z = 0.f;
-
-	LuaVector3() = default;
-
-	LuaVector3(float x, float y, float z) : X(x), Y(y), Z(z)
-	{
-	}
-};
-
 class LuaHolder
 {
 public:
@@ -280,17 +291,6 @@ public:
 	{
 		return m_Data || m_Obj.valid();
 	}
-};
-
-enum class LuaNativeReturnType
-{
-	None,
-	Bool,
-	Int,
-	UInt,
-	Float,
-	String,
-	Vector3
 };
 
 

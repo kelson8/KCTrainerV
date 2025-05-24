@@ -1,5 +1,7 @@
 #pragma once
-class VehicleScripts
+#include "IScriptBuilder.h"
+
+class VehicleScripts : public IScriptBuilder
 {
 public:
 
@@ -10,7 +12,7 @@ public:
 		return instance;
 	}
 
-	void Tick();
+	void Tick() override;
 
 	void ChangePlayerVehicleColor();
 	static void ToggleBombBayDoors();

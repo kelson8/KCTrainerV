@@ -23,7 +23,13 @@ constexpr std::string_view operator ""_sv(const char* str, std::size_t length)  
 // Forward declaration of the enum
 enum TeleportLocation;
 
-// Structure to hold a teleport location with a name, location, and heading
+/// <summary>
+/// This takes these values
+/// 
+/// String for teleport name
+/// Vector3 for teleport coordinates
+/// float for heading
+/// </summary>
 struct TeleportInfo
 {
 	std::string name;
@@ -98,12 +104,20 @@ namespace Teleports
 {
 	namespace Positions
 	{
-
-
+#ifndef NEW_TELEPORT_CATEGORIES
 		extern std::map<std::string, Vector3> locations;
 
 		extern const std::map<std::string, Vector3> vAirportLocations;
 		extern const std::map<std::string, Vector3> vSafeHouseLocations;
+#endif // !NEW_TELEPORT_CATEGORIES
+
+		// New teleport formats below
+#ifdef NEW_TELEPORT_CATEGORIES
+		extern const std::vector<TeleportInfo> vAirportLocations;
+		extern const std::vector<TeleportInfo> vSafeHouseLocations;
+		extern const std::vector<TeleportInfo> vTestLocations;
+#endif // NEW_TELEPORT_CATEGORIES
+
 	}
 }
 
@@ -119,9 +133,9 @@ public:
 	}
 
 	// Function to get the map of teleport locations
-#ifndef NEW_TELEPORTS
+//#ifndef NEW_TELEPORTS
 	const std::vector<TeleportInfo>& GetTeleportLocations();
-#endif //!NEW_TELEPORTS
+//#endif //!NEW_TELEPORTS
 
 #ifdef NEW_TELEPORTS
 	// Function to get a specific teleport location with a category and id.

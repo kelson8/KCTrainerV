@@ -1,5 +1,7 @@
 #pragma once
-class WorldScripts
+#include "IScriptBuilder.h"
+
+class WorldScripts : public IScriptBuilder
 {
 public:
 	// Instance of the WorldScripts
@@ -9,7 +11,7 @@ public:
 		return instance;
 	}
 
-	void Tick();
+	void Tick() override;
 
 	void KillAllPedsInArea();
 	void BlowUpAllVehiclesInArea();

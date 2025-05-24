@@ -23,6 +23,8 @@
 #include "Components/LuaManager.h"
 #endif //LUA_TEST
 
+#include "Teleports/TeleportManager.h"
+
 #include "Memory/Memory.h"
 
 #include <iostream>
@@ -131,6 +133,7 @@ void KCMenu::ScriptMain()
         // Run lua init BEFORE scriptInit
         LOG(INFO, "Initializing Lua environment before scriptInit.");
         LuaManager::GetInstance().InitializeLuaEnvironment();
+
         LOG(INFO, "Lua environment initialization complete.");
 
         // TODO Fix this
@@ -156,6 +159,14 @@ void KCMenu::ScriptMain()
         // Load notifications from the file.
         KCMenu::LoadNotificationFile();
 
+#ifdef LOAD_TELEPORT_INI
+    // Test for loading teleport locations from an ini
+        std::filesystem::path modPath = Paths::GetModPath();
+        //std::string teleportsFilePath = (modPath / "teleports.ini").string(); // Or a subfolder like "data/teleports.ini"
+        std::string teleportsFilePath = (modPath / Constants::teleportFileName).string();
+        TeleportManager::GetInstance().LoadTeleportsFromFile(teleportsFilePath);
+#endif
+
 #ifdef PLAYER_SKIN_CHANGER
         // Load the peds from the file list
         // For changing player model, and in the future spawning peds.
@@ -163,11 +174,6 @@ void KCMenu::ScriptMain()
 #endif
 
         // The Lua initialization is now done before scriptInit
-//#ifdef LUA_TEST
-//        // Run lua init, TODO Test this.
-//        //luaManager.InitializeLuaEnvironment();
-//        LuaManager::GetInstance().InitializeLuaEnvironment();
-//#endif
 
     }
     else {
@@ -176,8 +182,6 @@ void KCMenu::ScriptMain()
 
     scriptTick();
 }
-
-
 
 void KCMenu::LoadNotificationFile()
 {

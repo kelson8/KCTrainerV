@@ -18,6 +18,15 @@ public:
 
 	void BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 
+	// This works, need to switch my teleport menus to using it.
+#ifdef NEW_TELEPORT_CATEGORIES
+	void BuildNewAirportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
+	void BuildNewSafehousesSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
+
+	void BuildTestTeleportSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
+#endif
+	//
+
 #ifdef NEW_TELEPORTS
 	void BuildAirportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 	void BuildSafehousesSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);

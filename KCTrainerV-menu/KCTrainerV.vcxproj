@@ -293,6 +293,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Teleports\TeleportLocations.cpp" />
+    <ClCompile Include="Teleports\TeleportManager.cpp" />
     <ClCompile Include="Util\FileFunctions.cpp" />
     <ClCompile Include="Util\GTAmath.cpp" />
     <ClCompile Include="Util\Logger.cpp" />
@@ -332,6 +333,7 @@
     <ClInclude Include="Components\LuaManager.h" />
     <ClInclude Include="Components\LuaNatives.h" />
     <ClInclude Include="Components\LuaScripts_old.h" />
+    <ClInclude Include="Components\LuaTypes.h" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="FeatureToggles.h" />
@@ -385,6 +387,7 @@
     <ClInclude Include="Scripts\Extras\MeteorShower.h" />
     <ClInclude Include="Scripts\Extras\WeaponIndivs.h" />
     <ClInclude Include="Scripts\Extras\World.h" />
+    <ClInclude Include="Scripts\IScriptBuilder.h" />
     <ClInclude Include="Scripts\MiscScripts.h" />
     <ClInclude Include="Scripts\NotificationManager.h" />
     <ClInclude Include="Scripts\PedModelManager.h" />
@@ -400,6 +403,7 @@
     <ClInclude Include="Scripts\WorldScripts.h" />
     <ClInclude Include="Teleports\TeleLocation.h" />
     <ClInclude Include="Teleports\TeleportLocations.h" />
+    <ClInclude Include="Teleports\TeleportManager.h" />
     <ClInclude Include="Util\EntityIterator.h" />
     <ClInclude Include="Util\Enums.h" />
     <ClInclude Include="Util\FileFunctions.h" />
@@ -411,6 +415,7 @@
     <ClInclude Include="Util\PoolSpawner.h" />
     <ClInclude Include="Util\Random.h" />
     <ClInclude Include="Util\StringManip.h" />
+    <ClInclude Include="Util\StringUtils.h" />
     <ClInclude Include="Util\UI.hpp" />
     <ClInclude Include="Util\Util.hpp" />
     <ClInclude Include="Util\Vehicle.h" />

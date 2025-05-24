@@ -38,6 +38,10 @@
 
 #include "Submenus/Player/ModelChangerMenu.h"
 
+
+// TODO Setup
+//#include "Submenus/Misc/ChaosMenu.h"
+
 // Teleports
 #include "Teleports/TeleportLocations.h"
 
@@ -49,37 +53,6 @@
 // GTA V Reclass classes
 // TODO Test this
 //#include "GTAV-Classes/vehicle/CVehicle.hpp"
-
-namespace 
-{
-    // A few state variables for demoing the menu
-    bool checkBoxStatus = false;
-    float someFloat = 0.0f;
-    int someInt = 0;
-    int intStep = 1;
-    int stringsPos = 0;
-    int stepChoice = 0;
-    int numberOfOptions = 16;
-
-    // Choice of step size to demonstrate variable precision display
-    const std::vector<float> floatSteps = 
-    {
-        1.0f,
-        0.1f,
-        0.01f,
-        0.001f,
-        0.0001f,
-        0.00001f,
-        0.000001f,
-    };
-
-    // Random words to go through in the menu
-    const std::vector<std::string> strings = 
-    {
-        "Hello",
-        "World!",
-    };
-}
 
 /*
  * This function builds the menu's submenus, and the submenus are passed into the CScriptMenu constructor.
@@ -298,6 +271,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
+#pragma endregion // VehicleCategorySubMenu
+#pragma endregion // VehicleMenu
+
 #pragma region TeleportMenu
     //-----
     // Teleport menu
@@ -325,6 +301,35 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
+#ifdef NEW_TELEPORT_CATEGORIES
+    // New, TODO Remove old AirportsSubmenu
+    submenus.emplace_back("AirportsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            teleportMenu.BuildNewAirportSubMenu(mbCtx, context);
+        }
+    );
+
+    // New, TODO Remove old SafehousesSubmenu
+    submenus.emplace_back("SafehousesSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            teleportMenu.BuildNewSafehousesSubMenu(mbCtx, context);
+        }
+    );
+
+    // Teleport Test locations sub menu
+    // This works! Later, i'll switch over to this format for all my teleports.
+    submenus.emplace_back("TestTeleportSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            teleportMenu.BuildTestTeleportSubmenu(mbCtx, context);
+        }
+    );
+#endif
+
+#pragma endregion // TeleportLocationsSubMenu
+
             // TODO Migrate to using this format for teleports. 
             // First I'll need to fix it in TeleportLocations.cpp, TeleportLocations.h, PlayerScripts.cpp, and PlayerScripts.h:
 #ifdef NEW_TELEPORTS
@@ -339,9 +344,11 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             teleportMenu.BuildAirportSubMenu(mbCtx, context);
         });
 
+#pragma endregion // AirportsTeleportSubMenu
+
 #endif //!NEW_TELEPORTS
 
-#pragma endregion
+
 
 
 #pragma region SafehousesTeleportSubmenu
@@ -361,7 +368,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 #endif //NEW_TELEPORTS
 
-#pragma endregion
+#pragma endregion // SafehousesTeleportSubmenu
 
 #pragma region DebugTeleportSubMenu
 #ifdef DEBUG_MODE
@@ -448,6 +455,18 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             miscMenu.BuildMusicMenu(mbCtx, context);
 
         });
+
+    //-----
+    // Misc Chaos sub menu
+    // TODO Create this sub menu, make a Misc folder in Menus/Submenus, create ChaosMenu.cpp and ChaosMenu.h in there.
+    // Make them use the IMenuBuilder interface and be classes.
+    //-----
+    //submenus.emplace_back("MiscChaosSubmenu",
+    //    [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+    //    {
+    //        chaosMenu.Build(mbCtx, context);
+
+    //    });
 
     //-----
     // Misc Blips sub menu

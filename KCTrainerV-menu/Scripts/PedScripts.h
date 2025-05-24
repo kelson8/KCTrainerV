@@ -1,5 +1,8 @@
 #pragma once
-class PedScripts
+
+#include "IScriptBuilder.h"
+
+class PedScripts : public IScriptBuilder
 {
 public:
 
@@ -10,7 +13,7 @@ public:
 		return instance;
 	}
 
-	void Tick();
+	void Tick() override;
 
 	// TODO Test some of these, most of these are untested.
 	void CreatePed(int pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed);

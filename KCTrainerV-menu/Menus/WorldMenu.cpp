@@ -37,7 +37,8 @@ const std::vector<WeatherInfo> WorldMenu::g_weatherList =
     {"Snow Light", "SNOWLIGHT"},
     {"Snow Halloween", "SNOW_HALLOWEEN"}, // Verify exact string
     {"Thunder", "THUNDER"},
-    {"Unknown", "UNKNOWN"},
+    // Disabled, this weather type does nothing
+    //{"Unknown", "UNKNOWN"},
 };
 
 #pragma endregion

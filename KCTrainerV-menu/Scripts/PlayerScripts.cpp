@@ -233,6 +233,8 @@ int PlayerScripts::GetPlayerStat(PlayerModels character, const char* statName) {
 
 
 /// <summary>
+/// Get the current player model of which character you have selected.
+/// Sets it to Micheal, Franklin, or Trevor
 /// This works!
 /// </summary>
 /// <returns>The current player model that is playing, checks between Micheal, Franklin, and Trevor.</returns>
@@ -310,22 +312,18 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
     float groundHeight = GET_ENTITY_HEIGHT_ABOVE_GROUND(playerVeh);
     float forwardSpeed;
 
+    int fadeOutTime = 1000;
+    int fadeInTime = 1000;
+
+    // If the player is in the vehicle, this should store their forwardSpeed
     if (isInVeh)
     {
         forwardSpeed = GET_ENTITY_SPEED(playerVeh);
+        //log_output(std::format("Forward speed: {}", forwardSpeed));
     }
 
     // TODO Test without this, Menyoo and my FiveM scripts isn't doing this.
     //STREAMING::LOAD_SCENE(position);
-
-    // TODO Implement fade functions for this.
-    // Fade time in miliseconds for fading functions
-    //int fadeTime = 500;
-
-    // Oops, I inverted the fading...
-
-    //FadeScreenOut(fadeTime);
-    //WAIT(500);
 
     // TODO Add this from TeleportPlayerFindZ
     // This code should allow me to place the player on the ground without falling through the map.
@@ -359,30 +357,32 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
  //           Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
  //   }
     
-    
-
     // These fades work!! TODO Make separate teleport function with fading.
-    //DO_SCREEN_FADE_OUT(2000);
-    WAIT(500);
+    // This may fix the crashing for now? Not sure..
+    DO_SCREEN_FADE_OUT(fadeOutTime);
+
+    WAIT(fadeOutTime);
     // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
     // And it checks if the player is in a flying vehicle.
     SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
         Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
+
     // TODO Figure out what this part does
     //SET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed, Vector3(vel.x, vel.y, vel.z));
-    //DO_SCREEN_FADE_IN(2000);
-    WAIT(500);
+    DO_SCREEN_FADE_IN(fadeInTime);
+    WAIT(fadeInTime);
 
     // Set the vehicle to the speed it previously was, this doesn't seem to work.
+    // Actually this works for a second then stops.
     if (isInVeh)
     {
         SET_VEHICLE_FORWARD_SPEED(playerVeh, forwardSpeed);
+        //log_output(std::format("Forward speed set to: {}", forwardSpeed));
     }
+
 
     // Original method:
     //ENTITY::SET_ENTITY_COORDS(GetPlayerPed(), position, false, false, false, false);
-    
-    //FadeScreenIn(fadeTime);
 }
 
 /// <summary>
@@ -505,8 +505,6 @@ void PlayerScripts::KillPlayerMP()
 #ifndef NEW_TEST
 
         REQUEST_ANIM_DICT("mp_suicide");
-        // Added this check like in the vehicle spawner, if it doens't load this shouldn't crash the game
-        // This at least makes it not crash, but it doesn't work like my vehicle spawner doesn't.
         // TODO Make a function to wait on animations and play them
         // Possibly make a AnimScripts.cpp?
         while (!HAS_ANIM_DICT_LOADED("mp_suicide")) {
@@ -709,8 +707,13 @@ void PlayerScripts::DisableNeverWanted()
 //void PlayerScripts::SetWantedLevel(int wantedLevel)
 void PlayerScripts::SetWantedLevel()
 {
+    // Named these to be a bit more clear
+    int minWantedLevel = 0;
+    int maxWantedLevel = 5;
+
     // Make sure the wanted level is valid first
-    if (wantedLevel >= 0 || wantedLevel <= 5) 
+    // This is more readable like this, and it still works.
+    if (wantedLevel < maxWantedLevel || wantedLevel > minWantedLevel)
     {
         PLAYER::SET_PLAYER_WANTED_LEVEL(GetPlayerID(), wantedLevel, false);
         PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(GetPlayerID(), false);

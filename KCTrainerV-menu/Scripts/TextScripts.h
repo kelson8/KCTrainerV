@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
+#include "IScriptBuilder.h"
 
-class TextScripts
+class TextScripts : public IScriptBuilder
 {
 public:
 	// Instance of the TextScripts
@@ -11,7 +12,7 @@ public:
 		return instance;
 	}
 
-	void Tick();
+	void Tick() override;
 
 	// TODO Possibly make these private functions?
 	void SetTextEntry(const char* text);

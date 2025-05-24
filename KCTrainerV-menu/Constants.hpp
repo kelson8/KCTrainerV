@@ -87,8 +87,15 @@
 // Enable the Player Skin Changer test, so far this only displays the categories.
 //#define PLAYER_SKIN_CHANGER
 
-// Testing moving some stuff over to namespaces, 
+// Testing moving some stuff over to namespaces
 // #define MOVE_MENU_NAMESPACE
+
+// TODO Fix this, load a list of teleports with categories from ini
+//#define LOAD_TELEPORT_INI
+
+// Enable the new teleport category system, somewhat like the vehicle spawner system that I switched to.
+#define NEW_TELEPORT_CATEGORIES
+
 
 namespace Constants 
 {
@@ -105,4 +112,6 @@ namespace Constants
     static const char* const notificationFileName = "CustomNotifications.txt";
 
     static const char* const pedsFileName = "PedList.xml";
+
+    static const char* const teleportFileName = "teleports.ini";
 }
