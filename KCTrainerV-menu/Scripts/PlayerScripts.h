@@ -10,20 +10,6 @@ class PlayerScripts : public IScriptBuilder
 {
 public:
 
-    // Moved into TeleportLocations.h
-    //enum TeleportLocations
-    //{
-    //    AIRPORT_RUNWAY = 1,
-    //    HOSPITAL_LS1_ROOFTOP = 2,
-    //    MOUNT_CHILLIAD = 3,
-    //    
-    //    // Police stations
-    //    POLICE_STATION1 = 4,
-    //    POLICE_STATION2 = 5,
-    //    POLICE_STATION3 = 6,
-
-    //};
-
     // Instance of the PlayerScripts for use with changing wanted levels and other values.
     static PlayerScripts& GetInstance()
     {
@@ -40,8 +26,12 @@ public:
 
     // Teleports
     // This is in use for the teleport function
-    //void SetPlayerCoords(Vector3 position, float heading);
+    // 
+    // Just set the players position here.
     void SetPlayerCoords(Vector3 position);
+    // Set the player position, heading, and fade if true.
+    void SetPlayerCoords(Vector3 position, float heading, bool fade);
+
     void SetPlayerHeading(float heading);
 
     // Get the waypoint coords
@@ -59,16 +49,11 @@ public:
     // Kill the player with the multiplayer suicide animation.
     void KillPlayerMP();
 
-    // Teleport player to location specified in the enum
-    // TODO Adapt below to new format once I set it up:
+    // Disabled in the code for now, may reuse later.
     // 
-#ifdef NEW_TELEPORTS
-    void WarpToLocation(TeleportLocationCategory category, TeleportLocationID id);
-    void TeleportToLocation(TeleportLocationCategory category, TeleportLocationID id);
-#else
-    void WarpToLocation(TeleportLocation locationToTeleport);
-    void TeleportToLocation(TeleportLocation locationToTeleport);
-#endif //NEW_TELEPORTS
+    // Teleport player to location specified in the enum
+    //void WarpToLocation(TeleportLocation locationToTeleport);
+    //void TeleportToLocation(TeleportLocation locationToTeleport);
 
     
     //

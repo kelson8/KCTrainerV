@@ -181,51 +181,8 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
     auto& teleportLocations = TeleportLocations::GetInstance();
     mbCtx.Title("Teleport Locations");
 
-#ifdef NEW_TELEPORTS
-    mbCtx.MenuOption("Airport", "AirportsTeleportSubmenu", { "Show a list of airport teleport locations." });
-    mbCtx.MenuOption("Safehouses", "SafehousesTeleportSubmenu", { "Show a list of safehouse teleport locations." });
-
-#endif //NEW_TELEPORTS
-
-    // TODO Make these use the sub menus I have defined, should make this file a bit more organized.
-    // Just don't enable the NEW_TELEPORTS preprocessor, I may remove it later.
-    // I could just move these into the other functions for sub menus.
-#ifndef NEW_TELEPORTS
-
-#ifndef NEW_TELEPORT_CATEGORIES
-    if (mbCtx.Option("Airport"))
-    {
-        playerScripts.WarpToLocation(TeleportLocation::AIRPORT_RUNWAY);
-    }
-    if (mbCtx.Option("Hospital LS1 Rooftop"))
-    {
-        playerScripts.WarpToLocation(TeleportLocation::HOSPITAL_LS1_ROOFTOP);
-    }
-
-    // This seems to autoload? At least with my other mods it does, not sure if it's supposed to.
-//#ifdef LOAD_IPLS
-    if (mbCtx.Option("Singleplayer Yacht"))
-    {
-        playerScripts.WarpToLocation(TeleportLocation::SP_YACHT1);
-    }
-//#endif
-
-    if (mbCtx.Option("Richards Majestic Movie Studio"))
-    {
-        playerScripts.WarpToLocation(TeleportLocation::RICHARDS_MAJESTIC_MOVIE_STUDIO);
-    }
-        
-
-    if (mbCtx.Option("Train station #1"))
-    {
-        playerScripts.WarpToLocation(TeleportLocation::TRAIN_STATION1);
-    }
-
-    if (mbCtx.Option("Train station #2"))
-    {
-        playerScripts.WarpToLocation(TeleportLocation::TRAIN_STATION2);
-    }
-
+    // TODO Fix this to work properly, make it place the player on the ground even far away from their current position.
+    /*
     if (mbCtx.Option("Waypoint"))
     {
         GTAped playerPed = PLAYER_PED_ID();
@@ -233,22 +190,15 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
         //playerScripts.SetPlayerCoords(waypointCoords);
         teleportLocations.WarpToWaypoint(playerPed);
     }
-
-   
-
-#endif // !NEW_TELEPORT_CATEGORIES
+    */
 
     // This format works
-#ifdef NEW_TELEPORT_CATEGORIES
-    mbCtx.MenuOption("Airports", "AirportsSubmenu", { "List of airport locations." });
-    mbCtx.MenuOption("Safehouses", "SafehousesSubmenu", { "List of safehouse locations." });
-#endif
+    mbCtx.MenuOption("Airports", "AirportsTeleportSubmenu", { "List of airport locations." });
+    mbCtx.MenuOption("Safehouses", "SafehousesTeleportSubmenu", { "List of safehouse locations." });
 
-#endif //!NEW_TELEPORTS
+    mbCtx.MenuOption("Other", "OtherTeleportSubmenu", { "Misc teleport locations." });
+
 }
-
-#ifdef NEW_TELEPORT_CATEGORIES
-// TODO Rename once I remove the old one.
 
 /// <summary>
 /// Build the airports sub menu
@@ -258,29 +208,23 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
 /// </summary>
 /// <param name="mbCtx"></param>
 /// <param name="context"></param>
-void TeleportMenu::BuildNewAirportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+void TeleportMenu::BuildAirportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     // Change title for each of these!
     mbCtx.Title("Airports");
 
     // Scripts
     auto& playerScripts = PlayerScripts::GetInstance();
-    //auto& teleportLocations = TeleportLocations::GetInstance();
 
     // Get teleports from the std::vector<TeleportInfo>
     for (const auto& teleportInfo : Teleports::Positions::vAirportLocations)
     {
         if (mbCtx.Option(teleportInfo.name)) {
-            playerScripts.SetPlayerCoords(teleportInfo.coordinates);
-            playerScripts.SetPlayerHeading(teleportInfo.heading);
+            playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
+            //playerScripts.SetPlayerHeading(teleportInfo.heading);
         }
     }
 }
-
-#endif
-
-#ifdef NEW_TELEPORT_CATEGORIES
-// TODO Rename once I remove the old one.
 
 /// <summary>
 /// Build the safe houses sub menu
@@ -290,112 +234,56 @@ void TeleportMenu::BuildNewAirportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript&
 /// </summary>
 /// <param name="mbCtx"></param>
 /// <param name="context"></param>
-void TeleportMenu::BuildNewSafehousesSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+void TeleportMenu::BuildSafehousesSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     // Change title for each of these!
     mbCtx.Title("Safehouses");
 
     // Scripts
     auto& playerScripts = PlayerScripts::GetInstance();
-    //auto& teleportLocations = TeleportLocations::GetInstance();
 
     // Get teleports from the std::vector<TeleportInfo>
     for (const auto& teleportInfo : Teleports::Positions::vSafeHouseLocations)
     {
         if (mbCtx.Option(teleportInfo.name)) {
-            playerScripts.SetPlayerCoords(teleportInfo.coordinates);
-            playerScripts.SetPlayerHeading(teleportInfo.heading);
+            playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
+            //playerScripts.SetPlayerHeading(teleportInfo.heading);
         }
     }
 }
 
-#endif
-
-
 /// <summary>
-/// Build the test teleport sub menu
-/// This method can auto build the menu with a list of locations.
-/// So I don't have to manually type them all out.
-/// Uses the TeleportInfo struct
+/// Build the other teleports sub menu.
 /// </summary>
 /// <param name="mbCtx"></param>
 /// <param name="context"></param>
-#ifdef NEW_TELEPORT_CATEGORIES
-void TeleportMenu::BuildTestTeleportSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+void TeleportMenu::BuildOtherSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     // Change title for each of these!
-    mbCtx.Title("Test Locations");
+    mbCtx.Title("Other");
 
     // Scripts
     auto& playerScripts = PlayerScripts::GetInstance();
-    //auto& teleportLocations = TeleportLocations::GetInstance();
+
 
     // Get teleports from the std::vector<TeleportInfo>
-    for (const auto& teleportInfo : Teleports::Positions::vTestLocations)
+    for (const auto& teleportInfo : Teleports::Positions::vOtherLocations)
     {
         if (mbCtx.Option(teleportInfo.name)) {
-            playerScripts.SetPlayerCoords(teleportInfo.coordinates);
-            playerScripts.SetPlayerHeading(teleportInfo.heading);
+            playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
+            //playerScripts.SetPlayerHeading(teleportInfo.heading);
         }
     }
 }
-#endif
 
-// teleportlocations
-
-#ifdef NEW_TELEPORTS
-
-// TODO Migrate to using this format for teleports. 
-// First I'll need to fix it in TeleportLocations.cpp, TeleportLocations.h, PlayerScripts.cpp, and PlayerScripts.h:
-void TeleportMenu::BuildAirportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
-{
-    auto& playerScripts = PlayerScripts::GetInstance();
-        mbCtx.Title("Airports");
-        if (mbCtx.Option("Airport Runway"))
-        {
-            playerScripts.WarpToLocation(TeleportLocationCategory::AIRPORTS, TeleportLocationID::AIRPORT_RUNWAY);
-        }
-        if (mbCtx.Option("Los Santos Intl Terminal"))
-        {
-            playerScripts.WarpToLocation(TeleportLocationCategory::AIRPORTS, TeleportLocationID::LOS_SANTOS_INTL_TERMINAL);
-        }
-}
-
-void TeleportMenu::BuildSafehousesSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
-{
-    auto& playerScripts = PlayerScripts::GetInstance();
-    mbCtx.Title("Safehouses");
-    if (mbCtx.Option("Michael's House"))
-    {
-        playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::MICHAELS_HOUSE); // 0
-    }
-    if (mbCtx.Option("Franklin's House (New)"))
-    {
-        playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::FRANKLINS_HOUSE_NEW); // 1
-    }
-    if (mbCtx.Option("Franklin's House (Old)"))
-    {
-        playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::FRANKLINS_HOUSE_OLD); // Value 2
-    }
-
-    if (mbCtx.Option("Trevor's House #1"))
-    {
-        playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::TREVORS_HOUSE); // Value 3
-    }
-
-    if (mbCtx.Option("Trevor's House #2"))
-    {
-        playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::TREVORS_HOUSE2); // Value 4
-    }
-
-    if (mbCtx.Option("Trevor's Office"))
-    {
-        playerScripts.WarpToLocation(TeleportLocationCategory::SAFEHOUSES, TeleportLocationID::TREVORS_OFFICE); // Value 5
-    }
-}
-
-#endif //NEW_TELEPORTS
-
+/// <summary>
+/// Debug for player menu
+/// So far just change the player X, Y, Z, and heading on screen.
+/// Seems to set the position for the 'TextScripts::DisplayCoordinates()' function.
+/// TODO Move this into another file or somewhere else, I don't think it needs to be in TeleportMenu.
+/// </summary>
+/// <param name="mbCtx"></param>
+/// <param name="context"></param>
 void TeleportMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& textScripts = TextScripts::GetInstance();

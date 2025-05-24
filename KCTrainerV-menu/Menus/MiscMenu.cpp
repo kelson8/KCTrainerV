@@ -32,10 +32,10 @@ void MiscMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     mbCtx.Title("Misc");
     mbCtx.MenuOption("Music", { "MiscMusicSubmenu" }, { "Play game soundtracks, and music, doesn't work for radio." });
 
-#ifndef NEW_TELEPORT_CATEGORIES
+#ifdef BLIP_TEST
     // TODO Fix this
     mbCtx.MenuOption("Blips", { "MiscBlipsSubmenu" }, { "Testing with blips, adding/removing and more." });
-#endif // !NEW_TELEPORT_CATEGORIES    
+#endif // BLIP_TEST   
 
     mbCtx.MenuOption("Debug Sub Menu", "MiscDebugSubmenu", { "Debug testing menu." });
     
@@ -153,7 +153,7 @@ void MiscMenu::BuildBlipsSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // This seems to work
     // TODO Figure out how to make this a different icon.
     // For some reason it's only the yellow marker with the name 'destination'
-#ifndef NEW_TELEPORT_CATEGORIES
+#ifdef BLIP_TEST
     // TODO Fix these
     if (mbCtx.Option("Create blip"))
     {
@@ -195,7 +195,7 @@ void MiscMenu::BuildBlipsSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
             log_output(std::format("Blip handle {} is invalid or doesn't exist.", blip.Handle()));
         }
     }
-#endif
+#endif // BLIP_TEST
 }
 
 /// <summary>

@@ -36,10 +36,6 @@
 #define IPL_LOGGING
 #endif // LOAD_IPLS
 
-// Enable my new teleport format with categories, this might be very broken.
-// Sometimes this crashes it, I might deal with it later.
-//#define NEW_TELEPORTS
-
 // Enable some extra chaos features, I will toggle these off if it breaks something.
 #define EXTRA_FEATURES
 
@@ -93,8 +89,9 @@
 // TODO Fix this, load a list of teleports with categories from ini
 //#define LOAD_TELEPORT_INI
 
-// Enable the new teleport category system, somewhat like the vehicle spawner system that I switched to.
-#define NEW_TELEPORT_CATEGORIES
+// TODO Fix the blip tests, try to add/remove blips on the map
+// Also, try to add custom icons instead of the yellow destination marker.
+//#define BLIP_TEST
 
 
 namespace Constants 

@@ -301,74 +301,31 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
-#ifdef NEW_TELEPORT_CATEGORIES
-    // New, TODO Remove old AirportsSubmenu
-    submenus.emplace_back("AirportsSubmenu",
-        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
-        {
-            teleportMenu.BuildNewAirportSubMenu(mbCtx, context);
-        }
-    );
-
-    // New, TODO Remove old SafehousesSubmenu
-    submenus.emplace_back("SafehousesSubmenu",
-        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
-        {
-            teleportMenu.BuildNewSafehousesSubMenu(mbCtx, context);
-        }
-    );
-
-    // Teleport Test locations sub menu
-    // This works! Later, i'll switch over to this format for all my teleports.
-    submenus.emplace_back("TestTeleportSubmenu",
-        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
-        {
-            teleportMenu.BuildTestTeleportSubmenu(mbCtx, context);
-        }
-    );
-#endif
-
-#pragma endregion // TeleportLocationsSubMenu
-
-            // TODO Migrate to using this format for teleports. 
-            // First I'll need to fix it in TeleportLocations.cpp, TeleportLocations.h, PlayerScripts.cpp, and PlayerScripts.h:
-#ifdef NEW_TELEPORTS
-#pragma region AirportsTeleportSubMenu
-    //-----
-    // Airports teleport sub menu
-    //-----
-        
+    // New AirportsTeleportSubmenu format
     submenus.emplace_back("AirportsTeleportSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
             teleportMenu.BuildAirportSubMenu(mbCtx, context);
-        });
+        }
+    );
 
-#pragma endregion // AirportsTeleportSubMenu
-
-#endif //!NEW_TELEPORTS
-
-
-
-
-#pragma region SafehousesTeleportSubmenu
-#ifdef NEW_TELEPORTS
-    //-----
-    // Safe houses teleport sub menu
-    //-----
+    // New SafehousesTeleportSubmenu format
     submenus.emplace_back("SafehousesTeleportSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
             teleportMenu.BuildSafehousesSubMenu(mbCtx, context);
-            
-#pragma endregion
+        }
+    );
 
+    // Other teleports sub menu
+    submenus.emplace_back("OtherTeleportSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            teleportMenu.BuildOtherSubmenu(mbCtx, context);
+        }
+    );
 
-        });
-
-#endif //NEW_TELEPORTS
-
-#pragma endregion // SafehousesTeleportSubmenu
+#pragma endregion // TeleportLocationsSubMenu
 
 #pragma region DebugTeleportSubMenu
 #ifdef DEBUG_MODE

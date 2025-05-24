@@ -359,9 +359,9 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
     
     // These fades work!! TODO Make separate teleport function with fading.
     // This may fix the crashing for now? Not sure..
-    DO_SCREEN_FADE_OUT(fadeOutTime);
+    //DO_SCREEN_FADE_OUT(fadeOutTime);
 
-    WAIT(fadeOutTime);
+    //WAIT(fadeOutTime);
     // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
     // And it checks if the player is in a flying vehicle.
     SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
@@ -369,8 +369,8 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
 
     // TODO Figure out what this part does
     //SET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed, Vector3(vel.x, vel.y, vel.z));
-    DO_SCREEN_FADE_IN(fadeInTime);
-    WAIT(fadeInTime);
+    //DO_SCREEN_FADE_IN(fadeInTime);
+    //WAIT(fadeInTime);
 
     // Set the vehicle to the speed it previously was, this doesn't seem to work.
     // Actually this works for a second then stops.
@@ -383,6 +383,49 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
 
     // Original method:
     //ENTITY::SET_ENTITY_COORDS(GetPlayerPed(), position, false, false, false, false);
+}
+
+/// <summary>
+/// Set the player coords, this function also sets the heading, and fades if enabled.
+/// </summary>
+/// <param name="position"></param>
+/// <param name="heading"></param>
+/// <param name="fade"></param>
+void PlayerScripts::SetPlayerCoords(Vector3 position, float heading, bool fade)
+{
+    // Based on teleport implementation in Chaos Mod (Player.h)
+    auto playerPed = this->GetPlayerPed();
+    bool isInVeh = IS_PED_IN_ANY_VEHICLE(playerPed, false);
+    bool isInFlyingVeh = IS_PED_IN_FLYING_VEHICLE(playerPed);
+    auto playerVeh = GET_VEHICLE_PED_IS_IN(playerPed, false);
+    // TODO Figure out what exactly the velocity is used for 
+    auto vel = GET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed);
+    float groundHeight = GET_ENTITY_HEIGHT_ABOVE_GROUND(playerVeh);
+    float forwardSpeed;
+
+    int fadeOutTime = 1000;
+    int fadeInTime = 1000;
+
+    // Fade out
+    if (fade)
+    {
+        DO_SCREEN_FADE_OUT(fadeOutTime);
+        WAIT(fadeOutTime);
+    }
+
+    // Set coords
+    SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
+        Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
+
+    // Set heading
+    SET_ENTITY_HEADING(isInVeh ? playerVeh : playerPed, heading);
+
+    // Fade in
+    if (fade)
+    {
+        DO_SCREEN_FADE_IN(fadeInTime);
+        WAIT(fadeInTime);
+    }
 }
 
 /// <summary>
@@ -756,178 +799,99 @@ std::vector<std::string_view> g_loadedIpls;
 
 
 
-// TODO Adapt TeleportToLocation function to new format for categories:
-#ifdef NEW_TELEPORTS
-/// <summary>
-/// Teleport to the location specified by the category and ID.
-/// </summary>
-/// <param name="category">The category of the teleport location.</param>
-/// <param name="id">The ID of the teleport location within the category.</param>
-void PlayerScripts::TeleportToLocation(TeleportLocationCategory category, TeleportLocationID id) {
-    auto& teleportLocations = TeleportLocations::GetInstance();
-    const TeleportInfo teleportInfo = teleportLocations.GetTeleportLocationInfo(category, id);
-
-#ifdef LOAD_IPLS
-    // Logging for IPL unloading (if enabled)
-#ifdef IPL_LOGGING
-    LOG(INFO, "TeleportToLocation: Checking IPLs to unload");
-    LOG(INFO, std::format("TeleportToLocation: Currently loaded IPLs count: {}", g_loadedIpls.size()));
-    for (const auto& loadedIpl : g_loadedIpls) {
-        LOG(INFO, std::format("TeleportToLocation: Loaded IPL: {}", loadedIpl));
-    }
-#endif //IPL_LOGGING
-
-    int fadeTime = 500;
-
-    //FadeScreenOut(fadeTime);
-    DO_SCREEN_FADE_OUT(fadeTime);
-    // Wait for the fade out to complete
-    WAIT(500);
-
-    // Unload IPLs that are currently loaded but not needed for the new location
-    std::vector<std::string_view> iplsToRemove;
-    for (const auto& loadedIpl : g_loadedIpls) {
-        bool shouldKeep = false;
-        for (const auto& iplToLoad : teleportInfo.iplsToLoad) {
-            if (loadedIpl == iplToLoad) {
-                shouldKeep = true;
-                break;
-            }
-        }
-        if (!shouldKeep) {
-            iplsToRemove.push_back(loadedIpl);
-#ifdef IPL_LOGGING
-            LOG(INFO, std::format("TeleportToLocation: Marking for removal: {}", loadedIpl));
-#endif //IPL_LOGGING
-        }
-    }
-
-    // Unload the IPLs
-    for (const auto& iplToRemove : iplsToRemove) {
-        REMOVE_IPL(iplToRemove.data());
-#ifdef IPL_LOGGING
-        LOG(INFO, std::format("TeleportToLocation: Unloading IPL: {}", iplToRemove.data()));
-#endif //IPL_LOGGING
-        auto it = std::find(g_loadedIpls.begin(), g_loadedIpls.end(), iplToRemove);
-        if (it != g_loadedIpls.end()) {
-            g_loadedIpls.erase(it);
-#ifdef IPL_LOGGING
-            LOG(INFO, std::format("TeleportToLocation: Removed from loaded list: {}", iplToRemove));
-#endif
-        }
-    }
-
-    SetPlayerCoords(teleportInfo.coordinates);
-    SetPlayerHeading(teleportInfo.heading);
-
-    // Request the IPLs for the new location
-    for (const auto& ipl : teleportInfo.iplsToLoad) {
-        REQUEST_IPL(ipl.data());
-        g_loadedIpls.push_back(ipl); // Keep track of loaded IPLs
-    }
-
-    //FadeScreenIn(fadeTime);
-    DO_SCREEN_FADE_IN(fadeTime);
-#else
-    SetPlayerCoords(teleportInfo.coordinates);
-    SetPlayerHeading(teleportInfo.heading);
-#endif
-}
-#else
-
 /// <summary>
 /// Teleport to the location in the TeleportLocation enum within TeleportLocations.h
 /// </summary>
 /// <param name="locationToTeleport"></param>
-void PlayerScripts::TeleportToLocation(TeleportLocation locationToTeleport) {
-    auto& teleportLocations = TeleportLocations::GetInstance();
-    //const Vector3& teleportCoords = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
-    const TeleportInfo teleportInfo = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
-    //SetPlayerCoords(teleportCoords);
+/// TODO Reuse this for IPL support if possible.
+//void PlayerScripts::TeleportToLocation(TeleportLocation locationToTeleport) {
+//    auto& teleportLocations = TeleportLocations::GetInstance();
+//    //const Vector3& teleportCoords = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
+//    const TeleportInfo teleportInfo = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
+//    //SetPlayerCoords(teleportCoords);
+//
+//    // TODO Test
+//    GTAped playerPed = PLAYER_PED_ID();
+//
+//    // TODO Test IPL loading, not sure if this will work.
+//#ifdef LOAD_IPLS
+//
+//    // New tests for logging
+//#ifdef IPL_LOGGING
+//    LOG(INFO, "TeleportToLocation: Checking IPLs to unload");
+//    LOG(INFO, std::format("TeleportToLocation: Currently loaded IPLs count: {}", g_loadedIpls.size()));
+//#endif //IPL_LOGGING
+//    for (const auto& loadedIpl : g_loadedIpls) {
+//        LOG(INFO, std::format("TeleportToLocation: Loaded IPL: {}", loadedIpl));
+//    }
+//    //
+//
+//    // Unload IPLs that are currently loaded but not needed for the new location
+//    std::vector<std::string_view> iplsToRemove;
+//    for (const auto& loadedIpl : g_loadedIpls) {
+//        bool shouldKeep = false;
+//        for (const auto& iplToLoad : teleportInfo.iplsToLoad) {
+//            if (loadedIpl == iplToLoad) {
+//                shouldKeep = true;
+//                break;
+//            }
+//        }
+//        if (!shouldKeep) {
+//            iplsToRemove.push_back(loadedIpl);
+//#ifdef IPL_LOGGING
+//            LOG(INFO, std::format("TeleportToLocation: Marking for removal: {}", loadedIpl));
+//#endif //IPL_LOGGING
+//        }
+//    }
+//
+//    // New method for unloading ipls.
+//    for (const auto& iplToRemove : iplsToRemove) {
+//        //if (DOES_ENTITY_EXIST(GetPlayerPed())) {
+//            REMOVE_IPL(iplToRemove.data());
+//
+//#ifdef IPL_LOGGING
+//            LOG(INFO, std::format("TeleportToLocation: Unloading IPL: {}", iplToRemove.data()));
+//#endif //IPL_LOGGING
+//            auto it = std::find(g_loadedIpls.begin(), g_loadedIpls.end(), iplToRemove);
+//            if (it != g_loadedIpls.end()) {
+//                g_loadedIpls.erase(it);
+//#ifdef IPL_LOGGING
+//                LOG(INFO, std::format("TeleportToLocation: Removed from loaded list: {}", iplToRemove));
+//#endif
+//            }
+//        //}
+//    }
+//
+//    // Remove any previously loaded IPLs (optional, but recommended for cleanup)
+//    //for (const auto& ipl : g_loadedIpls) {
+//    //    //if (DOES_ENTITY_EXIST(GetPlayerPed())) {
+//    //        REMOVE_IPL(ipl.data());
+//    //    //}
+//    //}
+//    //g_loadedIpls.clear();
+//
+//    // These seem to work, using GTAped from Menyoo now.
+//    playerPed.Position_set(teleportInfo.coordinates);
+//    playerPed.Heading_set(teleportInfo.heading);
+//
+//    //SetPlayerCoords(teleportInfo.coordinates);
+//    //SetPlayerHeading(teleportInfo.heading);
+//
+//    // Request the IPLs for the new location
+//    for (const auto& ipl : teleportInfo.iplsToLoad) {
+//        REQUEST_IPL(ipl.data());
+//        g_loadedIpls.push_back(ipl); // Keep track of loaded IPLs
+//    }
+//#else
+//    // These seem to work, using GTAped from Menyoo now.
+//    //playerPed.Position_set(teleportInfo.coordinates);
+//    //playerPed.Heading_set(teleportInfo.heading);
+//
+//    SetPlayerCoords(teleportInfo.coordinates);
+//    SetPlayerHeading(teleportInfo.heading);
+//#endif // LOAD_IPLS
+//}
 
-    // TODO Test
-    GTAped playerPed = PLAYER_PED_ID();
-
-    // TODO Test IPL loading, not sure if this will work.
-#ifdef LOAD_IPLS
-
-    // New tests for logging
-#ifdef IPL_LOGGING
-    LOG(INFO, "TeleportToLocation: Checking IPLs to unload");
-    LOG(INFO, std::format("TeleportToLocation: Currently loaded IPLs count: {}", g_loadedIpls.size()));
-#endif //IPL_LOGGING
-    for (const auto& loadedIpl : g_loadedIpls) {
-        LOG(INFO, std::format("TeleportToLocation: Loaded IPL: {}", loadedIpl));
-    }
-    //
-
-    // Unload IPLs that are currently loaded but not needed for the new location
-    std::vector<std::string_view> iplsToRemove;
-    for (const auto& loadedIpl : g_loadedIpls) {
-        bool shouldKeep = false;
-        for (const auto& iplToLoad : teleportInfo.iplsToLoad) {
-            if (loadedIpl == iplToLoad) {
-                shouldKeep = true;
-                break;
-            }
-        }
-        if (!shouldKeep) {
-            iplsToRemove.push_back(loadedIpl);
-#ifdef IPL_LOGGING
-            LOG(INFO, std::format("TeleportToLocation: Marking for removal: {}", loadedIpl));
-#endif //IPL_LOGGING
-        }
-    }
-
-    // New method for unloading ipls.
-    for (const auto& iplToRemove : iplsToRemove) {
-        //if (DOES_ENTITY_EXIST(GetPlayerPed())) {
-            REMOVE_IPL(iplToRemove.data());
-
-#ifdef IPL_LOGGING
-            LOG(INFO, std::format("TeleportToLocation: Unloading IPL: {}", iplToRemove.data()));
-#endif //IPL_LOGGING
-            auto it = std::find(g_loadedIpls.begin(), g_loadedIpls.end(), iplToRemove);
-            if (it != g_loadedIpls.end()) {
-                g_loadedIpls.erase(it);
-#ifdef IPL_LOGGING
-                LOG(INFO, std::format("TeleportToLocation: Removed from loaded list: {}", iplToRemove));
-#endif
-            }
-        //}
-    }
-
-    // Remove any previously loaded IPLs (optional, but recommended for cleanup)
-    //for (const auto& ipl : g_loadedIpls) {
-    //    //if (DOES_ENTITY_EXIST(GetPlayerPed())) {
-    //        REMOVE_IPL(ipl.data());
-    //    //}
-    //}
-    //g_loadedIpls.clear();
-
-    // These seem to work, using GTAped from Menyoo now.
-    playerPed.Position_set(teleportInfo.coordinates);
-    playerPed.Heading_set(teleportInfo.heading);
-
-    //SetPlayerCoords(teleportInfo.coordinates);
-    //SetPlayerHeading(teleportInfo.heading);
-
-    // Request the IPLs for the new location
-    for (const auto& ipl : teleportInfo.iplsToLoad) {
-        REQUEST_IPL(ipl.data());
-        g_loadedIpls.push_back(ipl); // Keep track of loaded IPLs
-    }
-#else
-    // These seem to work, using GTAped from Menyoo now.
-    //playerPed.Position_set(teleportInfo.coordinates);
-    //playerPed.Heading_set(teleportInfo.heading);
-
-    SetPlayerCoords(teleportInfo.coordinates);
-    SetPlayerHeading(teleportInfo.heading);
-#endif // LOAD_IPLS
-}
-
-#endif //NEW_TELEPORTS
 
 //----------- End TeleportToLocation --------------//
 
@@ -937,33 +901,19 @@ void PlayerScripts::TeleportToLocation(TeleportLocation locationToTeleport) {
 /// <summary>
 /// Set the player coords
 /// </summary>
-// TODO Setup to use new format for categories, make this easier to sort through and add to.:
-#ifdef NEW_TELEPORTS
-void PlayerScripts::WarpToLocation(TeleportLocationCategory category, TeleportLocationID id)
-{
-    if (!PLAYER::IS_PLAYER_PLAYING(GetPlayerID()))
-    {
-        return;
-    }
-
-    // Locations are now accessed using category and ID.
-    TeleportToLocation(category, id);
-}
-#else
-void PlayerScripts::WarpToLocation(TeleportLocation locationToTeleport)
-{
-    if (!PLAYER::IS_PLAYER_PLAYING(GetPlayerID()))
-    {
-        return;
-    }
-
-    // Initalize the teleport locations vector, required for my new teleport method.
-    //InitializeTeleportLocations(); // Make sure to call this somewhere before the switch
-
-    // Locations are now defined in the TeleportLocations.cpp file.
-    TeleportToLocation(locationToTeleport);
-}
-#endif
+//void PlayerScripts::WarpToLocation(TeleportLocation locationToTeleport)
+//{
+//    if (!PLAYER::IS_PLAYER_PLAYING(GetPlayerID()))
+//    {
+//        return;
+//    }
+//
+//    // Initalize the teleport locations vector, required for my new teleport method.
+//    //InitializeTeleportLocations(); // Make sure to call this somewhere before the switch
+//
+//    // Locations are now defined in the TeleportLocations.cpp file.
+//    TeleportToLocation(locationToTeleport);
+//}
 
 //----------- End WarpToLocation --------------//
 

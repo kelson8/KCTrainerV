@@ -150,12 +150,6 @@ void KCMenu::ScriptMain()
         scriptInit();
         initialized = true;
 
-        
-#ifndef NEW_TELEPORTS
-        // Get the teleport locations list for use in the teleports, required to be loaded in at script startup.
-        teleportLocations.GetTeleportLocations();
-#endif //!NEW_TELEPORTS
-
         // Load notifications from the file.
         KCMenu::LoadNotificationFile();
 
