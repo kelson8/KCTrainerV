@@ -195,6 +195,9 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
     // This format works
     mbCtx.MenuOption("Airports", "AirportsTeleportSubmenu", { "List of airport locations." });
     mbCtx.MenuOption("Safehouses", "SafehousesTeleportSubmenu", { "List of safehouse locations." });
+    
+    // From Menyoo
+    mbCtx.MenuOption("Apartment Interiors", "ApartmentInteriorsTeleportSubmenu", { "List of apartment interior locations." });
 
     mbCtx.MenuOption("Other", "OtherTeleportSubmenu", { "Misc teleport locations." });
 
@@ -251,6 +254,30 @@ void TeleportMenu::BuildSafehousesSubMenu(NativeMenu::Menu& mbCtx, KCMainScript&
         }
     }
 }
+
+/// <summary>
+/// Build the apartment interiors sub menu
+/// </summary>
+/// <param name="mbCtx"></param>
+/// <param name="context"></param>
+void TeleportMenu::BuildApartmentInteriorsSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+{
+    // Change title for each of these!
+    mbCtx.Title("Apartment Interiors");
+
+    // Scripts
+    auto& playerScripts = PlayerScripts::GetInstance();
+
+    // Get teleports from the std::vector<TeleportInfo>
+    for (const auto& teleportInfo : Teleports::Positions::vApartmentInteriors)
+    {
+        if (mbCtx.Option(teleportInfo.name)) {
+            playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
+            //playerScripts.SetPlayerHeading(teleportInfo.heading);
+        }
+    }
+}
+
 
 /// <summary>
 /// Build the other teleports sub menu.

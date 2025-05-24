@@ -23,6 +23,8 @@ public:
 	void BuildAirportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 	void BuildSafehousesSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 
+	void BuildApartmentInteriorsSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
+
 	void BuildOtherSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 	//
 

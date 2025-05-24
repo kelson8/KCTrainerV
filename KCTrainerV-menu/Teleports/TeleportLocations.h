@@ -47,6 +47,9 @@ namespace Teleports
 		extern const std::vector<TeleportInfo> vAirportLocations;
 		extern const std::vector<TeleportInfo> vSafeHouseLocations;
 		extern const std::vector<TeleportInfo> vOtherLocations;
+
+		// New from Menyoo
+		extern const std::vector<TeleportInfo> vApartmentInteriors;
 	}
 }
 

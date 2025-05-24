@@ -317,6 +317,15 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
+    // B
+    // Apartment interiors
+    submenus.emplace_back("ApartmentInteriorsTeleportSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            teleportMenu.BuildApartmentInteriorsSubMenu(mbCtx, context);
+        }
+    );
+
     // Other teleports sub menu
     submenus.emplace_back("OtherTeleportSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)

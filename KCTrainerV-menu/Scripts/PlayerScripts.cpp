@@ -40,22 +40,6 @@
 // Ints
 int wantedLevel = 0;
 
-// Getting the current player
-// TODO Fix these, should make it to where I don't have to manually specify the player for the stats.
-//const std::array<PlayerData, static_cast<size_t>(PlayerModels::COUNT)> PlayerScripts::playerData = {
-//    { PlayerModels::MICHEAL, "SP0_", "Michael" },
-//    { PlayerModels::FRANKLIN, "SP1_", "Franklin" },
-//    { PlayerModels::TREVOR, "SP2_", "Trevor" }
-//};
-
-// Get the stat hash
-//static inline Hash GetStatHash(PlayerModels character, const std::string& statName)
-//{
-//    return (playerData[static_cast<size_t>(character)].prefix + statName).c_str()_hash;
-//}
-
-//
-
 /// <summary>
 /// Get the players current health as a string.
 /// </summary>
@@ -172,7 +156,77 @@ void PlayerScripts::Tick()
         PlayerScripts::DisableMobileRadio();
         PlayerScripts::mobileRadioFlag = false;
     }
+
+    
+    //-----
+    // Disable player controls when teleporting
+    // Got the idea for putting this in a loop from here:
+    // https://forum.cfx.re/t/help-disable-control/43052
+    // Well this didn't work, I'll leave it here for later.
+    //-----
+    //if (PlayerScripts::fading)
+    //{
+    //    PlayerScripts::DisableControls();
+    //}
 }
+#pragma endregion
+
+#pragma region ControlActions
+
+/// <summary>
+/// Disable most player controls
+/// </summary>
+void PlayerScripts::DisableControls()
+{
+    // Taken from here: https://nativedb.dotindustries.dev/gta5/natives/0xFE99B66D079CF6BC?search=DISABLE_CONTROL_ACTION
+    // Control list: https://docs.fivem.net/docs/game-references/controls/
+    // Buttons are labeled with keyboard and xbox controller labels.
+
+    PAD::DISABLE_CONTROL_ACTION(0, 21, 1);      // INPUT_SPRINT / Left Shift / A
+    PAD::DISABLE_CONTROL_ACTION(0, 37, 1);      // INPUT_SELECT_WEAPON / TAB / LB
+    PAD::DISABLE_CONTROL_ACTION(0, 25, 1);      // INPUT_AIM / Right Mouse Button / LT
+    PAD::DISABLE_CONTROL_ACTION(0, 141, 1);     // INPUT_MELEE_ATTACK_HEAVY / Q (PC) / A (Xbox)
+    PAD::DISABLE_CONTROL_ACTION(0, 140, 1);     // INPUT_MELEE_ATTACK_LIGHT / R (PC) / B (Xbox)
+    PAD::DISABLE_CONTROL_ACTION(0, 24, 1);      // INPUT_ATTACK / Left Mouse Button / RT
+    PAD::DISABLE_CONTROL_ACTION(0, 257, 1);     // INPUT_ATTACK2 / Left Mouse Button / RT
+    PAD::DISABLE_CONTROL_ACTION(0, 22, 1);      // INPUT_JUMP / Spacebar / X
+    PAD::DISABLE_CONTROL_ACTION(0, 23, 1);      // INPUT_ENTER / F (PC) / Y (Xbox)
+
+    // Movement controls
+    PAD::DISABLE_CONTROL_ACTION(0, 32, 1);      // INPUT_MOVE_UP_ONLY / W / Left Stick
+    PAD::DISABLE_CONTROL_ACTION(0, 33, 1);      // INPUT_MOVE_DOWN_ONLY / S / Left Stick
+    PAD::DISABLE_CONTROL_ACTION(0, 34, 1);      // INPUT_MOVE_LEFT_ONLY / A / Left Stick
+    PAD::DISABLE_CONTROL_ACTION(0, 35, 1);      // INPUT_MOVE_RIGHT_ONLY / D / Left Stick
+
+}
+
+/// <summary>
+/// Enable most player controls
+/// </summary>
+void PlayerScripts::EnableControls()
+{
+    // Taken from here: https://nativedb.dotindustries.dev/gta5/natives/0xFE99B66D079CF6BC?search=DISABLE_CONTROL_ACTION
+    // Control list: https://docs.fivem.net/docs/game-references/controls/
+    // Buttons are labeled with keyboard and xbox controller labels.
+
+    PAD::ENABLE_CONTROL_ACTION(0, 21, 1);      // INPUT_SPRINT / Left Shift / A
+    PAD::ENABLE_CONTROL_ACTION(0, 37, 1);      // INPUT_SELECT_WEAPON / TAB / LB
+    PAD::ENABLE_CONTROL_ACTION(0, 25, 1);      // INPUT_AIM / Right Mouse Button / LT
+    PAD::ENABLE_CONTROL_ACTION(0, 141, 1);     // INPUT_MELEE_ATTACK_HEAVY / Q (PC) / A (Xbox)
+    PAD::ENABLE_CONTROL_ACTION(0, 140, 1);     // INPUT_MELEE_ATTACK_LIGHT / R (PC) / B (Xbox)
+    PAD::ENABLE_CONTROL_ACTION(0, 24, 1);      // INPUT_ATTACK / Left Mouse Button / RT
+    PAD::ENABLE_CONTROL_ACTION(0, 257, 1);     // INPUT_ATTACK2 / Left Mouse Button / RT
+    PAD::ENABLE_CONTROL_ACTION(0, 22, 1);      // INPUT_JUMP / Spacebar / X
+    PAD::ENABLE_CONTROL_ACTION(0, 23, 1);      // INPUT_ENTER / F (PC) / Y (Xbox)
+
+    // Movement controls
+    PAD::ENABLE_CONTROL_ACTION(0, 32, 1);      // INPUT_MOVE_UP_ONLY / W / Left Stick
+    PAD::ENABLE_CONTROL_ACTION(0, 33, 1);      // INPUT_MOVE_DOWN_ONLY / S / Left Stick
+    PAD::ENABLE_CONTROL_ACTION(0, 34, 1);      // INPUT_MOVE_LEFT_ONLY / A / Left Stick
+    PAD::ENABLE_CONTROL_ACTION(0, 35, 1);      // INPUT_MOVE_RIGHT_ONLY / D / Left Stick
+}
+
+
 #pragma endregion
 
 
@@ -408,8 +462,7 @@ void PlayerScripts::SetPlayerCoords(Vector3 position, float heading, bool fade)
     // Fade out
     if (fade)
     {
-        DO_SCREEN_FADE_OUT(fadeOutTime);
-        WAIT(fadeOutTime);
+        PlayerScripts::FadeScreenOut(fadeOutTime);
     }
 
     // Set coords
@@ -422,8 +475,7 @@ void PlayerScripts::SetPlayerCoords(Vector3 position, float heading, bool fade)
     // Fade in
     if (fade)
     {
-        DO_SCREEN_FADE_IN(fadeInTime);
-        WAIT(fadeInTime);
+        PlayerScripts::FadeScreenIn(fadeInTime);
     }
 }
 
@@ -599,26 +651,46 @@ void PlayerScripts::KillPlayerMP()
 #pragma region FadeFunctions
 
 /// <summary>
-/// Fade the screen in
+/// Fade the screen out
 /// </summary>
 /// <param name="ms"></param>
-void PlayerScripts::FadeScreenIn(int ms)
+void PlayerScripts::FadeScreenOut(int fadeTime)
 {
-    //if (!IS_SCREEN_FADED_IN())
+    Ped playerPed = PLAYER_PED_ID();
+    // Enable this to disable player control, incomplete.
+    fading = true;
+
+    //if (!IS_SCREEN_FADED_OUT())
     //{
-        DO_SCREEN_FADE_IN(ms);
+    // This didn't work
+    //DISABLE_ALL_CONTROL_ACTIONS(0);
+    
+    FREEZE_ENTITY_POSITION(playerPed, true);
+    DO_SCREEN_FADE_OUT(fadeTime);
+    WAIT(fadeTime);
+
     //}
 }
 
 /// <summary>
-/// Fade the screen out
+/// Fade the screen in
 /// </summary>
 /// <param name="ms"></param>
-void PlayerScripts::FadeScreenOut(int ms)
+void PlayerScripts::FadeScreenIn(int fadeTime)
 {
-    //if (!IS_SCREEN_FADED_OUT())
+    Ped playerPed = PLAYER_PED_ID();
+    //if (!IS_SCREEN_FADED_IN())
     //{
-        DO_SCREEN_FADE_OUT(ms);
+
+    // Disable this to re-enable player control, incomplete.
+    fading = false;
+
+    // This didn't work
+    //ENABLE_ALL_CONTROL_ACTIONS(0);
+
+    FREEZE_ENTITY_POSITION(playerPed, false);
+    DO_SCREEN_FADE_IN(fadeTime);
+    WAIT(fadeTime);
     //}
 }
 

@@ -24,6 +24,9 @@ public:
 
     void Tick() override;
 
+    void DisableControls();
+    void EnableControls();
+
     // Teleports
     // This is in use for the teleport function
     // 
@@ -95,10 +98,12 @@ public:
 
     // Fade functions
     // TODO Move to MiscScripts or something
-    void FadeScreenOut(int ms);
-    void FadeScreenIn(int ms);
+    void FadeScreenOut(int fadeTime);
+    void FadeScreenIn(int fadeTime);
     // Test for fading the screen in/out.
     void TestFade();
+
+    
     //
 
     // Mobile radio toggling
@@ -172,6 +177,10 @@ private:
 
     // Get the stat hash
     //static inline Hash GetStatHash(PlayerModels character, const std::string& statName);
+
+    // Is the screen fading?, doesn't need to be public.
+    bool fading = false;
+    //
 
     float mDistance{ 0.0f };
 
