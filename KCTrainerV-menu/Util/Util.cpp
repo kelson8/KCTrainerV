@@ -5,6 +5,15 @@
 #include <inc/main.h>
 #include <inc/natives.h>
 
+/// <summary>
+/// Check if the console is currently attached.
+/// </summary>
+/// <returns></returns>
+bool Util::IsConsoleAttached()
+{
+    return GetConsoleWindow() != nullptr;
+}
+
 // Taken some code from GTAVAddonLoader:
 // https://github.com/ikt32/GTAVAddonLoader/blob/master/GTAVAddonLoader/Util/Util.cpp
 

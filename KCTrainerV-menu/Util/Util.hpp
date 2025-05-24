@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <inc/types.h>
 
 // Taken some code from GTAVAddonLoader:
@@ -18,6 +19,9 @@ const Color solidWhite = {
 class Util
 {
 public:
+    // Check if console is attached.
+    static bool IsConsoleAttached();
+
     // Natives called
     void ShowText(float x, float y, float scale, const char* text, int font = 0, const Color& rgba = solidWhite, bool outline = false);
     void ShowNotification(std::string message, int* prevNotification = nullptr);

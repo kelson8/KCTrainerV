@@ -20,11 +20,15 @@ namespace NotificationManager {
 
         std::ifstream file(filePath);
         if (!file.is_open()) {
-            LOG(ERROR, "NotificationManager: Failed to open notification file: %s", filePath.c_str());
+            std::string failedToOpenFileString = std::format("NotificationManager: Failed to open notification file: {}", 
+                filePath.c_str());
+            LOG(ERROR, failedToOpenFileString);
             return;
         }
 
-        LOG(INFO, "NotificationManager: Loading notifications from file: %s", filePath.c_str());
+        std::string loadNotificationsFromfileString = std::format("NotificationManager: Loading notifications from file: {}",
+            filePath.c_str());
+        LOG(INFO, loadNotificationsFromfileString);
 
         std::string line;
         // Regex to match "Notification: " at the beginning of the line
@@ -45,15 +49,20 @@ namespace NotificationManager {
                 }
             }
             else {
-                LOG(WARN, "NotificationManager: Unparsed line in notification file: %s", line.c_str());
+                std::string notificationUnparsedLineString = std::format("NotificationManager: Unparsed line in notification file: {}", 
+                    line.c_str());
+                LOG(WARN, notificationUnparsedLineString);
             }
         }
 
         if (g_notifications.empty()) {
-            LOG(WARN, "NotificationManager: No notifications loaded from file: %s", filePath.c_str());
+            std::string notificationNotLoadedString = std::format("NotificationManager: No notifications loaded from file: {}",
+                filePath.c_str());
+            LOG(WARN, notificationNotLoadedString);
         }
         else {
-            LOG(INFO, "NotificationManager: Loaded %zu notifications.", g_notifications.size());
+            std::string notificationsLoadedString = std::format("NotificationManager: Loaded {} notifications.", g_notifications.size());
+            LOG(INFO, notificationsLoadedString);
         }
 
         // Initialize RNG if not already done

@@ -401,7 +401,6 @@ void PlayerScripts::SetPlayerCoords(Vector3 position, float heading, bool fade)
     // TODO Figure out what exactly the velocity is used for 
     auto vel = GET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed);
     float groundHeight = GET_ENTITY_HEIGHT_ABOVE_GROUND(playerVeh);
-    float forwardSpeed;
 
     int fadeOutTime = 1000;
     int fadeInTime = 1000;

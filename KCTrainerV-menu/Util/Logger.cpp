@@ -5,6 +5,10 @@
 #include <fstream>
 #include <vector>
 
+#include "Util.hpp"
+
+#include "defines.h"
+
 Logger g_Logger;
 
 namespace {
@@ -48,12 +52,51 @@ void Logger::write(LogLevel level, const std::string& txt) const {
 #endif
     std::ofstream logFile(file, std::ios_base::out | std::ios_base::app);
 
-    const auto now = std::chrono::system_clock::now().time_since_epoch();
-    logFile << std::format("[{:%H:%M:%S}] [{}] {}\n",
-        std::chrono::duration_cast<std::chrono::milliseconds>(now),
+    // Get the current time point and convert to local time zone
+    const auto now_zoned = std::chrono::zoned_time(std::chrono::current_zone(), std::chrono::system_clock::now());
+
+    // Extract the local_time from the zoned_time (still high precision)
+    const auto local_time_high_precision = now_zoned.get_local_time();
+
+    // ****** THE CRUCIAL CHANGE FOR SECOND-ONLY PRECISION ******
+    // Cast the time_point to one that only has second-level precision.
+    // This explicitly truncates any sub-second components.
+    const auto local_time_seconds_only = std::chrono::time_point_cast<std::chrono::seconds>(local_time_high_precision);
+    //
+
+    // Changed logstring to get current time from time zone, and remove the extra numbers
+    // Switched from this: [485585:19:09.930]
+    // To this: [19:09.930]
+    std::string logString = std::format("[{:%H:%M:%S}] [{}] {}\n",
+        local_time_seconds_only, // Pass the zoned_time object directly
         levelText(level),
         txt);
 
+    // Logging still works like this.
+    logFile << logString;
+
+    // This should exclude the extra debug logs, mostly "Searching for pattern"    
+    
+    //if (level != DEBUG)
+    //{
+    //    // This seems to work, although the clock isn't formatted right in it and some lines are duplicated.
+    //    // I'll work on this later
+    //    if (Util::IsConsoleAttached())
+    //    {
+    //        log_output(logString);
+    //    }
+
+    //}
+
+    // --- Add Console Output Here ---
+    // Only print to console if a console is attached and the log level permits
+    // This seems to also work for logging to console.
+    //if (level >= INFO && Util::IsConsoleAttached()) {
+    //    // Directly print to std::cout
+    //    std::cout << logString; // It already has a newline from the format string
+    //    std::cout << std::flush; // Ensure immediate output for console
+    //}
+    
     logFile.close();
     if (logFile.fail())
         mError = true;
