@@ -84,7 +84,7 @@ void TeleportManager::LoadAllIplsForLocation(const TeleportIplInfo& location)
 // Function to unload all IPLs for a given TeleportIplInfo
 void TeleportManager::UnloadAllIplsForLocation(const TeleportIplInfo& location)
 {
-    for (const std::string& ipl : location.iplsToLoad)
+    for (const std::string& ipl : location.iplsToUnload)
     {
         UnloadIPL(ipl);
     }

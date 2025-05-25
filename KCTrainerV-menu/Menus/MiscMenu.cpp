@@ -17,6 +17,8 @@
 #include "../Scripts/Extras/Game.h"
 #include "../Scripts/Extras/Classes/GTAblip.h"
 #include "../Scripts/Extras/World.h"
+#include "../Scripts/Extras/Classes/Model.h"
+#include "../Memory/GTAmemory.h"
 
 
 /// <summary>
@@ -30,7 +32,24 @@ void MiscMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     auto& textScripts = TextScripts::GetInstance();
 
     mbCtx.Title("Misc");
+
+    // Loading/Unloading multiplayer map
+
+    //These were in MPMenu, adding to my menu I'll probably just remove MPMenu.
+    if (mbCtx.Option("Load MP Maps", { "Enable Multiplayer maps" }))
+    {
+        ON_ENTER_MP();
+    }
+
+    if (mbCtx.Option("Unload MP Maps", { "Disable Multiplayer maps" }))
+    {
+        ON_ENTER_SP();
+    }
+
+    // Sub menus
+
     mbCtx.MenuOption("Music", { "MiscMusicSubmenu" }, { "Play game soundtracks, and music, doesn't work for radio." });
+
 
 #ifdef BLIP_TEST
     // TODO Fix this
@@ -344,6 +363,44 @@ void MiscMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
             log_output("Input string doesn't exist!");
             //std::cout << "Input string doesn't exist!" << std::endl;
         }
+
+    }
+
+    std::vector<GTAmodel::Model> g_vehHashes;
+    std::vector<GTAmodel::Model> g_vehHashes_OPENWHEEL;
+    std::vector<GTAmodel::Model> g_vehHashes_SUPER;
+
+    // TODO Test, replicated from Menyoo in ModelNames.cpp.
+    // Well I cannot log these, but I think this is how Menyoo is displaying all vehicle names.
+    // They aren't lowercase in the vehicleBmp list.
+    if (mbCtx.Option("Log vehicle models"))
+    {
+        g_vehHashes.clear();
+        GTAmemory::GenerateVehicleModelList();
+        auto& hashes = GTAmemory::VehicleModels();
+
+        std::unordered_map<VehicleClass, std::vector<Model>*> vDestMap
+        {
+            { VehicleClass::Openwheel, &g_vehHashes_OPENWHEEL },
+            { VehicleClass::Super, &g_vehHashes_SUPER}
+        };
+
+        const bool isMinGameVersion3095 = GTAmemory::GetGameVersion() >= eGameVersion::VER_1_0_3095_0;
+        for (int d = 0x0; d < 0x20; d++)
+        {
+            for (auto& dd : hashes[d])
+            {
+                if (std::find(g_vehHashes.begin(), g_vehHashes.end(), Model(dd)) == g_vehHashes.end())
+                {
+                    g_vehHashes.push_back(dd);
+                    log_output(dd);
+                }
+            }
+        }
+
+        
+
+        //log_output(hashes);
 
     }
 

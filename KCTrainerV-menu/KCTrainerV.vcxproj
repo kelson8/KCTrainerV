@@ -214,6 +214,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Menus\Submenus\Player\ModelChangerMenu.cpp" />
+    <ClCompile Include="Menus\Submenus\Player\PlayerOptionsMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.cpp" />
     <ClCompile Include="Menus\TeleportMenu.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -223,6 +224,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Menus\WeaponMenu.cpp" />
     <ClCompile Include="Menus\WorldMenu.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -292,6 +294,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Teleports\IplLocations.cpp" />
     <ClCompile Include="Teleports\TeleportLocations.cpp" />
     <ClCompile Include="Teleports\TeleportManager.cpp" />
     <ClCompile Include="Util\FileFunctions.cpp" />
@@ -360,9 +363,11 @@
     <ClInclude Include="Menus\PedMenu.h" />
     <ClInclude Include="Menus\PlayerMenu.h" />
     <ClInclude Include="Menus\Submenus\Player\ModelChangerMenu.h" />
+    <ClInclude Include="Menus\Submenus\Player\PlayerOptionsMenu.h" />
     <ClInclude Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.h" />
     <ClInclude Include="Menus\TeleportMenu.h" />
     <ClInclude Include="Menus\VehicleMenu.h" />
+    <ClInclude Include="Menus\WeaponMenu.h" />
     <ClInclude Include="Menus\WorldMenu.h" />
     <ClInclude Include="MenuTexture.hpp" />
     <ClInclude Include="Natives\natives2.h" />
@@ -401,6 +406,7 @@
     <ClInclude Include="Scripts\VehicleSpawner.h" />
     <ClInclude Include="Scripts\Vehicles\VehicleData.h" />
     <ClInclude Include="Scripts\WorldScripts.h" />
+    <ClInclude Include="Teleports\IplLocations.h" />
     <ClInclude Include="Teleports\TeleLocation.h" />
     <ClInclude Include="Teleports\TeleportLocations.h" />
     <ClInclude Include="Teleports\TeleportManager.h" />

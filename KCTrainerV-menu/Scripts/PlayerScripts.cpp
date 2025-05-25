@@ -178,6 +178,7 @@ void PlayerScripts::Tick()
 /// </summary>
 void PlayerScripts::DisableControls()
 {
+    int maxControls = 360;
     // Taken from here: https://nativedb.dotindustries.dev/gta5/natives/0xFE99B66D079CF6BC?search=DISABLE_CONTROL_ACTION
     // Control list: https://docs.fivem.net/docs/game-references/controls/
     // Buttons are labeled with keyboard and xbox controller labels.
@@ -197,6 +198,12 @@ void PlayerScripts::DisableControls()
     PAD::DISABLE_CONTROL_ACTION(0, 33, 1);      // INPUT_MOVE_DOWN_ONLY / S / Left Stick
     PAD::DISABLE_CONTROL_ACTION(0, 34, 1);      // INPUT_MOVE_LEFT_ONLY / A / Left Stick
     PAD::DISABLE_CONTROL_ACTION(0, 35, 1);      // INPUT_MOVE_RIGHT_ONLY / D / Left Stick
+
+    // This didn't work either.
+    //for (int i = 0; i < maxControls; i++)
+    //{
+    //    PAD::DISABLE_CONTROL_ACTION(0, i, 1);
+    //}
 
 }
 
@@ -875,93 +882,96 @@ std::vector<std::string_view> g_loadedIpls;
 /// </summary>
 /// <param name="locationToTeleport"></param>
 /// TODO Reuse this for IPL support if possible.
-//void PlayerScripts::TeleportToLocation(TeleportLocation locationToTeleport) {
-//    auto& teleportLocations = TeleportLocations::GetInstance();
-//    //const Vector3& teleportCoords = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
-//    const TeleportInfo teleportInfo = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
-//    //SetPlayerCoords(teleportCoords);
-//
-//    // TODO Test
-//    GTAped playerPed = PLAYER_PED_ID();
-//
-//    // TODO Test IPL loading, not sure if this will work.
-//#ifdef LOAD_IPLS
-//
-//    // New tests for logging
-//#ifdef IPL_LOGGING
-//    LOG(INFO, "TeleportToLocation: Checking IPLs to unload");
-//    LOG(INFO, std::format("TeleportToLocation: Currently loaded IPLs count: {}", g_loadedIpls.size()));
-//#endif //IPL_LOGGING
-//    for (const auto& loadedIpl : g_loadedIpls) {
-//        LOG(INFO, std::format("TeleportToLocation: Loaded IPL: {}", loadedIpl));
-//    }
-//    //
-//
-//    // Unload IPLs that are currently loaded but not needed for the new location
-//    std::vector<std::string_view> iplsToRemove;
-//    for (const auto& loadedIpl : g_loadedIpls) {
-//        bool shouldKeep = false;
-//        for (const auto& iplToLoad : teleportInfo.iplsToLoad) {
-//            if (loadedIpl == iplToLoad) {
-//                shouldKeep = true;
-//                break;
-//            }
-//        }
-//        if (!shouldKeep) {
-//            iplsToRemove.push_back(loadedIpl);
-//#ifdef IPL_LOGGING
-//            LOG(INFO, std::format("TeleportToLocation: Marking for removal: {}", loadedIpl));
-//#endif //IPL_LOGGING
-//        }
-//    }
-//
-//    // New method for unloading ipls.
-//    for (const auto& iplToRemove : iplsToRemove) {
-//        //if (DOES_ENTITY_EXIST(GetPlayerPed())) {
-//            REMOVE_IPL(iplToRemove.data());
-//
-//#ifdef IPL_LOGGING
-//            LOG(INFO, std::format("TeleportToLocation: Unloading IPL: {}", iplToRemove.data()));
-//#endif //IPL_LOGGING
-//            auto it = std::find(g_loadedIpls.begin(), g_loadedIpls.end(), iplToRemove);
-//            if (it != g_loadedIpls.end()) {
-//                g_loadedIpls.erase(it);
-//#ifdef IPL_LOGGING
-//                LOG(INFO, std::format("TeleportToLocation: Removed from loaded list: {}", iplToRemove));
-//#endif
-//            }
-//        //}
-//    }
-//
-//    // Remove any previously loaded IPLs (optional, but recommended for cleanup)
-//    //for (const auto& ipl : g_loadedIpls) {
-//    //    //if (DOES_ENTITY_EXIST(GetPlayerPed())) {
-//    //        REMOVE_IPL(ipl.data());
-//    //    //}
-//    //}
-//    //g_loadedIpls.clear();
-//
-//    // These seem to work, using GTAped from Menyoo now.
-//    playerPed.Position_set(teleportInfo.coordinates);
-//    playerPed.Heading_set(teleportInfo.heading);
-//
-//    //SetPlayerCoords(teleportInfo.coordinates);
-//    //SetPlayerHeading(teleportInfo.heading);
-//
-//    // Request the IPLs for the new location
-//    for (const auto& ipl : teleportInfo.iplsToLoad) {
-//        REQUEST_IPL(ipl.data());
-//        g_loadedIpls.push_back(ipl); // Keep track of loaded IPLs
-//    }
-//#else
-//    // These seem to work, using GTAped from Menyoo now.
-//    //playerPed.Position_set(teleportInfo.coordinates);
-//    //playerPed.Heading_set(teleportInfo.heading);
-//
-//    SetPlayerCoords(teleportInfo.coordinates);
-//    SetPlayerHeading(teleportInfo.heading);
-//#endif // LOAD_IPLS
-//}
+/// 
+// TODO Test IPL loading, not sure if this will work.
+#ifdef LOAD_IPLS
+void PlayerScripts::TeleportToLocation(TeleportLocation locationToTeleport) {
+    auto& teleportLocations = TeleportLocations::GetInstance();
+    //const Vector3& teleportCoords = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
+    const TeleportInfo teleportInfo = teleportLocations.GetTeleportLocationInfo(locationToTeleport);
+    //SetPlayerCoords(teleportCoords);
+
+    // TODO Test
+    GTAped playerPed = PLAYER_PED_ID();
+
+
+
+    // New tests for logging
+#ifdef IPL_LOGGING
+    LOG(INFO, "TeleportToLocation: Checking IPLs to unload");
+    LOG(INFO, std::format("TeleportToLocation: Currently loaded IPLs count: {}", g_loadedIpls.size()));
+#endif //IPL_LOGGING
+    for (const auto& loadedIpl : g_loadedIpls) {
+        LOG(INFO, std::format("TeleportToLocation: Loaded IPL: {}", loadedIpl));
+    }
+    //
+
+    // Unload IPLs that are currently loaded but not needed for the new location
+    std::vector<std::string_view> iplsToRemove;
+    for (const auto& loadedIpl : g_loadedIpls) {
+        bool shouldKeep = false;
+        for (const auto& iplToLoad : teleportInfo.iplsToLoad) {
+            if (loadedIpl == iplToLoad) {
+                shouldKeep = true;
+                break;
+            }
+        }
+        if (!shouldKeep) {
+            iplsToRemove.push_back(loadedIpl);
+#ifdef IPL_LOGGING
+            LOG(INFO, std::format("TeleportToLocation: Marking for removal: {}", loadedIpl));
+#endif //IPL_LOGGING
+        }
+    }
+
+    // New method for unloading ipls.
+    for (const auto& iplToRemove : iplsToRemove) {
+        //if (DOES_ENTITY_EXIST(GetPlayerPed())) {
+        REMOVE_IPL(iplToRemove.data());
+
+#ifdef IPL_LOGGING
+        LOG(INFO, std::format("TeleportToLocation: Unloading IPL: {}", iplToRemove.data()));
+#endif //IPL_LOGGING
+        auto it = std::find(g_loadedIpls.begin(), g_loadedIpls.end(), iplToRemove);
+        if (it != g_loadedIpls.end()) {
+            g_loadedIpls.erase(it);
+#ifdef IPL_LOGGING
+            LOG(INFO, std::format("TeleportToLocation: Removed from loaded list: {}", iplToRemove));
+#endif
+        }
+        //}
+    }
+
+    // Remove any previously loaded IPLs (optional, but recommended for cleanup)
+    //for (const auto& ipl : g_loadedIpls) {
+    //    //if (DOES_ENTITY_EXIST(GetPlayerPed())) {
+    //        REMOVE_IPL(ipl.data());
+    //    //}
+    //}
+    //g_loadedIpls.clear();
+
+    // These seem to work, using GTAped from Menyoo now.
+    playerPed.Position_set(teleportInfo.coordinates);
+    playerPed.Heading_set(teleportInfo.heading);
+
+    //SetPlayerCoords(teleportInfo.coordinates);
+    //SetPlayerHeading(teleportInfo.heading);
+
+    // Request the IPLs for the new location
+    for (const auto& ipl : teleportInfo.iplsToLoad) {
+        REQUEST_IPL(ipl.data());
+        g_loadedIpls.push_back(ipl); // Keep track of loaded IPLs
+    }
+}
+#else
+    // These seem to work, using GTAped from Menyoo now.
+    //playerPed.Position_set(teleportInfo.coordinates);
+    //playerPed.Heading_set(teleportInfo.heading);
+
+    //SetPlayerCoords(teleportInfo.coordinates);
+    //SetPlayerHeading(teleportInfo.heading);
+
+#endif // LOAD_IPLS
 
 
 //----------- End TeleportToLocation --------------//

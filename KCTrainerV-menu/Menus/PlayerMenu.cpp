@@ -25,94 +25,13 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
     Ped playerPed = playerScripts.GetPlayerPed();
 
-    // Set the weaponAmmo for the give weapon function to 1000 for now.
-    int weaponAmmo = 1000;
-
-    //------
-    // Weapon hashes
-    // List of weapons with images: https://wiki.rage.mp/wiki/Weapons
-    //------
-    Hash militaryRifleHash = "weapon_militaryrifle"_hash;
-    
-    //-----
-    // Weapon component hashes
-    // List of weapon components: https://wiki.rage.mp/wiki/Weapons_Components
-    //-----
-    Hash militaryRifleExtendedClip = "COMPONENT_MILITARYRIFLE_CLIP_02"_hash;
-
-    // This seems to work fine for an invincibility toggle in here like this.
-    mbCtx.BoolOption("Invincibility", playerScripts.invincibilityEnabled, { " Turn on/off invincibility" });
-
-    // This sets the health but not the armor
-    if (mbCtx.Option("Heal yourself", { "Set your health and armor to max" }))
-    {
-        playerScripts.HealPlayer(playerScripts.GetPlayerPed());
-    }
-
-    if (mbCtx.Option("Suicide", { "Kill the player, explosions will also be added." }))
-    {
-        //playerScripts.HealPlayer(playerScripts.GetPlayerPed());
-        playerScripts.SetPlayerHealth(playerScripts.GetPlayerPed(), 0);
-        playerScripts.SetPlayerArmor(playerScripts.GetPlayerPed(), 0);
-    }
-
-
-    //-----
-    // Kill the player with a pistol just like in online.
-    //-----
-    if (mbCtx.Option("MP Suicide", { "Kill yourself with the multiplayer animation." }))
-    {
-        playerScripts.KillPlayerMP();
-    }
-
-
-    mbCtx.IntOption("Wanted level", playerScripts.wantedLevel, 0, 5, 1, { "Wanted level to set" });
-    if (mbCtx.Option("Set Wanted Level", { "Set your wanted level" }))
-    {
-        playerScripts.SetWantedLevel();
-    }
-
-    //mbCtx.BoolOption("BoolOption", checkBoxStatus, { std::string("Boolean is ") + (checkBoxStatus ? "checked" : "not checked") + "." });
-    //mbCtx.BoolOption("Heat vision");
-
-    mbCtx.BoolOption("Never wanted", playerScripts.neverWantedEnabled, { "Test for toggling never wanted" });
-
-    // Display cops and cop vehicles blown up, moved out of debug menu.
-    mbCtx.BoolOption("Display cops killed", Stats::Cop::isCopsKilledDisplayActive, { "Display amount of cops killed and cop vehicles blown up on screen." });
+    // Player options sub menu
+    mbCtx.MenuOption("Player Options", "PlayerOptionsSubmenu", { "Show a list of options for the player." });
+    //
 
     int nothing = 0;
-    mbCtx.StringArray("--Visions--", { "" }, nothing);
-
-    if (mbCtx.Option("Toggle Heat vision", { "Turn on/off heat vision" }))
-    {
-        playerScripts.ToggleHeatVision();
-    }
-
-
-    if (mbCtx.Option("Toggle Night vision", { "Turn on/off night vision" }))
-    {
-        playerScripts.ToggleNightVision();
-    }
-
-
     mbCtx.StringArray("--Extras--", { "" }, nothing);
     mbCtx.BoolOption("Toggle Mobile radio", playerScripts.isMobileRadioEnabled, { "Turn on/off radio outside vehicles" });
-
-    // Tests
-    // TODO Move these into WeaponMenu.cpp, need to create it first.
-    // This gives me a weapon
-    // TODO Make this get value from lua, should easily be possible if I run my lua tests.
-    if (mbCtx.Option("Give weapon"))
-    {
-        //pedScripts.GivePedWeapon(playerPed, "weapon_flashlight"_hash, -1, false, false);
-        pedScripts.GivePedWeapon(playerPed, militaryRifleHash, weaponAmmo, false, false);
-    }
-
-    // This works too, I need to make a list of these later but for now I am just testing them.
-    if (mbCtx.Option("Give attachment"))
-    {
-        pedScripts.GiveWeaponComponent(playerPed, militaryRifleHash, militaryRifleExtendedClip);
-    }
 
     // Moved this out of the player menu, I can use this as a future reference.
     // This works as a submenu nested within a sub menu, can be useful for later.
@@ -134,18 +53,80 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
 #ifdef DEBUG_MODE
     mbCtx.MenuOption("Player Debug", "PlayerDebugSubmenu", { "Debug menu for player functions." });
-    //if (mbCtx.Option("Log cops killed stat", { "Log the cops killed stat to the console." }))
-    //{
-    //    std::cout << playerScripts.GetCopsKilledStat() << std::endl;
-    //}
-
-    //if (mbCtx.Option("Log cops killed stat", { "Log the cops killed stat to the console." }))
-    //{
-    //    std::cout << playerScripts.GetCopsKilledStat() << std::endl;
-    //}
 #endif
 
 }
+
+/// <summary>
+/// Build the player options menu
+/// TODO Move into Submenus/Player/PlayerOptionsMenu
+/// </summary>
+/// <param name="mbCtx"></param>
+/// <param name="context"></param>
+//void PlayerMenu::BuildOptionsMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+//{
+//    auto& playerScripts = PlayerScripts::GetInstance();
+//    auto& pedScripts = PedScripts::GetInstance();
+//
+//    Ped playerPed = playerScripts.GetPlayerPed();
+//
+//    mbCtx.Title("Player Options");
+//
+//    // This seems to work fine for an invincibility toggle in here like this.
+//    mbCtx.BoolOption("Invincibility", playerScripts.invincibilityEnabled, { " Turn on/off invincibility" });
+//
+//    // This sets the health but not the armor
+//    if (mbCtx.Option("Heal yourself", { "Set your health and armor to max" }))
+//    {
+//        playerScripts.HealPlayer(playerScripts.GetPlayerPed());
+//    }
+//
+//    if (mbCtx.Option("Suicide", { "Kill the player, explosions will also be added." }))
+//    {
+//        //playerScripts.HealPlayer(playerScripts.GetPlayerPed());
+//        playerScripts.SetPlayerHealth(playerScripts.GetPlayerPed(), 0);
+//        playerScripts.SetPlayerArmor(playerScripts.GetPlayerPed(), 0);
+//    }
+//
+//
+//    //-----
+//    // Kill the player with a pistol just like in online.
+//    //-----
+//    if (mbCtx.Option("MP Suicide", { "Kill yourself with the multiplayer animation." }))
+//    {
+//        playerScripts.KillPlayerMP();
+//    }
+//
+//
+//    mbCtx.IntOption("Wanted level", playerScripts.wantedLevel, 0, 5, 1, { "Wanted level to set" });
+//    if (mbCtx.Option("Set Wanted Level", { "Set your wanted level" }))
+//    {
+//        playerScripts.SetWantedLevel();
+//    }
+//
+//    //mbCtx.BoolOption("BoolOption", checkBoxStatus, { std::string("Boolean is ") + (checkBoxStatus ? "checked" : "not checked") + "." });
+//    //mbCtx.BoolOption("Heat vision");
+//
+//    mbCtx.BoolOption("Never wanted", playerScripts.neverWantedEnabled, { "Test for toggling never wanted" });
+//
+//    // Display cops and cop vehicles blown up, moved out of debug menu.
+//    mbCtx.BoolOption("Display cops killed", Stats::Cop::isCopsKilledDisplayActive, { "Display amount of cops killed and cop vehicles blown up on screen." });
+//
+//    int nothing = 0;
+//    mbCtx.StringArray("--Visions--", { "" }, nothing);
+//
+//    if (mbCtx.Option("Toggle Heat vision", { "Turn on/off heat vision" }))
+//    {
+//        playerScripts.ToggleHeatVision();
+//    }
+//
+//
+//    if (mbCtx.Option("Toggle Night vision", { "Turn on/off night vision" }))
+//    {
+//        playerScripts.ToggleNightVision();
+//    }
+//
+//}
 
 void PlayerMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {

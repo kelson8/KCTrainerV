@@ -1,4 +1,5 @@
 #include "TeleportLocations.h"
+#include "IplLocations.h"
 
 #include "Scripts/PlayerScripts.h"
 
@@ -20,10 +21,14 @@ namespace Teleports
 {
     namespace Positions
     {
+        // Format for these that don't require ipls:
+        // String name
+        // Vector3 coords
+        // Float heading
+
         // To access these in other files:
-        // Look through the std::map, specify the name of the warp.
-        //Teleports::Positions::vSafeHouseLocations.at("Michael's House")
-        //Teleports::Positions::vAirportLocations.at("Airport Runway")
+        // First, include the TeleportLocations.h header.
+        // Then access these like this: 'Teleports::Positions::vAirportLocations'
 
         // I can automatically build the menus like I do with the vehicles, whatever order they are
         // in here, is what order they get displayed with.
@@ -52,10 +57,12 @@ namespace Teleports
         const std::vector<TeleportInfo> vOtherLocations =
         {
             // Obtained from forum link
-            {"Mount Chiliad", Vector3(450.75f, 5566.614f, 806.183f), 22.0f},
+            // Put the player on top of an antenna.
+            //{"Mount Chiliad", Vector3(450.75f, 5566.614f, 806.183f), 22.0f},
+            // Put the player at a more safe height.
+            {"Mount Chiliad", Vector3(465.29, 5561.18, 781.16f), 89.75f},
             {"IAA Roof", Vector3(134.08f, -637.85f, 262.851f)},
             {"FIB Roof",  Vector3(150.126, -754.591, 262.865)},
-
 
             // Taken from old teleportLocations below
             {"Hospital LS1 Rooftop", Vector3(331.20f, -1409.31f, 77.53f), 46.10f}, // No IPLs needed
@@ -108,22 +115,31 @@ namespace Teleports
 #pragma endregion
 
 #ifdef NEW_LOAD_IPLS
-#pragma region NewTests
+#pragma region IplLocations
         // This works for ipl loading/unloading with my new functions
         // https://wiki.rage.mp/wiki/Interiors_and_Locations#Online_Apartments
+        // Format for these:
+        // String name
+        // Vector3 coords
+        // Float heading
+        // Vector of ipls to load '{"vw_casino_main"}', also like this: 'Teleports::Ipls::vCasinoNightclubIpls' or blank '{}'.
+        // Vector of ipls to unload '{"vw_casino_main"}', also like this: 'Teleports::Ipls::vCasinoNightclubIpls' or blank '{}'.
         const std::vector<TeleportIplInfo> vCasinoLocations =
         {
-            {"Casino", Vector3(1100.000, 220.000, -50.000), 30.0f, {"vw_casino_main"}, {}},
-            {"Casino Garage", Vector3(1295.000, 230.000, -50.000), 30.0f, {"vw_casino_garage"}, {}},
-            {"Casino Car Park", Vector3(1380.000, 200.000, -50.000), 30.0f, {"vw_casino_carpark"}, {}},
-            {"Penthouse", Vector3(976.636, 70.295, 115.164), 30.0f, {"vw_casino_penthouse"}, {}},
+            {"Casino", Vector3(1100.000, 220.000, -50.000), 30.0f, {"vw_casino_main"}, {"vw_casino_main"}},
+            {"Casino Garage", Vector3(1295.000, 230.000, -50.000), 30.0f, {"vw_casino_garage"}, {"vw_casino_garage"}},
+            {"Casino Car Park", Vector3(1380.000, 200.000, -50.000), 30.0f, {"vw_casino_carpark"}, {"vw_casino_carpark"}},
+            {"Penthouse", Vector3(976.636, 70.295, 115.164), 30.0f, {"vw_casino_penthouse"}, {"vw_casino_penthouse"}},
+            // This somewhat works but displays a tv on the screen.
+            {"Casino Nightclub", Vector3(1550.0, 250.0, -48.0), 30.0f, Teleports::Ipls::vCasinoNightclubIpls, 
+            {Teleports::Ipls::vCasinoNightclubIpls}}
         };
 
 #pragma endregion
 
 #endif // NEW_LOAD_IPLS
-    }
-}
+    } // namespace Positions
+} // namespace Teleports
 
 // TODO Try to fix IPL support later, for now I just won't use them.
 #ifdef LOAD_IPLS

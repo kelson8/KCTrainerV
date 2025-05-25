@@ -18,6 +18,9 @@ public:
 #ifdef MOVE_PLAYER_MENU
 	//void Build(NativeMenu::Menu& mbCtx, KCMainScript& context);
 	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context) override;
+
+	//void BuildOptionsMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
+
 	void BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 
 #endif // MOVE_PLAYER_MENU

@@ -141,19 +141,6 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // Enable blackout/emp mode
     // https://nativedb.dotindustries.dev/gta5/natives/0x1268615ACE24D504?search=SET_ARTIFICIAL_LIGHTS_STATE
     mbCtx.BoolOption("Toggle blackout", worldScripts.isBlackoutActive, { "Toggle EMP/blackout mode on/off." });
-    
-    // These were in MPMenu, adding to my menu I'll probably just remove MPMenu.
-    //if (mbCtx.Option("Load MP Maps", { "Enable Multiplayer maps" }))
-    //{
-    //    ON_ENTER_MP();
-    //}
-
-    //if (mbCtx.Option("Unload MP Maps", { "Disable Multiplayer maps" }))
-    //{
-    //    ON_ENTER_SP();
-    //}
-
-
 }
 
 /// <summary>

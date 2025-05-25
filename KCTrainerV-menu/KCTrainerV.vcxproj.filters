@@ -234,6 +234,15 @@
     <ClCompile Include="Teleports\TeleportManager.cpp">
       <Filter>Teleports</Filter>
     </ClCompile>
+    <ClCompile Include="Teleports\IplLocations.cpp">
+      <Filter>Teleports</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\WeaponMenu.cpp">
+      <Filter>Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\Submenus\Player\PlayerOptionsMenu.cpp">
+      <Filter>Menus\Submenus\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -562,6 +571,15 @@
     </ClInclude>
     <ClInclude Include="Util\StringUtils.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Teleports\IplLocations.h">
+      <Filter>Teleports</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\WeaponMenu.h">
+      <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\Player\PlayerOptionsMenu.h">
+      <Filter>Menus\Submenus\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

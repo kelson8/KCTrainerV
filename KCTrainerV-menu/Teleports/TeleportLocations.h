@@ -57,7 +57,6 @@ namespace Teleports
 {
 	namespace Positions
 	{
-
 		// New teleport formats below
 		extern const std::vector<TeleportInfo> vAirportLocations;
 		extern const std::vector<TeleportInfo> vSafeHouseLocations;
@@ -68,8 +67,8 @@ namespace Teleports
 
 		// New
 		extern const std::vector<TeleportIplInfo> vCasinoLocations;
-	}
-}
+	} // namespace Positions
+} // namespace Teleports
 
 class TeleportLocations
 {
