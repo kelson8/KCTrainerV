@@ -25,6 +25,8 @@ public:
 
 	void BuildApartmentInteriorsSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 
+	void BuildOnlineSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
+
 	void BuildOtherSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 	//
 

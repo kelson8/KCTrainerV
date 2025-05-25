@@ -15,8 +15,9 @@
 #include "../Scripts/Extras/Game.h"
 
 // Teleports
-#include "Teleports/TeleportLocations.h"
 #include "Teleports/TeleportManager.h"
+#include "Teleports/TeleportLocations.h"
+
 
 
 #ifdef LUA_TEST
@@ -198,7 +199,11 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
     
     // From Menyoo
     mbCtx.MenuOption("Apartment Interiors", "ApartmentInteriorsTeleportSubmenu", { "List of apartment interior locations." });
+    //
 
+#ifdef NEW_LOAD_IPLS
+    mbCtx.MenuOption("Online", "OnlineTeleportSubmenu", { "Online teleport locations" });
+#endif // NEW_LOAD_IPLS
     mbCtx.MenuOption("Other", "OtherTeleportSubmenu", { "Misc teleport locations." });
 
 }
@@ -278,6 +283,38 @@ void TeleportMenu::BuildApartmentInteriorsSubMenu(NativeMenu::Menu& mbCtx, KCMai
     }
 }
 
+/// <summary>
+/// Build the online teleports sub menu.
+/// </summary>
+/// <param name="mbCtx"></param>
+/// <param name="context"></param>
+#ifdef NEW_LOAD_IPLS
+void TeleportMenu::BuildOnlineSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
+{
+    // Change title for each of these!
+    mbCtx.Title("Online");
+
+    // Scripts
+    auto& playerScripts = PlayerScripts::GetInstance();
+    auto& teleportManager = TeleportManager::GetInstance();
+
+    // Testing with IPLs here
+    //Get teleports from the std::vector<TeleportIplInfo>
+    for (const auto& teleportInfo : Teleports::Positions::vCasinoLocations)
+    {
+        if (mbCtx.Option(teleportInfo.name)) {
+            // Handle IPLs for the selected location
+            teleportManager.HandleTeleportIpls(teleportInfo);
+
+            playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
+            //playerScripts.SetPlayerHeading(teleportInfo.heading);
+        }
+    }
+
+}
+
+#endif // NEW_LOAD_IPLS
+
 
 /// <summary>
 /// Build the other teleports sub menu.
@@ -291,9 +328,9 @@ void TeleportMenu::BuildOtherSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& cont
 
     // Scripts
     auto& playerScripts = PlayerScripts::GetInstance();
+    auto& teleportManager = TeleportManager::GetInstance();
 
-
-    // Get teleports from the std::vector<TeleportInfo>
+     //Get teleports from the std::vector<TeleportInfo>
     for (const auto& teleportInfo : Teleports::Positions::vOtherLocations)
     {
         if (mbCtx.Option(teleportInfo.name)) {

@@ -30,6 +30,9 @@
 // I will need to set this up and adapt items from Menyoo but I should be able to figure it out.
 //#define LOAD_IPLS
 
+// New testing with IPLs
+#define NEW_LOAD_IPLS
+
 // Enable extra logging for IPLs, such as unloading, possibly loading in the future
 // TODO Disable in release builds, this isn't very useful unless debugging.
 #if defined(LOAD_IPLS) && defined(KCTRAINER_DEBUG)
@@ -94,7 +97,6 @@
 // TODO Fix the blip tests, try to add/remove blips on the map
 // Also, try to add custom icons instead of the yellow destination marker.
 //#define BLIP_TEST
-
 
 namespace Constants 
 {

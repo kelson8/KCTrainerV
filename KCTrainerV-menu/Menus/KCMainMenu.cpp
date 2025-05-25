@@ -327,7 +327,6 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
-    // B
     // Apartment interiors
     submenus.emplace_back("ApartmentInteriorsTeleportSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
@@ -335,6 +334,16 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             teleportMenu.BuildApartmentInteriorsSubMenu(mbCtx, context);
         }
     );
+
+#ifdef NEW_LOAD_IPLS
+    // Online teleports sub menu
+    submenus.emplace_back("OnlineTeleportSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            teleportMenu.BuildOnlineSubmenu(mbCtx, context);
+        }
+    );
+#endif // NEW_LOAD_IPLS
 
     // Other teleports sub menu
     submenus.emplace_back("OtherTeleportSubmenu",

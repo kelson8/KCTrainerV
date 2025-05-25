@@ -11,17 +11,109 @@
 
 #include "defines.h"
 
+//TeleportManager::TeleportManager() : m_isLoaded(false) {
+//    LOG(INFO, "TeleportManager: Initializing singleton instance.");
+//}
+
+#pragma region IplManager
+
+// New for IPLs test
+#ifdef NEW_LOAD_IPLS
+// Copied from here: https://github.com/SuleMareVientu/InteriorsV-ScriptHookV/blob/main/InteriorsV/source/utils/functions.cpp#L62-L74
+void TeleportManager::LoadIPL(const std::string& iplName)
+{
+    if (!IS_IPL_ACTIVE(iplName.c_str()))
+        REQUEST_IPL(iplName.c_str());
+    return;
+}
+
+//void TeleportManager::UnloadIPL(char* ipl)
+void TeleportManager::UnloadIPL(const std::string& iplName)
+{
+    if (IS_IPL_ACTIVE(iplName.c_str()))
+        REMOVE_IPL(iplName.c_str());
+    return;
+}
+
+// Teleport IPLs
+// Global or class member to keep track of currently loaded IPLs by your system
+// This is crucial to prevent repeatedly loading IPLs and to manage unloading.
+std::vector<std::string> g_loadedIpls;
+
+/// <summary>
+/// Manage IPLs for a teleport for interior with IPLs
+/// </summary>
+/// <param name="newLocation"></param>
+void TeleportManager::HandleTeleportIpls(const TeleportIplInfo& newLocation)
+{
+    // 1. Unload all previously loaded IPLs by your system
+    for (const std::string& ipl : g_loadedIpls)
+    {
+        UnloadIPL(ipl);
+        log_output(std::format("Ipls: {} unloaded", ipl));
+    }
+    g_loadedIpls.clear(); // Clear the list after unloading
+
+    // 2. Unload any IPLs specifically requested by the new location to be unloaded
+    // This is useful if a location requires a specific IPL to be gone.
+    for (const std::string& ipl : newLocation.iplsToUnload)
+    {
+        UnloadIPL(ipl);
+        log_output(std::format("Ipls: {} unloaded", ipl));
+    }
+
+    // 3. Request new IPLs
+    for (const std::string& ipl : newLocation.iplsToLoad)
+    {
+        LoadIPL(ipl);
+        log_output(std::format("Ipls: {} loaded", ipl));
+
+        g_loadedIpls.push_back(ipl); // Add to our tracking list
+    }
+}
+
+// Function to load all IPLs for a given TeleportIplInfo
+void TeleportManager::LoadAllIplsForLocation(const TeleportIplInfo& location)
+{
+    for (const std::string& ipl : location.iplsToLoad)
+    {
+        LoadIPL(ipl);
+    }
+}
+
+// Function to unload all IPLs for a given TeleportIplInfo
+void TeleportManager::UnloadAllIplsForLocation(const TeleportIplInfo& location)
+{
+    for (const std::string& ipl : location.iplsToLoad)
+    {
+        UnloadIPL(ipl);
+    }
+}
+
+// Function to load ALL casino IPLs
+void TeleportManager::LoadAllCasinoIpls()
+{
+    for (const TeleportIplInfo& location : Teleports::Positions::vCasinoLocations)
+    {
+        LoadAllIplsForLocation(location);
+    }
+}
+
+// Function to unload ALL casino IPLs
+void TeleportManager::UnloadAllCasinoIpls()
+{
+    for (const TeleportIplInfo& location : Teleports::Positions::vCasinoLocations)
+    {
+        UnloadAllIplsForLocation(location);
+    }
+}
+
+#pragma endregion
+
+
+#endif //NEW_LOAD_IPLS
+
 #ifdef LOAD_TELEPORT_INI
-
-TeleportManager& TeleportManager::GetInstance() {
-    static TeleportManager instance;
-    return instance;
-}
-
-TeleportManager::TeleportManager() : m_isLoaded(false) {
-    LOG(INFO, "TeleportManager: Initializing singleton instance.");
-}
-
 void TeleportManager::LoadTeleportsFromFile(const std::string& filePath) {
     if (m_isLoaded) {
         LOG(WARN, "TeleportManager: Teleports already loaded. Call Clear() first if reloading.");

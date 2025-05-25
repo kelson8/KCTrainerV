@@ -38,6 +38,21 @@ struct TeleportInfo
 #endif //LOAD_IPLS
 };
 
+#ifdef NEW_LOAD_IPLS
+/// <summary>
+/// Different struct for loading IPLs, I'll separate this so I don't effect the rest of my teleport system.
+/// </summary>
+struct TeleportIplInfo
+{
+	std::string name;
+	Vector3 coordinates;
+	float heading;
+	//std::vector<std::string_view> iplsToLoad;
+	std::vector<std::string> iplsToLoad;
+	std::vector<std::string> iplsToUnload;
+};
+#endif // NEW_LOAD_IPLS
+
 namespace Teleports 
 {
 	namespace Positions
@@ -50,6 +65,9 @@ namespace Teleports
 
 		// New from Menyoo
 		extern const std::vector<TeleportInfo> vApartmentInteriors;
+
+		// New
+		extern const std::vector<TeleportIplInfo> vCasinoLocations;
 	}
 }
 

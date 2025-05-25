@@ -7,8 +7,10 @@ I have teleport locations, outfit lists for the multiplayer peds,
 and more in the list below.
 
 ## Data/Teleports
+* Useful project for looking into doors and interiors: https://github.com/SuleMareVientu/InteriorsV-ScriptHookV
 * GTA V Data Dumps: https://github.com/DurtyFree/gta-v-data-dumps/tree/master
 * List of a bunch of teleports: https://gtaforums.com/topic/792877-list-of-over-100-coordinates-more-comming/
+* List of IPLs and locations: https://wiki.rage.mp/wiki/Interiors_and_Locations
 * Character Model outfit list: https://wiki.rage.mp/wiki/Player::setComponentVariation
 * List of outfit examples for C++: https://gist.github.com/root-cause/e77c1b1e003402687291ea76b0187677#file-outfitvariantexample-cpp
 

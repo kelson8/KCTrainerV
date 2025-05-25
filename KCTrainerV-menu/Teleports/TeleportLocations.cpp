@@ -106,6 +106,22 @@ namespace Teleports
             {"2113 Mad Wayne Thunder", Vector3(-1288.000000f, 440.748000f, 97.694600f)},
         };
 #pragma endregion
+
+#ifdef NEW_LOAD_IPLS
+#pragma region NewTests
+        // This works for ipl loading/unloading with my new functions
+        // https://wiki.rage.mp/wiki/Interiors_and_Locations#Online_Apartments
+        const std::vector<TeleportIplInfo> vCasinoLocations =
+        {
+            {"Casino", Vector3(1100.000, 220.000, -50.000), 30.0f, {"vw_casino_main"}, {}},
+            {"Casino Garage", Vector3(1295.000, 230.000, -50.000), 30.0f, {"vw_casino_garage"}, {}},
+            {"Casino Car Park", Vector3(1380.000, 200.000, -50.000), 30.0f, {"vw_casino_carpark"}, {}},
+            {"Penthouse", Vector3(976.636, 70.295, 115.164), 30.0f, {"vw_casino_penthouse"}, {}},
+        };
+
+#pragma endregion
+
+#endif // NEW_LOAD_IPLS
     }
 }
 
@@ -153,6 +169,8 @@ void TeleportLocations::UnloadAllLoadedIpls() {
 }
 
 #endif //LOAD_IPLS
+
+
 
 /// <summary>
 /// Adapted from TeleMethods.cpp in Menyoo, original function: ToWaypoint
