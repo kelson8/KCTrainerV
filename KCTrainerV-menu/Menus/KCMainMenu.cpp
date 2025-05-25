@@ -84,9 +84,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     // Player
     auto& playerMenu = PlayerMenu::GetInstance();
 
-#ifdef PLAYER_SKIN_CHANGER
+#ifdef PLAYER_SKIN_CHANGER_NEW
     auto& modelChangerMenu = ModelChangerMenu::GetInstance();
-#endif // PLAYER_SKIN_CHANGER
+#endif // PLAYER_SKIN_CHANGER_NEW
 
 
     auto& pedMenu = PedMenu::GetInstance();
@@ -169,15 +169,25 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     // Player Model changer sub Menu
     // TODO Fix this, it shows a list of the categories but opening it does nothing.
     // Also, I will need to figure out a way to select each model.
+    // Switched to using a basic test for now.
+    // This now has a clothes selector for the female multiplayer ped.
     //-----
-#ifdef PLAYER_SKIN_CHANGER
+#ifdef PLAYER_SKIN_CHANGER_NEW
     submenus.emplace_back("PlayerModelChangerSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
             modelChangerMenu.Build(mbCtx, context);
         }
     );
-#endif
+
+    submenus.emplace_back("PlayerModelClothesSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            modelChangerMenu.BuildClothesChangerSubmenu(mbCtx, context);
+        }
+    );
+
+#endif // PLAYER_SKIN_CHANGER_NEW
 
     //-----
     // Player debug sub menu

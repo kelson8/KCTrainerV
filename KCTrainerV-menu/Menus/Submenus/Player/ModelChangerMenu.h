@@ -6,7 +6,7 @@
 
 class ModelChangerMenu : public IMenuBuilder
 {
-#ifdef PLAYER_SKIN_CHANGER
+#ifdef PLAYER_SKIN_CHANGER_NEW
 public:
 	// Instance of the ModelChangerMenu
 	static ModelChangerMenu& GetInstance()
@@ -16,11 +16,12 @@ public:
 	}
 
 	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context) override;
+	void BuildClothesChangerSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
 
 private:
 	ModelChangerMenu() {} // Private constructor to prevent external instantiation
 	ModelChangerMenu(const ModelChangerMenu&) = delete;
 	ModelChangerMenu& operator=(const ModelChangerMenu&) = delete;
-#endif // PLAYER_SKIN_CHANGER
+#endif // PLAYER_SKIN_CHANGER_NEW
 };
 

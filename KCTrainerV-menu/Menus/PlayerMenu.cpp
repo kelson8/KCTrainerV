@@ -127,9 +127,9 @@ void PlayerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
     //------
     // Player Model changer, located in Submenus/Player/ModelChanger.cpp
-#ifdef PLAYER_SKIN_CHANGER
+#ifdef PLAYER_SKIN_CHANGER_NEW
     mbCtx.MenuOption("Model changer", "PlayerModelChangerSubmenu", { "Change your skin model from a list" });
-#endif
+#endif // PLAYER_SKIN_CHANGER_NEW
     //------
 
 #ifdef DEBUG_MODE

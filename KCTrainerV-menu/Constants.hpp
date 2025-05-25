@@ -82,6 +82,8 @@
 
 // Enable the Player Skin Changer test, so far this only displays the categories.
 //#define PLAYER_SKIN_CHANGER
+// New Player Skin changer test, this one will just work on a few
+#define PLAYER_SKIN_CHANGER_NEW
 
 // Testing moving some stuff over to namespaces
 // #define MOVE_MENU_NAMESPACE
