@@ -39,6 +39,8 @@
 
 #include <inc/main.h>
 
+#include "Util/Util.hpp"
+
 // New for JSON support
 #include <fstream>
 #include "nlohmann/json.hpp"
@@ -457,58 +459,64 @@ void KCMenu::LoadPedsFile()
 }
 #endif
 
-// TODO Test for loading weapons from a weapons.json
 // TODO Make WeaponScripts and add this into it.
 
 // Global map to store categorized weapons
 std::map<std::string, std::vector<WeaponInfo>> KCMenu::g_weaponCategories;
 
-void KCMenu::LoadWeaponsFromJson(const std::string& fileName)
-{
-    std::ifstream file(fileName);
+/// <summary>
+/// Load weapons from the json file.
+/// </summary>
+void KCMenu::LoadWeaponsFromJson(const std::string& filename) {
+    //LOG(DEBUG, "Attempting to load weapons from: {}", filename.c_str());
+
+    std::ifstream file(filename);
     if (!file.is_open()) {
-        //AUDIO::PLAY_SOUND_FRONTEND("ERROR", "HUD_SP_WEAPON_SELECT_SOUNDSET", true, 0); // Example error sound
-        // You might want to log this error or display a message in-game
-
-        log_output("Error Opening weapons json file");
-        //LOG(ERROR, "Could not open weapons json file, some weapon functions will not work.");
-
+        LOG(ERROR, "Failed to open weapons file at {}", filename.c_str());
         return;
     }
 
     nlohmann::json weaponsData;
     try {
         file >> weaponsData;
+        LOG(DEBUG, "SUCCESS: Parsed weapons.json.");
     }
     catch (const nlohmann::json::parse_error& e) {
-        //AUDIO::PLAY_SOUND_FRONTEND("ERROR", "HUD_SP_WEAPON_SELECT_SOUNDSET", true, 0);
-        // Log JSON parsing error
-        log_output(std::format("Error parsing weapons json file: {}", e.what()));
-        //LOG(ERROR, std::format("Could not parse weapons json file, some weapon functions will not work"));
-        LOG(ERROR, std::format("Error parsing weapons json file: {}", e.what()));
+        LOG(ERROR, "JSON parsing error in weapons.json: {}", e.what());
         return;
     }
 
-    for (auto const& [categoryName, categoryValue] : weaponsData.items()) {
-        std::vector<WeaponInfo> weaponsInThisCategory;
-        if (categoryValue.is_object()) {
-            for (auto const& [weaponName, weaponHashStr] : categoryValue.items()) {
-                WeaponInfo weapon;
-                weapon.name = weaponName;
-                // Convert string hash (e.g., "0x92A27487") to ScriptHookV Hash type
-                // Use std::stoul with base 16 for hexadecimal string to unsigned long
-                weapon.hash = static_cast<Hash>(std::stoul(weaponHashStr.get<std::string>(), nullptr, 16));
-                weaponsInThisCategory.push_back(weapon);
-            }
-        }
-        g_weaponCategories[categoryName] = weaponsInThisCategory;
+    if (weaponsData.empty()) {
+        LOG(WARN, "Parsed weapons.json data is empty.");
     }
 
-    log_output("Weapons json file loaded");
-    LOG(INFO, "Weapons json file loaded.");
+    for (auto const& [categoryName, categoryValue] : weaponsData.items()) 
+    {
+        //LOG(DEBUG, "Processing category: {}", categoryName.c_str());
+        std::vector<WeaponInfo> weaponsInThisCategory;
+        if (categoryValue.is_object()) {
+            for (auto const& [weaponInternalName, weaponHashStr] : categoryValue.items()) 
+            { 
+                // Use weaponInternalName here
+                WeaponInfo weapon;
+                weapon.internalName = weaponInternalName; // Store original
+                weapon.displayName = Util::WeaponToDisplayName(weaponInternalName); // Generate display name
+                weapon.hash = static_cast<Hash>(std::stoul(weaponHashStr.get<std::string>(), nullptr, 16));
+                weaponsInThisCategory.push_back(weapon);
+                //LOG(DEBUG, "    - Added weapon: '{}' (Display: '{}', Hash: 0x{})",
+                //    weapon.internalName.c_str(), weapon.displayName.c_str(), weapon.hash);
+            }
+        }
+        KCMenu::g_weaponCategories[categoryName] = weaponsInThisCategory;
+        //LOG(DEBUG, std::format("Category '{}' added with {} weapons.", categoryName.c_str(), (int)weaponsInThisCategory.size()));
+    }
 
-
-    //AUDIO::PLAY_SOUND_FRONTEND("WEAPON_PICKUP", "HUD_SP_WEAPON_SELECT_SOUNDSET", true, 0); // Example success sound
+    if (KCMenu::g_weaponCategories.empty()) {
+        LOG(WARN, "g_weaponCategories map is empty after loading all data.");
+    }
+    else {
+        LOG(INFO, std::format("g_weaponCategories successfully loaded {} categories.", (int)KCMenu::g_weaponCategories.size()));
+    }
 }
 
 #pragma endregion //LoadFiles

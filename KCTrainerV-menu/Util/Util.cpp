@@ -2,6 +2,10 @@
 
 #include "Util.hpp"
 
+#include <vector>
+#include <algorithm> // For std::transform
+#include <cctype>    // For std::toupper, std::isspace
+
 #include <inc/main.h>
 #include <inc/natives.h>
 
@@ -99,3 +103,224 @@ std::string Util::GetGxtName(Hash hash) {
 //}
 
 // End taken from GTAVAddonLoader
+
+const std::map<std::string, std::string> Util::g_weaponCategoryDisplayNames = 
+{
+    {"melee", "Melee Weapons"},
+    {"handguns", "Handguns"},
+    {"smg", "SMGs"},
+    {"shotguns", "Shotguns"},
+    {"assault_rifles", "Assault Rifles"},
+    {"machine_guns", "Machine Guns"},
+    {"sniper_rifles", "Sniper Rifles"},
+    {"heavy_weapons", "Heavy Weapons"},
+    {"throwables", "Throwables"},
+    {"misc", "Miscellaneous"}
+};
+
+std::string Util::GetWeaponCategoryDisplayName(const std::string& categoryKey) 
+{
+    auto it = Util::g_weaponCategoryDisplayNames.find(categoryKey);
+    if (it != Util::g_weaponCategoryDisplayNames.end()) {
+        return it->second;
+    }
+    // Fallback: If not found in the map, try to auto-format (like your ToDisplayName)
+    // Or just return the original key if you prefer
+    return categoryKey; // Or apply ToDisplayName(categoryKey) if you want consistent auto-format
+}
+
+// This function will intelligently convert internal weapon names to display names.
+std::string Util::WeaponToDisplayName(const std::string& internalName) 
+{
+    // --- Step 1: Direct Overrides (Highest Priority) ---
+    // Use this map for names that require specific, non-standard conversions
+    // or those where auto-formatting won't give the desired result.
+    static const std::map<std::string, std::string> directInternalNameOverrides = 
+    {
+        {"mg", "MG"}, // To ensure it doesn't become "Mg" by default
+        
+        // Heavy
+        {"rpg", "RPG"},
+        {"grenadelauncher", "Grenade Launcher"},
+        {"grenadelauncher_smoke", "Smoke Grenade Launcher"},
+        {"minigun", "Minigun"},
+
+        {"firework", "Firework Launcher"},
+        {"railgun", "Railgun"},
+        {"hominglauncher", "Homing Launcher"},
+        {"compactlauncher", "Compact Grenade Launcher"},
+        {"rayminigun", "Widow Maker"},
+
+        // Throwables
+        {"smokegrenade", "Smoke Grenade"},
+        {"molotov", "Molotov"},
+        {"stickybomb", "Sticky Bomb"},
+        {"proxmine", "Proximity Mine"},
+
+        // Misc
+        {"bzgas", "BZ Gas"},
+        {"snowball", "Snowball"},
+        {"pipebomb", "Pipe Bomb"},
+        {"ball", "Baseball"},
+        {"petrolcan", "Petrol Can"},
+        {"fireextinguisher", "Fire Extinguisher"},
+        {"hazardcan", "Jerry Can"},
+
+        {"parachute", "Parachute"},
+        
+        // Melee
+        {"unarmed", "Unarmed"}, // Ensure it doesn't become "Unarmed"
+        {"weapon_candycane", "Candy Cane"},
+        {"weapon_stunrod", "Stun Rod"},
+
+        {"knuckle", "Knuckle Dusters"},
+        {"battleaxe", "Battle Axe"},
+        {"poolcue", "Pool Cue"},
+        {"stone_hatchet", "Stone Hatchet"},
+        
+        // Handguns
+        {"flaregun", "Flare Gun"},
+        {"marksmanpistol", "Marksman Pistol"},
+        {"revolver", "Revolver"},
+        {"pistol50", "Pistol .50"}, // Specific format
+
+        {"doubleaction", "Double-Action Revolver"},
+
+        {"appistol", "AP Pistol"},
+        {"combatpistol", "Combat Pistol"},
+        {"machinepistol", "Machine Pistol"}, // Direct override
+        {"ceramicpistol", "Ceramic Pistol"},
+        {"heavypistol", "Heavy Pistol"},
+        {"navyrevolver", "Navy Revolver"},
+        {"raypistol", "Up-n-Atomizer"},
+        {"snspistol", "Sns Pistol"},
+        {"snspistol_mk2", "Sns Pistol Mk 2"},
+        {"vintagepistol", "Vintage Pistol"},
+
+        // SMGs
+        {"microsmg", "Micro SMG"},
+        {"smg", "SMG"},
+        {"smg_mk2", "SMG MK 2"},
+        {"assaultsmg", "Assault SMG"}, // Direct override for problematic ones
+        {"combatpdw", "Combat PDW"},
+
+        {"minismg", "Mini SMG"},
+        {"raycarbine", "Unholy Hellbringer"},
+
+        // Shotguns
+        {"pumpshotgun", "Pump Shotgun"},
+        {"pumpshotgun_mk2", "Pump Shotgun Mk 2"},
+        {"sawnoffshotgun", "Sawed-Off Shotgun"},
+        {"assaultshotgun", "Assault Shotgun"},
+        {"bullpupshotgun", "Bullpup Shotgun"},
+        {"heavyshotgun", "Heavy Shotgun"},
+        {"dbshotgun", "Double-Barrel Shotgun"},
+        {"autoshotgun", "Auto Shotgun"},
+        {"musket", "Musket"},
+
+        // Assault Rifles
+        {"assaultrifle", "Assault Rifle"},
+        {"assaultrifle_mk2", "Assault Rifle Mk 2"},
+        {"carbinerifle", "Carbine Rifle"},
+        {"carbinerifle_mk2", "Carbine Rifle Mk 2"},
+        {"advancedrifle", "Advanced Rifle"},
+        {"specialcarbine", "Special Carbine"},
+        {"specialcarbine_mk2", "Special Carbine Mk 2"},
+        {"bullpuprifle", "Bullpup Rifle"},
+        {"bullpuprifle_mk2", "Bullpup Rifle Mk 2"},
+        {"compactrifle", "Compact Rifle"},
+
+        {"combatmg", "Combat MG"},
+        {"gusenberg", "Gusenberg Sweeper"},
+        
+        // Snipers
+        {"sniperrifle", "Sniper Rifle"},
+        {"heavysniper", "Heavy Sniper"},
+        {"heavysniper_mk2", "Heavy Sniper Mk2"},
+        
+        {"marksmanrifle", "Marksman Rifle"},
+        {"marksmanrifle_mk2", "Marksman Rifle Mk2"}
+        
+    };
+
+    auto directIt = directInternalNameOverrides.find(internalName);
+    if (directIt != directInternalNameOverrides.end()) 
+    {
+        return directIt->second; // Return directly if a direct override exists
+    }
+
+    // --- Step 2: CamelCase / Word Boundary Spacing ---
+    std::string tempName = internalName;
+    std::replace(tempName.begin(), tempName.end(), '_', ' '); // Replace underscores first
+
+    std::string spacedName;
+    if (!tempName.empty()) 
+    {
+        spacedName += tempName[0]; // Start with the first character
+        for (size_t i = 1; i < tempName.length(); ++i) 
+        {
+            // Insert space if:
+            // 1. Lowercase followed by uppercase (e.g., "pistol50" -> "pistol 50" after case conversion)
+            // 2. Letter followed by digit (e.g., "mk2" -> "MK 2")
+            // 3. Not a space, and previous was a space (to handle multiple words)
+            // 4. Also handle cases where a digit follows a non-space, non-digit character (e.g., Pistol50)
+
+            // This is the most complex rule for camelCase-like:
+            // If current char is uppercase and previous is lowercase (e.g. 's' 'M' in AssaultSmg -> Assault Smg)
+            if (std::isupper(tempName[i]) && std::islower(tempName[i - 1])) 
+            {
+                spacedName += ' ';
+            }
+            // If current char is digit and previous is not a digit (e.g., 'l' '5' in Pistol50 -> Pistol 50)
+            else if (std::isdigit(tempName[i]) && !std::isdigit(tempName[i - 1]) && !std::isspace(tempName[i - 1])) 
+            {
+                spacedName += ' ';
+            }
+
+            spacedName += tempName[i];
+        }
+    }
+
+    // --- Step 3: Capitalize First Letter of Each Word ---
+    std::string displayName = spacedName; // Start with the spaced name
+    bool capitalizeNext = true;
+    for (char& c : displayName) 
+    {
+        if (std::isspace(c)) {
+            capitalizeNext = true;
+        }
+        else if (capitalizeNext) 
+        {
+            c = static_cast<char>(std::toupper(c));
+            capitalizeNext = false;
+        }
+        else 
+        {
+            c = static_cast<char>(std::tolower(c)); // Ensure subsequent letters are lowercase
+        }
+    }
+
+    // --- Step 4: MK2 Handling (after general spacing and initial capitalization) ---
+    // Corrects " Mk2" to " MK2"
+    size_t mk2Pos = displayName.find(" Mk2");
+    if (mk2Pos != std::string::npos) 
+    {
+        displayName.replace(mk2Pos, 4, " MK2"); // Replace " Mk2" (4 chars) with " MK2" (4 chars)
+    }
+
+    // --- Step 5: Final Cleanup (Trimming and removing extra spaces) ---
+    // Remove leading/trailing spaces and multiple spaces
+    std::stringstream ss(displayName);
+    std::string word;
+    displayName.clear(); // Clear to rebuild
+    while (ss >> word) 
+    {
+        if (!displayName.empty()) 
+        {
+            displayName += ' ';
+        }
+        displayName += word;
+    }
+
+    return displayName;
+}

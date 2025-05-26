@@ -9,8 +9,10 @@
 // TODO Make WeaponScripts and add this into it.
 // Structure to hold weapon information
 struct WeaponInfo {
-    std::string name;
-    Hash hash; // ScriptHookV uses Hash for weapon hashes
+    std::string internalName; // Store the original JSON key, useful for debugging
+    //std::string name; // The name to show in the menu
+    std::string displayName; // The name to show in the menu
+    Hash hash; // The weapon hash
 };
 
 /*

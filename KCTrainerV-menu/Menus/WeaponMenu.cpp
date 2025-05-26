@@ -13,6 +13,8 @@
 #include "../Scripts/Stats.h"
 #include "../Scripts/MiscScripts.h"
 
+#include "Util/Util.hpp"
+
 // TODO Move Weapon file loading into WeaponScripts, remove this include later
 #include "Script.hpp"
 
@@ -123,10 +125,12 @@ void WeaponMenu::BuildWeaponCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScrip
         return;
     }
 
-    const std::string& categoryDisplayName = it->first; // Use the actual key as display name for now
+    // Make this get the weapon name from the category display, instead of displaying the json string for the titles.
+    const std::string categoryDisplayName = Util::GetWeaponCategoryDisplayName(categoryKey);
+
     const std::vector<WeaponInfo>& weaponsInThisCategory = it->second;
 
-    // --- ADD LOGS HERE ---
+    // --- Logs ---
     //LOG(DEBUG, std::format("Submenu Build: Entering {} submenu (key: {})", categoryDisplayName.c_str(), categoryKey.c_str()));
     mbCtx.Title(categoryDisplayName); // Set submenu title
     //LOG(DEBUG, std::format("Submenu Build: Title set to '{}'.", categoryDisplayName.c_str()));
@@ -146,18 +150,20 @@ void WeaponMenu::BuildWeaponCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScrip
     {
         //LOG(DEBUG, std::format("Submenu Build: Attempting to add option for weapon: '{}' (Hash: 0x{})",
             //weaponInfo.name.c_str(), weaponInfo.hash));
-        if (weaponInfo.name.empty())
-        {
-            //LOG(WARN, std::format("Submenu Build: WARNING - Weapon name is empty for hash 0x{} in category {}.",
-                //weaponInfo.hash, categoryDisplayName.c_str()));
-        }
+        //if (weaponInfo.name.empty())
+        //if (weaponInfo.name.empty())
+        //{
+        //    //LOG(WARN, std::format("Submenu Build: WARNING - Weapon name is empty for hash 0x{} in category {}.",
+        //        //weaponInfo.hash, categoryDisplayName.c_str()));
+        //}
 
-        if (mbCtx.Option(weaponInfo.name))
+        //if (mbCtx.Option(weaponInfo.name))
+        if (mbCtx.Option(weaponInfo.displayName))
         {
             GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), weaponInfo.hash, 999, false, true);
             //LOG(DEBUG, std::format("Submenu Build: Gave weapon '{}' to player.", weaponInfo.name.c_str()));
             //mbCtx.CloseMenu(); // Optionally close menu
         }
     }
-    // --- END ADD LOGS ---
+    // --- End logs ---
 }

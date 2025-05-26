@@ -235,7 +235,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 
     //-----
-    // Weapon menu, TODO test in here
+    // Weapon category menu
     //-----
 
 #pragma region WeaponCategories
