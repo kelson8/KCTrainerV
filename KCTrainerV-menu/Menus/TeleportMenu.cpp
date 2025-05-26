@@ -36,14 +36,21 @@ void TeleportMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     auto& fileFunctions = FileFunctions::GetInstance();
     auto& textScripts = TextScripts::GetInstance();
     auto& playerScripts = PlayerScripts::GetInstance();
+    auto& teleportLocations = TeleportLocations::GetInstance();
 
     // Hmm, I guess all sub menus need a title, it broke without one.
     mbCtx.Title("Teleport");
 
-    // TODO Make teleport sub menu.
-    //mbCtx.StringArray("--Teleports--", { "" }, nothing);
 
     mbCtx.MenuOption("Locations", "teleportlocations", { "Show a list of teleport locations" });
+
+    // Warp to waypoint, moved outside of locations teleport menu.
+    if (mbCtx.Option("Waypoint"))
+    {
+        GTAped playerPed = PLAYER_PED_ID();
+        teleportLocations.WarpToWaypoint(playerPed);
+    }
+
 
     if (mbCtx.Option("Save coords to file", { "Save current coordinates and heading to CurrentCoords.txt." }))
     {
@@ -182,16 +189,7 @@ void TeleportMenu::BuildTeleportLocationsSubMenu(NativeMenu::Menu& mbCtx, KCMain
     auto& teleportLocations = TeleportLocations::GetInstance();
     mbCtx.Title("Teleport Locations");
 
-    // TODO Fix this to work properly, make it place the player on the ground even far away from their current position.
-    /*
-    if (mbCtx.Option("Waypoint"))
-    {
-        GTAped playerPed = PLAYER_PED_ID();
-        //Vector3 waypointCoords = playerScripts.GetWaypointCoords();
-        //playerScripts.SetPlayerCoords(waypointCoords);
-        teleportLocations.WarpToWaypoint(playerPed);
-    }
-    */
+
 
     // This format works
     mbCtx.MenuOption("Airports", "AirportsTeleportSubmenu", { "List of airport locations." });
@@ -389,6 +387,8 @@ void TeleportMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& cont
             }
             
         }
+
+        // TODO Add a load menu positions from file option.
 }
 
 #ifdef LUA_TEST

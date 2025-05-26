@@ -42,6 +42,10 @@ public:
 	bool isBlackoutActive = false;
 	bool blackoutFlag = false;
 
+	// Toggles for disabling traffic and peds.
+	bool isVehiclesDisabled = false;
+	bool isPedsDisabled = false;
+
 private:
 	WorldScripts() {} // Private constructor to prevent external instantiation
 	WorldScripts(const WorldScripts&) = delete;

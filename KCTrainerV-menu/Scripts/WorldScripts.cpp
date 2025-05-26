@@ -58,6 +58,31 @@ void WorldScripts::Tick()
 		//WorldScripts::DisableBlackoutMode();       
 		WorldScripts::blackoutFlag = false;
 	}
+
+	//-----
+	// Toggle for disabling ped population
+	// TODO Do some more testing with this one
+	//-----
+
+	if (WorldScripts::isPedsDisabled)
+	{
+		SET_PED_POPULATION_BUDGET(0);
+		SET_PED_DENSITY_MULTIPLIER_THIS_FRAME(0.0);
+	}
+
+	//-----
+	// Toggle for disabling vehicles driving, random, and parked vehicles.
+	// TODO Do some more testing with this one
+	//-----
+
+	if (WorldScripts::isVehiclesDisabled)
+	{
+		SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(0.0);
+		SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(0.0);
+		SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(0.0);
+		SET_VEHICLE_POPULATION_BUDGET(0);
+	}
+
 }
 
 /// <summary>

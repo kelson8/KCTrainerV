@@ -273,6 +273,17 @@ void KCMenu::ResetToggles()
     playerScripts.isMobileRadioEnabled = false;
     playerScripts.mobileRadioFlag = false;
 
+    playerScripts.isExplosiveBulletsEnabled = false;
+    playerScripts.isExplosiveMeleeEnabled = false;
+    playerScripts.isInfiniteAmmoEnabled = false;
+
+    playerScripts.isSlowAimEnabled = false;
+    playerScripts.slowAimFlag = false;
+
+    // Other toggles
+    playerScripts.isSuperJumpEnabled = false;
+    playerScripts.isSuperRunEnabled = false;
+
     // Misc scripts
     MiscScripts::IDGun::isIdGunEnabled = false;
     
@@ -303,6 +314,10 @@ void KCMenu::ResetToggles()
 
     worldScripts.isBlackoutActive = false;
     worldScripts.blackoutFlag = false;
+
+    // Toggles for disabling traffic and peds.
+    worldScripts.isVehiclesDisabled = false;
+    worldScripts.isPedsDisabled = false;
 
     LOG(INFO, "All toggles have been reset to defaults.");
 }

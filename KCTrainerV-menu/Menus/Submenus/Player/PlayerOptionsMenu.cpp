@@ -53,20 +53,24 @@ void PlayerOptionsMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
         playerScripts.KillPlayerMP();
     }
 
-
+    //-----
+    // Wanted levels
+    //-----
     mbCtx.IntOption("Wanted level", playerScripts.wantedLevel, 0, 5, 1, { "Wanted level to set" });
     if (mbCtx.Option("Set Wanted Level", { "Set your wanted level" }))
     {
         playerScripts.SetWantedLevel();
     }
 
-    //mbCtx.BoolOption("BoolOption", checkBoxStatus, { std::string("Boolean is ") + (checkBoxStatus ? "checked" : "not checked") + "." });
-    //mbCtx.BoolOption("Heat vision");
-
-    mbCtx.BoolOption("Never wanted", playerScripts.neverWantedEnabled, { "Test for toggling never wanted" });
+    mbCtx.BoolOption("Never wanted", playerScripts.neverWantedEnabled, { "Toggle never wanted" });
 
     // Display cops and cop vehicles blown up, moved out of debug menu.
-    mbCtx.BoolOption("Display cops killed", Stats::Cop::isCopsKilledDisplayActive, { "Display amount of cops killed and cop vehicles blown up on screen." });
+    mbCtx.BoolOption("Display cops killed", Stats::Cop::isCopsKilledDisplayActive, 
+        { "Display amount of cops killed and cop vehicles blown up on screen." });
+
+    //-----
+    // Visions
+    //-----
 
     int nothing = 0;
     mbCtx.StringArray("--Visions--", { "" }, nothing);
@@ -81,4 +85,24 @@ void PlayerOptionsMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     {
         playerScripts.ToggleNightVision();
     }
+
+    //-----
+    // Bullet options
+    //-----
+    mbCtx.StringArray("--Bullet Options--", { "" }, nothing);
+    mbCtx.BoolOption("Explosive Ammo", playerScripts.isExplosiveBulletsEnabled, {"Toggle explosive bullets"});
+
+    mbCtx.BoolOption("Explosive Melee", playerScripts.isExplosiveMeleeEnabled, {"Toggle explosive melee"});
+    mbCtx.BoolOption("Infinite Ammo", playerScripts.isInfiniteAmmoEnabled, {"Toggle infinite ammo"});
+
+    // TODO Fix this to turn back off.
+    //mbCtx.BoolOption("Slow time when aiming", playerScripts.isSlowAimEnabled,
+    //    { "Toggle slower time when aiming, like Micheals slow down special effect." });
+
+    //-----
+    // Other cheat options
+    //-----
+    mbCtx.StringArray("--Other Cheat Options--", { "" }, nothing);
+    mbCtx.BoolOption("Super jump", playerScripts.isSuperJumpEnabled, { "Toggle super jump cheat" });
+    mbCtx.BoolOption("Super run", playerScripts.isSuperRunEnabled, { "Toggle faster running." });
 }

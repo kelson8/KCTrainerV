@@ -55,6 +55,31 @@ struct TeleportIplInfo
 
 namespace Teleports 
 {
+	// TODO Test this, create an auto load/unload system for the IPLs to automatically load in.
+	//namespace DynamicZones
+	//{
+	//	std::string name;             // A descriptive name for the zone (e.g., "Nightclub Exterior", "Clucking Bell Farms")
+	//	Vector3 coordinates;          // Center point of the trigger zone
+	//	float triggerRadius;          // Radius for the proximity check
+
+	//	std::vector<std::string> iplsToLoadOnEnter;     // IPLs to load when player ENTERS this zone
+	//	std::vector<std::string> iplsToUnloadOnEnter;   // IPLs to unload when player ENTERS this zone
+
+	//	std::vector<std::string> iplsToUnloadOnExit;    // IPLs to unload when player EXITS this zone
+	//	// You typically don't load IPLs on exit, but if a specific "off-mission" IPL needs to be loaded back,
+	//	// you could add iplsToLoadOnExit. The Clucking Bell example implicitly loads 'offmission' IPLs on exit
+	//	// by unloading 'onmission' ones, and Clucking Bell off-mission IPLs are effectively default.
+
+	//	// Optional: Add specific door hashes if you want to manage doors directly with the zone
+	//	std::map<Hash, DoorLockStates> doorsToManage; // Hash of door, and desired state (unlocked/locked)
+
+	//	// Optional: Add other data specific to dynamic zones, e.g.,
+	//	// std::vector<std::string> objectsToLoad;
+	//	// std::vector<std::string> objectsToUnload;
+	//	// float interiorActivationDistance; // If you want to activate interior at a different distance
+
+	//}
+
 	namespace Positions
 	{
 		// New teleport formats below

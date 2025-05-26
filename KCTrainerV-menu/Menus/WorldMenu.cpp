@@ -51,6 +51,14 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // Respawn locations, TODO add these to a different file.
     Vector3 michealsHouseCoords = Vector3(-813.603f, 179.474f, 72.1548f);
     float  michealsHouseHeading = 0.0f;
+    
+    // Time scale in game, set to 1.0 by default.
+    static float timeScale = 1.0f;
+
+    // Setting this to 0.0 is a bad idea, this seems to slow my menu down also.
+    float minTimeScale = 0.1f;
+    float maxTimeScale = 1.0f;
+    float timeScaleStep = 0.1f;
 
     mbCtx.Title("World");
 
@@ -141,6 +149,17 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     // Enable blackout/emp mode
     // https://nativedb.dotindustries.dev/gta5/natives/0x1268615ACE24D504?search=SET_ARTIFICIAL_LIGHTS_STATE
     mbCtx.BoolOption("Toggle blackout", worldScripts.isBlackoutActive, { "Toggle EMP/blackout mode on/off." });
+
+    // TODO Test these, they should work.
+    mbCtx.BoolOption("Disable traffic", worldScripts.isVehiclesDisabled, { "Enable/Disable vehicles driving around and parked." });
+    mbCtx.BoolOption("Disable peds", worldScripts.isPedsDisabled, { "Enable/Disable peds." });
+
+    // Set the time scale
+    mbCtx.FloatOption("Time scale", timeScale, minTimeScale, maxTimeScale, timeScaleStep);
+    if (mbCtx.Option("Set time scale"))
+    {
+        SET_TIME_SCALE(timeScale);
+    }
 }
 
 /// <summary>

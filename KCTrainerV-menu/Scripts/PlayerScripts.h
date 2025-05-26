@@ -165,6 +165,19 @@ public:
     bool isMobileRadioEnabled = false;
     bool mobileRadioFlag = false;
 
+    // Weapon toggles
+    bool isExplosiveBulletsEnabled = false;
+    bool isExplosiveMeleeEnabled = false;
+    bool isInfiniteAmmoEnabled = false;
+
+    bool isSlowAimEnabled = false;
+    bool slowAimFlag = false;
+
+    // Other toggles
+    bool isSuperJumpEnabled = false;
+    bool isSuperRunEnabled = false;
+
+
 private:
     PlayerScripts() {} // Private constructor to prevent external instantiation
     PlayerScripts(const PlayerScripts&) = delete;
@@ -187,5 +200,8 @@ private:
     // Toggles
     bool heatVisionToggled;
     bool nightVisionToggled;
+
+    // I don't think I'll use this outside this class.
+    void SetSuperRun();
 };
 

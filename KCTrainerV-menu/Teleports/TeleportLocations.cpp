@@ -191,7 +191,7 @@ void TeleportLocations::UnloadAllLoadedIpls() {
 /// <summary>
 /// Adapted from TeleMethods.cpp in Menyoo, original function: ToWaypoint
 /// This seems to work, I set my warping functions to use this.
-/// TODO Make this place the player on the ground and not crash, for some reason the Z ground check doesn't work.
+/// Well this seems to work now.
 /// </summary>
 /// <param name="ped"></param>
 void TeleportLocations::WarpToWaypoint(GTAped ped)
@@ -202,9 +202,9 @@ void TeleportLocations::WarpToWaypoint(GTAped ped)
     };
     // This looks useful for checking if a waypoint is active and getting a proper Z value.
     // Hmm, I could use this in FiveM.
-    // We don't need the namespace for these? I always had to use stuff like HUD::IS_WAYPOINT_ACTIVE()
     if (IS_WAYPOINT_ACTIVE())
     {
+
         Vector3 blipCoords = GTAblip(GET_FIRST_BLIP_INFO_ID(BlipIcon::Waypoint)).Position_get();
 
         GTAentity e = ped;

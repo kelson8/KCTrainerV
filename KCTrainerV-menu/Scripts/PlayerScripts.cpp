@@ -157,7 +157,7 @@ void PlayerScripts::Tick()
         PlayerScripts::mobileRadioFlag = false;
     }
 
-    
+
     //-----
     // Disable player controls when teleporting
     // Got the idea for putting this in a loop from here:
@@ -168,6 +168,73 @@ void PlayerScripts::Tick()
     //{
     //    PlayerScripts::DisableControls();
     //}
+
+    //-----
+    // Set explosive bullets
+    //-----
+    if (PlayerScripts::isExplosiveBulletsEnabled)
+    {
+        SET_EXPLOSIVE_AMMO_THIS_FRAME(PLAYER_ID());
+    }
+
+    //-----
+    // Set explosive melee
+    //-----
+    if (PlayerScripts::isExplosiveMeleeEnabled)
+    {
+        SET_EXPLOSIVE_MELEE_THIS_FRAME(PLAYER_ID());
+    }
+
+    //-----
+    // Set infinite ammo
+    //-----
+    if (PlayerScripts::isInfiniteAmmoEnabled)
+    {
+        SET_PED_INFINITE_AMMO_CLIP(PLAYER_PED_ID(), true);
+    }
+
+    //-----
+    // Set super jump
+    //-----
+    if (PlayerScripts::isSuperJumpEnabled)
+    {
+        SET_SUPER_JUMP_THIS_FRAME(PLAYER_ID());
+    }
+
+
+    //-----
+    // Set super run
+    // Function for this adapted from Menyoo.
+    //-----
+    if (PlayerScripts::isSuperRunEnabled)
+    {
+        PlayerScripts::SetSuperRun();
+    }
+
+    //-----
+    // If the player is shooting
+    //-----
+    if (IS_PED_SHOOTING(PLAYER_PED_ID()))
+    {
+        //-----
+        // Slow down time scale to 0.2 if enabled.
+        // TODO Fix this, it cannot be turned back off.
+        //-----
+        //if (PlayerScripts::isSlowAimEnabled && !PlayerScripts::slowAimFlag)
+        //{
+        //    SET_TIME_SCALE(0.2f);
+        //    PlayerScripts::slowAimFlag = true;
+        //}
+    }
+
+    // Oops, this should always be able to turn off.
+    //if (!PlayerScripts::isSlowAimEnabled && PlayerScripts::slowAimFlag)
+    //{
+    //    // Set back to default time scale.
+    //    SET_TIME_SCALE(1.0f);
+    //    PlayerScripts::slowAimFlag = false;
+    //}
+
 }
 #pragma endregion
 
@@ -371,6 +438,8 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
     // TODO Figure out what exactly the velocity is used for 
     auto vel = GET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed);
     float groundHeight = GET_ENTITY_HEIGHT_ABOVE_GROUND(playerVeh);
+
+    // Forward speed for the vehicle
     float forwardSpeed;
 
     int fadeOutTime = 1000;
@@ -390,7 +459,7 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
     // This code should allow me to place the player on the ground without falling through the map.
     
     // Well this didn't seem to work.
-    //   float groundZ;
+ //      float groundZ;
 	//bool useGroundZ;
 	//for (int i = 0; i < 100; i++)
 	//{
@@ -418,11 +487,6 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
  //           Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
  //   }
     
-    // These fades work!! TODO Make separate teleport function with fading.
-    // This may fix the crashing for now? Not sure..
-    //DO_SCREEN_FADE_OUT(fadeOutTime);
-
-    //WAIT(fadeOutTime);
     // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
     // And it checks if the player is in a flying vehicle.
     SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
@@ -430,20 +494,14 @@ void PlayerScripts::SetPlayerCoords(Vector3 position)
 
     // TODO Figure out what this part does
     //SET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed, Vector3(vel.x, vel.y, vel.z));
-    //DO_SCREEN_FADE_IN(fadeInTime);
-    //WAIT(fadeInTime);
 
     // Set the vehicle to the speed it previously was, this doesn't seem to work.
-    // Actually this works for a second then stops.
+    // Actually this works for a second then stops
     if (isInVeh)
     {
         SET_VEHICLE_FORWARD_SPEED(playerVeh, forwardSpeed);
         //log_output(std::format("Forward speed set to: {}", forwardSpeed));
     }
-
-
-    // Original method:
-    //ENTITY::SET_ENTITY_COORDS(GetPlayerPed(), position, false, false, false, false);
 }
 
 /// <summary>
@@ -463,6 +521,16 @@ void PlayerScripts::SetPlayerCoords(Vector3 position, float heading, bool fade)
     auto vel = GET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed);
     float groundHeight = GET_ENTITY_HEIGHT_ABOVE_GROUND(playerVeh);
 
+    // Forward speed for the vehicle, disabled, this needs a option in the menu.
+    //float forwardSpeed;
+
+    //// If the player is in the vehicle, this should store their forwardSpeed
+    //if (isInVeh)
+    //{
+    //    forwardSpeed = GET_ENTITY_SPEED(playerVeh);
+    //    //log_output(std::format("Forward speed: {}", forwardSpeed));
+    //}
+
     int fadeOutTime = 1000;
     int fadeInTime = 1000;
 
@@ -478,6 +546,15 @@ void PlayerScripts::SetPlayerCoords(Vector3 position, float heading, bool fade)
 
     // Set heading
     SET_ENTITY_HEADING(isInVeh ? playerVeh : playerPed, heading);
+
+    // Set the vehicle to the speed it previously was
+    // Well this works but it's not a good idea for tight spaces lol.
+    // TODO Add a bool option in the vehicle options menu.
+    //if (isInVeh)
+    //{
+    //    SET_VEHICLE_FORWARD_SPEED(playerVeh, forwardSpeed);
+    //    //log_output(std::format("Forward speed set to: {}", forwardSpeed));
+    //}
 
     // Fade in
     if (fade)
@@ -815,7 +892,7 @@ void PlayerScripts::EnableNeverWanted()
 
 void PlayerScripts::DisableNeverWanted()
 {
-    SET_MAX_WANTED_LEVEL(6);
+    SET_MAX_WANTED_LEVEL(5);
     SET_WANTED_LEVEL_MULTIPLIER(1.0f);
 }
 
@@ -1007,7 +1084,7 @@ void PlayerScripts::EnableMobileRadio()
     SET_MOBILE_PHONE_RADIO_STATE(true);
     SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(true);
     UI::Notify("Mobile radio enabled");
-    this->mobileRadioFlag = true;
+    mobileRadioFlag = true;
 
 }
 
@@ -1016,9 +1093,30 @@ void PlayerScripts::DisableMobileRadio()
     SET_MOBILE_PHONE_RADIO_STATE(false);
     SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
     UI::Notify("Mobile radio disabled");
-    this->mobileRadioFlag = false;
+    mobileRadioFlag = false;
 }
 
 //----------- End Mobile radio toggling --------------//
 
 #pragma endregion // MobileRadio
+
+// Taken from Menyoo, Routine.cpp
+// original name: set_local_button_super_run
+void PlayerScripts::SetSuperRun()
+{
+    auto ped = PLAYER_PED_ID();
+    bool isInAir = IS_ENTITY_IN_AIR(ped) != 0;
+
+    if (!isInAir)
+    {
+        if (IS_CONTROL_PRESSED(0, INPUT_SPRINT))
+            APPLY_FORCE_TO_ENTITY(ped, true, Vector3(0.0, 3.4, 0.0), Vector3(0.0, 0.0, 0.0), true, true, true, true, false, true);
+
+        else if (IS_CONTROL_JUST_RELEASED(0, INPUT_SPRINT))
+        {
+            FREEZE_ENTITY_POSITION(ped, true);
+            FREEZE_ENTITY_POSITION(ped, true);
+        }
+    }
+
+}
