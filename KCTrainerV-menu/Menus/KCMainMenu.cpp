@@ -135,9 +135,9 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             mbCtx.MenuOption("Vehicle", "vehiclemenu", { "Show the vehicle menu." });
             mbCtx.MenuOption("Teleport", "teleportmenu", { "Show the teleport menu." });
 
-#ifdef LUA_TEST
-            mbCtx.MenuOption("Teleports (Lua)", "luateleportmenu", { "Show the lua teleports" });
-#endif //LUA_TEST
+//#ifdef LUA_TEST
+//            mbCtx.MenuOption("Teleports (Lua)", "luateleportmenu", { "Show the lua teleports" });
+//#endif //LUA_TEST
 
             mbCtx.MenuOption("Ped", "pedmenu", { "Show the ped menu." });
             mbCtx.MenuOption("World", "worldmenu", { "This submenu contains items for the world menu." });
@@ -231,6 +231,100 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             weaponMenu.Build(mbCtx, context);
         }
     );
+
+
+
+    //-----
+    // Weapon menu, TODO test in here
+    //-----
+
+#pragma region WeaponCategories
+    submenus.emplace_back("WeaponCategoriesSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponMenu(mbCtx, context);
+        }
+    );
+
+
+
+#pragma region MeleeWeapons
+    submenus.emplace_back("MeleeWeaponsSubmenu", // Unique ID for Melee Weapons
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "melee");
+        }
+    );
+#pragma endregion
+
+    submenus.emplace_back("HandgunWeaponsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "handguns"); // Pass category key
+        }
+    );
+
+    submenus.emplace_back("SmgWeaponsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "smg"); // Pass category key
+        }
+    );
+
+    submenus.emplace_back("ShotgunWeaponsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "shotguns"); // Pass category key
+        }
+    );
+
+    submenus.emplace_back("AssaultRifleWeaponsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "assault_rifles"); // Pass category key
+        }
+    );
+
+    //
+
+    submenus.emplace_back("MachineGunsWeaponsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "machine_guns"); // Pass category key
+        }
+    );
+
+    submenus.emplace_back("SniperRiflesWeaponsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "sniper_rifles"); // Pass category key
+        }
+    );
+
+    submenus.emplace_back("HeavyWeaponsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "heavy_weapons"); // Pass category key
+        }
+    );
+
+    submenus.emplace_back("ThrowableWeaponsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "throwables"); // Pass category key
+        }
+    );
+
+    submenus.emplace_back("MiscWeaponsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "misc"); // Pass category key
+        }
+    );
+
+#pragma endregion // WeaponCategories
+
+
     // 
 #pragma endregion
 

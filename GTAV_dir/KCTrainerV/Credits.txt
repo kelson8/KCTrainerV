@@ -1,0 +1,4 @@
+https://wiki.rage.mp/wiki/Weapons for the weapons.json
+
+Menyoo for the PedList.xml
+

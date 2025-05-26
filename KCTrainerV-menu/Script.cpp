@@ -59,6 +59,8 @@ namespace KCMenu
     void LoadNotificationFile();
     void LoadModelNamesFromJson(const std::string& filePath);
 
+    void LoadWeaponsFromJson(const std::string& fileName);
+
     void ResetGameStates();
 
 #ifdef PLAYER_SKIN_CHANGER
@@ -68,139 +70,31 @@ namespace KCMenu
     void scriptInit();
     void scriptTick();
 #ifdef DEBUG_MODE
-    void AttachConsole();
+    void AttachConsoleToScript();
 #endif // DEBUG_MODE
+
+#ifdef LUA_TEST
+    void InitLua();
+#endif // LUA_TEST
 
     bool thread2Started = false;
 }
 
-#ifdef DEBUG_MODE
-
+#ifdef LUA_TEST
 /// <summary>
-/// This was mostly taken from KCTrainerIV, originally in use in my ReVC tests.
-/// Runs a console window for cout and other errors to be displayed
-/// Also print from lua into the console if enabled.
-/// Only run this in debug builds, I might add a ini option for this sometime.
+/// Init for lua environment.
 /// </summary>
-void KCMenu::AttachConsole()
+void KCMenu::InitLua() 
 {
-#ifdef _WIN32
-    if (AllocConsole())
-    {
-        // TODO Possibly add log messages in here for logging when this attaches and errors to the KCTrainerV.log?
+    // Run lua init BEFORE scriptInit
+    LOG(INFO, "Initializing Lua environment before scriptInit.");
+    LuaManager::GetInstance().InitializeLuaEnvironment();
 
-        std::string programBuildString = std::format("Program build time and date: {} @ {}", __DATE__, __TIME__);
-        //std::string programVersionString = std::format("KCTrainerV Version: {}", Constants::DisplayVersion);
-        std::string programVersionString = std::format("{} Version: {}", Constants::ScriptName, Constants::DisplayVersion);
-
-        // Redirect standard output, error, and input streams to the console
-        FILE* dummy;
-        freopen_s(&dummy, "CONOUT$", "w", stdout);
-        freopen_s(&dummy, "CONOUT$", "w", stderr);
-        freopen_s(&dummy, "CONIN$", "r", stdin);
-
-        // Optional: Set the console title
-        //SetConsoleTitle("KCTrainerV");
-        SetConsoleTitle(Constants::ScriptName);
-
-        log_output("Console attached successfully!");
-        //std::cout << "Console attached successfully!" << std::endl;
-
-
-        // Show the time and date when this was built
-        log_output(programBuildString);
-        //std::cout << programBuildString << std::endl;
-
-        // Show the version string for the trainer
-        //std::cout << programVersionString << std::endl;
-        log_output(programVersionString);
-        //std::cout << programVersionString << std::endl;
-    }
-    else
-    {
-        // Handle the case where console allocation fails (unlikely in most scenarios)
-        // You might want to log an error message using your in-game system.
-        log_error("Failed to allocate console.");
-        LOG(ERROR, "Failed to allocate console.");
-    }
-#else
-    std::cerr << "AllocConsole() is only available on Windows." << std::endl;
-#endif // _WIN32
+    LOG(INFO, "Lua environment initialization complete.");
 }
-#endif //DEBUG_MODE
+#endif // LUA_TEST
 
-// ScriptHookV calls ScriptMain when loading a save,
-// so it can happen multiple times in a game session.
-void KCMenu::ScriptMain() 
-{
-    auto& teleportLocations = TeleportLocations::GetInstance();
-#ifdef LUA_TEST
-    auto& luaManager = LuaManager::GetInstance();
-#endif //LUA_TEST
-
-    // This check exists to prevent global objects from being
-    // initialized multiple times.
-    if (!initialized) 
-    {
-        LOG(INFO, "Script started");
-
-#ifdef LUA_TEST
-        // Run lua init BEFORE scriptInit
-        LOG(INFO, "Initializing Lua environment before scriptInit.");
-        LuaManager::GetInstance().InitializeLuaEnvironment();
-
-        LOG(INFO, "Lua environment initialization complete.");
-
-        // TODO Fix this
-        // Now pass the coreScript instance to BindCustomFunctionsToLua
-        //if (coreScript) {
-        //    LuaManager::GetInstance().BindCustomFunctionsToLua(*coreScript);
-        //}
-        //else {
-        //    LOG(ERROR, "coreScript not initialized when binding custom Lua functions.");
-        //}
-
-#endif
-
-        scriptInit();
-        initialized = true;
-
-        // Set the mod path
-        std::filesystem::path modPath = Paths::GetModPath();
-
-        // Load notifications from the file.
-        KCMenu::LoadNotificationFile();
-
-#ifdef LOAD_TELEPORT_INI
-    // Test for loading teleport locations from an ini
-        
-        //std::string teleportsFilePath = (modPath / "teleports.ini").string(); // Or a subfolder like "data/teleports.ini"
-        std::string teleportsFilePath = (modPath / Constants::teleportFileName).string();
-        TeleportManager::GetInstance().LoadTeleportsFromFile(teleportsFilePath);
-#endif
-
-#ifdef PLAYER_SKIN_CHANGER
-        // Load the peds from the file list
-        // For changing player model, and in the future spawning peds.
-        KCMenu::LoadPedsFile();
-#endif
-
-        // Load the model names from the json file, for my new IDGun system.
-#ifdef LOAD_MODEL_NAMES
-        std::string objectsFilePath = (modPath / Constants::objectsFileName).string();
-        LoadModelNamesFromJson(objectsFilePath);
-#endif
-
-
-        // The Lua initialization is now done before scriptInit
-
-    }
-    else {
-        LOG(INFO, "Script restarted");
-    }
-
-    scriptTick();
-}
+#ifdef DEBUG_MODE
 
 #pragma region ResetToggles
 
@@ -209,19 +103,21 @@ void KCMenu::ScriptMain()
 /// This function will contain all the logic to revert game states
 /// TODO Fix this to work, for now it doesn't get run anywhere.
 /// </summary>
-void KCMenu::ResetGameStates() {
+void KCMenu::ResetGameStates() 
+{
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& pedScripts = PedScripts::GetInstance();
     auto& vehicleScripts = VehicleScripts::GetInstance();
     auto& worldScripts = WorldScripts::GetInstance();
 
     // --- Player Scripts ---
-    if (playerScripts.invincibilityEnabled) 
+    if (playerScripts.invincibilityEnabled)
     {
         PLAYER::SET_PLAYER_INVINCIBLE(PLAYER::PLAYER_ID(), FALSE);
     }
 
-    if (playerScripts.neverWantedEnabled) {
+    if (playerScripts.neverWantedEnabled) 
+    {
         PLAYER::SET_MAX_WANTED_LEVEL(5); // Default GTA max
         // No need to clear current wanted level here; if player commits crimes, they'll get stars again.
     }
@@ -242,7 +138,7 @@ void KCMenu::ResetGameStates() {
         }
     }
 
-    if (worldScripts.isBlackoutActive) 
+    if (worldScripts.isBlackoutActive)
     {
         GRAPHICS::SET_ARTIFICIAL_LIGHTS_STATE(FALSE);
     }
@@ -286,7 +182,7 @@ void KCMenu::ResetToggles()
 
     // Misc scripts
     MiscScripts::IDGun::isIdGunEnabled = false;
-    
+
     // Ped scripts
     pedScripts.isPedsAttackEnabled = false;
     pedScripts.isCrazyPedDrivingEnabled = false;
@@ -297,18 +193,18 @@ void KCMenu::ResetToggles()
     // Text scripts
     textScripts.drawText = false;
     textScripts.drawCoords = false;
-    
+
     // Vehicle Scripts
     vehicleScripts.isBulletProofEnabled = false;
     vehicleScripts.bulletProofFlag = false;
 
     vehicleScripts.isInvincibleVehicleEnabled = false;
     vehicleScripts.invincibilityFlag = false;
-    
+
     // World scripts
     worldScripts.isRestrictedAreasDisabled = false;
     worldScripts.areasDisabledFlag = false;
-  
+
     worldScripts.isFireworksStarted = false;
     worldScripts.isPedsCalmActive = false;
 
@@ -323,6 +219,143 @@ void KCMenu::ResetToggles()
 }
 
 #pragma endregion
+
+/// <summary>
+/// This was mostly taken from KCTrainerIV, originally in use in my ReVC tests.
+/// Runs a console window for cout and other errors to be displayed
+/// Also print from lua into the console if enabled.
+/// Only run this in debug builds, I might add a ini option for this sometime.
+/// </summary>
+void KCMenu::AttachConsoleToScript()
+{
+#ifdef _WIN32
+    if (AllocConsole())
+    {
+        // TODO Possibly add log messages in here for logging when this attaches and errors to the KCTrainerV.log?
+
+        std::string programBuildString = std::format("Program build time and date: {} @ {}", __DATE__, __TIME__);
+        //std::string programVersionString = std::format("KCTrainerV Version: {}", Constants::DisplayVersion);
+        std::string programVersionString = std::format("{} Version: {}", Constants::ScriptName, Constants::DisplayVersion);
+
+        // Redirect standard output, error, and input streams to the console
+        FILE* dummy;
+        freopen_s(&dummy, "CONOUT$", "w", stdout);
+        freopen_s(&dummy, "CONOUT$", "w", stderr);
+        freopen_s(&dummy, "CONIN$", "r", stdin);
+
+        // Optional: Set the console title
+        //SetConsoleTitle("KCTrainerV");
+        SetConsoleTitle(Constants::ScriptName);
+
+        log_output("Console attached successfully!");
+        //std::cout << "Console attached successfully!" << std::endl;
+
+
+        // Show the time and date when this was built
+        log_output(programBuildString);
+        //std::cout << programBuildString << std::endl;
+
+        // Show the version string for the trainer
+        //std::cout << programVersionString << std::endl;
+        log_output(programVersionString);
+        //std::cout << programVersionString << std::endl;
+    }
+    else
+    {
+        // If AllocConsole fails, try to attach to an existing console
+        if (AttachConsole(ATTACH_PARENT_PROCESS)) {
+            FILE* pCout;
+            FILE* pCin;
+            FILE* pCerr;
+            freopen_s(&pCin, "CONIN$", "r", stdin);
+            freopen_s(&pCout, "CONOUT$", "w", stdout);
+            freopen_s(&pCerr, "CONOUT$", "w", stderr);
+            LOG(DEBUG, "DEBUG: Attached to parent console.");
+            std::cout << "DEBUG: Attached to parent console." << std::endl;
+        }
+        else {
+            LOG(ERROR, "ERROR: Failed to allocate or attach console!");
+            std::cerr << "ERROR: Failed to allocate or attach console!" << std::endl;
+        }
+
+        // Handle the case where console allocation fails (unlikely in most scenarios)
+        // You might want to log an error message using your in-game system.
+        //log_error("Failed to allocate console.");
+        //LOG(ERROR, "Failed to allocate console.");
+    }
+#else
+    std::cerr << "AllocConsole() is only available on Windows." << std::endl;
+#endif // _WIN32
+}
+#endif //DEBUG_MODE
+
+// ScriptHookV calls ScriptMain when loading a save,
+// so it can happen multiple times in a game session.
+void KCMenu::ScriptMain() 
+{
+    auto& teleportLocations = TeleportLocations::GetInstance();
+#ifdef LUA_TEST
+    auto& luaManager = LuaManager::GetInstance();
+#endif //LUA_TEST
+
+    // This check exists to prevent global objects from being
+    // initialized multiple times.
+    if (!initialized) 
+    {
+        LOG(INFO, "Script started");
+
+        // Init the script
+        scriptInit();
+
+        // Init lua
+        //InitLua();
+
+        initialized = true;
+
+        // Set the mod path
+        std::filesystem::path modPath = Paths::GetModPath();
+
+        // Load notifications from the file.
+        KCMenu::LoadNotificationFile();
+
+#ifdef LOAD_TELEPORT_INI
+    // Test for loading teleport locations from an ini
+        
+        //std::string teleportsFilePath = (modPath / "teleports.ini").string(); // Or a subfolder like "data/teleports.ini"
+        std::string teleportsFilePath = (modPath / Constants::teleportFileName).string();
+        TeleportManager::GetInstance().LoadTeleportsFromFile(teleportsFilePath);
+#endif
+
+#ifdef PLAYER_SKIN_CHANGER
+        // Load the peds from the file list
+        // For changing player model, and in the future spawning peds.
+        KCMenu::LoadPedsFile();
+#endif
+
+        // Load the model names from the json file, for my new IDGun system.
+#ifdef LOAD_MODEL_NAMES
+        std::string objectsFilePath = (modPath / Constants::objectsFileName).string();
+        LoadModelNamesFromJson(objectsFilePath);
+#endif
+
+        // TODO Test this, load weapon list from weapons.json in the mod directory
+        std::string weaponsFilePath = (modPath / Constants::weaponsFileName).string();
+        LoadWeaponsFromJson(weaponsFilePath);
+        //
+
+
+        // The Lua initialization is now done before scriptInit
+
+    }
+    else {
+        LOG(INFO, "Script restarted");
+    }
+
+    scriptTick();
+}
+
+
+#pragma region LoadFiles
 
 void KCMenu::LoadNotificationFile()
 {
@@ -424,6 +457,62 @@ void KCMenu::LoadPedsFile()
 }
 #endif
 
+// TODO Test for loading weapons from a weapons.json
+// TODO Make WeaponScripts and add this into it.
+
+// Global map to store categorized weapons
+std::map<std::string, std::vector<WeaponInfo>> KCMenu::g_weaponCategories;
+
+void KCMenu::LoadWeaponsFromJson(const std::string& fileName)
+{
+    std::ifstream file(fileName);
+    if (!file.is_open()) {
+        //AUDIO::PLAY_SOUND_FRONTEND("ERROR", "HUD_SP_WEAPON_SELECT_SOUNDSET", true, 0); // Example error sound
+        // You might want to log this error or display a message in-game
+
+        log_output("Error Opening weapons json file");
+        //LOG(ERROR, "Could not open weapons json file, some weapon functions will not work.");
+
+        return;
+    }
+
+    nlohmann::json weaponsData;
+    try {
+        file >> weaponsData;
+    }
+    catch (const nlohmann::json::parse_error& e) {
+        //AUDIO::PLAY_SOUND_FRONTEND("ERROR", "HUD_SP_WEAPON_SELECT_SOUNDSET", true, 0);
+        // Log JSON parsing error
+        log_output(std::format("Error parsing weapons json file: {}", e.what()));
+        //LOG(ERROR, std::format("Could not parse weapons json file, some weapon functions will not work"));
+        LOG(ERROR, std::format("Error parsing weapons json file: {}", e.what()));
+        return;
+    }
+
+    for (auto const& [categoryName, categoryValue] : weaponsData.items()) {
+        std::vector<WeaponInfo> weaponsInThisCategory;
+        if (categoryValue.is_object()) {
+            for (auto const& [weaponName, weaponHashStr] : categoryValue.items()) {
+                WeaponInfo weapon;
+                weapon.name = weaponName;
+                // Convert string hash (e.g., "0x92A27487") to ScriptHookV Hash type
+                // Use std::stoul with base 16 for hexadecimal string to unsigned long
+                weapon.hash = static_cast<Hash>(std::stoul(weaponHashStr.get<std::string>(), nullptr, 16));
+                weaponsInThisCategory.push_back(weapon);
+            }
+        }
+        g_weaponCategories[categoryName] = weaponsInThisCategory;
+    }
+
+    log_output("Weapons json file loaded");
+    LOG(INFO, "Weapons json file loaded.");
+
+
+    //AUDIO::PLAY_SOUND_FRONTEND("WEAPON_PICKUP", "HUD_SP_WEAPON_SELECT_SOUNDSET", true, 0); // Example success sound
+}
+
+#pragma endregion //LoadFiles
+
 /// <summary>
 /// Script init
 /// </summary>
@@ -435,12 +524,13 @@ void KCMenu::scriptInit()
     coreScript = std::make_shared<KCMainScript>();
 
     // Setup random, so random numbers work
-    srand(GetTickCount());
+    //srand(GetTickCount());
+    srand(GetTickCount64());
 
     // Only run this in debug builds, I might add a ini option for this sometime.
 #ifdef DEBUG_MODE
     // Attach the console to the game in scriptInit
-    AttachConsole();
+    AttachConsoleToScript();
 #endif
 
     // From Chaos Mod init, I had to move this below AttachConsole otherwise it seems to break the debug console.
@@ -502,8 +592,17 @@ void KCMenu::Thread2()
     // Ok this is running.
     if (!thread2Started)
     {
+        // Didn't work here either.
+//        AttachConsoleToScript();
+////
+//#ifdef LUA_TEST
+//        InitLua();
+//#endif
+
+        LOG(DEBUG, "Thread 2 started");
         log_output("Thread 2 started");
         thread2Started = true;
+
     }
     while (true)
     {

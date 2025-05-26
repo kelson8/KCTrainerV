@@ -6,6 +6,13 @@
 #include <string>
 #include <map>
 
+// TODO Make WeaponScripts and add this into it.
+// Structure to hold weapon information
+struct WeaponInfo {
+    std::string name;
+    Hash hash; // ScriptHookV uses Hash for weapon hashes
+};
+
 /*
  * Script.hpp exposes functions to initialize and manage the script.
  */
@@ -15,11 +22,13 @@ namespace KCMenu
     void ScriptMain();
 
     // Thread #2 test
-    // TODO Test a second thread for this sometime.
+    // TODO Use this second thread for something
     void Thread2();
 
     extern std::map<Hash, std::string> g_modelNames; // Assuming 'Hash' is defined as a suitable integer type (e.g., int, DWORD, etc.)
     
+    extern std::map<std::string, std::vector<WeaponInfo>> g_weaponCategories;
+
     void ResetToggles();
     /*
      * BuildMenu builds the menu with its options and submenus.

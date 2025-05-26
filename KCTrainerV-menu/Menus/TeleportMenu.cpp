@@ -44,6 +44,11 @@ void TeleportMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
     mbCtx.MenuOption("Locations", "teleportlocations", { "Show a list of teleport locations" });
 
+    // Moved this into here, out of the main menu.
+#ifdef LUA_TEST
+    mbCtx.MenuOption("Teleports (Lua)", "luateleportmenu", { "Show the lua teleports" });
+#endif //LUA_TEST
+
     // Warp to waypoint, moved outside of locations teleport menu.
     if (mbCtx.Option("Waypoint"))
     {
