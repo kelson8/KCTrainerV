@@ -581,6 +581,12 @@
     <ClInclude Include="Menus\Submenus\Player\PlayerOptionsMenu.h">
       <Filter>Menus\Submenus\Player</Filter>
     </ClInclude>
+    <ClInclude Include="..\thirdparty\json\single_include\nlohmann\json.hpp">
+      <Filter>ThirdParty\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\json\single_include\nlohmann\json_fwd.hpp">
+      <Filter>ThirdParty\json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -663,6 +669,9 @@
     </Filter>
     <Filter Include="Menus\Submenus\Player">
       <UniqueIdentifier>{a7365182-2af1-464b-96c9-2e955f807033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\json">
+      <UniqueIdentifier>{72b782d4-1c76-4ba6-beef-9a1af69ff9c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

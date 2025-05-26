@@ -34,9 +34,11 @@
 #include "VehicleMenu.h"
 #include "WorldMenu.h"
 #include "MiscMenu.h"
+#include "WeaponMenu.h"
 #include "Submenus/Vehicle/VehicleOptionsMenu.h"
 
 #include "Submenus/Player/ModelChangerMenu.h"
+#include "Submenus/Player/PlayerOptionsMenu.h"
 
 
 // TODO Setup
@@ -83,6 +85,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
     // Player
     auto& playerMenu = PlayerMenu::GetInstance();
+    auto& playerOptionsMenu = PlayerOptionsMenu::GetInstance();
 
 #ifdef PLAYER_SKIN_CHANGER_NEW
     auto& modelChangerMenu = ModelChangerMenu::GetInstance();
@@ -97,6 +100,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     
     auto& worldMenu = WorldMenu::GetInstance();
     auto& miscMenu = MiscMenu::GetInstance();
+    auto& weaponMenu = WeaponMenu::GetInstance();
 
     std::vector<CScriptMenu<KCMainScript>::CSubmenu> submenus;
     //-----
@@ -127,6 +131,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
             // These are now located in each of the menu files under the 'Menus' folder, I moved them out of this file.
             // I still have the implementations but that's just for running the build functions in the other files.
             mbCtx.MenuOption("Player", "playermenu", { "Show the player menu." });
+            mbCtx.MenuOption("Weapon", "WeaponMenu", { "Show the weapon menu." });
             mbCtx.MenuOption("Vehicle", "vehiclemenu", { "Show the vehicle menu." });
             mbCtx.MenuOption("Teleport", "teleportmenu", { "Show the teleport menu." });
 
@@ -166,6 +171,19 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     );
 
     //-----
+    // Player options sub menu
+    //-----
+    
+    submenus.emplace_back("PlayerOptionsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            //playerMenu.BuildOptionsMenu(mbCtx, context);
+            playerOptionsMenu.Build(mbCtx, context);
+        }
+    );
+    //
+
+    //-----
     // Player Model changer sub Menu
     // TODO Fix this, it shows a list of the categories but opening it does nothing.
     // Also, I will need to figure out a way to select each model.
@@ -201,6 +219,19 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
 
 
+#pragma endregion
+
+#pragma region WeaponMenu
+    //-----
+    // Weapon menu
+    //-----
+    submenus.emplace_back("WeaponMenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            weaponMenu.Build(mbCtx, context);
+        }
+    );
+    // 
 #pragma endregion
 
 #pragma region VehicleMenu

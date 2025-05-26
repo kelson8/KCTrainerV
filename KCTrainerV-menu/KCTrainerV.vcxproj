@@ -91,7 +91,7 @@
       <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;NOMINMAX;NOGDI;DEBUG_MODE;KCTRAINER_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(SolutionDir)thirdparty\sol\include;$(SolutionDir)thirdparty\tinyxml2;$(ProjectDir);$(ProjectDir)Scripts\Extras\Classes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\ScriptHookV_SDK;$(SolutionDir)thirdparty;$(SolutionDir)thirdparty\GTAVMenuBase\;$(SolutionDir)thirdparty\sol\include;$(SolutionDir)thirdparty\tinyxml2;$(SolutionDir)thirdparty\json\single_include;$(ProjectDir);$(ProjectDir)Scripts\Extras\Classes</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -315,6 +315,8 @@
     <ClInclude Include="..\thirdparty\GTAVMenuBase\menusettings.h" />
     <ClInclude Include="..\thirdparty\GTAVMenuBase\menuutils.h" />
     <ClInclude Include="..\thirdparty\GTAVMenuBase\Scaleform.h" />
+    <ClInclude Include="..\thirdparty\json\single_include\nlohmann\json.hpp" />
+    <ClInclude Include="..\thirdparty\json\single_include\nlohmann\json_fwd.hpp" />
     <ClInclude Include="..\thirdparty\minhook\include\MinHook.h" />
     <ClInclude Include="..\thirdparty\minhook\src\buffer.h" />
     <ClInclude Include="..\thirdparty\minhook\src\hde\hde32.h" />

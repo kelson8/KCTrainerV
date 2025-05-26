@@ -92,11 +92,18 @@ void TextScripts::SetTextEntry(const char* text)
 	
 	// Extras
 	HUD::SET_TEXT_PROPORTIONAL(true);
-	HUD::SET_TEXT_JUSTIFICATION(0);
+	// Center justify
+	//HUD::SET_TEXT_JUSTIFICATION(0);
+	// Left justify
+	HUD::SET_TEXT_JUSTIFICATION(1);
+	// Right justify
+	//HUD::SET_TEXT_JUSTIFICATION(2);
 	//
 
 	HUD::SET_TEXT_FONT(0); // 0 - 4
-	HUD::SET_TEXT_SCALE(0.3, 0.3);
+	//HUD::SET_TEXT_SCALE(0.3f, 0.3f);
+	HUD::SET_TEXT_SCALE(0.0f, 0.3f);
+
 	HUD::SET_TEXT_COLOUR(colorR, colorG, colorB, colorA);
 	//HUD::BEGIN_TEXT_COMMAND_PRINT("STRING");
 
@@ -108,6 +115,7 @@ void TextScripts::SetTextEntry(const char* text)
 /// This will need to be ran before drawing anything to the screen.
 /// Adapted from my FiveM scripts originally in lua.
 /// This version of the function takes a colorR, colorG, colorB, and colorA for the colors.
+/// TODO Make separate functions for left justify, center justify, and right justify.
 /// </summary>
 void TextScripts::SetTextEntry(const char* text, int colorR, int colorG, int colorB, int colorA)
 {
@@ -119,11 +127,17 @@ void TextScripts::SetTextEntry(const char* text, int colorR, int colorG, int col
 
 	// Extras
 	HUD::SET_TEXT_PROPORTIONAL(true);
-	HUD::SET_TEXT_JUSTIFICATION(0);
+	// Center justify
+	//HUD::SET_TEXT_JUSTIFICATION(0);
+	// Left justify
+	HUD::SET_TEXT_JUSTIFICATION(1);
+	// Right justify
+	//HUD::SET_TEXT_JUSTIFICATION(2);
 	//
 
 	HUD::SET_TEXT_FONT(0); // 0 - 4
-	HUD::SET_TEXT_SCALE(0.3, 0.3);
+	//HUD::SET_TEXT_SCALE(0.3f, 0.3f);
+	HUD::SET_TEXT_SCALE(0.0f, 0.3f);
 	HUD::SET_TEXT_COLOUR(colorR, colorG, colorB, colorA);
 	//HUD::BEGIN_TEXT_COMMAND_PRINT("STRING");
 
@@ -143,7 +157,6 @@ void TextScripts::TextPosition(float y)
 
 /// <summary>
 /// Set the text position with a custom x and y value
-/// TODO Test this, it shouldn't conflict with the other method.
 /// Adapted from my FiveM scripts
 /// </summary>
 /// <param name="y"></param>

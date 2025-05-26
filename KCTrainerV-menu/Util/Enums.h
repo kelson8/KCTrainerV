@@ -21,6 +21,18 @@ enum class PlayerModels : int
 	COUNT // For iterating
 };
 
+enum class DoorLockStates : int
+{
+	UNLOCKED = 0,
+	LOCKED = 1,
+	FORCE_LOCKED_UNTIL_OUT_OF_AREA = 2,
+	FORCE_UNLOCKED_THIS_FRAME = 3,
+	FORCE_LOCKED_THIS_FRAME = 3,
+	FORCE_OPEN_THIS_FRAME = 3,
+	FORCE_CLOSED_THIS_FRAME = 3,
+
+};
+
 struct PlayerData
 {
 	PlayerModels model;
@@ -1215,6 +1227,8 @@ enum WeaponHash : DWORD
 	WEAPON_HACKINGDEVICE = 0x1CF5FA48,
 	WEAPON_SNOWLAUNCHER = 0x03BF5575,
 	WEAPON_STUNROD = 0xDAC00025,
+
+	WEAPON_TOTAL, // For getting the total amount of weapons in this.
 };
 enum WeaponComponentHash : DWORD
 {

@@ -12,8 +12,8 @@
 #include "inc/types.h"
 
 #include "Util/UI.hpp"
-
 #include "Util/Util.hpp"
+#include "Script.hpp"
 
 #include "../Teleports/TeleportLocations.h"
 
@@ -87,21 +87,19 @@ namespace MiscScripts
 	{
 		bool isIdGunEnabled = false;
 
-		float entityIdMenuPosX = 0.190f;
-		//float entityIdMenuPosY = 0.6f;
-		float entityIdMenuPosY = 0.75f;
+		// New values
+		float entityIdMenuPosX = 0.162f;
+		float entityIdMenuPosY = 0.858f;
 
-		float entityCoordsMenuPosX = 0.190f;
-		//float entityCoordsMenuPosY = 0.7f;
-		float entityCoordsMenuPosY = 0.80f;
+		float entityCoordsMenuPosX = 0.162f;
+		float entityCoordsMenuPosY = 0.889f;
 
-		float entityHeadingMenuPosX = 0.190f;
-		//float entityHeadingMenuPosY = 0.8f;
-		float entityHeadingMenuPosY = 0.85f;
+		float entityHeadingMenuPosX = 0.162f;
+		float entityHeadingMenuPosY = 0.919f;
 
-		float entityModelMenuPosX = 0.190f;
-		//float entityModelMenuPosY = 0.973f;
-		float entityModelMenuPosY = 0.9f;
+		float entityModelMenuPosX = 0.162f;
+		float entityModelMenuPosY = 0.951f;
+		//
 
 		/// <summary>
 		/// Main tick for the IDGun
@@ -132,28 +130,30 @@ namespace MiscScripts
 		/// </summary>
 		void ResetIdGunPositions()
 		{
-			entityIdMenuPosX = 0.190f;
-			entityIdMenuPosY = 0.75f;
+			entityIdMenuPosX = 0.162f;
+			entityIdMenuPosY = 0.858f;
 
-			entityCoordsMenuPosX = 0.190f;
-			entityCoordsMenuPosY = 0.80f;
+			entityCoordsMenuPosX = 0.162f;
+			entityCoordsMenuPosY = 0.889f;
 
-			entityHeadingMenuPosX = 0.190f;
-			entityHeadingMenuPosY = 0.85f;
+			entityHeadingMenuPosX = 0.162f;
+			entityHeadingMenuPosY = 0.919f;
 
-			entityModelMenuPosX = 0.190f;
-			entityModelMenuPosY = 0.9f;
+			entityModelMenuPosX = 0.162f;
+			entityModelMenuPosY = 0.951f;
+
 		}
 
 		/// <summary>
-		/// TODO Finalize some changes with this, from pun_idgun in FiveM
-		/// This seems to mostly work other then getting the ped names.
+		/// This seems to mostly work now.
+		/// This will get the ped names and object names as hash keys instead of the numerical hash ids now.
 		/// This works for getting vehicle names now.
 		/// Shows these values:
 		/// Entity ID
 		/// Entity X, Y, Z
 		/// Entity Heading
 		/// Entity Hash (Model name hash)
+		/// Also can show Ped name, and Object name.
 		/// Adapted from here: https://forum.cfx.re/t/id-gun-find-out-object-coords-headings-and-hashes/984257
 		/// </summary>
 		void IdGun()
@@ -169,6 +169,7 @@ namespace MiscScripts
 			//Ped playerPed = playerScripts.GetPlayerPed();
 			// I think this fixed it, I think I needed the playerID
 			Player playerPed = PLAYER_ID();
+
 
 			// Check if the player is aiming
 			if (IS_PLAYER_FREE_AIMING(playerPed))
@@ -188,11 +189,6 @@ namespace MiscScripts
 				//------
 				std::string entityIdString = std::format("Entity ID: {}", std::to_string(entity));
 				textScripts.SetTextEntry(entityIdString.c_str());
-
-				// TODO Remove, debug lines
-				//std::cout << entityString << std::endl;
-				//
-
 				textScripts.TextPosition(entityIdMenuPosX, entityIdMenuPosY);
 
 				//------
@@ -221,11 +217,61 @@ namespace MiscScripts
 				// I adapted this from the pun_idgun FiveM resource and it now gets the vehicle name even if the ped is in it.
 				if (IS_ENTITY_A_PED(entity))
 				{
-					Vehicle pedVehicle = GET_VEHICLE_PED_IS_IN(entity, false);
-					// Get the vehicle name
-					std::string vehicleNameString = vehicleScripts.GetVehicleName(pedVehicle);
-					textScripts.SetTextEntry(vehicleNameString.c_str());
-					textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+
+					// TODO Fix this part to work, I reverted this for now.
+					if (IS_PED_IN_ANY_VEHICLE(entity, false))
+					{
+						Vehicle pedVehicle = GET_VEHICLE_PED_IS_IN(entity, false);
+						// Get the vehicle name
+						std::string vehicleNameString = vehicleScripts.GetVehicleName(pedVehicle);
+
+						// Display the vehicle name instead of a model hash.
+						textScripts.SetTextEntry(vehicleNameString.c_str());
+						textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+					}
+
+					//// Check if the ped is in a vehicle, if not display the entity model hash.
+					//if (DOES_ENTITY_EXIST(pedVehicle))
+					//{
+					//	// Get the vehicle name
+					//	std::string vehicleNameString = vehicleScripts.GetVehicleName(pedVehicle);
+
+					//	// Display the vehicle name instead of a model hash.
+					//	textScripts.SetTextEntry(vehicleNameString.c_str());
+					//	textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+					//}
+					// Show the entity model hash if not in a vehicle.
+					else 
+					{
+
+						std::string entityModelString;
+						auto it = KCMenu::g_modelNames.find(entityHash);
+						if (it != KCMenu::g_modelNames.end()) 
+						{
+							// Found the model name
+							entityModelString = std::format("Entity Model: {}", it->second);
+						}
+						else 
+						{
+							// Model name not found, fallback to displaying the hash
+							entityModelString = std::format("Entity Hash: {}", std::to_string(entityHash));
+						}
+
+
+						// This seems to work for displaying the ped models also
+						// The text isn't centered like the vehicle one though.
+						// TODO Make this text match with the other ones.
+						textScripts.SetTextEntry(entityModelString.c_str());
+						textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+
+						//std::string entityIdString = std::to_string(static_cast<DWORD>(entityHash));
+						//std::string entityId = std::format("Entity Hash: {}", entityIdString);
+
+						//textScripts.SetTextEntry(entityId.c_str());
+						//textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+
+
+					}
 				}
 
 				//------
@@ -249,11 +295,39 @@ namespace MiscScripts
 				else
 				{
 					//------
-					//Entity Model hash
+					//Entity Model hash or ped name/object name.
 					//------
-					std::string entityModelString = std::format("Entity Model Hash: {}", std::to_string(entityHash));
-					textScripts.SetTextEntry(entityModelString.c_str(), 255, 255, 255, 255);
+					// 
+					
+
+					// New method:
+					// This works for getting object names instead of hashes!
+					// Check if the hash exists in our map
+					std::string entityModelString;
+					auto it = KCMenu::g_modelNames.find(entityHash);
+					if (it != KCMenu::g_modelNames.end()) {
+						// Found the model name
+						entityModelString = std::format("Entity Model: {}", it->second);
+					}
+					else {
+						// Model name not found, fallback to displaying the hash
+						//entityModelString = std::format("Entity Hash: {}", std::to_string(entityHash));
+						entityModelString = std::format("Entity Hash: {}", std::to_string(entityHash));
+					}
+
+					// Display text on screen
+					//textScripts.SetTextEntry(entityModelString.c_str(), 255, 255, 255, 255);
+					textScripts.SetTextEntry(entityModelString.c_str());
 					textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+
+
+					// Original method:
+					//std::string entityModelString = std::format("Entity Hash: {}", std::to_string(entityHash));
+					//textScripts.SetTextEntry(entityModelString.c_str(), 255, 255, 255, 255);
+					//textScripts.TextPosition(entityModelMenuPosX, entityModelMenuPosY);
+
+					// Possibly useful for logging these, although like this it spams the console.
+					//log_output(entityModelString);
 
 					// TODO Add door status if this is a door, I would probably have to check if this is a door model from a list.
 

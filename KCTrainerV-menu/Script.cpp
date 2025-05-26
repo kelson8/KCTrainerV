@@ -31,6 +31,10 @@
 
 #include <inc/main.h>
 
+// New for JSON support
+#include <fstream>
+#include "nlohmann/json.hpp"
+
 // This seems to have the main script init and tick for the menu.
 
 namespace 
@@ -45,6 +49,7 @@ namespace
 namespace KCMenu 
 {
     void LoadNotificationFile();
+    void LoadModelNamesFromJson(const std::string& filePath);
 
 #ifdef PLAYER_SKIN_CHANGER
     void LoadPedsFile();
@@ -150,12 +155,15 @@ void KCMenu::ScriptMain()
         scriptInit();
         initialized = true;
 
+        // Set the mod path
+        std::filesystem::path modPath = Paths::GetModPath();
+
         // Load notifications from the file.
         KCMenu::LoadNotificationFile();
 
 #ifdef LOAD_TELEPORT_INI
     // Test for loading teleport locations from an ini
-        std::filesystem::path modPath = Paths::GetModPath();
+        
         //std::string teleportsFilePath = (modPath / "teleports.ini").string(); // Or a subfolder like "data/teleports.ini"
         std::string teleportsFilePath = (modPath / Constants::teleportFileName).string();
         TeleportManager::GetInstance().LoadTeleportsFromFile(teleportsFilePath);
@@ -166,6 +174,13 @@ void KCMenu::ScriptMain()
         // For changing player model, and in the future spawning peds.
         KCMenu::LoadPedsFile();
 #endif
+
+        // Load the model names from the json file, for my new IDGun system.
+#ifdef LOAD_MODEL_NAMES
+        std::string objectsFilePath = (modPath / Constants::objectsFileName).string();
+        LoadModelNamesFromJson(objectsFilePath);
+#endif
+
 
         // The Lua initialization is now done before scriptInit
 
@@ -195,6 +210,64 @@ void KCMenu::LoadNotificationFile()
     }
 }
 
+
+
+#ifdef LOAD_MODEL_NAMES
+
+// Global map to store the model hash to name mapping
+// Make this blank in here, this should be populated in the LoadModelNamesFromJson function.
+std::map<Hash, std::string> KCMenu::g_modelNames = {}; // Assuming 'Hash' is defined as a suitable integer type (e.g., int, DWORD, etc.)
+
+/// <summary>
+/// Load the model names from JSON for the object list in the ID Gun.
+/// TODO Test this later.
+/// </summary>
+/// <param name="filePath"></param>
+void KCMenu::LoadModelNamesFromJson(const std::string& filePath) {
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        log_output(std::format("ERROR: Could not open model names JSON file: {}", filePath));
+        return;
+    }
+
+    try {
+        nlohmann::json j;
+        file >> j;
+
+        for (nlohmann::json::const_iterator it = j.begin(); it != j.end(); ++it) {
+            try {
+                // The keys in your JSON are string representations of hashes
+                // Convert the string key to a Hash type (assuming it's an int or similar)
+                Hash modelHash = std::stoul(it.key()); // Use stoul for unsigned long, or stoi for int
+                std::string modelName = it.value().get<std::string>();
+                g_modelNames[modelHash] = modelName;
+            }
+            catch (const std::exception& e) {
+                log_output(std::format("WARNING: Error parsing JSON entry (key: {}, value: {}): {}", it.key(), it.value().dump(), e.what()));
+            }
+        }
+        log_output(std::format("Successfully loaded {} model names from {}", g_modelNames.size(), filePath));
+
+        // Test for displaying a random model
+
+        // This works!!
+        auto it = g_modelNames.find(-808157183);
+        if (it != g_modelNames.end())
+        {
+            std::string entityModelString = std::format("Entity Model: {}", it->second);
+            log_output(entityModelString);
+        }
+        
+
+    }
+    catch (const nlohmann::json::exception& e) {
+        log_output(std::format("ERROR: JSON parsing error in {}: {}", filePath, e.what()));
+    }
+    catch (const std::exception& e) {
+        log_output(std::format("ERROR: General error loading model names from {}: {}", filePath, e.what()));
+    }
+}
+#endif
 
 #ifdef PLAYER_SKIN_CHANGER
 void KCMenu::LoadPedsFile()

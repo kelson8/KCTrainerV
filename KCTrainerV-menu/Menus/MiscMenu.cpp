@@ -50,6 +50,20 @@ void MiscMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
     mbCtx.MenuOption("Music", { "MiscMusicSubmenu" }, { "Play game soundtracks, and music, doesn't work for radio." });
 
+    // Doors sub menu
+    // TODO Setup sub menu for this.
+    //if (mbCtx.Option("Unlock Casino Door #1"))
+    //{
+    //    // Well this didn't work
+    //    // TODO Figure out how to this, I have it working in FiveM
+    //    
+    //    // The doors were already unlocked, maybe I could test locking them?
+    //    
+    //    // I might need to use this, I am doing it in FiveM also.
+    //    //ADD_DOOR_TO_SYSTEM()
+    //    DOOR_SYSTEM_SET_DOOR_STATE(680601509, static_cast<int>(DoorLockStates::UNLOCKED), false, false);
+    //}
+    
 
 #ifdef BLIP_TEST
     // TODO Fix this
@@ -250,7 +264,7 @@ void MiscMenu::BuildIDGunDebugMenu(NativeMenu::Menu& mbCtx, KCMainScript& contex
     mbCtx.FloatOption("Entity Heading Y", MiscScripts::IDGun::entityHeadingMenuPosY, 0.f, 1.0f, stepValue);
 
     // Entity model/Vehicle name Menu Pos X
-    mbCtx.FloatOption("Entity Model/Vehicle Name X", MiscScripts::IDGun::entityModelMenuPosY, 0.f, 1.0f, stepValue);
+    mbCtx.FloatOption("Entity Model/Vehicle Name X", MiscScripts::IDGun::entityModelMenuPosX, 0.f, 1.0f, stepValue);
     // Entity model/Vehicle name Menu Pos Y
     mbCtx.FloatOption("Entity Model/Vehicle Name Y", MiscScripts::IDGun::entityModelMenuPosY, 0.f, 1.0f, stepValue);
 

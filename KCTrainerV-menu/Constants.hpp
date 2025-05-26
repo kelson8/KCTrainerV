@@ -98,6 +98,9 @@
 // Also, try to add custom icons instead of the yellow destination marker.
 //#define BLIP_TEST
 
+// Load ped model names, and object names from JSON for objects in id gun
+#define LOAD_MODEL_NAMES
+
 namespace Constants 
 {
     static const char* const ScriptName = "KCTrainerV";
@@ -115,4 +118,6 @@ namespace Constants
     static const char* const pedsFileName = "PedList.xml";
 
     static const char* const teleportFileName = "teleports.ini";
+
+    static const char* const objectsFileName = "objects.json";
 }

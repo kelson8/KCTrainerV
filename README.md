@@ -103,8 +103,14 @@ Lua for the lua library I am using:
 Mr-X-GTA on GitHub for the GTAV-Classes reverse engineered classes:
 * https://github.com/Mr-X-GTA/GTAV-Classes-1
 
-Puntherline on GitHub for the FiveM id gun adaptation (IdGun function in MiscScripts): 
+Puntherline on GitHub for the FiveM id gun adaptation, and the objects.json for IDGun objects. (IdGun function in MiscScripts): 
 * https://github.com/Puntherline/pun_idgun/blob/master/client.lua
+* https://github.com/Puntherline/pun_idgun/blob/master/hashes.json
+
+nlohmann on GitHub for the JSON library:
+* https://github.com/nlohmann/json
+
+
 
 # License
 This project is Licensed under the GPLV3 license.
