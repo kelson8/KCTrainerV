@@ -27,10 +27,17 @@ enum class DoorLockStates : int
 	LOCKED = 1,
 	FORCE_LOCKED_UNTIL_OUT_OF_AREA = 2,
 	FORCE_UNLOCKED_THIS_FRAME = 3,
-	FORCE_LOCKED_THIS_FRAME = 3,
-	FORCE_OPEN_THIS_FRAME = 3,
-	FORCE_CLOSED_THIS_FRAME = 3,
+	FORCE_LOCKED_THIS_FRAME = 4,
+	FORCE_OPEN_THIS_FRAME = 5,
+	FORCE_CLOSED_THIS_FRAME = 6,
 
+};
+
+enum class TextJustify : int
+{
+	CENTER = 0,
+	LEFT = 1,
+	RIGHT = 2,
 };
 
 struct PlayerData

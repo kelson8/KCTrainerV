@@ -24,6 +24,9 @@ public:
 
 	static bool CheckDirectoryExists(LPCSTR folderPath);
 
+	// Saving text positions from debug menus
+	bool SavePlayerMenuTextPositions(const std::string& fileName);
+
 	// Saving coords/ loading them from file and teleporting
 	void SaveCoordinatesToFile(const std::string& fileName);
 	void TeleportToSavedCoords(const std::string& fileName);

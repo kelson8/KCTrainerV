@@ -219,6 +219,9 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
             Memory::Uninit();
 #endif
 
+            // Disable booleans and flags in the menu
+            KCMenu::ResetToggles();
+
             scriptUnregister(hInstance);
             break;
         }

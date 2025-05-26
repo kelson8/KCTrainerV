@@ -12,6 +12,14 @@
 #include "Scripts/VehicleScripts.h"
 #include "Scripts/VehicleSpawner.h"
 
+#include "Scripts/PlayerScripts.h"
+#include "Scripts/PedScripts.h"
+
+#include "Scripts/TextScripts.h"
+#include "Scripts/WorldScripts.h"
+
+#include "Scripts/Stats.h"
+
 #include "Scripts/NotificationManager.h"
 #include "Scripts/PedModelManager.h"
 
@@ -50,6 +58,8 @@ namespace KCMenu
 {
     void LoadNotificationFile();
     void LoadModelNamesFromJson(const std::string& filePath);
+
+    void ResetGameStates();
 
 #ifdef PLAYER_SKIN_CHANGER
     void LoadPedsFile();
@@ -192,6 +202,113 @@ void KCMenu::ScriptMain()
     scriptTick();
 }
 
+#pragma region ResetToggles
+
+
+/// <summary>
+/// This function will contain all the logic to revert game states
+/// TODO Fix this to work, for now it doesn't get run anywhere.
+/// </summary>
+void KCMenu::ResetGameStates() {
+    auto& playerScripts = PlayerScripts::GetInstance();
+    auto& pedScripts = PedScripts::GetInstance();
+    auto& vehicleScripts = VehicleScripts::GetInstance();
+    auto& worldScripts = WorldScripts::GetInstance();
+
+    // --- Player Scripts ---
+    if (playerScripts.invincibilityEnabled) 
+    {
+        PLAYER::SET_PLAYER_INVINCIBLE(PLAYER::PLAYER_ID(), FALSE);
+    }
+
+    if (playerScripts.neverWantedEnabled) {
+        PLAYER::SET_MAX_WANTED_LEVEL(5); // Default GTA max
+        // No need to clear current wanted level here; if player commits crimes, they'll get stars again.
+    }
+
+    // --- Vehicle Scripts ---
+    // Make sure you get the current vehicle the player is in.
+    Vehicle playerVehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
+    if (ENTITY::DOES_ENTITY_EXIST(playerVehicle))
+    { // Check if player is in a vehicle
+        if (vehicleScripts.isBulletProofEnabled)
+        {
+            vehicleScripts.DisableBulletProof();
+        }
+
+        if (vehicleScripts.isInvincibleVehicleEnabled)
+        {
+            ENTITY::SET_ENTITY_INVINCIBLE(playerVehicle, false);
+        }
+    }
+
+    if (worldScripts.isBlackoutActive) 
+    {
+        GRAPHICS::SET_ARTIFICIAL_LIGHTS_STATE(FALSE);
+    }
+}
+
+/// <summary>
+/// Reset all toggles back to their original states, should possibly prevent crashing?
+/// Runs in DllMain before unregistering the script.
+/// TODO Make another function that resets the values themselves back to default.
+/// Such as resetting the invincibility, and never wanted states.
+/// This just turns off the flags and toggles but doesn't disable everything.
+/// </summary>
+void KCMenu::ResetToggles()
+{
+    auto& playerScripts = PlayerScripts::GetInstance();
+    auto& pedScripts = PedScripts::GetInstance();
+    auto& textScripts = TextScripts::GetInstance();
+    auto& vehicleScripts = VehicleScripts::GetInstance();
+    auto& worldScripts = WorldScripts::GetInstance();
+
+    // Player scripts
+    playerScripts.invincibilityEnabled = false;
+    playerScripts.invincibilityFlag = false;
+
+    playerScripts.neverWantedEnabled = false;
+    playerScripts.neverWantedFlag = false;
+
+    playerScripts.isMobileRadioEnabled = false;
+    playerScripts.mobileRadioFlag = false;
+
+    // Misc scripts
+    MiscScripts::IDGun::isIdGunEnabled = false;
+    
+    // Ped scripts
+    pedScripts.isPedsAttackEnabled = false;
+    pedScripts.isCrazyPedDrivingEnabled = false;
+
+    // Stats scripts
+    Stats::Cop::isCopsKilledDisplayActive = false;
+
+    // Text scripts
+    textScripts.drawText = false;
+    textScripts.drawCoords = false;
+    
+    // Vehicle Scripts
+    vehicleScripts.isBulletProofEnabled = false;
+    vehicleScripts.bulletProofFlag = false;
+
+    vehicleScripts.isInvincibleVehicleEnabled = false;
+    vehicleScripts.invincibilityFlag = false;
+    
+    // World scripts
+    worldScripts.isRestrictedAreasDisabled = false;
+    worldScripts.areasDisabledFlag = false;
+  
+    worldScripts.isFireworksStarted = false;
+    worldScripts.isPedsCalmActive = false;
+
+    worldScripts.isBlackoutActive = false;
+    worldScripts.blackoutFlag = false;
+
+    LOG(INFO, "All toggles have been reset to defaults.");
+}
+
+#pragma endregion
+
 void KCMenu::LoadNotificationFile()
 {
     auto& fileFunctions = FileFunctions::GetInstance();
@@ -220,7 +337,6 @@ std::map<Hash, std::string> KCMenu::g_modelNames = {}; // Assuming 'Hash' is def
 
 /// <summary>
 /// Load the model names from JSON for the object list in the ID Gun.
-/// TODO Test this later.
 /// </summary>
 /// <param name="filePath"></param>
 void KCMenu::LoadModelNamesFromJson(const std::string& filePath) {

@@ -351,6 +351,7 @@ void TeleportMenu::BuildOtherSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& cont
 void TeleportMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& textScripts = TextScripts::GetInstance();
+    auto& fileFunctions = FileFunctions::GetInstance();
         // This works for moving the menu Y coords!!! It'll be very useful for debugging this.
 
         mbCtx.Title("Teleport Debug");
@@ -375,6 +376,19 @@ void TeleportMenu::BuildDebugSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& cont
 
         mbCtx.FloatOption("Heading X position", textScripts.headingMenuPosX, 0.f, 1.0f, stepValue);
         mbCtx.FloatOption("Heading Y position", textScripts.headingMenuPosY, 0.f, 1.0f, stepValue);
+
+        // Save player debug menu positions to a file
+        if (mbCtx.Option("Save to file", { "Save the list of positions to the MenuPositions.txt file in the mod folder." }))
+        {
+            if (fileFunctions.SavePlayerMenuTextPositions(Constants::menuPositionsFile))
+            {
+                UI::Notify("Menu positions saved to file.");
+            }
+            else {
+                UI::Notify("Error, couldn't save menu positions.");
+            }
+            
+        }
 }
 
 #ifdef LUA_TEST

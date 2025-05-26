@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "Scripts/PlayerScripts.h"
+#include "Scripts/TextScripts.h"
 
 #include "inc/types.h"
 
@@ -16,6 +17,79 @@
 extern std::vector<std::string_view> g_loadedIpls; // Declaration (extern)
 
 #endif
+
+/// <summary>
+/// Save text positions from debug texts into a file.
+/// Will be very useful for logging the values for my debug texts on screen.
+/// This seems to work well
+/// </summary>
+/// <param name="fileName">The file name to save text positions into</param>
+/// <returns>If the file was successfully wrote to.</returns>
+bool FileFunctions::SavePlayerMenuTextPositions(const std::string& fileName)
+{
+	auto& playerScripts = PlayerScripts::GetInstance();
+
+	auto& textScripts = TextScripts::GetInstance();
+
+	// Positions
+	// X
+	float playerXMenuPosX = textScripts.playerXMenuPosX;
+	float playerXMenuPosY = textScripts.playerXMenuPosY;
+	
+	// Y
+	float playerYMenuPosX = textScripts.playerYMenuPosX;
+	float playerYMenuPosY = textScripts.playerYMenuPosY;
+
+	// Z
+	float playerZMenuPosX = textScripts.playerZMenuPosX;
+	float playerZMenuPosY = textScripts.playerZMenuPosY;
+	
+	// Heading
+	float playerHeadingMenuPosX = textScripts.headingMenuPosX;
+	float playerHeadingMenuPosY = textScripts.headingMenuPosY;
+
+	// String of the list of text positions, this is what gets saved in the file.
+	std::string textPositionsString =
+		// X
+		std::format("PlayerX Menu Pos X: {:.3f}", playerXMenuPosX)
+		+ std::format("\nPlayerX Menu Pos Y: {:.3f}", playerXMenuPosY)
+
+		// Y
+		+ std::format("\n\nPlayerY Menu Pos X: {:.3f}", playerYMenuPosX)
+		+ std::format("\nPlayerY Menu Pos Y: {:.3f}", playerYMenuPosY)
+		
+		// Z
+		+ std::format("\n\nPlayerZ Menu Pos X: {:.3f}", playerZMenuPosX)
+		+ std::format("\nPlayerZ Menu Pos Y: {:.3f}", playerZMenuPosY)
+
+		// Heading
+		+ std::format("\n\nPlayer Heading Menu Pos X: {:.3f}", playerHeadingMenuPosX)
+		+ std::format("\nPlayer Heading Menu Pos Y: {:.3f}", playerHeadingMenuPosY);
+
+
+	std::filesystem::path modPath = Paths::GetModPath();
+
+	std::string pathString = (modPath / fileName).string();
+
+	std::ofstream outputFile(pathString);
+
+	// Make sure the file is open
+	if (outputFile.is_open()) 
+	{
+		outputFile << textPositionsString;
+		outputFile.close();
+		std::string fileSavedString = std::format("Menu text positions saved to '{}'", fileName);
+
+		log_output(fileSavedString);
+		return true;
+	}
+	else
+	{
+		std::string errorString = std::format("Error opening file '{}' for writing!", fileName);
+		log_error(errorString);
+		return false;
+	}
+}
 
 /// <summary>
 /// Save player coordinates to file, adapted from KCTrainerIV
@@ -49,7 +123,8 @@ void FileFunctions::SaveCoordinatesToFile(const std::string& fileName)
 	//std::ofstream outputFile(modPath + fileName);
 	std::ofstream outputFile(pathString);
 
-	if (outputFile.is_open()) {
+	if (outputFile.is_open()) 
+	{
 		outputFile << playerCoordsText << std::endl;
 		outputFile << playerHeadingText << std::endl;
 		outputFile.close();
@@ -58,8 +133,10 @@ void FileFunctions::SaveCoordinatesToFile(const std::string& fileName)
 		//std::cout << "Player coordinates and heading saved to '" << fileName << "'" << std::endl;
 		log_output(playerCoordsHeadingString);
 	}
-	else {
+	else 
+	{
 		std::string errorString = std::format("Error opening file '{}' for writing!", fileName);
+		log_error(errorString);
 		//std::cerr << "Error opening file '" << fileName << "' for writing!" << std::endl;
 	}
 }
@@ -75,6 +152,8 @@ void FileFunctions::TeleportToSavedCoords(const std::string& fileName)
 {
 	auto& playerScripts = PlayerScripts::GetInstance();
 	auto& teleportLocations = TeleportLocations::GetInstance();
+
+	//float newHeading = 0.0f;
 	// Example file read:
 	/*
 		std::string playerCoordsText = "X: " + std::to_string(playerX)
@@ -123,6 +202,11 @@ void FileFunctions::TeleportToSavedCoords(const std::string& fileName)
 
 			//SET_CHAR_COORDINATES(GetPlayerChar(), x, y, z);
 			playerScripts.SetPlayerCoords(Vector3(x, y, z));
+			// TODO Setup heading for this
+			// TODO Fix this to work
+			// New function to set heading and fade.
+			//playerScripts.SetPlayerCoords(Vector3(x, y, z), 0.0f, true);
+			//playerScripts.SetPlayerCoords(Vector3(x, y, z), newHeading, true);
 		}
 		else
 		{
@@ -146,13 +230,16 @@ void FileFunctions::TeleportToSavedCoords(const std::string& fileName)
 
 			// TODO Test this
 			//SET_CHAR_HEADING(GetPlayerChar(), heading);
-			playerScripts.SetPlayerHeading(heading);
+			//playerScripts.SetPlayerHeading(heading);
+			//newHeading = heading;
 		}
 		else
 		{
 			LOG(ERROR, "Error reading the second line (heading) from the file.");
 			//std::cerr << "Error reading the second line (heading) from the file." << std::endl;
 		}
+
+
 
 
 		// Close the file

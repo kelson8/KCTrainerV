@@ -72,6 +72,67 @@ void TextScripts::Tick()
 }
 
 /// <summary>
+/// Setup the text without color, the colors will need to be set.
+/// This will run some setup for the font, scale and other
+/// Common used values in my functions.
+/// </summary>
+void TextScripts::SetupTextOptions()
+{
+
+	// TODO Possibly setup separate functions for toggling these? I would like to fully control some of these options
+	// Without duplicating all these natives in each function that requires it.
+	// Extras
+	HUD::SET_TEXT_PROPORTIONAL(true);
+	// Center justify
+	//HUD::SET_TEXT_JUSTIFICATION(0);
+	// Left justify
+	HUD::SET_TEXT_JUSTIFICATION(1);
+	// Right justify
+	//HUD::SET_TEXT_JUSTIFICATION(2);
+
+	//SET_TEXT_DROP_SHADOW();
+	// I think this makes the text look a bit better
+	SET_TEXT_OUTLINE();
+	//
+
+	
+	//HUD::SET_TEXT_FONT(0); // 0 - 4
+	HUD::SET_TEXT_FONT(GTAfont::Arial); // 0 - 4
+	//HUD::SET_TEXT_SCALE(0.3f, 0.3f);
+	HUD::SET_TEXT_SCALE(0.0f, 0.3f);
+}
+
+/// <summary>
+/// Setup the text with color
+/// This will run some setup for the font, scale and other
+/// Common used values in my functions.
+/// <param name="colorR">Red color</param>
+/// <param name="colorG">Green color</param>
+/// <param name="colorB">Blue color</param>
+/// <param name="colorA">Alpha for the color</param>
+/// <param name="textProportional">Set this to true or false</param>
+/// <param name="textJustify">Set with my TextJustifiy enum, either CENTER, LEFT, or RIGHT </param>
+/// </summary>
+void TextScripts::SetupTextOptions(int colorR, int colorG, int colorB, int colorA, bool textProportional, TextJustify textJustify)
+{
+	HUD::SET_TEXT_PROPORTIONAL(textProportional);
+
+	HUD::SET_TEXT_JUSTIFICATION(static_cast<int>(textJustify));
+
+	// Not sure what this one does.
+	//SET_TEXT_DROP_SHADOW();
+	// I think this makes the text look a bit better
+	SET_TEXT_OUTLINE();
+	//
+
+	HUD::SET_TEXT_FONT(GTAfont::Arial); // 0 - 4
+	//HUD::SET_TEXT_SCALE(0.3f, 0.3f);
+	HUD::SET_TEXT_SCALE(0.0f, 0.3f);
+
+	HUD::SET_TEXT_COLOUR(colorR, colorG, colorB, colorA);
+}
+
+/// <summary>
 /// This should setup the text entry for drawing to the screen.
 /// This will need to be ran before drawing anything to the screen.
 /// Adapted from my FiveM scripts originally in lua.
@@ -83,31 +144,11 @@ void TextScripts::SetTextEntry(const char* text)
 	int colorG = 88;
 	int colorB = 100;
 	int colorA = 255;
-
-	// This works like this, I think the previous way I was doing it was incorrect.
-	// It was making the menu disappear but now this works
 	
 	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
-	
-	// Extras
-	HUD::SET_TEXT_PROPORTIONAL(true);
-	// Center justify
-	//HUD::SET_TEXT_JUSTIFICATION(0);
-	// Left justify
-	HUD::SET_TEXT_JUSTIFICATION(1);
-	// Right justify
-	//HUD::SET_TEXT_JUSTIFICATION(2);
-	//
 
-	HUD::SET_TEXT_FONT(0); // 0 - 4
-	//HUD::SET_TEXT_SCALE(0.3f, 0.3f);
-	HUD::SET_TEXT_SCALE(0.0f, 0.3f);
-
-	HUD::SET_TEXT_COLOUR(colorR, colorG, colorB, colorA);
-	//HUD::BEGIN_TEXT_COMMAND_PRINT("STRING");
-
-	//HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+	TextScripts::SetupTextOptions(colorR, colorG, colorB, colorA, true, TextJustify::LEFT);
 }
 
 /// <summary>
@@ -125,23 +166,7 @@ void TextScripts::SetTextEntry(const char* text, int colorR, int colorG, int col
 	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
 
-	// Extras
-	HUD::SET_TEXT_PROPORTIONAL(true);
-	// Center justify
-	//HUD::SET_TEXT_JUSTIFICATION(0);
-	// Left justify
-	HUD::SET_TEXT_JUSTIFICATION(1);
-	// Right justify
-	//HUD::SET_TEXT_JUSTIFICATION(2);
-	//
-
-	HUD::SET_TEXT_FONT(0); // 0 - 4
-	//HUD::SET_TEXT_SCALE(0.3f, 0.3f);
-	HUD::SET_TEXT_SCALE(0.0f, 0.3f);
-	HUD::SET_TEXT_COLOUR(colorR, colorG, colorB, colorA);
-	//HUD::BEGIN_TEXT_COMMAND_PRINT("STRING");
-
-	//HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+	TextScripts::SetupTextOptions(colorR, colorG, colorB, colorA, true, TextJustify::LEFT);
 }
 
 /// <summary>
@@ -176,32 +201,13 @@ void TextScripts::SetTextPosition()
 }
 
 /// <summary>
-/// Display text, not in use I moved this into the SetTextEntry function.
-/// </summary>
-/// <param name="text"></param>
-void TextScripts::DisplayText(const char* text)
-{
-	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
-}
-
-/// <summary>
-/// Setup the text.
+/// Setup the test text display, TODO Change this to do something else..
 /// </summary>
 void TextScripts::SetupText()
 {
+	SetTextEntry("Test");
 
-	//if (this->drawText)
-	//{
-		SetTextEntry("Test");
-
-		// TODO Test this here
-		//HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
-
-		//DisplayText("Test");
-
-		SetTextPosition();
-	//}
-
+	SetTextPosition();
 }
 
 /// <summary>
@@ -235,56 +241,42 @@ void TextScripts::DisplayCoordinates()
 	// The float y values are able to be changed if needed, but I mostly change the value to subtract it by.
 	// I used {:.2f} to strip the decimals down to 2, makes this a bit less annoying for displaying on the screen.
 
-	// TODO Is there any good reason why I am still subtracting the Y values in here? 
-	// Although this works fine now so I'll leave it alone.
-
+	//-----
 	// X coord
+	//-----
 	//std::string playerXString = std::format("X: {}", playerX);
 	std::string playerXString = std::format("X: {:.2f}", playerX);
 	SetTextEntry(playerXString.c_str());
 	
 	// Overriding my SetTextPosition function, it isn't needed for this.
-	//float y1 = .1f;
-	//y1 = .1f;
-	//TextPosition(y1 - .0125f);
-	//TextPosition(y1 - .0525f);
-	TextPosition(playerXMenuPosX, playerXMenuPosY - .0525f);
+	TextPosition(playerXMenuPosX, playerXMenuPosY);
 
+	//-----
 	// Y coord
+	//-----
 	//std::string playerYString = std::format("Y: {}", playerY);
 	std::string playerYString = std::format("Y: {:.2f}", playerY);
 	SetTextEntry(playerYString.c_str());
 
-	//float y2 = .1f;
-	//y2 = .1f;
-	//TextPosition(y1 - .0325f);
-	TextPosition(playerYMenuPosX, playerYMenuPosY - .0325f);
+	TextPosition(playerYMenuPosX, playerYMenuPosY);
 
+	//-----
 	// Z coord
+	//-----
 	//std::string playerZString = std::format("Z: {}", playerZ);
 	std::string playerZString = std::format("Z: {:.2f}", playerZ);
 	SetTextEntry(playerZString.c_str());
 
-	//float y3 = .1f;
-	//y3 = .1f;
-	//TextPosition(y1 - .0525f);
-	TextPosition(playerZMenuPosX, playerZMenuPosY - .0125f);
+	TextPosition(playerZMenuPosX, playerZMenuPosY);
 
+	//-----
 	// Heading
+	//-----
 	//std::string playerHeadingString = std::format("Heading: {}", playerHeading);
 	std::string playerHeadingString = std::format("Heading: {:.2f}", playerHeading);
 	SetTextEntry(playerHeadingString.c_str());
 
-	//float y4 = .155f;
-	//y4 = .155f;
-	//TextPosition(y4 - .0125f);
-
-	// TODO Test this
-	//TextPosition(x4, y4 - .0125f);
-	TextPosition(headingMenuPosX, headingMenuPosY - .0125f);
-
-
-
+	TextPosition(headingMenuPosX, headingMenuPosY);
 }
 
 

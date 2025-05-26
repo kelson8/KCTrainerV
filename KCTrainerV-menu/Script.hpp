@@ -19,6 +19,8 @@ namespace KCMenu
     void Thread2();
 
     extern std::map<Hash, std::string> g_modelNames; // Assuming 'Hash' is defined as a suitable integer type (e.g., int, DWORD, etc.)
+    
+    void ResetToggles();
     /*
      * BuildMenu builds the menu with its options and submenus.
      * This function is declared here, so Script.cpp can call it

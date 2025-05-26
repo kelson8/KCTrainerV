@@ -2,6 +2,8 @@
 #include <string>
 #include "IScriptBuilder.h"
 
+#include "Util/Enums.h"
+
 class TextScripts : public IScriptBuilder
 {
 public:
@@ -21,8 +23,6 @@ public:
 	void TextPosition(float y);
 	void TextPosition(float x, float y);
 	void SetTextPosition();
-
-	void DisplayText(const char* text);
 
 	// Displays text
 	// Test text
@@ -48,33 +48,30 @@ public:
 	// Making these a bit easier to go by for debugging.
 
 	// X position
-	float playerXMenuPosX = 0.190f;
-	//float playerXMenuPosY = 0.895f;
-	float playerXMenuPosY = 0.949f;
+	float playerXMenuPosX = 0.160f;
+	float playerXMenuPosY = 0.882f;
 
 
 	// Y position
-	//float playerYMenuPosX = 0.190f;
-	float playerYMenuPosX = 0.193f;
-	//float playerYMenuPosY = 0.900f;
-	float playerYMenuPosY = 0.951f;
+	float playerYMenuPosX = 0.160f;
+	float playerYMenuPosY = 0.908f;
 
 	// Z position
-	//float playerZMenuPosX = 0.190f;
-	float playerZMenuPosX = 0.189f;
-	//float playerZMenuPosY = 0.900f;
-	float playerZMenuPosY = 0.953f;
+	float playerZMenuPosX = 0.160f;
+	float playerZMenuPosY = 0.935f;
 	
 	// Heading position on menu
-	float headingMenuPosX = 0.205f;
-	//float headingMenuPosY = 0.920f;
-	float headingMenuPosY = 0.973f;
+	float headingMenuPosX = 0.160f;
+	float headingMenuPosY = 0.960f;
 
 private:
 	TextScripts() {} // Private constructor to prevent external instantiation
 	TextScripts(const TextScripts&) = delete;
 	TextScripts& operator=(const TextScripts&) = delete;
 
+	// Set text font options, for now I'll keep it private it doesn't need accessed outside this.
+	void SetupTextOptions();
+	void SetupTextOptions(int colorR, int colorG, int colorB, int colorA, bool textProportional, TextJustify textJustify);
 	
 };
 
