@@ -29,7 +29,7 @@ namespace Scripts
 			void LeaveVehicle(GTAPed ped, Vehicle vehicle, int flags);
 
 			void DriveToCoord(GTAPed ped, Vehicle vehicle, Vector3 pos, float speed, Any p6, Hash vehicleModel,
-				int drivingMode, float stopRange, float straightLineDistance);
+				eDrivingStyle drivingStyle, float stopRange, float straightLineDistance);
 
 			void DriveToCoordLongRange(GTAPed ped, Vehicle vehicle, Vector3 pos, float speed, int driveMode, float stopRange);
 			void DriveWander(GTAPed ped, Vehicle vehicle, float speed, int drivingStyle);

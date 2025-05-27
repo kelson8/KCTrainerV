@@ -101,15 +101,15 @@ namespace Scripts
 		/// <param name="speed"></param>
 		/// <param name="p6"></param>
 		/// <param name="vehicleModel"></param>
-		/// <param name="drivingMode"></param>
+		/// <param name="drivingStyle"></param>
 		/// <param name="stopRange"></param>
 		/// <param name="straightLineDistance"></param>
 		void Tasks::DriveToCoord(GTAPed ped, Vehicle vehicle, Vector3 pos, float speed, Any p6, Hash vehicleModel,
-			int drivingMode, float stopRange, float straightLineDistance)
+			eDrivingStyle drivingStyle, float stopRange, float straightLineDistance)
 		{
 			if (DOES_ENTITY_EXIST(ped) && DOES_ENTITY_EXIST(vehicle))
 			{
-				TASK_VEHICLE_DRIVE_TO_COORD(ped, vehicle, pos, speed, p6, vehicleModel, drivingMode, stopRange, straightLineDistance);
+				TASK_VEHICLE_DRIVE_TO_COORD(ped, vehicle, pos, speed, p6, vehicleModel, drivingStyle, stopRange, straightLineDistance);
 			}
 		}
 

@@ -159,6 +159,7 @@ namespace MiscScripts
 	{
 		void Request(Hash hash);
 		void MarkAsNoLongerNeeded(Hash model);
+		bool IsInCdImage(Hash model);
 	} // namespace Model
 
 } // Namespace MiscScripts

@@ -3,7 +3,12 @@
 #include "Constants.hpp"
 #include "PedScripts.h"
 
+
+// Player
 #include "PlayerScripts.h"
+#include "Peds/PedTaskScripts.h"
+
+#include "MiscScripts.h"
 
 #include "Util/UI.hpp"
 
@@ -13,7 +18,15 @@
 #include "Memory/WeaponPool.h"
 #include "Util/Random.h"
 
+PedScripts::PedScripts()
+	: m_pedToSpawn(0),
+	m_helicopterPed1(0),
+	m_helicopterPed2(0),
+	m_helicopterVehicle1(0),
+	m_pedHash(0)
+{
 
+}
 
 // TODO Set these up
 /*
@@ -122,19 +135,16 @@ void PedScripts::SetAllPedsAsCops()
 }
 #endif
 
+#pragma region CreatingPeds
 
-// This below is untested.
-// I would like to spawn a ped, make them drive around and make the player warp into the passenger seat.
-// TODO Set this up to be used in the function, possibly move this into the header.
-// TODO Figure out better way to do this.
-Ped ped = 0;
 
 /// <summary>
 /// Create a ped, if using this function be sure to load the ped with the MiscScripts::LoadModel, or ModelScripts::LoadModel
 /// Once I create it.
 /// TODO Set this up, possibly make this set a Ped value to be modified later.
 /// </summary>
-/// <param name="pedType">The type for the ped: https://alloc8or.re/gta5/doc/enums/ePedType.txt</param>
+/// <param name="pedType">The type for the ped: https://alloc8or.re/gta5/doc/enums/ePedType.txt, now uses values from my Enum
+/// Like this: PED_TYPE_CIVMALE</param>
 /// <param name="modelHash">The model hash or name, can use my hash function like this: "a_m_y_stwhi_02"_hash or 
 /// MISC::GET_HASH_KEY("a_m_y_stwhi_02"), list of ped model ids: https://docs.fivem.net/docs/game-references/ped-models/
 /// </param>
@@ -146,12 +156,12 @@ Ped ped = 0;
 /// seems to be true in Chaos Mod, I'll experiment with this one later
 /// </param>
 /// <param name="bScriptHostPed">Mostly set to false in original scripts.</param>
-void PedScripts::CreatePed(int pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed)
+void PedScripts::CreatePed(ePedType pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed)
 {
 	auto& playerScripts = PlayerScripts::GetInstance();
 	Ped player = playerScripts.GetPlayerPed();
 	//Ped ped = CREATE_PED(pedType, modelHash, position, heading, isNetwork, bScriptHostPed);
-	ped = CREATE_PED(pedType, modelHash, position, heading, isNetwork, bScriptHostPed);
+	m_pedToSpawn = CREATE_PED(pedType, modelHash, position, heading, isNetwork, bScriptHostPed);
 	/*
 	// Other useful things to do for the ped:
 			SET_ENTITY_HAS_GRAVITY(ped, false);
@@ -161,10 +171,135 @@ void PedScripts::CreatePed(int pedType, Hash modelHash, Vector3 position, float 
 	*/
 }
 
+/// <summary>
+/// Spawn a ped inside of a helicopter, make them fly to the middle of map
+/// TODO Make this function accept a targetCoords along with the spawn position.
+/// Also, rename position to spawnPosition.
+/// Adapted from my FiveM lua scripts.
+/// </summary>
+//void PedScripts::CreateHelicopterPed(int pedType, Hash modelHash, Vector3 position, float heading)
+void PedScripts::CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 position, float heading)
+{	
+	auto& playerScripts = PlayerScripts::GetInstance();
+	auto& pedTaskScripts = Scripts::Ped::Tasks::GetInstance();
+	
+	Ped player = playerScripts.GetPlayerPed();
+	
+
+	//Add 5 to the first set of coords and 10 to the other set, leave the z coord alone
+	//This is where the helicopters spawn, and the peds teleport into them
+	float posX1 = position.x + 5;
+	float posY1 = position.y + 5;
+	
+	float posX2 = position.x + 10;
+	float posY2 = position.y + 10;
+
+	// TODO Move this into the function
+	Vector3 targetCoords = Vector3(-283.72, 806.09, 250.5);
+	//
+
+	// Helicopter speed and other values
+
+	float speed = 20.0f; // Speed in meters per second
+	float stopRange = 20.0f;
+	float straightLineDistance = 20.0f;
+
+	bool crashIntoRandomVehicle = false;
+	bool landHelicopter = false;
+	
+	// Helicopter model
+	Hash buzzardModel = "buzzard2"_hash;
+
+	// Assign the ped to the hash value
+	m_pedHash = modelHash;
+
+	// Moved into these functions
+	RemoveHeliPed();
+	BlowupHelicopter();
+
+
+	//Ped ped = CREATE_PED(pedType, modelHash, position, heading, isNetwork, bScriptHostPed);
+	
+	// Create the ped
+	// First check if it exists in the game, then request it
+	if (MiscScripts::Model::IsInCdImage(modelHash))
+	{
+		MiscScripts::Model::Request(modelHash);
+		//m_helicopterPed1 = CREATE_PED(pedType, modelHash, position, heading, false, false);
+		m_helicopterPed1 = CREATE_PED(pedType, modelHash, Vector3(posX2, posY2, position.z), heading, false, false);
+		//pedTaskScripts.WarpPedIntoVehicle(m_helicopterPed1, )
+
+		// Also add a blip onto them so I can find them..
+		// TODO Make these into functions later
+		
+		SET_PED_HAS_AI_BLIP(m_helicopterPed1, true);
+
+		// TODO Make an enum of these later, there are over 900 of these so I'll need to automate it.
+		int helicopterRadarSprite = 64;
+		SET_PED_AI_BLIP_SPRITE(m_helicopterPed1, helicopterRadarSprite);
+		SET_PED_AI_BLIP_HAS_CONE(m_helicopterPed1, false);
+	}
+
+	// Create the helicopter
+	// First check if it exists in the game, then request it
+	if (MiscScripts::Model::IsInCdImage(buzzardModel))
+	{
+		MiscScripts::Model::Request(buzzardModel);
+		m_helicopterVehicle1 = CREATE_VEHICLE(buzzardModel, Vector3(posX1, posY1, position.z), 20.0f, false, false, false);
+	}
+
+	// Make sure both the helicopter ped and helicopter exist
+	// If so, warp the ped into it and make them wander to the target.
+	// TODO Test this
+	if (DoesEntityExist(m_helicopterPed1) && DoesEntityExist(m_helicopterVehicle1))
+	{
+		pedTaskScripts.WarpPedIntoVehicle(m_helicopterPed1, m_helicopterVehicle1, 0);
+		pedTaskScripts.DriveToCoord(m_helicopterPed1, m_helicopterVehicle1, targetCoords, speed,
+			false, buzzardModel, DrivingStyleIgnoreLights, stopRange, straightLineDistance);
+	}
+}
+
+/// <summary>
+/// Mark the heli ped as no longer needed, and remove them.
+/// </summary>
+void PedScripts::RemoveHeliPed()
+{
+	if (DoesEntityExist(m_helicopterPed1))
+	{
+		//MiscScripts::Model::MarkAsNoLongerNeeded(modelHash);
+		MiscScripts::Model::MarkAsNoLongerNeeded(m_pedHash);
+		DELETE_PED(&m_helicopterPed1);
+	}
+}
+
+/// <summary>
+/// Mark the helicopter as no longer needed, and blow it up.
+/// </summary>
+void PedScripts::BlowupHelicopter()
+{
+	Hash buzzardModel = "buzzard2"_hash;
+
+	// Values for explosion on the vehicles
+	int gaspumpExplosion = 9;
+	int railgunExplosion = 36;
+	float damageScale = 100.0;
+	float cameraShake = 1.0f;
+
+	// This works for blowing up the helicopter.
+	if (DoesEntityExist(m_helicopterVehicle1))
+	{
+		Vector3 heliCoords = GET_ENTITY_COORDS(m_helicopterVehicle1, false);
+		MiscScripts::Model::MarkAsNoLongerNeeded(buzzardModel);
+		DELETE_ENTITY(&m_helicopterVehicle1);
+		ADD_EXPLOSION(heliCoords, gaspumpExplosion, damageScale, true, false, cameraShake, false);
+	}
+}
+
+#pragma endregion
 
 
 // TODO Test these.
-bool PedScripts::DoesPedExist(Ped ped)
+bool PedScripts::DoesEntityExist(Ped ped)
 {
 	if (DOES_ENTITY_EXIST(ped))
 	{

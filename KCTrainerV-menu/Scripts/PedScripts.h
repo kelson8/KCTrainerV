@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IScriptBuilder.h"
+#include "Util/Enums.h"
 
 class PedScripts : public IScriptBuilder
 {
@@ -16,9 +17,16 @@ public:
 	void Tick() override;
 
 	// TODO Test some of these, most of these are untested.
-	void CreatePed(int pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed);
+	//void CreatePed(int pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed);
+	void CreatePed(ePedType pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed);
+	// This seems to work
+	void CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 position, float heading);
+
+	void RemoveHeliPed();
+	void BlowupHelicopter();
+
 	
-	bool DoesPedExist(Ped ped);
+	bool DoesEntityExist(Entity entity);
 	bool DoesVehicleExist(Vehicle vehicle);
 
 	// Weapon
@@ -42,7 +50,20 @@ public:
 #endif
 
 private:
-	PedScripts() {} // Private constructor to prevent external instantiation
+	//PedScripts() {} // Private constructor to prevent external instantiation
+	PedScripts();
 	PedScripts(const PedScripts&) = delete;
 	PedScripts& operator=(const PedScripts&) = delete;
+
+	// This below is untested.
+	// I would like to spawn a ped, make them drive around and make the player warp into the passenger seat.
+	Ped m_pedToSpawn = 0;
+	Ped m_helicopterPed1 = 0;
+	Ped m_helicopterPed2 = 0;
+
+	Vehicle m_helicopterVehicle1 = 0;
+
+	// Helicopter model
+	//Hash m_buzzardModel = "buzzard2"_hash;
+	Hash m_pedHash = 0;
 };
