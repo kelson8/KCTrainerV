@@ -22,11 +22,8 @@ public:
 
 	void TextPosition(float y);
 	void TextPosition(float x, float y);
-	void SetTextPosition();
 
-	// Displays text
-	// Test text
-	void SetupText();
+	// Display text
 
 	// Coords and heading
 	void DisplayCoordinates();
@@ -37,7 +34,6 @@ public:
 	//
 
 	// Booleans
-	bool drawText = false;
 	bool drawCoords = false;
 
 
@@ -63,6 +59,47 @@ public:
 	// Heading position on menu
 	float headingMenuPosX = 0.160f;
 	float headingMenuPosY = 0.960f;
+
+	// Begin getters and setters for position
+	// TODO Test these getters and setters, for now I will leave this system alone.
+	// Actually, would these even work with my current setup, which is directly modifying the floats?
+	float GetPlayerXMenuX()
+	{
+		return playerXMenuPosX;
+	}
+
+	float GetPlayerXMenuY()
+	{
+		return playerXMenuPosY;
+	}
+
+	float GetPlayerYMenuX()
+	{
+		return playerYMenuPosX;
+	}
+
+	float GetPlayerYMenuY()
+	{
+		return playerYMenuPosY;
+	}
+
+	float GetPlayerZMenuX()
+	{
+		return playerZMenuPosX;
+	}
+
+	float GetPlayerZMenuY()
+	{
+		return playerZMenuPosY;
+	}
+
+	// Just one setter for later testing
+	void SetPlayerXMenuX(float value)
+	{
+		playerXMenuPosX = value;
+	}
+
+	// End getters and setters for position
 
 private:
 	TextScripts() {} // Private constructor to prevent external instantiation

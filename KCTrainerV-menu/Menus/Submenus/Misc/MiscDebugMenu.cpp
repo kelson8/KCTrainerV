@@ -85,8 +85,6 @@ namespace Misc
 
         mbCtx.BoolOption("Toggle airstrike test", MiscScripts::EXFeatures::airStrikeRunning, { "Toggle the airstrikes on/off" });
 
-        mbCtx.BoolOption("Draw text on screen", textScripts.drawText, { "Toggle test text to draw on screen." });
-
 #ifdef EXTRA_FEATURES
 
         // Toggle force field

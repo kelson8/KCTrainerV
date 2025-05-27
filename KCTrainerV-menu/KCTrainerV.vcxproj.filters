@@ -267,6 +267,9 @@
     <ClCompile Include="Menus\Submenus\Weapon\WeaponCategoryMenu.cpp">
       <Filter>Menus\Submenus\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Peds\PedTaskScripts.cpp">
+      <Filter>Scripts\Peds</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -635,6 +638,9 @@
     <ClInclude Include="Menus\Submenus\Weapon\WeaponCategoryMenu.h">
       <Filter>Menus\Submenus\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Peds\PedTaskScripts.h">
+      <Filter>Scripts\Peds</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -735,6 +741,21 @@
     </Filter>
     <Filter Include="Menus\Submenus\Teleport">
       <UniqueIdentifier>{d47eb3a0-702c-4c39-80c7-f30652bf4b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Misc">
+      <UniqueIdentifier>{75bb302d-6d6c-46af-815c-ae14f7596ae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Peds">
+      <UniqueIdentifier>{88e930db-7637-4e9c-b9da-6051f19426e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Scaleform">
+      <UniqueIdentifier>{e48ad60a-9c9b-4d2a-8022-1a6a2d99f941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Stats">
+      <UniqueIdentifier>{18a10c87-7dcb-4279-a530-fb38e7b34d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\World">
+      <UniqueIdentifier>{8bff9fb9-f2c6-4a79-9d53-5f01f0de12fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -15,11 +15,9 @@
 // To use this (This needs to be run in a loop):
 // 1. Set the text: std::string textToDisplay = "Test Text";
 // 2. Set the text entry: SetTextEntry(textToDisplay.c_str());
-// 3. Set the text position (This is in the bottom left by the map): TextPosition(0.193f, 0.951f - .0525f);
-
+// 3. Set the text position (This is in the bottom left by the map): TextPosition(0.160f, 0.882f);
 
 // Lua example from FiveM for usage:
-// TODO Add this to the main loop if I turn on a debug text such as how many cops I killed to show on screen.
 /*
 CreateThread(function()
 	local player = GetPlayerPed(-1)
@@ -51,12 +49,12 @@ void TextScripts::Tick()
 {
 	//-----
 	// Display text on screen
-	// I got this to work
+	// Removed this function because all it did was draw 'Test' to the screen.
 	//-----
-	if (TextScripts::drawText)
-	{
-		TextScripts::SetupText();
-	}
+	//if (TextScripts::drawText)
+	//{
+	//	TextScripts::SetupText();
+	//}
 
 	//-----
 	// Draw coordinates to the screen
@@ -78,9 +76,6 @@ void TextScripts::Tick()
 /// </summary>
 void TextScripts::SetupTextOptions()
 {
-
-	// TODO Possibly setup separate functions for toggling these? I would like to fully control some of these options
-	// Without duplicating all these natives in each function that requires it.
 	// Extras
 	HUD::SET_TEXT_PROPORTIONAL(true);
 	// Center justify
@@ -156,13 +151,9 @@ void TextScripts::SetTextEntry(const char* text)
 /// This will need to be ran before drawing anything to the screen.
 /// Adapted from my FiveM scripts originally in lua.
 /// This version of the function takes a colorR, colorG, colorB, and colorA for the colors.
-/// TODO Make separate functions for left justify, center justify, and right justify.
 /// </summary>
 void TextScripts::SetTextEntry(const char* text, int colorR, int colorG, int colorB, int colorA)
 {
-	// This works like this, I think the previous way I was doing it was incorrect.
-	// It was making the menu disappear but now this works
-
 	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
 
@@ -188,26 +179,6 @@ void TextScripts::TextPosition(float y)
 void TextScripts::TextPosition(float x, float y)
 {
 	HUD::END_TEXT_COMMAND_DISPLAY_TEXT(Vector2(x, y), 0);
-}
-
-/// <summary>
-/// Set the text position using the above function
-/// </summary>
-void TextScripts::SetTextPosition()
-{
-	float y = .1f;
-	//TextPosition(0.0200f);
-	TextPosition(y - .0125f);
-}
-
-/// <summary>
-/// Setup the test text display, TODO Change this to do something else..
-/// </summary>
-void TextScripts::SetupText()
-{
-	SetTextEntry("Test");
-
-	SetTextPosition();
 }
 
 /// <summary>

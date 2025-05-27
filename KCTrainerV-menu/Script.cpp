@@ -193,7 +193,6 @@ void KCMenu::ResetToggles()
     Stats::Cop::isCopsKilledDisplayActive = false;
 
     // Text scripts
-    textScripts.drawText = false;
     textScripts.drawCoords = false;
 
     // Vehicle Scripts
