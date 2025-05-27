@@ -258,6 +258,15 @@
     <ClCompile Include="Menus\Submenus\Misc\MiscMusicMenu.cpp">
       <Filter>Menus\Submenus\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="Menus\Submenus\World\WorldWeatherMenu.cpp">
+      <Filter>Menus\Submenus\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\Submenus\World\WorldTimeMenu.cpp">
+      <Filter>Menus\Submenus\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\Submenus\Weapon\WeaponCategoryMenu.cpp">
+      <Filter>Menus\Submenus\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -616,6 +625,15 @@
     </ClInclude>
     <ClInclude Include="Menus\Submenus\Misc\MiscMusicMenu.h">
       <Filter>Menus\Submenus\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\World\WorldWeatherMenu.h">
+      <Filter>Menus\Submenus\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\World\WorldTimeMenu.h">
+      <Filter>Menus\Submenus\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\Weapon\WeaponCategoryMenu.h">
+      <Filter>Menus\Submenus\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

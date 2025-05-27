@@ -221,6 +221,9 @@
     <ClCompile Include="Menus\Submenus\Player\ModelChangerMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Player\PlayerOptionsMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.cpp" />
+    <ClCompile Include="Menus\Submenus\Weapon\WeaponCategoryMenu.cpp" />
+    <ClCompile Include="Menus\Submenus\World\WorldTimeMenu.cpp" />
+    <ClCompile Include="Menus\Submenus\World\WorldWeatherMenu.cpp" />
     <ClCompile Include="Menus\TeleportMenu.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -377,6 +380,9 @@
     <ClInclude Include="Menus\Submenus\Player\ModelChangerMenu.h" />
     <ClInclude Include="Menus\Submenus\Player\PlayerOptionsMenu.h" />
     <ClInclude Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.h" />
+    <ClInclude Include="Menus\Submenus\Weapon\WeaponCategoryMenu.h" />
+    <ClInclude Include="Menus\Submenus\World\WorldTimeMenu.h" />
+    <ClInclude Include="Menus\Submenus\World\WorldWeatherMenu.h" />
     <ClInclude Include="Menus\TeleportMenu.h" />
     <ClInclude Include="Menus\VehicleMenu.h" />
     <ClInclude Include="Menus\WeaponMenu.h" />

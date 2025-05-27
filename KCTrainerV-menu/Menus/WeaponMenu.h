@@ -16,12 +16,6 @@ public:
 
 	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context) override;
 
-	// New setup for weapons
-	void BuildWeaponMenu(NativeMenu::Menu& mbCtx, KCMainScript& context);
-	
-	// Setup for the weapon categories.
-	void BuildWeaponCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScript& context, const std::string& categoryKey);
-
 private:
 	WeaponMenu() {} // Private constructor to prevent external instantiation
 	WeaponMenu(const WeaponMenu&) = delete;

@@ -415,14 +415,16 @@ void KCMenu::LoadModelNamesFromJson(const std::string& filePath) {
         log_output(std::format("Successfully loaded {} model names from {}", g_modelNames.size(), filePath));
 
         // Test for displaying a random model
-
         // This works!!
-        auto it = g_modelNames.find(-808157183);
-        if (it != g_modelNames.end())
-        {
-            std::string entityModelString = std::format("Entity Model: {}", it->second);
-            log_output(entityModelString);
-        }
+        
+        // Disabled, this was just an extra log value for a test,
+        // searching through the objects.json file with a hash name
+        //auto it = g_modelNames.find(-808157183);
+        //if (it != g_modelNames.end())
+        //{
+        //    std::string entityModelString = std::format("Entity Model: {}", it->second);
+        //    log_output(entityModelString);
+        //}
         
 
     }

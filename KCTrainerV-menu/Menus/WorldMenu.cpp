@@ -16,33 +16,6 @@
 #include "Util/Hash.h"
 #include "Util/Random.h"
 
-#pragma region WeatherList
-
-const std::vector<WeatherInfo> WorldMenu::g_weatherList =
-{
-    // { "Display Name", "NATIVE_WEATHER_STRING" }
-    {"Blizzard", "BLIZZARD"},
-    {"Clear", "CLEAR"},
-    {"Clearing", "CLEARING"},
-    {"Clouds", "CLOUDS"},
-    {"Extra Sunny", "EXTRASUNNY"},
-    {"Foggy", "FOGGY"},
-    {"Halloween", "HALLOWEEN"}, // Verify exact string from native docs
-    {"Neutral", "NEUTRAL"},
-    {"Overcast", "OVERCAST"},
-    {"Rain", "RAIN"},
-    {"Rain Halloween", "RAIN_HALLOWEEN"}, // Verify exact string
-    {"Smog", "SMOG"},
-    {"Snow", "SNOW"},
-    {"Snow Light", "SNOWLIGHT"},
-    {"Snow Halloween", "SNOW_HALLOWEEN"}, // Verify exact string
-    {"Thunder", "THUNDER"},
-    // Disabled, this weather type does nothing
-    //{"Unknown", "UNKNOWN"},
-};
-
-#pragma endregion
-
 void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& playerScripts = PlayerScripts::GetInstance();
@@ -159,38 +132,5 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     if (mbCtx.Option("Set time scale"))
     {
         SET_TIME_SCALE(timeScale);
-    }
-}
-
-/// <summary>
-/// World Menu - Weather sub menu
-/// TODO Test this
-/// </summary>
-/// <param name="mbCtx"></param>
-/// <param name="context"></param>
-void WorldMenu::BuildWeatherMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
-{
-    mbCtx.Title("Weather");
-
-    for (const auto& weatherInfo : WorldMenu::g_weatherList) 
-    {
-        if (mbCtx.Option(weatherInfo.name)) 
-        {
-            SET_WEATHER_TYPE_NOW(weatherInfo.weatherName.c_str());
-        }
-    }
-}
-
-void WorldMenu::BuildTimeMenu(NativeMenu::Menu& mbCtx, KCMainScript& context)
-{
-    mbCtx.Title("Time");
-
-    mbCtx.IntOption("Hour", hourToSet, minHourToSet, maxHourToSet, 1, { "Set the hours for the in game clock." });
-    mbCtx.IntOption("Minute", minuteToSet, minMinuteToSet, maxMinuteToSet, 1, { "Set the minutes for the in game clock." });
-    mbCtx.IntOption("Second", secondToSet, minSecondToSet, maxSecondToSet, 1, { "Set the seconds for the in game clock." });
-
-    if (mbCtx.Option("Set Time", { "Set the time to the above values." }))
-    {
-        SET_CLOCK_TIME(hourToSet, minuteToSet, secondToSet);
     }
 }

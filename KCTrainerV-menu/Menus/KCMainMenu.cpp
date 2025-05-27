@@ -32,8 +32,8 @@
 #include "PedMenu.h"
 #include "TeleportMenu.h"
 #include "VehicleMenu.h"
-#include "WorldMenu.h"
-#include "WeaponMenu.h"
+
+
 #include "Submenus/Vehicle/VehicleOptionsMenu.h"
 
 // Misc
@@ -47,6 +47,14 @@
 #include "Submenus/Player/ModelChangerMenu.h"
 #include "Submenus/Player/PlayerOptionsMenu.h"
 
+// World
+#include "WorldMenu.h"
+#include "Submenus/World/WorldWeatherMenu.h"
+#include "Submenus/World/WorldTimeMenu.h"
+
+// Weapon
+#include "WeaponMenu.h"
+#include "Submenus/Weapon/WeaponCategoryMenu.h"
 
 // TODO Setup
 //#include "Submenus/Misc/ChaosMenu.h"
@@ -104,8 +112,6 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     
     auto& vehicleMenu = VehicleMenu::GetInstance();
     auto& vehicleOptionsMenu = VehicleOptionsMenu::GetInstance();
-    
-    auto& worldMenu = WorldMenu::GetInstance();
 
     // Misc menu
     auto& miscMenu = MiscMenu::GetInstance();
@@ -118,7 +124,16 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 
     //
 
+    // World menu
+    auto& worldMenu = WorldMenu::GetInstance();
+    auto& worldWeatherMenu = Menus::World::WeatherMenu::GetInstance();
+    auto& worldTimeMenu = Menus::World::TimeMenu::GetInstance();
+    //
+
+    // Weapon menu
     auto& weaponMenu = WeaponMenu::GetInstance();
+    auto& weaponCategoryMenu = Menus::Weapon::CategoryMenu::GetInstance();
+    //
 
     std::vector<CScriptMenu<KCMainScript>::CSubmenu> submenus;
     //-----
@@ -260,7 +275,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     submenus.emplace_back("WeaponCategoriesSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponMenu(mbCtx, context);
+            weaponCategoryMenu.Build(mbCtx, context);
         }
     );
 
@@ -270,7 +285,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     submenus.emplace_back("MeleeWeaponsSubmenu", // Unique ID for Melee Weapons
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "melee");
+            weaponCategoryMenu.BuildWeaponCategorySubmenu(mbCtx, context, "melee");
         }
     );
 #pragma endregion
@@ -278,28 +293,28 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     submenus.emplace_back("HandgunWeaponsSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "handguns"); // Pass category key
+            weaponCategoryMenu.BuildWeaponCategorySubmenu(mbCtx, context, "handguns"); // Pass category key
         }
     );
 
     submenus.emplace_back("SmgWeaponsSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "smg"); // Pass category key
+            weaponCategoryMenu.BuildWeaponCategorySubmenu(mbCtx, context, "smg"); // Pass category key
         }
     );
 
     submenus.emplace_back("ShotgunWeaponsSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "shotguns"); // Pass category key
+            weaponCategoryMenu.BuildWeaponCategorySubmenu(mbCtx, context, "shotguns"); // Pass category key
         }
     );
 
     submenus.emplace_back("AssaultRifleWeaponsSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "assault_rifles"); // Pass category key
+            weaponCategoryMenu.BuildWeaponCategorySubmenu(mbCtx, context, "assault_rifles"); // Pass category key
         }
     );
 
@@ -308,35 +323,35 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     submenus.emplace_back("MachineGunsWeaponsSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "machine_guns"); // Pass category key
+            weaponCategoryMenu.BuildWeaponCategorySubmenu(mbCtx, context, "machine_guns"); // Pass category key
         }
     );
 
     submenus.emplace_back("SniperRiflesWeaponsSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "sniper_rifles"); // Pass category key
+            weaponCategoryMenu.BuildWeaponCategorySubmenu(mbCtx, context, "sniper_rifles"); // Pass category key
         }
     );
 
     submenus.emplace_back("HeavyWeaponsSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "heavy_weapons"); // Pass category key
+            weaponCategoryMenu.BuildWeaponCategorySubmenu(mbCtx, context, "heavy_weapons"); // Pass category key
         }
     );
 
     submenus.emplace_back("ThrowableWeaponsSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "throwables"); // Pass category key
+            weaponCategoryMenu.BuildWeaponCategorySubmenu(mbCtx, context, "throwables"); // Pass category key
         }
     );
 
     submenus.emplace_back("MiscWeaponsSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            weaponMenu.BuildWeaponCategorySubmenu(mbCtx, context, "misc"); // Pass category key
+            weaponCategoryMenu.BuildWeaponCategorySubmenu(mbCtx, context, "misc"); // Pass category key
         }
     );
 
@@ -648,8 +663,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     submenus.emplace_back("WorldWeatherSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            worldMenu.BuildWeatherMenu(mbCtx, context);
-
+            worldWeatherMenu.Build(mbCtx, context);
         });
 
     //-----
@@ -658,8 +672,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     submenus.emplace_back("WorldTimeSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            worldMenu.BuildTimeMenu(mbCtx, context);
-
+            worldTimeMenu.Build(mbCtx, context);
         });
 
 #pragma endregion
