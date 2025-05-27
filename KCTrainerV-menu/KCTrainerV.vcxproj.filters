@@ -243,6 +243,21 @@
     <ClCompile Include="Menus\Submenus\Player\PlayerOptionsMenu.cpp">
       <Filter>Menus\Submenus\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Menus\Submenus\Misc\GlobalsMenu.cpp">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\Submenus\Misc\MiscDebugMenu.cpp">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\Submenus\Misc\MiscBlipsMenu.cpp">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\Submenus\Misc\MiscIdGunMenu.cpp">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\Submenus\Misc\MiscMusicMenu.cpp">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -587,6 +602,21 @@
     <ClInclude Include="..\thirdparty\json\single_include\nlohmann\json_fwd.hpp">
       <Filter>ThirdParty\json</Filter>
     </ClInclude>
+    <ClInclude Include="Menus\Submenus\Misc\GlobalsMenu.h">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\Misc\MiscDebugMenu.h">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\Misc\MiscBlipsMenu.h">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\Misc\MiscIdGunMenu.h">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\Misc\MiscMusicMenu.h">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -672,6 +702,21 @@
     </Filter>
     <Filter Include="ThirdParty\json">
       <UniqueIdentifier>{72b782d4-1c76-4ba6-beef-9a1af69ff9c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus\Submenus\Misc">
+      <UniqueIdentifier>{69a8d198-3da4-4384-8056-b23ae5e515bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus\Submenus\World">
+      <UniqueIdentifier>{beb71c83-280d-4bba-9375-b942c9bd6d9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus\Submenus\Weapon">
+      <UniqueIdentifier>{a8a67630-d55c-43b4-b565-a91d2a1eec62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus\Submenus\Ped">
+      <UniqueIdentifier>{75006cb3-79fd-4498-a1cf-22a95f44b2a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus\Submenus\Teleport">
+      <UniqueIdentifier>{d47eb3a0-702c-4c39-80c7-f30652bf4b4f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

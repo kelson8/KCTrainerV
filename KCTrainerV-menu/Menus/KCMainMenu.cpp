@@ -33,9 +33,16 @@
 #include "TeleportMenu.h"
 #include "VehicleMenu.h"
 #include "WorldMenu.h"
-#include "MiscMenu.h"
 #include "WeaponMenu.h"
 #include "Submenus/Vehicle/VehicleOptionsMenu.h"
+
+// Misc
+#include "MiscMenu.h"
+#include "Submenus/Misc/GlobalsMenu.h"
+#include "Submenus/Misc/MiscBlipsMenu.h"
+#include "Submenus/Misc/MiscDebugMenu.h"
+#include "Submenus/Misc/MiscIdGunMenu.h"
+#include "Submenus/Misc/MiscMusicMenu.h"
 
 #include "Submenus/Player/ModelChangerMenu.h"
 #include "Submenus/Player/PlayerOptionsMenu.h"
@@ -99,7 +106,18 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     auto& vehicleOptionsMenu = VehicleOptionsMenu::GetInstance();
     
     auto& worldMenu = WorldMenu::GetInstance();
+
+    // Misc menu
     auto& miscMenu = MiscMenu::GetInstance();
+    auto& miscGlobalsMenu = Misc::GlobalsMenu::GetInstance();
+    auto& miscDebugMenu = Misc::DebugMenu::GetInstance();
+    auto& miscIdGunMenu = Misc::IdGunMenu::GetInstance();
+    auto& miscBlipsMenu = Misc::BlipsMenu::GetInstance();
+
+    auto& miscMusicMenu = Misc::MusicMenu::GetInstance();
+
+    //
+
     auto& weaponMenu = WeaponMenu::GetInstance();
 
     std::vector<CScriptMenu<KCMainScript>::CSubmenu> submenus;
@@ -562,8 +580,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     submenus.emplace_back("MiscMusicSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            miscMenu.BuildMusicMenu(mbCtx, context);
-
+            miscMusicMenu.Build(mbCtx, context);
         });
 
     //-----
@@ -584,7 +601,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     submenus.emplace_back("MiscBlipsSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            miscMenu.BuildBlipsSubmenu(mbCtx, context);
+            miscBlipsMenu.Build(mbCtx, context);
 
         });
 
@@ -594,8 +611,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     submenus.emplace_back("MiscDebugSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            miscMenu.BuildDebugSubMenu(mbCtx, context);
-            
+            miscDebugMenu.Build(mbCtx, context);
         });
 
 
@@ -605,9 +621,22 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     submenus.emplace_back("MiscIDGunDebugSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            miscMenu.BuildIDGunDebugMenu(mbCtx, context);
+            miscIdGunMenu.Build(mbCtx, context);
 
         });
+
+
+    //-----
+    // Misc Globals sub menu
+    //-----
+    submenus.emplace_back("MiscGlobalsSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            miscGlobalsMenu.Build(mbCtx, context);
+
+        });
+
+    //
 
 #pragma endregion
 

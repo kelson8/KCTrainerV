@@ -213,6 +213,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Menus\Submenus\Misc\GlobalsMenu.cpp" />
+    <ClCompile Include="Menus\Submenus\Misc\MiscBlipsMenu.cpp" />
+    <ClCompile Include="Menus\Submenus\Misc\MiscDebugMenu.cpp" />
+    <ClCompile Include="Menus\Submenus\Misc\MiscIdGunMenu.cpp" />
+    <ClCompile Include="Menus\Submenus\Misc\MiscMusicMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Player\ModelChangerMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Player\PlayerOptionsMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.cpp" />
@@ -364,6 +369,11 @@
     <ClInclude Include="Menus\MiscMenu.h" />
     <ClInclude Include="Menus\PedMenu.h" />
     <ClInclude Include="Menus\PlayerMenu.h" />
+    <ClInclude Include="Menus\Submenus\Misc\GlobalsMenu.h" />
+    <ClInclude Include="Menus\Submenus\Misc\MiscBlipsMenu.h" />
+    <ClInclude Include="Menus\Submenus\Misc\MiscDebugMenu.h" />
+    <ClInclude Include="Menus\Submenus\Misc\MiscIdGunMenu.h" />
+    <ClInclude Include="Menus\Submenus\Misc\MiscMusicMenu.h" />
     <ClInclude Include="Menus\Submenus\Player\ModelChangerMenu.h" />
     <ClInclude Include="Menus\Submenus\Player\PlayerOptionsMenu.h" />
     <ClInclude Include="Menus\Submenus\Vehicle\VehicleOptionsMenu.h" />
