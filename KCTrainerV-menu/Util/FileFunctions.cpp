@@ -1,7 +1,10 @@
 #include "pch.h"
 
-#include "Scripts/PlayerScripts.h"
 #include "Scripts/TextScripts.h"
+
+// Player
+#include "Scripts/PlayerScripts.h"
+#include "Scripts/Player/PlayerTeleportScripts.h"
 
 #include "inc/types.h"
 
@@ -101,13 +104,23 @@ bool FileFunctions::SavePlayerMenuTextPositions(const std::string& fileName)
 void FileFunctions::SaveCoordinatesToFile(const std::string& fileName)
 {
 	auto& playerScripts = PlayerScripts::GetInstance();
+	auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
 	// Get player coords and heading.
+#ifndef MOVE_PLAYER_TELEPORTS
 	Vector3 playerCoords = playerScripts.GetPlayerCoords();
+#else
+	Vector3 playerCoords = playerTeleportScripts.GetPlayerCoords();
+#endif
 	float playerX = playerCoords.x;
 	float playerY = playerCoords.y;
 	float playerZ = playerCoords.z;
 
+
+#ifndef MOVE_PLAYER_TELEPORTS
 	float playerHeading = playerScripts.GetPlayerHeading();
+#else
+	float playerHeading = playerTeleportScripts.GetPlayerHeading();
+#endif
 
 	std::string playerCoordsText = "X: " + std::to_string(playerX)
 		+ " Y: " + std::to_string(playerY)
@@ -152,6 +165,8 @@ void FileFunctions::TeleportToSavedCoords(const std::string& fileName)
 {
 	auto& playerScripts = PlayerScripts::GetInstance();
 	auto& teleportLocations = TeleportLocations::GetInstance();
+
+	auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
 
 	//float newHeading = 0.0f;
 	// Example file read:
@@ -201,7 +216,11 @@ void FileFunctions::TeleportToSavedCoords(const std::string& fileName)
 			//std::cout << "Read Coordinates - X: " << x << ", Y: " << y << ", Z: " << z << std::endl;
 
 			//SET_CHAR_COORDINATES(GetPlayerChar(), x, y, z);
+#ifndef MOVE_PLAYER_TELEPORTS
 			playerScripts.SetPlayerCoords(Vector3(x, y, z));
+#else
+			playerTeleportScripts.SetPlayerCoords(Vector3(x, y, z));
+#endif
 			// TODO Setup heading for this
 			// TODO Fix this to work
 			// New function to set heading and fade.

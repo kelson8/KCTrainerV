@@ -27,6 +27,8 @@ public:
     void DisableControls();
     void EnableControls();
 
+
+#ifndef MOVE_PLAYER_TELEPORTS
     // Teleports
     // This is in use for the teleport function
     // 
@@ -40,6 +42,7 @@ public:
     // Get the waypoint coords
     Vector3 GetWaypointCoords();
 
+#endif
 
     // Health armor and killing
     int GetPlayerHealth(Ped player);
@@ -84,10 +87,12 @@ public:
     static PlayerModels GetCurrentPlayerModel();
     //
 
+#ifndef MOVE_PLAYER_TELEPORTS
     // Get player coords and heading
     Vector3 GetPlayerCoords();
     float GetPlayerHeading();
     //
+#endif
 
     bool IsPlayerInVehicle();
 

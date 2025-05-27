@@ -281,6 +281,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Scripts\Player\PlayerNoClip.cpp" />
+    <ClCompile Include="Scripts\Player\PlayerTeleportScripts.cpp" />
     <ClCompile Include="Scripts\ScaleformScripts.cpp" />
     <ClCompile Include="Scripts\Stats.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -419,6 +420,7 @@
     <ClInclude Include="Scripts\Peds\PedTaskScripts.h" />
     <ClInclude Include="Scripts\PlayerScripts.h" />
     <ClInclude Include="Scripts\Player\PlayerNoClip.h" />
+    <ClInclude Include="Scripts\Player\PlayerTeleportScripts.h" />
     <ClInclude Include="Scripts\ScaleformScripts.h" />
     <ClInclude Include="Scripts\Stats.h" />
     <ClInclude Include="Scripts\TextScripts.h" />

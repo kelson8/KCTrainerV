@@ -400,6 +400,8 @@ PlayerModels PlayerScripts::GetCurrentPlayerModel()
 
 #pragma endregion
 
+#ifndef MOVE_PLAYER_TELEPORTS
+
 #pragma region PlayerPositions
 /// <summary>
 /// Get the players current coords
@@ -591,6 +593,8 @@ Vector3 PlayerScripts::GetWaypointCoords()
 }
 
 #pragma endregion
+
+#endif // MOVE_PLAYER_TELEPORTS
 
 
 #pragma region HealthArmorAndKilling

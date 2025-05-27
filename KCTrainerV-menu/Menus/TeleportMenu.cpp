@@ -2,8 +2,11 @@
 #include "../Constants.hpp"
 #include "TeleportMenu.h"
 
-#include "../Scripts/PlayerScripts.h"
 #include "../Scripts/TextScripts.h"
+
+// Player
+#include "Scripts/PlayerScripts.h"
+#include "Scripts/Player/PlayerTeleportScripts.h"
 
 #include "../Util/Paths.hpp"
 #include "../Util/Logger.hpp"
@@ -27,6 +30,8 @@
 //Vector3 _customTeleLoc = Vector3(0.0, 0.0, 0.0);
 Vector3 _customTeleLoc;
 
+// TODO Make this file not use so much duplicate code.
+
 // TODO Setup sub menu for the custom teleport later
 // Add X, Y, and Z float options in the menu.
 bool grabbedCoords = false;
@@ -35,9 +40,13 @@ void TeleportMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& fileFunctions = FileFunctions::GetInstance();
     auto& textScripts = TextScripts::GetInstance();
-    auto& playerScripts = PlayerScripts::GetInstance();
+    
     auto& teleportLocations = TeleportLocations::GetInstance();
 
+    // Player
+    auto& playerScripts = PlayerScripts::GetInstance();
+    auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
+    
     // Hmm, I guess all sub menus need a title, it broke without one.
     mbCtx.Title("Teleport");
 
@@ -127,7 +136,12 @@ void TeleportMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
         }
 
+
+#ifndef MOVE_PLAYER_TELEPORTS
         playerScripts.SetPlayerCoords(_customTeleLoc);
+#else
+        playerTeleportScripts.SetPlayerCoords(_customTeleLoc);
+#endif
 
         std::string valuesOutputString = std::format("Values: X: {}, Y: {}, Z: {}", _customTeleLoc.x, _customTeleLoc.y, _customTeleLoc.z);
 
@@ -225,14 +239,20 @@ void TeleportMenu::BuildAirportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& co
     mbCtx.Title("Airports");
 
     // Scripts
+    // Player
     auto& playerScripts = PlayerScripts::GetInstance();
+    auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
 
     // Get teleports from the std::vector<TeleportInfo>
     for (const auto& teleportInfo : Teleports::Positions::vAirportLocations)
     {
         if (mbCtx.Option(teleportInfo.name)) {
+#ifndef MOVE_PLAYER_TELEPORTS
             playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
             //playerScripts.SetPlayerHeading(teleportInfo.heading);
+#else
+            playerTeleportScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
+#endif
         }
     }
 }
@@ -251,14 +271,21 @@ void TeleportMenu::BuildSafehousesSubMenu(NativeMenu::Menu& mbCtx, KCMainScript&
     mbCtx.Title("Safehouses");
 
     // Scripts
+
+    // Player
     auto& playerScripts = PlayerScripts::GetInstance();
+    auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
 
     // Get teleports from the std::vector<TeleportInfo>
     for (const auto& teleportInfo : Teleports::Positions::vSafeHouseLocations)
     {
         if (mbCtx.Option(teleportInfo.name)) {
+#ifndef MOVE_PLAYER_TELEPORTS
             playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
             //playerScripts.SetPlayerHeading(teleportInfo.heading);
+#else
+            playerTeleportScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
+#endif
         }
     }
 }
@@ -274,14 +301,21 @@ void TeleportMenu::BuildApartmentInteriorsSubMenu(NativeMenu::Menu& mbCtx, KCMai
     mbCtx.Title("Apartment Interiors");
 
     // Scripts
+
+    // Player
     auto& playerScripts = PlayerScripts::GetInstance();
+    auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
 
     // Get teleports from the std::vector<TeleportInfo>
     for (const auto& teleportInfo : Teleports::Positions::vApartmentInteriors)
     {
         if (mbCtx.Option(teleportInfo.name)) {
+#ifndef MOVE_PLAYER_TELEPORTS
             playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
             //playerScripts.SetPlayerHeading(teleportInfo.heading);
+#else
+            playerTeleportScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
+#endif
         }
     }
 }
@@ -298,8 +332,11 @@ void TeleportMenu::BuildOnlineSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& con
     mbCtx.Title("Online");
 
     // Scripts
-    auto& playerScripts = PlayerScripts::GetInstance();
     auto& teleportManager = TeleportManager::GetInstance();
+
+    // Player
+    auto& playerScripts = PlayerScripts::GetInstance();
+    auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
 
     // Testing with IPLs here
     //Get teleports from the std::vector<TeleportIplInfo>
@@ -309,8 +346,12 @@ void TeleportMenu::BuildOnlineSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& con
             // Handle IPLs for the selected location
             teleportManager.HandleTeleportIpls(teleportInfo);
 
+#ifndef MOVE_PLAYER_TELEPORTS
             playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
             //playerScripts.SetPlayerHeading(teleportInfo.heading);
+#else
+            playerTeleportScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
+#endif
         }
     }
 
@@ -330,15 +371,24 @@ void TeleportMenu::BuildOtherSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& cont
     mbCtx.Title("Other");
 
     // Scripts
-    auto& playerScripts = PlayerScripts::GetInstance();
     auto& teleportManager = TeleportManager::GetInstance();
+
+    // Player
+    auto& playerScripts = PlayerScripts::GetInstance();
+    auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
+
+    
 
      //Get teleports from the std::vector<TeleportInfo>
     for (const auto& teleportInfo : Teleports::Positions::vOtherLocations)
     {
         if (mbCtx.Option(teleportInfo.name)) {
+#ifndef MOVE_PLAYER_TELEPORTS
             playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
             //playerScripts.SetPlayerHeading(teleportInfo.heading);
+#else
+            playerTeleportScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
+#endif
         }
     }
 }

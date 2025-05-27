@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "TextScripts.h"
 
+// Player
 #include "Scripts/PlayerScripts.h"
+#include "Scripts/Player/PlayerTeleportScripts.h"
 
 #include "Util/UI.hpp"
 
@@ -187,10 +189,16 @@ void TextScripts::TextPosition(float x, float y)
 void TextScripts::DisplayCoordinates()
 {
 	auto& playerScripts = PlayerScripts::GetInstance();
+	auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
 	// playerScripts.GetPlayerCoords();
 	// playerScripts.GetPlayerHeading
 
+#ifndef MOVE_PLAYER_TELEPORTS
 	Vector3 playerCoords = playerScripts.GetPlayerCoords();
+#else
+	Vector3 playerCoords = playerTeleportScripts.GetPlayerCoords();
+#endif
+
 	//float playerX = playerCoords.x;
 	//float playerY = playerCoords.y;
 	//float playerZ = playerCoords.z;
@@ -200,7 +208,11 @@ void TextScripts::DisplayCoordinates()
 	float playerZ = playerCoords.z;
 
 
+#ifndef MOVE_PLAYER_TELEPORTS
 	float playerHeading = playerScripts.GetPlayerHeading();
+#else
+	float playerHeading = playerTeleportScripts.GetPlayerHeading();
+#endif
 
 	// I got this to display in the bottom left beside the map, 
 	// I had to use my new debug feature that I made to do it in the menu.

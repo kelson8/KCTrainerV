@@ -270,6 +270,9 @@
     <ClCompile Include="Scripts\Peds\PedTaskScripts.cpp">
       <Filter>Scripts\Peds</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Player\PlayerTeleportScripts.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -640,6 +643,9 @@
     </ClInclude>
     <ClInclude Include="Scripts\Peds\PedTaskScripts.h">
       <Filter>Scripts\Peds</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Player\PlayerTeleportScripts.h">
+      <Filter>Scripts\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
