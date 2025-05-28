@@ -23,7 +23,8 @@ PedScripts::PedScripts()
 	m_helicopterPed1(0),
 	m_helicopterPed2(0),
 	m_helicopterVehicle1(0),
-	m_pedHash(0)
+	m_pedHash(0),
+	m_enemyIsDead(false)
 {
 
 }
@@ -112,6 +113,23 @@ void PedScripts::Tick()
 	}
 #endif //
 
+	//-----
+	// Cleanup for the regular ped spawner
+	//-----
+
+	// I got this to work, I had to assign m_pedHash to modelHash in the ped spawner function.
+	if (DoesEntityExist(m_pedToSpawn) && IS_ENTITY_DEAD(m_pedToSpawn, false) && !m_enemyIsDead)
+	{
+		MiscScripts::Model::MarkAsNoLongerNeeded(m_pedHash);
+		//MiscScripts::Model::MarkPedAsNoLongerNeeded(m_pedToSpawn);
+		//log_output("Ped cleanup ran");
+		
+		// Reset values back to defaults, although m_enemyIsDead defaults to false, this just breaks it out of the loop.
+		m_enemyIsDead = true;
+		m_pedHash = 0;
+		m_pedToSpawn = 0;
+	}
+
 }
 
 /// <summary>
@@ -141,7 +159,7 @@ void PedScripts::SetAllPedsAsCops()
 /// <summary>
 /// Create a ped, if using this function be sure to load the ped with the MiscScripts::LoadModel, or ModelScripts::LoadModel
 /// Once I create it.
-/// TODO Set this up, possibly make this set a Ped value to be modified later.
+/// TODO Make a loop that runs if this ped is alive, if they die mark them as no longer needed.
 /// </summary>
 /// <param name="pedType">The type for the ped: https://alloc8or.re/gta5/doc/enums/ePedType.txt, now uses values from my Enum
 /// Like this: PED_TYPE_CIVMALE</param>
@@ -150,18 +168,77 @@ void PedScripts::SetAllPedsAsCops()
 /// </param>
 /// <param name="position">A Vector3 of the position to spawn the ped.</param>
 /// <param name="heading">The heading to spawn the ped.</param>
-/// 
-/// TODO Possibly make these set to false by default in the function below
-/// <param name="isNetwork">Mostly set to false in original scripts, 
-/// seems to be true in Chaos Mod, I'll experiment with this one later
-/// </param>
-/// <param name="bScriptHostPed">Mostly set to false in original scripts.</param>
-void PedScripts::CreatePed(ePedType pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed)
+/// <param name="isEnemy">Make the ped hate the player if enabled.</param>
+//void PedScripts::CreatePed(ePedType pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed)
+void PedScripts::CreatePed(ePedType pedType, Hash modelHash, Vector3 position, float heading, bool isEnemy)
 {
 	auto& playerScripts = PlayerScripts::GetInstance();
-	Ped player = playerScripts.GetPlayerPed();
-	//Ped ped = CREATE_PED(pedType, modelHash, position, heading, isNetwork, bScriptHostPed);
-	m_pedToSpawn = CREATE_PED(pedType, modelHash, position, heading, isNetwork, bScriptHostPed);
+	//Ped player = playerScripts.GetPlayerPed();
+	Ped player = PLAYER_PED_ID();
+
+	// Setup for making the ped an enemy
+	Hash hostilePedGroup;
+	static const Hash playerGroup = "PLAYER"_hash;
+
+	// Well, this should remove the old peds first
+	if (DoesEntityExist(m_pedToSpawn))
+	{
+		MiscScripts::Model::MarkAsNoLongerNeeded(m_pedHash);
+	}
+
+	// Create the ped
+	// Check if it exists in the game, then request it
+	if (MiscScripts::Model::IsInCdImage(modelHash))
+	{
+		MiscScripts::Model::Request(modelHash);
+		m_pedToSpawn = CREATE_PED(pedType, modelHash, position, heading, false, false);
+
+		// Just make them wander around for now, for testing
+		if (DoesEntityExist(m_pedToSpawn))
+		{
+			// Assign the ped hash variable, to be cleaned up.
+			m_pedHash = modelHash;
+			// Some of the enemy code in here was taken from PedsMercenaries.cpp in Chaos Mod
+			if (isEnemy)
+			{
+				// Give them a blip
+				SetPedAsEnemy(m_pedToSpawn);
+
+				ADD_RELATIONSHIP_GROUP("_ENEMY_PED", &hostilePedGroup);
+				// Make them hate the player
+				SET_RELATIONSHIP_BETWEEN_GROUPS(5, hostilePedGroup, playerGroup);
+				SET_RELATIONSHIP_BETWEEN_GROUPS(5, playerGroup, hostilePedGroup);
+				// This should make them not hate each other
+				SET_RELATIONSHIP_BETWEEN_GROUPS(0, hostilePedGroup, hostilePedGroup);
+
+				// Set their group
+				SET_PED_RELATIONSHIP_GROUP_HASH(m_pedToSpawn, hostilePedGroup);
+
+				// Give them a weapon
+				GIVE_WEAPON_TO_PED(m_pedToSpawn, WEAPON_CANDYCANE, -1, false, true);
+				//SET_PED_ACCURACY(m_pedToSpawn, 50);
+
+				// Set the combat attributes
+				SET_PED_COMBAT_ATTRIBUTES(m_pedToSpawn, 0, true);
+				SET_PED_COMBAT_ATTRIBUTES(m_pedToSpawn, 1, true);
+				SET_PED_COMBAT_ATTRIBUTES(m_pedToSpawn, 2, true);
+				SET_PED_COMBAT_ATTRIBUTES(m_pedToSpawn, 3, true);
+				SET_PED_COMBAT_ATTRIBUTES(m_pedToSpawn, 5, true);
+				SET_PED_COMBAT_ATTRIBUTES(m_pedToSpawn, 46, true);
+
+				// Some final values for this
+				REGISTER_TARGET(m_pedToSpawn, player);
+				TASK_COMBAT_PED(m_pedToSpawn, player, 0, 16);
+			}
+			else {
+				TASK_WANDER_STANDARD(m_pedToSpawn, 10.0f, 10.0f);
+				//TASK_SKY_DIVE
+			}
+		}
+		
+	}
+
+	
 	/*
 	// Other useful things to do for the ped:
 			SET_ENTITY_HAS_GRAVITY(ped, false);
@@ -309,6 +386,28 @@ void PedScripts::BlowupHelicopter()
 
 		m_helicopterVehicle1 = 0;
 	}
+}
+
+/// <summary>
+/// TODO Set this up, make the ped spawned hate the player and attack them.
+/// Also, give them a red blip on the map.
+/// </summary>
+/// <param name="ped"></param>
+void PedScripts::SetPedAsEnemy(Ped ped)
+{
+	// First, give them a blip
+	SET_PED_HAS_AI_BLIP(ped, true);
+
+	// TODO Make an enum of these later, there are over 900 of these so I'll need to automate it.
+	// Disabled for this function
+	//int helicopterRadarSprite = 64;
+	//SET_PED_AI_BLIP_SPRITE(ped, helicopterRadarSprite);
+	SET_PED_AI_BLIP_HAS_CONE(ped, false);
+
+	// Then, make them an enemy
+	// TODO Figure this part out.
+
+
 }
 
 #pragma endregion

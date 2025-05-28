@@ -18,10 +18,20 @@
 #include "Util/UI.hpp"
 
 
+PedMenu::PedMenu() :
+    m_pedToSpawn(0),
+    b_isPedAnEnemy(false)
+{
+
+}
+
 void PedMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
 	auto& pedScripts = PedScripts::GetInstance();
     auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
+    auto& playerScripts = PlayerScripts::GetInstance();
+
+    int nothing = 0;
 
     mbCtx.Title("Peds");
 
@@ -45,6 +55,7 @@ void PedMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
     // This needs some testing, once I verify everything works I'll remove the DEBUG_MODE preprocessor here.
 #ifdef DEBUG_MODE
+    mbCtx.StringArray("--Spawning--", { "" }, nothing);
 
     // TODO make this accept a set of target coords from the player.
     if (mbCtx.Option("Create heli peds", { "Create a pilot ped in a helicopter to fly around." }))
@@ -63,6 +74,38 @@ void PedMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     }
 #endif
 
+
+    // Well now, I didn't know the StringArray could work like this, I always just used it for separators.
+    std::vector<std::string> pedList = { "Lost member #1", "Lost member #2" };
+
+    // This works!
+    // TODO Come up with a solution for this instead of using numbers for the case statements.
+    // Possibly make it use a ped list?
+    mbCtx.StringArray("Ped List", pedList, m_pedToSpawn, {"Select a ped to spawn"});
+
+    // Enemy toggle
+    mbCtx.BoolOption("Enemy ped", b_isPedAnEnemy);
+    
+    // Select ped button
+    if (mbCtx.Option("Select ped"))
+    {
+        Vector3 currentPos = playerTeleportScripts.GetPlayerCoords();
+        // Make this offset just a bit
+        Vector3 newPos = Vector3(currentPos.x + 5, currentPos.y + 5, currentPos.z);
+
+        //switch (iteratorTest)
+        switch (m_pedToSpawn)
+        {
+        case 0:
+            pedScripts.CreatePed(PED_TYPE_CIVMALE, PedHash::Lost01GMY, newPos, 30.0f, b_isPedAnEnemy);
+            break;
+        case 1:
+            pedScripts.CreatePed(PED_TYPE_CIVMALE, PedHash::Lost02GMY, newPos, 30.0f, b_isPedAnEnemy);
+            break;
+        }
+
+        /*log_output(std::format("Ped {} spawned", iteratorTest));*/
+    }
 
 #endif // MEMORY_TESTING
 

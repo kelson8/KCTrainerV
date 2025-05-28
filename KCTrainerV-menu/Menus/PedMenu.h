@@ -17,8 +17,14 @@ public:
 	void Build(NativeMenu::Menu& mbCtx, KCMainScript& context) override;
 
 private:
-	PedMenu() {} // Private constructor to prevent external instantiation
+	//PedMenu() {} // Private constructor to prevent external instantiation
+	PedMenu();
 	PedMenu(const PedMenu&) = delete;
 	PedMenu& operator=(const PedMenu&) = delete;
+
+
+	int m_pedToSpawn = 0;
+	bool b_isPedAnEnemy = false;
+
 };
 
