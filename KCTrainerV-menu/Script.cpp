@@ -41,6 +41,11 @@
 
 #include "Util/Util.hpp"
 
+// Misc
+#include "Scripts/Misc/MiscMusicScripts.h"
+#include "Scripts/Misc/MiscExtraFeatures.h"
+#include "Scripts/Misc/IDGun.h"
+
 // New for JSON support
 #include <fstream>
 #include "nlohmann/json.hpp"
@@ -459,6 +464,8 @@ void KCMenu::LoadPedsFile()
     }
 }
 #endif
+
+// TODO Replicate this for the vehicles.json
 
 // TODO Make WeaponScripts and add this into it.
 

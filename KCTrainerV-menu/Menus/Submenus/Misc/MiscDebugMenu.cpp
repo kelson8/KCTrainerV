@@ -9,7 +9,7 @@
 #include "Util/Hash.h"
 
 // My scripts
-#include "Scripts/PlayerScripts.h"
+
 #include "Scripts/VehicleScripts.h"
 #include "Scripts/PedScripts.h"
 #include "Scripts/MiscScripts.h"
@@ -23,6 +23,9 @@
 #include "Util/FileFunctions.h"
 #include "defines.h"
 
+// Player
+#include "Scripts/PlayerScripts.h"
+#include "Scripts/Player/PlayerTeleportScripts.h"
 
 // Menyoo
 #include "Scripts/Extras/Game.h"
@@ -30,6 +33,11 @@
 #include "Scripts/Extras/World.h"
 #include "Scripts/Extras/Classes/Model.h"
 #include "Memory/GTAmemory.h"
+
+// Misc
+#include "Scripts/Misc/MiscMusicScripts.h"
+#include "Scripts/Misc/MiscExtraFeatures.h"
+#include "Scripts/Misc/IDGun.h"
 
 namespace Misc
 {
@@ -43,13 +51,18 @@ namespace Misc
         mbCtx.Title("Debug Sub Menu");
 
         // Scripts
-        auto& playerScripts = PlayerScripts::GetInstance();
         auto& vehicleScripts = VehicleScripts::GetInstance();
         auto& pedScripts = PedScripts::GetInstance();
         auto& textScripts = TextScripts::GetInstance();
 
+        // Player
+        auto& playerScripts = PlayerScripts::GetInstance();
+        auto& playerTeleportScripts = Scripts::Player::Positions::GetInstance();
+
         // Functions
         auto& fileFunctions = FileFunctions::GetInstance();
+
+        Ped player = PLAYER_PED_ID();
 
         // List of text formats:
         // https://docs.fivem.net/docs/game-references/text-formatting/
@@ -136,6 +149,21 @@ namespace Misc
             }
 
         }
+
+        // This task seems to give the player a parachute, I wonder if it works on other peds?
+        if (mbCtx.Option("Skydive test", { "Skydive cheat replicated" }))
+        {
+            Vector3 currentCoords = playerTeleportScripts.GetPlayerCoords();
+            Vector3 newPos = Vector3(currentCoords.x, currentCoords.y, currentCoords.z + 100);
+            // Set the player into the air first
+            playerTeleportScripts.SetPlayerCoords(newPos);
+            // Then set the task
+            TASK_SKY_DIVE(player, true);
+            //WAIT(1000);
+            // Well this didn't work, they should automatically use the parachute 
+            //TASK_PARACHUTE(player, false, false);
+        }
+
     }
 
 #endif // DEBUG_MODE

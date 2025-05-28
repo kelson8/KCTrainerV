@@ -14,6 +14,9 @@
 #include "Scripts/Stats.h"
 #include "Scripts/MiscScripts.h"
 
+// Misc
+#include "Scripts/Misc/IDGun.h"
+
 namespace Misc
 {
 	/// <summary>

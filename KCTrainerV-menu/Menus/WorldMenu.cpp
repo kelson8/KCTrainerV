@@ -16,6 +16,11 @@
 #include "Util/Hash.h"
 #include "Util/Random.h"
 
+// Misc
+#include "Scripts/Misc/MiscMusicScripts.h"
+#include "Scripts/Misc/MiscExtraFeatures.h"
+#include "Scripts/Misc/IDGun.h"
+
 void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& playerScripts = PlayerScripts::GetInstance();

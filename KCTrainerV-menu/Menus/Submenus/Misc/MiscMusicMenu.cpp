@@ -21,6 +21,8 @@
 
 #include "Util/FileFunctions.h"
 
+#include "Scripts/Misc/MiscMusicScripts.h"
+
 namespace Misc
 {
 	/// <summary>

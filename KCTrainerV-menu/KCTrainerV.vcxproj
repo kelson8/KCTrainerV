@@ -269,6 +269,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Scripts\Misc\IdGun.cpp" />
+    <ClCompile Include="Scripts\Misc\MiscExtraFeatures.cpp" />
+    <ClCompile Include="Scripts\Misc\MiscMusicScripts.cpp" />
     <ClCompile Include="Scripts\NotificationManager.cpp" />
     <ClCompile Include="Scripts\PedModelManager.cpp" />
     <ClCompile Include="Scripts\PedScripts.cpp">
@@ -414,6 +417,9 @@
     <ClInclude Include="Scripts\Extras\World.h" />
     <ClInclude Include="Scripts\IScriptBuilder.h" />
     <ClInclude Include="Scripts\MiscScripts.h" />
+    <ClInclude Include="Scripts\Misc\IdGun.h" />
+    <ClInclude Include="Scripts\Misc\MiscExtraFeatures.h" />
+    <ClInclude Include="Scripts\Misc\MiscMusicScripts.h" />
     <ClInclude Include="Scripts\NotificationManager.h" />
     <ClInclude Include="Scripts\PedModelManager.h" />
     <ClInclude Include="Scripts\PedScripts.h" />

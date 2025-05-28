@@ -273,6 +273,15 @@
     <ClCompile Include="Scripts\Player\PlayerTeleportScripts.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Misc\IdGun.cpp">
+      <Filter>Scripts\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Misc\MiscExtraFeatures.cpp">
+      <Filter>Scripts\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Misc\MiscMusicScripts.cpp">
+      <Filter>Scripts\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -646,6 +655,15 @@
     </ClInclude>
     <ClInclude Include="Scripts\Player\PlayerTeleportScripts.h">
       <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Misc\IdGun.h">
+      <Filter>Scripts\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Misc\MiscMusicScripts.h">
+      <Filter>Scripts\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Misc\MiscExtraFeatures.h">
+      <Filter>Scripts\Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

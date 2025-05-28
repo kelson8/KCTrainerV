@@ -24,6 +24,11 @@
 
 //#include "ScriptMenu.hpp"
 
+// Misc
+#include "Scripts/Misc/MiscMusicScripts.h"
+#include "Scripts/Misc/MiscExtraFeatures.h"
+#include "Scripts/Misc/IDGun.h"
+
 
 // TODO Move most items out of Tick and into another file
 // Might make this neater.
