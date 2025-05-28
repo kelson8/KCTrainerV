@@ -171,31 +171,39 @@ void PedScripts::CreatePed(ePedType pedType, Hash modelHash, Vector3 position, f
 	*/
 }
 
+
+
+
 /// <summary>
-/// Spawn a ped inside of a helicopter, make them fly to the middle of map
+/// Spawn a ped inside of a helicopter, make them fly to the middle of the map.
 /// TODO Make this function accept a targetCoords along with the spawn position.
 /// Also, rename position to spawnPosition.
 /// Adapted from my FiveM lua scripts.
 /// </summary>
-//void PedScripts::CreateHelicopterPed(int pedType, Hash modelHash, Vector3 position, float heading)
-void PedScripts::CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 position, float heading)
+/// <param name="pedType">The ped type from my enum</param>
+/// <param name="modelHash">The ped model hash</param>
+/// <param name="spawnPosition">The spawn position for the ped and helicopter</param>
+/// <param name="targetPosition">The position to fly to</param>
+/// <param name="heading">The spawn heading</param>
+/// 
+//void PedScripts::CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 position, float heading)
+void PedScripts::CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 spawnPosition, Vector3 targetPosition, float heading)
 {	
 	auto& playerScripts = PlayerScripts::GetInstance();
 	auto& pedTaskScripts = Scripts::Ped::Tasks::GetInstance();
 	
 	Ped player = playerScripts.GetPlayerPed();
 	
-
 	//Add 5 to the first set of coords and 10 to the other set, leave the z coord alone
 	//This is where the helicopters spawn, and the peds teleport into them
-	float posX1 = position.x + 5;
-	float posY1 = position.y + 5;
+	float heliSpawnPosX = spawnPosition.x + 5;
+	float heliSpawnPosY = spawnPosition.y + 5;
 	
-	float posX2 = position.x + 10;
-	float posY2 = position.y + 10;
+	float pedSpawnPosX = spawnPosition.x + 10;
+	float pedSpawnPosY = spawnPosition.y + 10;
 
 	// TODO Move this into the function
-	Vector3 targetCoords = Vector3(-283.72, 806.09, 250.5);
+	//Vector3 targetCoords = Vector3(-283.72, 806.09, 250.5);
 	//
 
 	// Helicopter speed and other values
@@ -226,7 +234,8 @@ void PedScripts::CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 p
 	{
 		MiscScripts::Model::Request(modelHash);
 		//m_helicopterPed1 = CREATE_PED(pedType, modelHash, position, heading, false, false);
-		m_helicopterPed1 = CREATE_PED(pedType, modelHash, Vector3(posX2, posY2, position.z), heading, false, false);
+		//m_helicopterPed1 = CREATE_PED(pedType, modelHash, Vector3(posX2, posY2, position.z), heading, false, false);
+		m_helicopterPed1 = CREATE_PED(pedType, modelHash, Vector3(pedSpawnPosX, pedSpawnPosY, spawnPosition.z), heading, false, false);
 		//pedTaskScripts.WarpPedIntoVehicle(m_helicopterPed1, )
 
 		// Also add a blip onto them so I can find them..
@@ -245,7 +254,8 @@ void PedScripts::CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 p
 	if (MiscScripts::Model::IsInCdImage(buzzardModel))
 	{
 		MiscScripts::Model::Request(buzzardModel);
-		m_helicopterVehicle1 = CREATE_VEHICLE(buzzardModel, Vector3(posX1, posY1, position.z), 20.0f, false, false, false);
+		//m_helicopterVehicle1 = CREATE_VEHICLE(buzzardModel, Vector3(posX1, posY1, position.z), 20.0f, false, false, false);
+		m_helicopterVehicle1 = CREATE_VEHICLE(buzzardModel, Vector3(heliSpawnPosX, heliSpawnPosY, spawnPosition.z), 20.0f, false, false, false);
 	}
 
 	// Make sure both the helicopter ped and helicopter exist
@@ -254,7 +264,8 @@ void PedScripts::CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 p
 	if (DoesEntityExist(m_helicopterPed1) && DoesEntityExist(m_helicopterVehicle1))
 	{
 		pedTaskScripts.WarpPedIntoVehicle(m_helicopterPed1, m_helicopterVehicle1, 0);
-		pedTaskScripts.DriveToCoord(m_helicopterPed1, m_helicopterVehicle1, targetCoords, speed,
+		//pedTaskScripts.DriveToCoord(m_helicopterPed1, m_helicopterVehicle1, targetCoords, speed,
+		pedTaskScripts.DriveToCoord(m_helicopterPed1, m_helicopterVehicle1, targetPosition, speed,
 			false, buzzardModel, DrivingStyleIgnoreLights, stopRange, straightLineDistance);
 	}
 }
@@ -266,9 +277,12 @@ void PedScripts::RemoveHeliPed()
 {
 	if (DoesEntityExist(m_helicopterPed1))
 	{
-		//MiscScripts::Model::MarkAsNoLongerNeeded(modelHash);
 		MiscScripts::Model::MarkAsNoLongerNeeded(m_pedHash);
+		// TODO Test this
+		//SET_PED_AS_NO_LONGER_NEEDED(&m_helicopterPed1);
 		DELETE_PED(&m_helicopterPed1);
+
+		m_helicopterPed1 = 0;
 	}
 }
 
@@ -292,6 +306,8 @@ void PedScripts::BlowupHelicopter()
 		MiscScripts::Model::MarkAsNoLongerNeeded(buzzardModel);
 		DELETE_ENTITY(&m_helicopterVehicle1);
 		ADD_EXPLOSION(heliCoords, gaspumpExplosion, damageScale, true, false, cameraShake, false);
+
+		m_helicopterVehicle1 = 0;
 	}
 }
 

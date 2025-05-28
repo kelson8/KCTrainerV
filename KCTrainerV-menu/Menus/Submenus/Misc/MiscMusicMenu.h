@@ -29,6 +29,7 @@ namespace Misc
 
 		// Set the current sound effect for PLAY_SOUND native
 		int currentSoundEffect = 1;
+
 	};
 } // namespace Misc
 

@@ -27,3 +27,13 @@ in my mod, or make this have a new file such as 'KCTrainerPersistentSettings.ini
 come up with a better name for it.
 
 
+## Look into
+Using this native for drawing markers and setting up teleports:
+* https://nativedb.dotindustries.dev/gta5/natives/0x28477EC23D892089?search=DRAW_MARKER
+
+Check if player/entity is in area:
+* https://nativedb.dotindustries.dev/gta5/natives/0x54736AA40E271165?search=IS_ENTITY_IN_AREA
+
+* Creating teleport markers, replicate setup from FiveM.
+* Creating checkpoints like in races.
+* Creating coronas.

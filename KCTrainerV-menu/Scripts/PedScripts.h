@@ -20,7 +20,8 @@ public:
 	//void CreatePed(int pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed);
 	void CreatePed(ePedType pedType, Hash modelHash, Vector3 position, float heading, bool isNetwork, bool bScriptHostPed);
 	// This seems to work
-	void CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 position, float heading);
+	//void CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 position, float heading);
+	void CreateHelicopterPed(ePedType pedType, Hash modelHash, Vector3 spawnPosition, Vector3 targetPosition, float heading);
 
 	void RemoveHeliPed();
 	void BlowupHelicopter();

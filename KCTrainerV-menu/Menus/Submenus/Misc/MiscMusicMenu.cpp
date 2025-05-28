@@ -8,11 +8,18 @@
 
 #include "Util/Hash.h"
 
+// My scripts
+
 #include "Scripts/PlayerScripts.h"
 #include "Scripts/PedScripts.h"
 
 #include "Scripts/Stats.h"
 #include "Scripts/MiscScripts.h"
+
+#include "Scripts/VehicleScripts.h"
+#include "Scripts/TextScripts.h"
+
+#include "Util/FileFunctions.h"
 
 namespace Misc
 {
@@ -72,6 +79,14 @@ namespace Misc
         //}
 
 
+        if (mbCtx.Option("Play sound", { "Play the sound from list." }))
+        {
+            MiscScripts::Music::PlaySoundOnPlayer("Amanda_Pulls_Away", "FAMILY_6_SOUNDS");
+        }
+
+
+
+
         // This stops all the music currently playing with the TRIGGER_MUSIC_EVENT native.
         // Plays MP_MC_CMH_IAA_FINALE_START music event.
         if (mbCtx.Option("Stop music", { "Stops the music currently playing" }))
@@ -83,6 +98,14 @@ namespace Misc
         {
             MiscScripts::Music::PlayArenaWarLobbyMusic();
         }
+
+        // Why doesn't this work?
+        if (mbCtx.Option("Play slot machine sounds", { "Play the slot machine sounds on the player" }))
+        {
+            MiscScripts::Music::PlaySoundOnPlayer("jackpot", "dlc_vw_casino_slot_machine_td_player_sounds");
+        }
+
+
 
         // This didn't seem to play the end credits music.
         // Taken from MiscRollCredits.cpp in Chaos Mod

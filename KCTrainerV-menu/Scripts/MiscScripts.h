@@ -52,6 +52,9 @@ namespace MiscScripts
 
 	namespace Music
 	{
+		// Play sound on player
+		void PlaySoundOnPlayer(const char* audioName, const char* audioRef);
+
 		// Play test music
 		//void PlayTestMusic(int track);
 		void PlayTestMusic(MusicTracks track);

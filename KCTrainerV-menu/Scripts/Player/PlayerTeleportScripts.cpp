@@ -8,6 +8,8 @@
 
 #include "Util/Hash.h"
 
+// My scripts
+
 #include "Scripts/PlayerScripts.h"
 #include "Scripts/PedScripts.h"
 
@@ -25,6 +27,7 @@ namespace Scripts
         /// <returns>Players current coords as a vector3</returns>
         Vector3 Positions::GetPlayerCoords()
         {
+            auto& playerScripts = PlayerScripts::GetInstance();
             Vector3 playerCoords = GET_ENTITY_COORDS(playerScripts.GetPlayerPed(), false);
             return playerCoords;
         }
@@ -35,6 +38,7 @@ namespace Scripts
         /// <returns>The players heading as a float</returns>
         float Positions::GetPlayerHeading()
         {
+            auto& playerScripts = PlayerScripts::GetInstance();
             float playerHeading = GET_ENTITY_HEADING(playerScripts.GetPlayerPed());
             return playerHeading;
         }
@@ -48,6 +52,7 @@ namespace Scripts
         /// <param name="position"></param>
         void Positions::SetPlayerCoords(Vector3 position)
         {
+            auto& playerScripts = PlayerScripts::GetInstance();
             // Based on teleport implementation in Chaos Mod (Player.h)
             auto playerPed = playerScripts.GetPlayerPed();
             bool isInVeh = IS_PED_IN_ANY_VEHICLE(playerPed, false);
@@ -72,38 +77,6 @@ namespace Scripts
 
             // TODO Test without this, Menyoo and my FiveM scripts isn't doing this.
             //STREAMING::LOAD_SCENE(position);
-
-            // TODO Add this from TeleportPlayerFindZ
-            // This code should allow me to place the player on the ground without falling through the map.
-
-            // Well this didn't seem to work.
-         //      float groundZ;
-            //bool useGroundZ;
-            //for (int i = 0; i < 100; i++)
-            //{
-            //	float testZ = (i * 10.f) - 100.f;
-
-         //       SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed, Vector3(position.x, position.y, testZ),
-         //           false, false, false, false);
-            //	if (i % 5 == 0)
-            //		WAIT(0);
-
-            //	useGroundZ = GET_GROUND_Z_FOR_3D_COORD(Vector3(position.x, position.y, testZ), &groundZ, false, false);
-            //	if (useGroundZ)
-            //		break;
-            //}
-
-         //   if (useGroundZ)
-         //   {
-         //       SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed, Vector3(position.x, position.y, groundZ),
-         //           false, false, false, false);
-         //   }
-         //   else {
-         //       // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
-         //       // And it checks if the player is in a flying vehicle.
-         //       SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
-         //           Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
-         //   }
 
             // New addition for this checks if the player is in a vehicle, if so it also teleports the vehicle.
             // And it checks if the player is in a flying vehicle.
@@ -131,6 +104,7 @@ namespace Scripts
         void Positions::SetPlayerCoords(Vector3 position, float heading, bool fade)
         {
             // Based on teleport implementation in Chaos Mod (Player.h)
+            auto& playerScripts = PlayerScripts::GetInstance();
             auto playerPed = playerScripts.GetPlayerPed();
             bool isInVeh = IS_PED_IN_ANY_VEHICLE(playerPed, false);
             bool isInFlyingVeh = IS_PED_IN_FLYING_VEHICLE(playerPed);
@@ -187,6 +161,7 @@ namespace Scripts
         /// <param name="heading"></param>
         void Positions::SetPlayerHeading(float heading)
         {
+            auto& playerScripts = PlayerScripts::GetInstance();
             ENTITY::SET_ENTITY_HEADING(playerScripts.GetPlayerPed(), heading);
         }
 

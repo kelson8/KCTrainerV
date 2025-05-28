@@ -47,12 +47,12 @@ void PedMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 #ifdef DEBUG_MODE
 
     // TODO make this accept a set of target coords from the player.
-    // Also, make the function take target coords along with the player coords.
-    // Currently the value is hard-coded to go to the middle of the map.
     if (mbCtx.Option("Create heli peds", { "Create a pilot ped in a helicopter to fly around." }))
     {
         Hash heliPilotHash = "s_m_m_pilot_01"_hash;
-        pedScripts.CreateHelicopterPed(PED_TYPE_CIVMALE, heliPilotHash, playerTeleportScripts.GetPlayerCoords(), 20.0f);
+        Vector3 heliTargetPos = Vector3(224.516, -213.628, 70.052);
+        Vector3 spawnPos = playerTeleportScripts.GetPlayerCoords();
+        pedScripts.CreateHelicopterPed(PED_TYPE_CIVMALE, heliPilotHash, spawnPos, heliTargetPos, 20.0f);
         UI::Notify("Helicopter and pilot spawned, flying to middle of map.");
     }
 

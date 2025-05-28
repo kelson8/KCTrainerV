@@ -102,15 +102,17 @@ namespace Stats
         // Position on menu
         //-----
         // Menu position X
-        float copsKilledMenuPosX = 0.204f;
+        //float copsKilledMenuPosX = 0.204f;
+        float copsKilledMenuPosX = 0.159f;
         // Menu Position Y
-        float copsKilledMenuPosY = 0.963f;
+        //float copsKilledMenuPosY = 0.963f;
+        float copsKilledMenuPosY = 0.958f;
 
         // Cop cars blown up
-        //float copsCarsBlownUpMenuPosX = 0.150f;
-        float copsCarsBlownUpMenuPosX = 0.220f;
-        //float copsCarsBlownUpMenuPosY = 0.870f;
-        float copsCarsBlownUpMenuPosY = 0.935f;
+        //float copsCarsBlownUpMenuPosX = 0.220f;
+        float copsCarsBlownUpMenuPosX = 0.159f;
+        //float copsCarsBlownUpMenuPosY = 0.935f;
+        float copsCarsBlownUpMenuPosY = 0.932f;
 
         bool isCopsKilledDisplayActive = false;
 

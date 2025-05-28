@@ -66,7 +66,6 @@
 // Moving menus
 
 // Moving script files
-#define MOVE_PLAYER_TELEPORTS
 
 // Move the rest of the menus, I will remove this once I have tested it more.
 // This is no longer in use for now, I may use it in the future if I move more menus around

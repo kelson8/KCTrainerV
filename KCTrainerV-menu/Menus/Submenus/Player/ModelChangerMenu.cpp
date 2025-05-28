@@ -84,8 +84,6 @@ void SetClothes(Ped ped, int drawableId, int textureId, int paletteId)
     SET_PED_COMPONENT_VARIATION(ped, PV_COMP_JBIB, drawableId, textureId, paletteId);
 }
 
-
-
 /// <summary>
 /// Set the hair style
 /// </summary>
@@ -254,16 +252,7 @@ void ModelChangerMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 
 }
 
-// TODO Move into the class
-// The options to be selected in the menu.
-int hairOption = 0;
-int shirtOption = 0;
-int torsoOption = 0;
-int pantsOption = 0;
-//static int shoesOption = 0;
-int shoesOption = 0;
 
-int hairColorOption = 0;
 
 /// <summary>
 /// Build the clothes changer sub menu
@@ -291,6 +280,8 @@ void ModelChangerMenu::BuildClothesChangerSubmenu(NativeMenu::Menu& mbCtx, KCMai
     int maxPantsFemale = 150;
     int maxShoesFemale = 150;
 
+    // TODO Add custom option for textureId instead of hardcoding 0 on each one
+
     // Hair
     mbCtx.IntOption("Hair", hairOption, 0, maxHairFemale, stepValue);
     if (mbCtx.Option("Change hair"))
@@ -305,12 +296,17 @@ void ModelChangerMenu::BuildClothesChangerSubmenu(NativeMenu::Menu& mbCtx, KCMai
 
     // Shirt
     mbCtx.IntOption("Shirt", shirtOption, 0, maxShirtFemale, stepValue);
+
+    // This does seem to set the shirt texture
+    // TODO Add this option to the other items also.
+    mbCtx.IntOption("Shirt Texture", shirtTexture, 0, 20, stepValue);
     if (mbCtx.Option("Change shirt"))
     {
         // Female
         if (CheckPlayerModel() == "mp_f_freemode_01"_hash)
         {
-            SetShirtStyle(playerId, shirtOption, 0, 0);
+            //SetShirtStyle(playerId, shirtOption, 0, 0);
+            SetShirtStyle(playerId, shirtOption, shirtTexture, 0);
             log_output(std::format("Shirt option: {}", shirtOption));
         }
     }

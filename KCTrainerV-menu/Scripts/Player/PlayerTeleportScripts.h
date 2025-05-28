@@ -8,7 +8,6 @@
 
 #include <inc/types.h>
 
-#include "Scripts/PlayerScripts.h"
 
 namespace Scripts
 {
@@ -50,7 +49,7 @@ namespace Scripts
 			Positions& operator=(const Positions&) = delete;
 
 			// Will this format work?
-			PlayerScripts& playerScripts = PlayerScripts::GetInstance();
+			//PlayerScripts& playerScripts = PlayerScripts::GetInstance();
 			
 			// I normally use auto
 			//auto& playerScripts = PlayerScripts::GetInstance();

@@ -44,7 +44,7 @@ void WorldMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     //--------------
     // Time sub menu
     //--------------
-    mbCtx.MenuOption("Time", "WorldTimeSubmenu", { "Display a set of hours and minutes to switch to." });
+    mbCtx.MenuOption("Time", "WorldTimeSubmenu", { "Set the time." });
 
     
     //--------------

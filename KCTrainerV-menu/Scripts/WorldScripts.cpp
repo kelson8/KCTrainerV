@@ -1,13 +1,16 @@
 #include "pch.h"
 
-#include "../common.h"
+#include "common.h"
 #include "WorldScripts.h"
 
-#include "../Util/Enums.h"
-#include "../Util/EntityIterator.h"
+#include "Util/Enums.h"
+#include "Util/EntityIterator.h"
 
 
-#include "../Natives/natives2.h"
+#include "Natives/natives2.h"
+
+// My scripts
+#include "Scripts/PlayerScripts.h"
 
 /// <summary>
 /// Run all WorldScripts tick events.

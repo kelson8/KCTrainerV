@@ -8,11 +8,22 @@
 
 #include "Util/Hash.h"
 
+
+
+// My scripts
 #include "Scripts/PlayerScripts.h"
+#include "Scripts/VehicleScripts.h"
 #include "Scripts/PedScripts.h"
+#include "Scripts/MiscScripts.h"
+#include "Scripts/TextScripts.h"
+
+#include "Scripts/WorldScripts.h"
+
+
 
 #include "Scripts/Stats.h"
-#include "Scripts/MiscScripts.h"
+
+#include "Util/FileFunctions.h"
 
 // Menyoo
 #include "Scripts/Extras/Game.h"

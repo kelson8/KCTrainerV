@@ -366,6 +366,25 @@ namespace MiscScripts
 	namespace Music
 	{
 		/// <summary>
+		/// Play a sound on the player
+		/// TODO Figure out if this works.
+		/// </summary>
+		/// <param name="audioName"></param>
+		/// <param name="audioRef"></param>
+		//void PlaySoundOnPlayer(std::string audioName, std::string audioRef)
+		void PlaySoundOnPlayer(const char* audioName, const char* audioRef)
+		{
+			int myPlayer = PLAYER::PLAYER_ID();
+			
+			Ped player = PLAYER::GET_PLAYER_PED(myPlayer);
+
+			Player playerPedId = PLAYER_PED_ID();
+
+			//PLAY_SOUND_FROM_ENTITY(-1, audioName.c_str(), player, audioRef.c_str(), false, 0);
+			PLAY_SOUND_FROM_ENTITY(-1, audioName, playerPedId, audioRef, false, 0);
+		}
+
+		/// <summary>
 		/// This works for playing music with the TRIGGER_MUSIC_EVENT native
 		/// Here is a list of these: https://github.com/DurtyFree/gta-v-data-dumps/blob/master/musicEventNames.json
 		/// These can be found in the decompiled scripts by searching for 'TRIGGER_MUSIC_EVENT'

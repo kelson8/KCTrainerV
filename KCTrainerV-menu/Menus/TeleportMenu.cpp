@@ -137,11 +137,7 @@ void TeleportMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
         }
 
 
-#ifndef MOVE_PLAYER_TELEPORTS
-        playerScripts.SetPlayerCoords(_customTeleLoc);
-#else
         playerTeleportScripts.SetPlayerCoords(_customTeleLoc);
-#endif
 
         std::string valuesOutputString = std::format("Values: X: {}, Y: {}, Z: {}", _customTeleLoc.x, _customTeleLoc.y, _customTeleLoc.z);
 
@@ -247,12 +243,7 @@ void TeleportMenu::BuildAirportSubMenu(NativeMenu::Menu& mbCtx, KCMainScript& co
     for (const auto& teleportInfo : Teleports::Positions::vAirportLocations)
     {
         if (mbCtx.Option(teleportInfo.name)) {
-#ifndef MOVE_PLAYER_TELEPORTS
-            playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
-            //playerScripts.SetPlayerHeading(teleportInfo.heading);
-#else
             playerTeleportScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
-#endif
         }
     }
 }
@@ -280,12 +271,7 @@ void TeleportMenu::BuildSafehousesSubMenu(NativeMenu::Menu& mbCtx, KCMainScript&
     for (const auto& teleportInfo : Teleports::Positions::vSafeHouseLocations)
     {
         if (mbCtx.Option(teleportInfo.name)) {
-#ifndef MOVE_PLAYER_TELEPORTS
-            playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
-            //playerScripts.SetPlayerHeading(teleportInfo.heading);
-#else
             playerTeleportScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
-#endif
         }
     }
 }
@@ -310,12 +296,7 @@ void TeleportMenu::BuildApartmentInteriorsSubMenu(NativeMenu::Menu& mbCtx, KCMai
     for (const auto& teleportInfo : Teleports::Positions::vApartmentInteriors)
     {
         if (mbCtx.Option(teleportInfo.name)) {
-#ifndef MOVE_PLAYER_TELEPORTS
-            playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
-            //playerScripts.SetPlayerHeading(teleportInfo.heading);
-#else
             playerTeleportScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
-#endif
         }
     }
 }
@@ -346,12 +327,7 @@ void TeleportMenu::BuildOnlineSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& con
             // Handle IPLs for the selected location
             teleportManager.HandleTeleportIpls(teleportInfo);
 
-#ifndef MOVE_PLAYER_TELEPORTS
-            playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
-            //playerScripts.SetPlayerHeading(teleportInfo.heading);
-#else
             playerTeleportScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
-#endif
         }
     }
 
@@ -383,12 +359,7 @@ void TeleportMenu::BuildOtherSubmenu(NativeMenu::Menu& mbCtx, KCMainScript& cont
     for (const auto& teleportInfo : Teleports::Positions::vOtherLocations)
     {
         if (mbCtx.Option(teleportInfo.name)) {
-#ifndef MOVE_PLAYER_TELEPORTS
-            playerScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
-            //playerScripts.SetPlayerHeading(teleportInfo.heading);
-#else
             playerTeleportScripts.SetPlayerCoords(teleportInfo.coordinates, teleportInfo.heading, true);
-#endif
         }
     }
 }

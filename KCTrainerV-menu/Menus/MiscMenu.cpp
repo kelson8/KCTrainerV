@@ -3,14 +3,20 @@
 #include "../Constants.hpp"
 #include "MiscMenu.h"
 
-#include "../Scripts/MiscScripts.h"
-#include "../Scripts/NotificationManager.h"
+
 
 #include "../common.h"
 
 #include "../Teleports/TeleportLocations.h"
 
 #include "defines.h"
+
+
+// My scripts
+#include "Util/FileFunctions.h"
+#include "Scripts/MiscScripts.h"
+#include "Scripts/NotificationManager.h"
+#include "Scripts/TextScripts.h"
 
 /// <summary>
 /// Misc Menu - Main Menu
