@@ -205,11 +205,12 @@ void PlayerScripts::Tick()
     //-----
     // Set super run
     // Function for this adapted from Menyoo.
+    // Disabled, this breaks my movement.
     //-----
-    if (PlayerScripts::isSuperRunEnabled)
-    {
-        PlayerScripts::SetSuperRun();
-    }
+    //if (PlayerScripts::isSuperRunEnabled)
+    //{
+    //    PlayerScripts::SetSuperRun();
+    //}
 
     //-----
     // If the player is shooting
@@ -909,6 +910,7 @@ void PlayerScripts::DisableMobileRadio()
 
 // Taken from Menyoo, Routine.cpp
 // original name: set_local_button_super_run
+// TODO Fix this, it breaks my player
 void PlayerScripts::SetSuperRun()
 {
     auto ped = PLAYER_PED_ID();
@@ -925,5 +927,4 @@ void PlayerScripts::SetSuperRun()
             FREEZE_ENTITY_POSITION(ped, true);
         }
     }
-
 }

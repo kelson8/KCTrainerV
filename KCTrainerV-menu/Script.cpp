@@ -185,7 +185,7 @@ void KCMenu::ResetToggles()
 
     // Other toggles
     playerScripts.isSuperJumpEnabled = false;
-    playerScripts.isSuperRunEnabled = false;
+    //playerScripts.isSuperRunEnabled = false;
 
     // Misc scripts
     MiscScripts::IDGun::isIdGunEnabled = false;

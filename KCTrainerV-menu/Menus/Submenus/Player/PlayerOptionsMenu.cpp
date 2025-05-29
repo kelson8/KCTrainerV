@@ -104,5 +104,5 @@ void PlayerOptionsMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     //-----
     mbCtx.StringArray("--Other Cheat Options--", { "" }, nothing);
     mbCtx.BoolOption("Super jump", playerScripts.isSuperJumpEnabled, { "Toggle super jump cheat" });
-    mbCtx.BoolOption("Super run", playerScripts.isSuperRunEnabled, { "Toggle faster running." });
+    //mbCtx.BoolOption("Super run", playerScripts.isSuperRunEnabled, { "Toggle faster running." });
 }
