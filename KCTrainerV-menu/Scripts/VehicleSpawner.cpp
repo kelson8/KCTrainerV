@@ -21,68 +21,12 @@
 #include <iostream>
 #include <format>
 
-
-#ifdef VEHICLE_SPAWNER_TEST
-// Define the global instance (if declared in header)
-VehicleSpawner g_vehicleSpawner;
-
-// Constructor implementation
-VehicleSpawner::VehicleSpawner()
-    : m_currentSpawnState(VehicleSpawnState::Idle), // Initialize state
-    m_modelToSpawnHash(0),
-    m_spawnCoords(0.0f, 0.0f, 0.0f), // Assuming Vector3 has a constructor
-    m_spawnHeading(0.0f),
-    m_lastSpawnedVehicle(0)
+VehicleSpawner::VehicleSpawner() 
+    : m_vehicleToSpawn(0),
+    m_jetToSpawn(0)
 {
-    // Any other initial setup
+
 }
-
-
-// TODO Test this, for spawning vehicles
-// InitiateSpawn method implementation
-void VehicleSpawner::InitiateSpawn(const std::string& modelName, const Vector3& coords, float heading) {
-    if (m_currentSpawnState == VehicleSpawnState::Idle) { // Only start if not already busy
-        m_modelToSpawnHash = MISC::GET_HASH_KEY(modelName.c_str());
-        m_spawnCoords = coords;
-        m_spawnHeading = heading;
-        m_currentSpawnState = VehicleSpawnState::RequestingModel; // Move to the first stage
-        m_lastSpawnedVehicle = 0; // Clear previous handle
-
-        UI::Notify("Vehicle spawn initiated..."); // Provide immediate feedback
-    }
-    else {
-        UI::Notify("Vehicle spawner is busy. Please wait.");
-    }
-}
-
-void VehicleSpawner::VehicleSpawnTick() {
-    switch (m_currentSpawnState) {
-    case VehicleSpawnState::Idle:
-        // Do nothing
-        break;
-
-    case VehicleSpawnState::RequestingModel: // This state initiates the request and checks
-        STREAMING::REQUEST_MODEL(m_modelToSpawnHash); // Request the model
-        if (STREAMING::HAS_MODEL_LOADED(m_modelToSpawnHash)) {
-            m_currentSpawnState = VehicleSpawnState::CreatingVehicle; // If loaded, move to next state
-        }
-        // *** IMPORTANT: If not loaded, we simply FALL THROUGH and EXIT this function.
-        // The main KCMenu::Thread2() loop will call VehicleSpawnTick() again next frame.
-        // And KCMenu::Thread2() has the WAIT(0) that yields. ***
-        break;
-
-    case VehicleSpawnState::CreatingVehicle:
-
-        // ... (rest of your vehicle creation logic)
-        break;
-
-    case VehicleSpawnState::SpawnComplete:
-        // ...
-        break;
-    }
-}
-
-#endif // VEHICLE_SPAWNER_TEST
 
 
 // Taken from GTAVAddonLoader
@@ -92,18 +36,14 @@ void VehicleSpawner::VehicleSpawnTick() {
 // TODO Possibly setup settings for this using mINI
 // settings.Persistent
 
-/*
- * Spawns a vehicle with the chosen model hash. Put it on the player when not
- * already in a vehicle, and puts it to the right when a vehicle is already
- * occupied. Bounding-box dependent, so spawning two jumbojets should have
- * clearance for non-explodiness, and two bikes are spaced without too much
- * distance between 'em.
- * 
- * I adapted this and got it working.
- * I set this up to store the current vehicle to the 'vehicleToSpawn' variable.
- * Now this removes the old vehicle when being run.
- */
-void VehicleSpawner::SpawnVehicle(Hash hash) {
+/// <summary>
+/// Spawns a vehicle with the chosen model hash.
+/// This removes the old vehicle when being run.
+/// Can optionally clear the area.
+/// </summary>
+/// <param name="hash">The model hash</param>
+/// <param name="clearArea">If the area gets cleared</param>
+void VehicleSpawner::SpawnVehicle(Hash hash, bool clearArea) {
     Util util = Util();
     auto& playerScripts = PlayerScripts::GetInstance();
     auto& vehicleScripts = VehicleScripts::GetInstance();
@@ -120,7 +60,12 @@ void VehicleSpawner::SpawnVehicle(Hash hash) {
     Vector3 currentPos = ENTITY::GET_ENTITY_COORDS(playerPed, true);
     float clearAreaRadius = 25;
 
-    CLEAR_AREA_OF_VEHICLES(currentPos, clearAreaRadius, true, false, false, false, false, false, false);
+    // Make clearing the area toggleable in the function.
+    if (clearArea)
+    {
+        CLEAR_AREA_OF_VEHICLES(currentPos, clearAreaRadius, true, false, false, false, false, false, false);
+    }
+    
 
 
     //-----
@@ -132,13 +77,13 @@ void VehicleSpawner::SpawnVehicle(Hash hash) {
         // Check if the previous spawned vehicle exists
         // Remove it if so.
         //-----
-        if (DOES_ENTITY_EXIST(vehicleToSpawn))
+        if (DOES_ENTITY_EXIST(m_vehicleToSpawn))
         {
             // I fixed this, had to use hash instead of the vehicleToSpawn.
             //MiscScripts::Model::MarkAsNoLongerNeeded(vehicleToSpawn);
             MiscScripts::Model::MarkAsNoLongerNeeded(hash);
             //SET_MODEL_AS_NO_LONGER_NEEDED(vehicleToSpawn);
-            DELETE_VEHICLE(&vehicleToSpawn);
+            DELETE_VEHICLE(&m_vehicleToSpawn);
         }
 
         //-----
@@ -185,11 +130,11 @@ void VehicleSpawner::SpawnVehicle(Hash hash) {
         //-----
         //Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, pos, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()), 0, 1, 0);
         //vehicleToSpawn = VEHICLE::CREATE_VEHICLE(hash, pos, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()), 0, 1, 0);
-        vehicleToSpawn = VEHICLE::CREATE_VEHICLE(hash, pos, currentHeading, false, true, false);
+        m_vehicleToSpawn = VEHICLE::CREATE_VEHICLE(hash, pos, currentHeading, false, true, false);
         //VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh, 5.0f);
-        VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(vehicleToSpawn, 5.0f);
+        VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(m_vehicleToSpawn, 5.0f);
         //VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.0f);
-        VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicleToSpawn, 0.0f);
+        VEHICLE::SET_VEHICLE_DIRT_LEVEL(m_vehicleToSpawn, 0.0f);
 
         std::string vehicleName = util.GetGxtName(hash);
 
@@ -198,14 +143,14 @@ void VehicleSpawner::SpawnVehicle(Hash hash) {
         //-----
         if (spawnInsideVehicle) {
             //ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()));
-            ENTITY::SET_ENTITY_HEADING(vehicleToSpawn, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()));
+            ENTITY::SET_ENTITY_HEADING(m_vehicleToSpawn, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()));
             
             // Also turn the engine on
             //VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
-            VEHICLE::SET_VEHICLE_ENGINE_ON(vehicleToSpawn, true, true, false);
+            VEHICLE::SET_VEHICLE_ENGINE_ON(m_vehicleToSpawn, true, true, false);
 
             //PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
-            PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), vehicleToSpawn, -1);
+            PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), m_vehicleToSpawn, -1);
 
         }
 
@@ -263,7 +208,7 @@ void VehicleSpawner::SpawnVehicle(Hash hash) {
 /// <param name="heading"></param>
 /// <returns></returns>
 Vehicle VehicleSpawner::SpawnVehicle(Hash hash, Vector3 coords, float heading) {
-    auto& vehicleScripts = VehicleScripts::GetInstance();
+    //auto& vehicleScripts = VehicleScripts::GetInstance();
 
     // Vehicle doesn't exist
     if (!(STREAMING::IS_MODEL_IN_CDIMAGE(hash) && STREAMING::IS_MODEL_A_VEHICLE(hash))) {
@@ -286,4 +231,104 @@ Vehicle VehicleSpawner::SpawnVehicle(Hash hash, Vector3 coords, float heading) {
     ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 
     return veh;
+}
+
+/// <summary>
+/// Spawn the player into a P-996 Lazer jet in the air at speed.
+/// TODO Fix this, it seems to work well, but when the jet gets set in the air it faces the ground.
+/// Also, make an option somewhere that two enemy jets chase me and try to blow me up.
+/// </summary>
+void VehicleSpawner::SpawnJetInAir()
+{
+    Util util = Util();
+    auto& playerScripts = PlayerScripts::GetInstance();
+    auto& vehicleScripts = VehicleScripts::GetInstance();
+
+    // P-996 Lazer
+    Hash jetHash = VEHICLE_LAZER;
+
+    //-----
+    // Make sure the model exists and is a vehicle.
+    // If not break out of the function.
+    //-----
+    if (!STREAMING::IS_MODEL_IN_CDIMAGE(jetHash) && !STREAMING::IS_MODEL_A_VEHICLE(jetHash))
+    {
+        UI::Notify("Model doesn't exist!");
+        return;
+    }
+
+    // I had to change playerPed to this, logging to the console showed the coords were indeed wrong.
+    Ped playerPed = PLAYER_PED_ID();
+
+    Vector3 currentPos = ENTITY::GET_ENTITY_COORDS(playerPed, true);
+
+    // TODO Switch to using this
+    // This function should convert miles per hour and there is also another function that converts kilometers per hour
+    // to meters per second.
+    //float jetSpeed = Util::MphToMeters(30.0f);
+    float jetSpeed = 30.0f;
+
+    // Middle of Los Santos
+    Vector3 skyPos = Vector3(169.737f, -515.997f, 801.751f);
+    float skyHeading = 27.335f;
+
+    // Hmm, what exactly is the velocity?
+    // Not sure what this does
+    //Vector3 jetVelocity = Vector3(0.0f, -50.0f, 0.0f);
+
+    int startTick = GET_GAME_TIMER();
+    int timeToWait = 2000;
+    
+    //-----
+    // Request the model
+    //-----
+    MiscScripts::Model::Request(jetHash);
+
+    //-----
+    // Create the jet
+    //-----
+    m_jetToSpawn = VEHICLE::CREATE_VEHICLE(jetHash, skyPos, skyHeading, false, true, false);
+    
+    //-----
+    // Setup the message and wait a few seconds
+    //------
+    util.ShowSubtitle("Be prepared to fly!");
+
+    // Works as a basic timer for waiting a bit, in milliseconds.
+    // Although it does disable the menu input for that amount of time.
+    while (GET_GAME_TIMER() - startTick < timeToWait)
+    {
+    // Just make this wait and do nothing.
+    WAIT(0);
+    }
+
+    // Make sure the jet exists
+    if (DOES_ENTITY_EXIST(m_jetToSpawn))
+    {
+        // Turn the engine on
+        SET_VEHICLE_ENGINE_ON(m_jetToSpawn, true, true, false);
+
+        // Check if the landing gear is closed, probably not needed
+        //if (GET_LANDING_GEAR_STATE(m_jetToSpawn) == 3)
+        //{
+        // Make the landing gear go up
+        // This works! I didn't know this one was a native.
+        CONTROL_LANDING_GEAR(m_jetToSpawn, static_cast<int>(LandingGearStates::CLOSING));
+        //}
+
+        // I'm not exactly sure what this is doing.
+        // Trying to make the plane up right instead of flying down at the start.
+        //SET_ENTITY_VELOCITY(m_jetToSpawn, jetVelocity);
+
+
+        // Put the player in the jet
+        PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), m_jetToSpawn, -1);
+
+        // Make sure the jet is going at speed
+        SET_VEHICLE_FORWARD_SPEED(m_jetToSpawn, jetSpeed);
+
+        // Mark the model as no longer needed
+        STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(jetHash);
+
+    }
 }

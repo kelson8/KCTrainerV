@@ -622,11 +622,6 @@ void KCMenu::Thread2()
     }
     while (true)
     {
-        // Run the vehicle spawner test.
-#ifdef VEHICLE_SPAWNER_TEST
-        g_vehicleSpawner.VehicleSpawnTick();
-#endif
-
         // Run the fade thread
         MiscScripts::Fade::FadeThread();
         WAIT(0);

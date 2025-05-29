@@ -36,6 +36,14 @@ public:
     std::string GetGxtName(Hash hash); // gxt name from model
 
 
+    // Conversions
+    float MetersToMph(float metersPerSecond);
+    float MphToMeters(float milesPerHour);
+
+    float MetersToKph(float metersPerSecond);
+    float KphToMeters(float metersPerSecond);
+
+
     static const std::map<std::string, std::string> g_weaponCategoryDisplayNames;
     static std::string GetWeaponCategoryDisplayName(const std::string& categoryKey);
 

@@ -104,6 +104,53 @@ std::string Util::GetGxtName(Hash hash) {
 
 // End taken from GTAVAddonLoader
 
+//---------- Conversions --------------/
+
+// TODO Test these below, they should work.
+// Input as a float and returning a double, is that right?
+
+/// <summary>
+/// Convert from meters per second to miles per hour.
+/// </summary>
+float Util::MetersToMph(float metersPerSecond)
+{
+    return metersPerSecond * 2.237f;
+}
+
+/// <summary>
+/// Convert from miles per hour to meters per second.
+/// </summary>
+/// <param name="metersPerSecond"></param>
+/// <returns></returns>
+float Util::MphToMeters(float milesPerHour)
+{
+    return milesPerHour / 2.237f;
+}
+
+/// <summary>
+/// Convert from meters per second to kilometers per hour.
+/// </summary>
+/// <param name="metersPerSecond"></param>
+/// <returns></returns>
+float Util::MetersToKph(float metersPerSecond)
+{
+    return metersPerSecond * 3.6f;
+}
+
+/// <summary>
+/// Convert from kilometers per hour to meters per second.
+/// TODO Test this, should be correct
+/// </summary>
+/// <param name="metersPerSecond"></param>
+/// <returns></returns>
+float Util::KphToMeters(float kilometersPerHour)
+{
+    return kilometersPerHour / 3.6f;
+}
+
+//--------- End conversions -------------/
+
+
 const std::map<std::string, std::string> Util::g_weaponCategoryDisplayNames = 
 {
     {"melee", "Melee Weapons"},

@@ -21,6 +21,28 @@ enum class PlayerModels : int
 	COUNT // For iterating
 };
 
+
+// This one goes with the CONTROL_LANDING_GEAR native, it seems a bit different then the other one.
+// https://nativedb.dotindustries.dev/gta5/natives/0xCFC8BE9A5E1FE575
+enum class LandingGearControlStates : int
+{
+	DEPLOYED = 0,
+	CLOSING = 1,
+	OPENING = 2,
+	RETRACTED = 3,
+};
+
+// This one goes with the GET_LANDING_GEAR_STATE native
+// https://nativedb.dotindustries.dev/gta5/natives/0x9B0F3DCA3DB0F4CD
+enum class LandingGearStates : int
+{
+	DEPLOYED = 0,
+	CLOSING = 1, // Retracting
+	//UNUSED = 2,
+	OPENING = 3, // Deploying
+	RETRACTED = 4
+};
+
 // https://alloc8or.re/gta5/doc/enums/ePedType.txt
 enum ePedType
 {

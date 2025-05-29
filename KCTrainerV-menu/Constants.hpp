@@ -83,9 +83,6 @@
 //#define MOVE_MENU
 #define MOVE_PED_MENU
 
-// Enable the vehicle spawner test which runs in the second thread
-//#define VEHICLE_SPAWNER_TEST
-
 // Enable the Player Skin Changer test, so far this only displays the categories.
 //#define PLAYER_SKIN_CHANGER
 // New Player Skin changer test, this one will just work on a few

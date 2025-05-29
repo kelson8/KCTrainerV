@@ -26,6 +26,12 @@ void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     //---------------
     mbCtx.MenuOption("Options", "VehicleOptionsSubmenu", { "Show a list of vehicle options" });
 
+    // This seems to mostly work fine.
+    if (mbCtx.Option("Spawn jet into air", { "Spawn you into a jet in the air with some speed." }))
+    {
+        vehicleSpawner.SpawnJetInAir();
+    }
+
 
     // Toggles the boolean to spawn in the vehicle and remove the old one.
     //mbCtx.BoolOption("Spawn into vehicle", vehicleScripts.spawnInsideVehicle, { "Toggle spawning in the spawned vehicle" });
@@ -60,7 +66,7 @@ void VehicleMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
             
             //std::cout << inputString << std::endl;
             log_output(inputString);
-            vehicleSpawner.SpawnVehicle(vehicleHash);
+            vehicleSpawner.SpawnVehicle(vehicleHash, true);
         }
         else {
             std::string invalidInputString = "Input string not valid!";
@@ -123,7 +129,7 @@ void VehicleMenu::BuildSportsVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCM
     for (const auto& vehicleInfo : VehicleData::g_sportsVehicles) 
     {
         if (mbCtx.Option(vehicleInfo.name)) {
-            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
+            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum, true);
         }
     }
 }
@@ -140,7 +146,7 @@ void VehicleMenu::BuildSportsClassicsVehicleCategorySubmenu(NativeMenu::Menu& mb
     for (const auto& vehicleInfo : VehicleData::g_sportsClassicsVehicles) 
     {
         if (mbCtx.Option(vehicleInfo.name)) {
-            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
+            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum, true);
         }
     }
 }
@@ -164,7 +170,7 @@ void VehicleMenu::BuildSuperVehicleCategorySubmenu(NativeMenu::Menu& mbCtx, KCMa
     {
         if (mbCtx.Option(vehicleInfo.name)) {
             // Use the hash from the VehicleInfo struct
-            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
+            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum, true);
         }
     }
 }
@@ -187,7 +193,7 @@ void VehicleMenu::BuildSuvCategorySubmenu(NativeMenu::Menu& mbCtx, KCMainScript&
     {
         if (mbCtx.Option(vehicleInfo.name)) {
             // Use the hash from the VehicleInfo struct
-            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum);
+            vehicleSpawner.SpawnVehicle(vehicleInfo.hashEnum, true);
         }
     }
 

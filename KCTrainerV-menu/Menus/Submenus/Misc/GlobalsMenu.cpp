@@ -42,6 +42,12 @@ namespace Misc
         // Setting this to 7 seems to disable the phone.
         if (mbCtx.Option("Change Cellphone.phoneStatus", { "Change cell phone globals." }))
         {
+            // TODO Figure out how to do this, should only set this if the version is 1.70?
+            //if (getGameVersion() >= eGameVersion::VER_1_0_3351_0)
+            //{
+
+            //}
+
             // Global_21066.f_1 = Cellphone.phoneStatus
             int* phoneStatusPtr = (int*)getGlobalPtr(21066 + 1);
             if (phoneStatusPtr)
@@ -50,6 +56,21 @@ namespace Misc
                 log_output("Cellphone status set to: " + std::to_string(currentPhoneDisplayStatus));
             }
         }
+
+        // I don't think this did anything
+        // Chop killed status
+        //mbCtx.IntOption("Chop killed", currentChopKilledStatus, 0, 1, 1);
+        //mbCtx.BoolOption("Chop killed", currentChopKilledStatus);
+        //if (mbCtx.Option("Change chop killed status", { "Test for setting chop killed global." }))
+        //{
+        //    //int* chopStatusPtr = (int*)getGlobalPtr(33233);
+        //    bool* chopStatusPtr = (bool*)getGlobalPtr(33233);
+        //    if (chopStatusPtr)
+        //    {
+        //        *chopStatusPtr = currentChopKilledStatus;
+        //        log_output("Chop killed status set to: " + std::to_string(currentChopKilledStatus));
+        //    }
+        //}
 
         // This should possibly launch the camera?
         // Well this did nothing
@@ -64,16 +85,19 @@ namespace Misc
         // 
 
         //mbCtx.IntOption("Military Base Status", currentMilBaseStatus, 0, 1, 1);
+        //mbCtx.BoolOption("Military Base Status", currentMilBaseStatus);
 
-        // Global_33095 = DisableArmyBase
-        //// TODO Attempt to test this option in a loop
+        //// Global_33095 = DisableArmyBase
+        ////// TODO Attempt to test this option in a loop
         //if (mbCtx.Option("Change DisableArmyBase", { "Change army base to/from restricted." }))
         //{
-        //    int* militaryBaseStatusPtr = (int*)getGlobalPtr(33095);
+        //    //int* militaryBaseStatusPtr = (int*)getGlobalPtr(33095);
+        //    bool* militaryBaseStatusPtr = (bool*)getGlobalPtr(33095);
         //    if (militaryBaseStatusPtr)
         //    {
         //        *militaryBaseStatusPtr = currentMilBaseStatus;
         //        log_output("Army base status set to: " + std::to_string(currentMilBaseStatus));
+        //        log_output(std::format("Global_33095 (immediately after setting): {}", std::to_string(*militaryBaseStatusPtr)));
         //    }
         //}
 
