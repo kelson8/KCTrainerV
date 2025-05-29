@@ -231,7 +231,9 @@ void PedScripts::CreatePed(ePedType pedType, Hash modelHash, Vector3 position, f
 				TASK_COMBAT_PED(m_pedToSpawn, player, 0, 16);
 			}
 			else {
-				TASK_WANDER_STANDARD(m_pedToSpawn, 10.0f, 10.0f);
+				//TASK_WANDER_STANDARD(m_pedToSpawn, 10.0f, 10.0f);
+				// Hmm, don't know why I used a float for the flags.
+				TASK_WANDER_STANDARD(m_pedToSpawn, 10.0f, 10);
 				//TASK_SKY_DIVE
 			}
 		}

@@ -83,6 +83,9 @@ namespace Scripts
             SET_ENTITY_COORDS(isInVeh ? playerVeh : playerPed,
                 Vector3(position.x, position.y, isInFlyingVeh ? position.z + groundHeight : position.z), false, false, false, false);
 
+            // TODO Test this here
+            LOAD_SCENE(position);
+
             // TODO Figure out what this part does
             //SET_ENTITY_VELOCITY(isInVeh ? playerVeh : playerPed, Vector3(vel.x, vel.y, vel.z));
 
@@ -138,6 +141,9 @@ namespace Scripts
 
             // Set heading
             SET_ENTITY_HEADING(isInVeh ? playerVeh : playerPed, heading);
+
+            // TODO Test this here
+            LOAD_SCENE(position);
 
             // Set the vehicle to the speed it previously was
             // Well this works but it's not a good idea for tight spaces lol.

@@ -116,12 +116,12 @@ namespace Constants
     static const char* const notificationFileName = "CustomNotifications.txt";
 
     static const char* const pedsFileName = "PedList.xml";
-
     static const char* const teleportFileName = "teleports.ini";
 
     static const char* const objectsFileName = "objects.json";
-
     static const char* const weaponsFileName = "weapons.json";
+    static const char* const vehiclesFileName = "vehicles.json";
+
 
     static const char* const menuPositionsFile = "MenuPositions.txt";
 }

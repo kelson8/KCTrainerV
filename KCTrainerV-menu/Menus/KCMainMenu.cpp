@@ -364,6 +364,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
 #pragma region VehicleMenu
     //-----
     // Vehicle menu
+    // TODO Refactor this mess...
     //-----
     submenus.emplace_back("vehiclemenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
@@ -394,24 +395,187 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         }
     );
 
+    // Boat
+    submenus.emplace_back("BOAT",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "BOAT");
+        }
+    );
+
+    // Commercial
+    submenus.emplace_back("COMMERCIAL",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "COMMERCIAL");
+        }
+    );
+
+    // Compact
+    submenus.emplace_back("COMPACT",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "COMPACT");
+        }
+    );
+
+    // Coupe
+    submenus.emplace_back("COUPE",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "COUPE");
+        }
+    );
+
+    // Cycle
+    submenus.emplace_back("CYCLE",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "CYCLE");
+        }
+    );
+
+    // Emergency
+    submenus.emplace_back("EMERGENCY",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "EMERGENCY");
+        }
+    );
+
+    // Helicopter
+    submenus.emplace_back("HELICOPTER",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "HELICOPTER");
+        }
+    );
+
+    // Industrial
+    submenus.emplace_back("INDUSTRIAL",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "INDUSTRIAL");
+        }
+    );
+
+    // Military
+    submenus.emplace_back("MILITARY",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "MILITARY");
+        }
+    );
+
+    // Motorcycle
+    submenus.emplace_back("MOTORCYCLE",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "MOTORCYCLE");
+        }
+    );
+
+    // Muscle
+    submenus.emplace_back("MUSCLE",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "MUSCLE");
+        }
+    );
+
+    // Off road
+    submenus.emplace_back("OFF_ROAD",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "OFF_ROAD");
+        }
+    );
+
+
+    // Open Wheel
+    submenus.emplace_back("OPEN_WHEEL",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "OPEN_WHEEL");
+        }
+    );
+
+
+    // Plane
+    submenus.emplace_back("PLANE",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "PLANE");
+        }
+    );
+
+    // Rail
+    // This shouldn't be spawned in with CREATE_VEHICLE, disabled in here.
+    //submenus.emplace_back("RAIL",
+    //    [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+    //    {
+    //        // New working method for the categories
+    //        vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "RAIL");
+    //    }
+    //);
+
+    // Sedan
+    submenus.emplace_back("SEDAN",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            //vehicleMenu.BuildSportsVehicleCategorySubmenu(mbCtx, context);
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "SEDAN");
+        }
+    );
+
+
+    // Service
+    submenus.emplace_back("SERVICE",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            //vehicleMenu.BuildSportsVehicleCategorySubmenu(mbCtx, context);
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "SERVICE");
+        }
+    );
+
+
     //-----
     // Sports vehicle category sub menu
     //-----
-    submenus.emplace_back("SportsVehicleCategorySubmenu",
+    //submenus.emplace_back("SportsVehicleCategorySubmenu",
+    // This new format works
+    submenus.emplace_back("SPORT",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            vehicleMenu.BuildSportsVehicleCategorySubmenu(mbCtx, context);
+            //vehicleMenu.BuildSportsVehicleCategorySubmenu(mbCtx, context);
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "SPORT");
         }
     );
 
     //-----
     // Sports classics vehicle category sub menu
-    //-----
-    submenus.emplace_back("SportsClassicsVehicleCategorySubmenu",
-
+    submenus.emplace_back("SPORT_CLASSIC",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            vehicleMenu.BuildSportsClassicsVehicleCategorySubmenu(mbCtx, context);
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "SPORT_CLASSIC");
         }
     );
 
@@ -420,22 +584,45 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     //-----
     // Super vehicle category sub menu
     //-----
-    submenus.emplace_back("SuperVehicleCategorySubmenu",
-
+    submenus.emplace_back("SUPER",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            vehicleMenu.BuildSuperVehicleCategorySubmenu(mbCtx, context);
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "SUPER");
         }
     );
 
     //-----
     // SUV vehicle category sub menu
     //-----
-    submenus.emplace_back("SuvVehicleCategorySubmenu",
-
+    submenus.emplace_back("SUV",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
-            vehicleMenu.BuildSuvCategorySubmenu(mbCtx, context);
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "SUV");
+        }
+    );
+
+    //-----
+    // Utility vehicle category sub menu
+    //-----
+    submenus.emplace_back("UTILITY",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "UTILITY");
+        }
+    );
+
+
+    //-----
+    // Van vehicle category sub menu
+    //-----
+    submenus.emplace_back("VAN",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            // New working method for the categories
+            vehicleMenu.BuildVehicleCategorySubmenu(mbCtx, context, "VAN");
         }
     );
 

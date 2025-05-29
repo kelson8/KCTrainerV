@@ -558,8 +558,16 @@ void PlayerScripts::FadeScreenOut(int fadeTime)
     //DISABLE_ALL_CONTROL_ACTIONS(0);
     
     FREEZE_ENTITY_POSITION(playerPed, true);
+    
+    // This seems to work without running a wait on the full fade time.
+    // Seems to speed this up a bit also.
     DO_SCREEN_FADE_OUT(fadeTime);
-    WAIT(fadeTime);
+    while (!IS_SCREEN_FADED_OUT())
+    {
+        WAIT(0);
+    }
+
+    // Removed the extra wait here
 
     //}
 }
@@ -582,7 +590,7 @@ void PlayerScripts::FadeScreenIn(int fadeTime)
 
     FREEZE_ENTITY_POSITION(playerPed, false);
     DO_SCREEN_FADE_IN(fadeTime);
-    WAIT(fadeTime);
+    // Removed the extra wait here
     //}
 }
 

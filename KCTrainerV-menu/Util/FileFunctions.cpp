@@ -208,7 +208,7 @@ void FileFunctions::TeleportToSavedCoords(const std::string& fileName)
 			//std::cout << "Read Coordinates - X: " << x << ", Y: " << y << ", Z: " << z << std::endl;
 
 			//SET_CHAR_COORDINATES(GetPlayerChar(), x, y, z);
-			playerTeleportScripts.SetPlayerCoords(Vector3(x, y, z));
+			playerTeleportScripts.SetPlayerCoords(Vector3(x, y, z), 30.0f, true);
 			// TODO Setup heading for this
 			// TODO Fix this to work
 			// New function to set heading and fade.

@@ -311,6 +311,7 @@
     <ClCompile Include="Teleports\TeleportLocations.cpp" />
     <ClCompile Include="Teleports\TeleportManager.cpp" />
     <ClCompile Include="Util\FileFunctions.cpp" />
+    <ClCompile Include="Util\FileUtil.cpp" />
     <ClCompile Include="Util\GTAmath.cpp" />
     <ClCompile Include="Util\Logger.cpp" />
     <ClCompile Include="Util\Paths.cpp" />
@@ -441,6 +442,7 @@
     <ClInclude Include="Util\EntityIterator.h" />
     <ClInclude Include="Util\Enums.h" />
     <ClInclude Include="Util\FileFunctions.h" />
+    <ClInclude Include="Util\FileUtil.h" />
     <ClInclude Include="Util\GTAmath.h" />
     <ClInclude Include="Util\Hash.h" />
     <ClInclude Include="Util\Logger.hpp" />
