@@ -6,6 +6,9 @@
 # Built asis from my tests
 builds/
 
+# Extra files generated from natives.md and Markdown PDF VSCode extension.
+extras/
+
 # Downloaded vehicle images
 python/vehicle_images
 
