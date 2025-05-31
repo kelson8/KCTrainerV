@@ -43,6 +43,7 @@
 #include "Submenus/Misc/MiscDebugMenu.h"
 #include "Submenus/Misc/MiscIdGunMenu.h"
 #include "Submenus/Misc/MiscMusicMenu.h"
+#include "Submenus/Misc/MiscMarkerDebugMenu.h"
 
 #include "Submenus/Player/ModelChangerMenu.h"
 #include "Submenus/Player/PlayerOptionsMenu.h"
@@ -121,6 +122,7 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
     auto& miscBlipsMenu = Misc::BlipsMenu::GetInstance();
 
     auto& miscMusicMenu = Misc::MusicMenu::GetInstance();
+    auto& markerDebugMenu = Misc::MarkerDebugMenu::GetInstance();
 
     //
 
@@ -808,12 +810,21 @@ std::vector<CScriptMenu<KCMainScript>::CSubmenu> KCMenu::BuildMenu()
         });
 
     //-----
-    // Misc Sub menu test
+    // Misc Debug sub menu
     //-----
     submenus.emplace_back("MiscDebugSubmenu",
         [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
         {
             miscDebugMenu.Build(mbCtx, context);
+        });
+
+    //-----
+    // Misc Marker Debug sub menu
+    //-----
+    submenus.emplace_back("MiscMarkerDebugSubmenu",
+        [&](NativeMenu::Menu& mbCtx, KCMainScript& context)
+        {
+            markerDebugMenu.Build(mbCtx, context);
         });
 
 

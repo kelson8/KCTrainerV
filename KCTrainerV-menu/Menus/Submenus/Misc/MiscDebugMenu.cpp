@@ -27,6 +27,9 @@
 #include "Scripts/PlayerScripts.h"
 #include "Scripts/Player/PlayerTeleportScripts.h"
 
+// Marker
+#include "Scripts/Markers/MarkerScripts.h"
+
 // Menyoo
 #include "Scripts/Extras/Game.h"
 #include "Scripts/Extras/Classes/GTAblip.h"
@@ -163,7 +166,6 @@ namespace Misc
             // Well this didn't work, they should automatically use the parachute 
             //TASK_PARACHUTE(player, false, false);
         }
-
     }
 
 #endif // DEBUG_MODE

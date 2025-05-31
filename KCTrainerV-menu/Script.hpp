@@ -23,6 +23,12 @@ namespace KCMenu
     // ScriptHookV calls this when starting the script.
     void ScriptMain();
 
+    // Maybe a map to store pointers to menu builder functions
+    // TODO Set these up
+    //std::map<std::string, std::function<void(NativeMenu::Menu&, KCMainScript&)>> menuBuilders;
+
+    //void InitializeMenuBuilders(); // New function to populate the map
+
     // Thread #2 test
     // TODO Use this second thread for something
     void Thread2();

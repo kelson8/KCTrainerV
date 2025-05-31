@@ -24,6 +24,9 @@
 
 //#include "ScriptMenu.hpp"
 
+// Marker
+#include "Scripts/Markers/MarkerScripts.h"
+
 // Misc
 #include "Scripts/Misc/MiscMusicScripts.h"
 #include "Scripts/Misc/MiscExtraFeatures.h"
@@ -50,6 +53,8 @@ void KCMainScript::Tick() {
 
     auto& pedScripts = PedScripts::GetInstance();
 
+    auto& markerScripts = Scripts::Marker::GetInstance();
+
     //TODO Re-enable these, testing with my tick items disabled.
 #ifdef RUN_TICKS
 
@@ -70,6 +75,8 @@ void KCMainScript::Tick() {
     
     vehicleScripts.Tick();
     worldScripts.Tick();
+
+    markerScripts.Tick();
 
 #endif // RUN_TICKS
 

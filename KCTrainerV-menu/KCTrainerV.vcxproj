@@ -217,6 +217,7 @@
     <ClCompile Include="Menus\Submenus\Misc\MiscBlipsMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Misc\MiscDebugMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Misc\MiscIdGunMenu.cpp" />
+    <ClCompile Include="Menus\Submenus\Misc\MiscMarkerDebugMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Misc\MiscMusicMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Player\ModelChangerMenu.cpp" />
     <ClCompile Include="Menus\Submenus\Player\PlayerOptionsMenu.cpp" />
@@ -265,6 +266,7 @@
     <ClCompile Include="Scripts\Extras\MeteorShower.cpp" />
     <ClCompile Include="Scripts\Extras\WeaponIndivs.cpp" />
     <ClCompile Include="Scripts\Extras\World.cpp" />
+    <ClCompile Include="Scripts\Markers\MarkerScripts.cpp" />
     <ClCompile Include="Scripts\MiscScripts.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
@@ -382,6 +384,7 @@
     <ClInclude Include="Menus\Submenus\Misc\MiscBlipsMenu.h" />
     <ClInclude Include="Menus\Submenus\Misc\MiscDebugMenu.h" />
     <ClInclude Include="Menus\Submenus\Misc\MiscIdGunMenu.h" />
+    <ClInclude Include="Menus\Submenus\Misc\MiscMarkerDebugMenu.h" />
     <ClInclude Include="Menus\Submenus\Misc\MiscMusicMenu.h" />
     <ClInclude Include="Menus\Submenus\Player\ModelChangerMenu.h" />
     <ClInclude Include="Menus\Submenus\Player\PlayerOptionsMenu.h" />
@@ -417,6 +420,7 @@
     <ClInclude Include="Scripts\Extras\WeaponIndivs.h" />
     <ClInclude Include="Scripts\Extras\World.h" />
     <ClInclude Include="Scripts\IScriptBuilder.h" />
+    <ClInclude Include="Scripts\Markers\MarkerScripts.h" />
     <ClInclude Include="Scripts\MiscScripts.h" />
     <ClInclude Include="Scripts\Misc\IdGun.h" />
     <ClInclude Include="Scripts\Misc\MiscExtraFeatures.h" />

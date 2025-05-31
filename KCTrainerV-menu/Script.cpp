@@ -24,6 +24,7 @@
 #include "Scripts/PedModelManager.h"
 
 #include "Util/FileFunctions.h"
+#include "Util/FileUtil.h"
 
 #include "defines.h"
 
@@ -34,12 +35,12 @@
 #include "Teleports/TeleportManager.h"
 
 #include "Memory/Memory.h"
-
 #include <iostream>
-
 #include <inc/main.h>
-
 #include "Util/Util.hpp"
+
+// Marker
+#include "Scripts/Markers/MarkerScripts.h"
 
 // Misc
 #include "Scripts/Misc/MiscMusicScripts.h"
@@ -106,6 +107,31 @@ void KCMenu::InitLua()
 #pragma region ResetToggles
 
 
+// TODO Set this up later, might make it easier to make a bunch of sub menus
+//void KCMenu::InitializeMenuBuilders() {
+//    // Call this once at the start of your script, after File::Vehicle::InitializeVehicleData()
+//
+//    // Register the main vehicle category menu
+//    menuBuilders["VehicleCategoryMenu"] = [&](NativeMenu::Menu& mbCtx, KCMainScript& context) {
+//        VehicleMenu::BuildVehicleCategorySubmenu(mbCtx, context);
+//        };
+//
+//    // Dynamically register all category submenus
+//    const auto& categorizedVehicles = File::Vehicle::GetCategorizedVehicles();
+//    for (const auto& categoryPair : categorizedVehicles)
+//    {
+//        const std::string& categoryName = categoryPair.first;
+//        // Register each category name as an identifier for its submenu builder
+//        menuBuilders[categoryName] = [&](NativeMenu::Menu& mbCtx, KCMainScript& context) {
+//            VehicleMenu::BuildCategoryContentsSubmenu(mbCtx, context, categoryName);
+//            };
+//
+//        // If you used the suffix in mbCtx.MenuOption, use it here too:
+//        // menuBuilders[categoryName + "VehicleCategorySubmenu"] = ...;
+//    }
+//}
+
+
 /// <summary>
 /// This function will contain all the logic to revert game states
 /// TODO Fix this to work, for now it doesn't get run anywhere.
@@ -166,6 +192,8 @@ void KCMenu::ResetToggles()
     auto& vehicleScripts = VehicleScripts::GetInstance();
     auto& worldScripts = WorldScripts::GetInstance();
 
+    auto& markerScripts = Scripts::Marker::GetInstance();
+
     // Player scripts
     playerScripts.invincibilityEnabled = false;
     playerScripts.invincibilityFlag = false;
@@ -186,6 +214,9 @@ void KCMenu::ResetToggles()
     // Other toggles
     playerScripts.isSuperJumpEnabled = false;
     //playerScripts.isSuperRunEnabled = false;
+
+    // Marker scripts
+    markerScripts.markerEnabled = false;
 
     // Misc scripts
     MiscScripts::IDGun::isIdGunEnabled = false;
@@ -344,10 +375,14 @@ void KCMenu::ScriptMain()
         LoadModelNamesFromJson(objectsFilePath);
 #endif
 
-        // TODO Test this, load weapon list from weapons.json in the mod directory
+        // This works for loading a list of weapons
         std::string weaponsFilePath = (modPath / Constants::weaponsFileName).string();
         LoadWeaponsFromJson(weaponsFilePath);
         //
+
+        // TODO Test this, load a list of vehicles from the FileUtil
+        std::string vehiclesFilePath = (modPath / Constants::vehiclesFileName).string();
+        File::Vehicle::InitializeVehicleData(vehiclesFilePath);
 
 
         // The Lua initialization is now done before scriptInit

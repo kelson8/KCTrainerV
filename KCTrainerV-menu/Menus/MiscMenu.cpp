@@ -18,6 +18,9 @@
 #include "Scripts/NotificationManager.h"
 #include "Scripts/TextScripts.h"
 
+// Marker
+#include "Scripts/Markers/MarkerScripts.h"
+
 /// <summary>
 /// Misc Menu - Main Menu
 /// </summary>
@@ -27,6 +30,7 @@ void MiscMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 {
     auto& fileFunctions = FileFunctions::GetInstance();
     auto& textScripts = TextScripts::GetInstance();
+    auto& markerScripts = Scripts::Marker::GetInstance();
 
     mbCtx.Title("Misc");
 
@@ -60,7 +64,9 @@ void MiscMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
     //    //ADD_DOOR_TO_SYSTEM()
     //    DOOR_SYSTEM_SET_DOOR_STATE(680601509, static_cast<int>(DoorLockStates::UNLOCKED), false, false);
     //}
-    
+
+
+
 
 #ifdef BLIP_TEST
     // TODO Fix this
@@ -72,6 +78,10 @@ void MiscMenu::Build(NativeMenu::Menu& mbCtx, KCMainScript& context)
 #ifdef DEBUG_MODE
     mbCtx.MenuOption("IDGun Debug", "MiscIDGunDebugSubmenu", { "IDGun debug menu." });
     mbCtx.MenuOption("Globals Sub Menu", "MiscGlobalsSubmenu", { "Submenu for testing editing game globals" });
+    
+    mbCtx.MenuOption("Marker debug", "MiscMarkerDebugSubmenu", { "Marker debug menu" });
+
+
 #endif
 
 }

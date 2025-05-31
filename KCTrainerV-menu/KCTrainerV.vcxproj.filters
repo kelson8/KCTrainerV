@@ -285,6 +285,12 @@
     <ClCompile Include="Util\FileUtil.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\Markers\MarkerScripts.cpp">
+      <Filter>Scripts\Markers</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus\Submenus\Misc\MiscMarkerDebugMenu.cpp">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script.hpp" />
@@ -671,6 +677,12 @@
     <ClInclude Include="Util\FileUtil.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Markers\MarkerScripts.h">
+      <Filter>Scripts\Markers</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus\Submenus\Misc\MiscMarkerDebugMenu.h">
+      <Filter>Menus\Submenus\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Util">
@@ -786,6 +798,9 @@
     </Filter>
     <Filter Include="Scripts\World">
       <UniqueIdentifier>{8bff9fb9-f2c6-4a79-9d53-5f01f0de12fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Markers">
+      <UniqueIdentifier>{1d4ed610-6695-4775-9d98-0254e76d0280}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
