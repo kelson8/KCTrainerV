@@ -262,8 +262,34 @@ enum eGameVersion : int
 
 	VER_1_0_3411_0,
 
-	// New value from Menyoo
+	// New values from Menyoo
+	// https://github.com/itsjustcurtis/MenyooSP/blob/Development/Solution/source/main.h#L288-L310
 	VER_1_0_3442_0,
+
+	VER_1_0_3504_0,
+
+	VER_1_0_3521_0,
+
+	VER_1_0_3570_0,
+
+	VER_1_0_3586_0,
+
+	VER_1_0_3717_0,
+
+	// Enhanced GTA 5 version, TODO Make my menu compatible with this.
+	VER_1_0_811_8 = 1001,
+
+	VER_1_0_812_8 = 1002,
+
+	VER_1_0_813_11 = 1003,
+
+	VER_1_0_814_9 = 1004,
+
+	VER_1_0_889_15 = 1005,
+
+	VER_1_0_889_19 = 1006,
+
+	VER_1_0_1013_17 = 1007,
     //
 
     VER_SIZE,
