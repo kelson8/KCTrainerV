@@ -85,7 +85,7 @@ extended for multiple instances (for NPCs, etc.).
 # Credits
 ikt32 on GitHub for the Menu Base, the example menu, and for some vehicle spawning code.
 * Menu Base: https://github.com/ikt32/GTAVMenuBase
-* Example Menu: https://github.com/ikt32/GTAVKCMenu
+* Example Menu: https://github.com/ikt32/GTAVMenuExample
 * Vehicle spawning code: https://github.com/ikt32/GTAVAddonLoader
 
 itsjustcurtis on GitHub for some functions and items I will be using for this menu
